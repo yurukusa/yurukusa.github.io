@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ゆるくさ | AI × インディーゲーム開発</title>
+    <meta name="description" content="非エンジニアがAIと組んでゲームを作る。Claude Codeで13,000行のローグライクRPGを開発した、ゆるくさのポートフォリオ。">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0a0a0f;
+            --surface: #12121a;
+            --border: #1e1e2e;
+            --text: #e0e0e8;
+            --text-dim: #8888a0;
+            --accent: #4a7cff;
+            --accent-glow: #4a7cff33;
+            --flame: #ff6a3a;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .hero h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.02em;
+        }
+
+        .hero .tagline {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+        }
+
+        /* Game showcase */
+        .game-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .game-card h2 {
+            font-size: 1.3rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .game-card h2 .flame {
+            color: var(--flame);
+        }
+
+        .game-card .subtitle {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        .game-card p {
+            font-size: 0.95rem;
+            margin-bottom: 1.2rem;
+            color: var(--text);
+        }
+
+        .game-card .price {
+            display: inline-block;
+            background: var(--flame);
+            color: #fff;
+            padding: 0.2rem 0.7rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            background: var(--accent);
+            color: #fff;
+            text-decoration: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: box-shadow 0.2s;
+        }
+
+        .cta-btn:hover {
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        /* About */
+        .about {
+            margin-bottom: 2rem;
+        }
+
+        .about h2 {
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+            color: var(--accent);
+        }
+
+        .about p {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            margin-bottom: 0.8rem;
+        }
+
+        /* Links grid */
+        .links {
+            margin-bottom: 2rem;
+        }
+
+        .links h2 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .link-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.8rem;
+        }
+
+        .link-item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.7rem 1rem;
+            text-decoration: none;
+            color: var(--text);
+            font-size: 0.85rem;
+            transition: border-color 0.2s;
+        }
+
+        .link-item:hover {
+            border-color: var(--accent);
+        }
+
+        .link-item .icon {
+            font-size: 1.2rem;
+            width: 1.5rem;
+            text-align: center;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-dim);
+            font-size: 0.8rem;
+        }
+
+        footer a {
+            color: var(--text-dim);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Hero -->
+        <div class="hero">
+            <h1>ゆるくさ</h1>
+            <p class="tagline">非エンジニア × AI — インディーゲーム開発者</p>
+        </div>
+
+        <!-- Game -->
+        <div class="game-card">
+            <h2>DUNG: <span class="flame">Azure Flame</span></h2>
+            <p class="subtitle">ハクスラ系ローグライクRPG — Python / Pygame</p>
+            <p>
+                プログラミング経験ゼロからClaude Codeと2週間で開発した15,000行のローグライクRPG。
+                装備・ジェムソケット・死亡ペナルティ・町の発展など、本格的なハクスラ要素を搭載。
+            </p>
+            <span class="price">$2 Early Access</span>
+            <br><br>
+            <a href="https://yurukusa.itch.io/azure-flame-dungeon" class="cta-btn">itch.io でプレイ →</a>
+        </div>
+
+        <!-- About -->
+        <div class="about">
+            <h2>About</h2>
+            <p>
+                東京在住。非エンジニアがAIと組むことで、エンジニアと同等かそれ以上のアウトプットを出せることを証明するために活動中。
+            </p>
+            <p>
+                Claude Code（Anthropic）を使った自律的なマルチエージェント開発パイプラインを構築。
+                CC↔Claude.ai間の自動通信ブリッジ、6エージェント階層型オーケストレーション（Kings Landing）、
+                8並列実行システム（Shogun）など、AIだけで動くソフトウェア開発チームを実現。
+            </p>
+        </div>
+
+        <!-- Links -->
+        <div class="links">
+            <h2>Links</h2>
+            <div class="link-grid">
+                <a href="https://yurukusa.itch.io/azure-flame-dungeon" class="link-item">
+                    <span class="icon">🎮</span> itch.io（ゲーム販売）
+                </a>
+                <a href="https://github.com/yurukusa" class="link-item">
+                    <span class="icon">💻</span> GitHub
+                </a>
+                <a href="https://zenn.dev/yurukusa" class="link-item">
+                    <span class="icon">📝</span> Zenn（技術記事）
+                </a>
+                <a href="https://note.com/yurukusa" class="link-item">
+                    <span class="icon">📖</span> note
+                </a>
+                <a href="https://qiita.com/yurukusa" class="link-item">
+                    <span class="icon">🔧</span> Qiita
+                </a>
+                <a href="https://dev.to/yurukusa" class="link-item">
+                    <span class="icon">🌐</span> dev.to（英語記事）
+                </a>
+                <a href="https://yurukusa-dev.hatenablog.com/" class="link-item">
+                    <span class="icon">📓</span> はてなブログ
+                </a>
+                <a href="https://x.com/yurukusa_dev" class="link-item">
+                    <span class="icon">🐦</span> X / Twitter
+                </a>
+                <a href="https://ko-fi.com/yurukusa" class="link-item">
+                    <span class="icon">☕</span> Ko-fi（応援）
+                </a>
+                <a href="https://wakakusa.gumroad.com" class="link-item">
+                    <span class="icon">📦</span> Gumroad
+                </a>
+                <a href="https://yurukusa.booth.pm" class="link-item">
+                    <span class="icon">🏪</span> BOOTH
+                </a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>© 2026 ゆるくさ / yurukusa — <a href="/legal">特定商取引法に基づく表記</a></p>
+        </footer>
+    </div>
+</body>
+</html>
