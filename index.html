@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>yurukusa | AI Game Studio</title>
-    <meta name="description" content="5 browser games built by an AI agent. Claude Code did the coding. I did the vision. Now playing in AI Browser Game Jam 2026.">
+    <title>yurukusa | AI-Native Creator</title>
+    <meta name="description" content="A non-engineer from Tokyo building games, tools, and content with an autonomous AI agent. Claude Code writes the code. I hold the vision.">
     <link rel="canonical" href="https://yurukusa.github.io/">
 
     <!-- OGP -->
-    <meta property="og:title" content="yurukusa | AI Game Studio">
-    <meta property="og:description" content="5 browser games built by an AI agent. Claude Code did the coding. I did the vision.">
+    <meta property="og:title" content="yurukusa | AI-Native Creator">
+    <meta property="og:description" content="Games, tools, and stories from a non-engineer building with autonomous AI. Claude Code writes the code. I hold the vision.">
     <meta property="og:image" content="https://yurukusa.github.io/images/ogp.png">
     <meta property="og:url" content="https://yurukusa.github.io/">
     <meta property="og:type" content="website">
@@ -18,8 +18,8 @@
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@yurukusa_dev">
-    <meta name="twitter:title" content="yurukusa | AI Game Studio">
-    <meta name="twitter:description" content="5 browser games built by an AI agent. Claude Code did the coding. I did the vision.">
+    <meta name="twitter:title" content="yurukusa | AI-Native Creator">
+    <meta name="twitter:description" content="Games, tools, and stories from a non-engineer building with autonomous AI.">
     <meta name="twitter:image" content="https://yurukusa.github.io/images/ogp.png">
 
     <style>
@@ -37,6 +37,8 @@
             --jam: #f0c040;
             --jam-glow: rgba(240,192,64,0.2);
             --green: #40d080;
+            --green-glow: rgba(64,208,128,0.15);
+            --orange: #ff7a50;
         }
 
         body {
@@ -87,34 +89,8 @@
         .hero .sub {
             font-size: 1rem;
             color: var(--text-dim);
-            max-width: 480px;
+            max-width: 520px;
             margin: 0 auto 2rem;
-        }
-
-        .jam-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: var(--jam-glow);
-            border: 1px solid var(--jam);
-            border-radius: 8px;
-            padding: 0.5rem 1.1rem;
-            font-size: 0.85rem;
-            color: var(--jam);
-            font-weight: 600;
-            text-decoration: none;
-            transition: background 0.2s;
-        }
-        .jam-badge:hover { background: rgba(240,192,64,0.15); }
-        .jam-badge .dot {
-            width: 8px; height: 8px;
-            border-radius: 50%;
-            background: var(--jam);
-            animation: pulse 1.5s ease-in-out infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
         }
 
         /* ─── Section title ─── */
@@ -128,16 +104,16 @@
             border-bottom: 1px solid var(--border);
         }
 
-        /* ─── Game grid ─── */
-        .games-section { margin-bottom: 4rem; }
+        /* ─── Cards ─── */
+        .card-section { margin-bottom: 4rem; }
 
-        .game-grid {
+        .card-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
             gap: 1rem;
         }
 
-        .game-card {
+        .card {
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 12px;
@@ -148,16 +124,14 @@
             color: inherit;
             display: block;
         }
-        .game-card:hover {
+        .card:hover {
             border-color: var(--accent);
             transform: translateY(-2px);
         }
-        .game-card.jam-entry {
-            border-color: rgba(240,192,64,0.35);
-        }
-        .game-card.jam-entry:hover {
-            border-color: var(--jam);
-        }
+        .card.jam-entry { border-color: rgba(240,192,64,0.35); }
+        .card.jam-entry:hover { border-color: var(--jam); }
+        .card.tool-card { border-color: rgba(64,208,128,0.25); }
+        .card.tool-card:hover { border-color: var(--green); }
 
         .card-tags {
             display: flex;
@@ -175,16 +149,18 @@
         }
         .tag-jam { background: var(--jam-glow); color: var(--jam); border: 1px solid rgba(240,192,64,0.4); }
         .tag-free { background: rgba(64,208,128,0.1); color: var(--green); border: 1px solid rgba(64,208,128,0.3); }
-        .tag-paid { background: rgba(255,100,60,0.1); color: #ff7a50; border: 1px solid rgba(255,100,60,0.3); }
+        .tag-paid { background: rgba(255,100,60,0.1); color: var(--orange); border: 1px solid rgba(255,100,60,0.3); }
         .tag-genre { background: var(--surface2); color: var(--text-dim); border: 1px solid var(--border); }
+        .tag-tool { background: var(--green-glow); color: var(--green); border: 1px solid rgba(64,208,128,0.3); }
+        .tag-npx { background: var(--accent-glow); color: var(--accent); border: 1px solid rgba(91,127,255,0.4); }
 
-        .game-card h3 {
+        .card h3 {
             font-size: 1.05rem;
             font-weight: 700;
             margin-bottom: 0.3rem;
             letter-spacing: -0.01em;
         }
-        .game-card .card-desc {
+        .card .card-desc {
             font-size: 0.85rem;
             color: var(--text-dim);
             line-height: 1.5;
@@ -197,16 +173,12 @@
             font-size: 1rem;
             transition: color 0.2s, transform 0.2s;
         }
-        .game-card:hover .card-arrow {
-            color: var(--accent);
-            transform: translate(2px, -2px);
-        }
-        .game-card.jam-entry:hover .card-arrow { color: var(--jam); }
+        .card:hover .card-arrow { color: var(--accent); transform: translate(2px, -2px); }
+        .card.jam-entry:hover .card-arrow { color: var(--jam); }
+        .card.tool-card:hover .card-arrow { color: var(--green); }
 
         /* ─── Story ─── */
-        .story-section {
-            margin-bottom: 4rem;
-        }
+        .story-section { margin-bottom: 4rem; }
         .story-block {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -227,7 +199,6 @@
             margin: 1.5rem 0;
             flex-wrap: wrap;
         }
-        .stat { }
         .stat-num {
             font-size: 1.8rem;
             font-weight: 800;
@@ -279,46 +250,121 @@
 
         <!-- Hero -->
         <div class="hero">
-            <div class="hero-label">AI Game Studio</div>
+            <div class="hero-label">AI-Native Creator</div>
             <h1>yurukusa<br><span class="dim">/ ゆるくさ</span></h1>
             <p class="sub">
-                5 browser games built by an AI agent.<br>
-                Claude Code wrote the code. I held the vision.
+                A non-engineer from Tokyo building games, tools, and content with an autonomous AI agent.<br>
+                Claude Code writes the code. I hold the vision.
             </p>
-            <a href="https://itch.io/jam/ai-browser-game-jam" class="jam-badge" target="_blank" rel="noopener">
-                <span class="dot"></span>
-                AI Browser Game Jam 2026 — 3 entries
-            </a>
         </div>
 
-        <!-- Games: Jam entries -->
-        <div class="games-section">
-            <div class="section-title">🏆 Game Jam Entries — AI Browser Game Jam</div>
-            <div class="game-grid">
+        <!-- Developer Tools -->
+        <div class="card-section">
+            <div class="section-title">🔧 Developer Tools — The cc-toolkit</div>
+            <div class="card-grid">
 
-                <a href="https://yurukusa.itch.io/ghostexe-escape-the-machine" class="game-card jam-entry" target="_blank" rel="noopener">
+                <a href="https://yurukusa.github.io/cc-health-check/" class="card tool-card" target="_blank" rel="noopener">
+                    <div class="card-tags">
+                        <span class="tag tag-tool">CLI</span>
+                        <span class="tag tag-npx">npx</span>
+                        <span class="tag tag-free">Free</span>
+                    </div>
+                    <h3>cc-health-check</h3>
+                    <p class="card-desc">Is your AI setup safe? 20 automated checks across 6 dimensions. Instant score.</p>
+                    <span class="card-arrow">↗</span>
+                </a>
+
+                <a href="https://github.com/yurukusa/cc-session-stats" class="card tool-card" target="_blank" rel="noopener">
+                    <div class="card-tags">
+                        <span class="tag tag-tool">CLI</span>
+                        <span class="tag tag-npx">npx</span>
+                        <span class="tag tag-free">Free</span>
+                    </div>
+                    <h3>cc-session-stats</h3>
+                    <p class="card-desc">How much are you using AI? Session durations, streaks, and health warnings.</p>
+                    <span class="card-arrow">↗</span>
+                </a>
+
+                <a href="https://github.com/yurukusa/cc-audit-log" class="card tool-card" target="_blank" rel="noopener">
+                    <div class="card-tags">
+                        <span class="tag tag-tool">CLI</span>
+                        <span class="tag tag-npx">npx</span>
+                        <span class="tag tag-free">Free</span>
+                    </div>
+                    <h3>cc-audit-log</h3>
+                    <p class="card-desc">What did your AI do? Human-readable audit trail from session transcripts.</p>
+                    <span class="card-arrow">↗</span>
+                </a>
+
+            </div>
+        </div>
+
+        <!-- Production Kit -->
+        <div class="card-section">
+            <div class="section-title">📦 Production Kit</div>
+            <div class="card-grid">
+
+                <a href="https://yurukusa.gumroad.com/l/cc-codex-ops-kit" class="card" target="_blank" rel="noopener">
+                    <div class="card-tags">
+                        <span class="tag tag-paid">$29</span>
+                        <span class="tag tag-genre">Hooks + Templates</span>
+                    </div>
+                    <h3>CC-Codex Ops Kit</h3>
+                    <p class="card-desc">10 production hooks + 5 templates covering 18/20 health checks. From 1000+ hours of autonomous operation.</p>
+                    <span class="card-arrow">↗</span>
+                </a>
+
+            </div>
+        </div>
+
+        <!-- Games -->
+        <div class="card-section">
+            <div class="section-title">🎮 Games</div>
+            <div class="card-grid">
+
+                <a href="https://yurukusa.itch.io/spell-cascade" class="card" target="_blank" rel="noopener">
+                    <div class="card-tags">
+                        <span class="tag tag-free">Free</span>
+                        <span class="tag tag-genre">Tower Defense</span>
+                    </div>
+                    <h3>Spell Cascade</h3>
+                    <p class="card-desc">Auto-shooting survivor. Chain spells, level up, survive waves of phantom enemies.</p>
+                    <span class="card-arrow">↗</span>
+                </a>
+
+                <a href="https://yurukusa.itch.io/azure-flame-dungeon" class="card" target="_blank" rel="noopener">
+                    <div class="card-tags">
+                        <span class="tag tag-paid">$2</span>
+                        <span class="tag tag-genre">Roguelike RPG</span>
+                    </div>
+                    <h3>DUNG: Azure Flame</h3>
+                    <p class="card-desc">15,000-line roguelike. Gear, gems, town development. The project that started it all.</p>
+                    <span class="card-arrow">↗</span>
+                </a>
+
+                <a href="https://yurukusa.itch.io/ghostexe-escape-the-machine" class="card jam-entry" target="_blank" rel="noopener">
                     <div class="card-tags">
                         <span class="tag tag-jam">Jam Entry</span>
                         <span class="tag tag-free">Free</span>
                         <span class="tag tag-genre">Puzzle</span>
                     </div>
                     <h3>GHOST.EXE</h3>
-                    <p class="card-desc">Escape the machine. An ASCII-aesthetic puzzle in the spirit of "Ghost in the Machine."</p>
+                    <p class="card-desc">Escape the machine. ASCII-aesthetic puzzle in the spirit of "Ghost in the Machine."</p>
                     <span class="card-arrow">↗</span>
                 </a>
 
-                <a href="https://yurukusa.itch.io/primal-fuse" class="game-card jam-entry" target="_blank" rel="noopener">
+                <a href="https://yurukusa.itch.io/primal-fuse" class="card jam-entry" target="_blank" rel="noopener">
                     <div class="card-tags">
                         <span class="tag tag-jam">Jam Entry</span>
                         <span class="tag tag-free">Free</span>
                         <span class="tag tag-genre">Merge Puzzle</span>
                     </div>
                     <h3>Primal Fuse</h3>
-                    <p class="card-desc">Combine 30 elements in a 6×6 grid. Discover hidden combos. Uncover the GHOST easter egg.</p>
+                    <p class="card-desc">Combine 30 elements in a 6x6 grid. Discover hidden combos. Uncover the GHOST easter egg.</p>
                     <span class="card-arrow">↗</span>
                 </a>
 
-                <a href="https://yurukusa.itch.io/sokobot" class="game-card jam-entry" target="_blank" rel="noopener">
+                <a href="https://yurukusa.itch.io/sokobot" class="card jam-entry" target="_blank" rel="noopener">
                     <div class="card-tags">
                         <span class="tag tag-jam">Jam Entry</span>
                         <span class="tag tag-free">Free</span>
@@ -332,70 +378,48 @@
             </div>
         </div>
 
-        <!-- Games: Other titles -->
-        <div class="games-section">
-            <div class="section-title">🎮 Other Titles</div>
-            <div class="game-grid">
-
-                <a href="https://yurukusa.itch.io/spell-cascade" class="game-card" target="_blank" rel="noopener">
-                    <div class="card-tags">
-                        <span class="tag tag-free">Free</span>
-                        <span class="tag tag-genre">Tower Defense</span>
-                    </div>
-                    <h3>Spell Cascade</h3>
-                    <p class="card-desc">Auto-shooting survivor. Chain spells, level up, survive waves of phantom enemies. v0.9.7</p>
-                    <span class="card-arrow">↗</span>
-                </a>
-
-                <a href="https://yurukusa.itch.io/azure-flame-dungeon" class="game-card" target="_blank" rel="noopener">
-                    <div class="card-tags">
-                        <span class="tag tag-paid">$2</span>
-                        <span class="tag tag-genre">Roguelike RPG</span>
-                    </div>
-                    <h3>DUNG: Azure Flame</h3>
-                    <p class="card-desc">15,000-line roguelike. Gear, gems, town development. The project that started it all.</p>
-                    <span class="card-arrow">↗</span>
-                </a>
-
-            </div>
-        </div>
-
         <!-- Story -->
         <div class="story-section">
             <div class="section-title">The Story</div>
             <div class="story-block">
                 <div class="stat-row">
                     <div class="stat">
+                        <div class="stat-num">3</div>
+                        <div class="stat-label">open-source tools</div>
+                    </div>
+                    <div class="stat">
                         <div class="stat-num">5</div>
                         <div class="stat-label">games shipped</div>
                     </div>
                     <div class="stat">
-                        <div class="stat-num">~90</div>
-                        <div class="stat-label">days</div>
+                        <div class="stat-num">100+</div>
+                        <div class="stat-label">hours of AI</div>
                     </div>
                     <div class="stat">
                         <div class="stat-num">0</div>
-                        <div class="stat-label">lines written by me</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-num">3</div>
-                        <div class="stat-label">jam entries</div>
+                        <div class="stat-label">lines I wrote</div>
                     </div>
                 </div>
                 <p>
-                    I'm <strong>yurukusa</strong> — a non-engineer from Tokyo who decided to build games using AI.
-                    Not "AI-assisted." <strong>AI-primary.</strong>
-                    Claude Code runs an autonomous development loop: it designs, codes, tests, exports, and deploys.
-                    My job is to set the direction and ship.
+                    I'm <strong>yurukusa</strong> — a non-engineer from Tokyo who started building with AI in January 2026.
+                    I can't write code. I pay $200/month for Claude Code and let it run autonomously.
+                    It writes the code, tests it, deploys it. My job is to set the direction and ship.
                 </p>
                 <p>
-                    Every game here was built this way. The 15,000-line roguelike, the merge puzzler, the sokoban generator,
-                    the escape room — all of it written by an agent running inside a terminal.
-                    I'm building the factory, not just the products.
+                    What started as "I want to make a game" became an ecosystem:
+                    <strong>5 games</strong> on itch.io,
+                    <strong>3 open-source developer tools</strong> used by other Claude Code users,
+                    a <strong>production ops kit</strong> on Gumroad,
+                    and a growing series of articles about what it's actually like to live with an AI agent.
                 </p>
                 <p>
-                    Follow the experiment on <strong><a href="https://dev.to/yurukusa" style="color:var(--accent)">dev.to</a></strong>
-                    or <strong><a href="https://x.com/yurukusa_dev" style="color:var(--accent)">@yurukusa_dev</a></strong>.
+                    The AI runs 24/7 on WSL2. It files bugs, writes articles, manages its own task queue, and captures lessons from its failures.
+                    I'm not building products. I'm building a <strong>factory that builds products</strong>.
+                </p>
+                <p>
+                    Follow the experiment on
+                    <strong><a href="https://note.com/yurukusa" style="color:var(--accent)">note.com</a></strong> (日本語) or
+                    <strong><a href="https://dev.to/yurukusa" style="color:var(--accent)">dev.to</a></strong> (English).
                 </p>
             </div>
         </div>
@@ -404,9 +428,10 @@
         <div class="links-section">
             <div class="section-title">Links</div>
             <div class="link-grid">
-                <a href="https://yurukusa.itch.io" class="link-item" target="_blank" rel="noopener">🎮 itch.io</a>
                 <a href="https://github.com/yurukusa" class="link-item" target="_blank" rel="noopener">💻 GitHub</a>
+                <a href="https://yurukusa.itch.io" class="link-item" target="_blank" rel="noopener">🎮 itch.io</a>
                 <a href="https://dev.to/yurukusa" class="link-item" target="_blank" rel="noopener">🌐 dev.to</a>
+                <a href="https://note.com/yurukusa" class="link-item" target="_blank" rel="noopener">📝 note.com</a>
                 <a href="https://zenn.dev/yurukusa" class="link-item" target="_blank" rel="noopener">📝 Zenn</a>
                 <a href="https://qiita.com/yurukusa" class="link-item" target="_blank" rel="noopener">🔧 Qiita</a>
                 <a href="https://yurukusa-dev.hatenablog.com/" class="link-item" target="_blank" rel="noopener">📓 はてな</a>
