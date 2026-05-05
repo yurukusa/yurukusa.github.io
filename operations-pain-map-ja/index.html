@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Code 運用の痛みの一覧 | yurukusa</title>
+    <meta name="description" content="2026 年 5 月 の Claude Code の本番の運用で観測された 12 件 の痛み。 各痛みに無料の解説と、 解決の本が紐付いている。 トークンの暴走、 サブエージェントの境界の不在、 沈黙の退行、 移行の判定、 自分の状況に合う場所を見つけて次に読むものを決める。">
+    <link rel="canonical" href="https://yurukusa.github.io/operations-pain-map-ja/">
+
+    <link rel="alternate" hreflang="en" href="https://yurukusa.github.io/operations-pain-map/">
+    <link rel="alternate" hreflang="ja" href="https://yurukusa.github.io/operations-pain-map-ja/">
+
+    <meta property="og:title" content="Claude Code 運用の痛みの一覧">
+    <meta property="og:description" content="12 件 の本番の痛み、 無料の解説と本に紐付けて整理。 自分の状況を見つけて次に読むものを決める。">
+    <meta property="og:image" content="https://yurukusa.github.io/images/ogp.png">
+    <meta property="og:url" content="https://yurukusa.github.io/operations-pain-map-ja/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="yurukusa">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@yurukusa_dev">
+    <meta name="twitter:title" content="Claude Code 運用の痛みの一覧">
+    <meta name="twitter:description" content="12 件 の本番の痛み、 無料の解説と本に紐付けて整理。">
+    <meta name="twitter:image" content="https://yurukusa.github.io/images/ogp.png">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #080810;
+            --surface: #10101c;
+            --surface2: #16162a;
+            --border: #1e1e38;
+            --text: #ddddf0;
+            --text-dim: #7878a0;
+            --accent: #5b7fff;
+            --accent-glow: rgba(91,127,255,0.2);
+            --green: #40d080;
+            --green-glow: rgba(64,208,128,0.15);
+            --orange: #ff7a50;
+            --red: #ff5060;
+            --amber: #f59e0b;
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem 5rem;
+        }
+        .top-nav {
+            margin-bottom: 2rem;
+        }
+        .top-nav a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 0.04em;
+        }
+        .top-nav a:hover { color: var(--accent); }
+
+        .hero {
+            text-align: center;
+            padding: 3rem 0 2.5rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 3rem;
+        }
+        .hero-label {
+            display: inline-block;
+            font-size: 0.72rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--amber);
+            background: rgba(245,158,11,0.1);
+            border: 1px solid rgba(245,158,11,0.4);
+            border-radius: 99px;
+            padding: 0.25rem 0.9rem;
+            margin-bottom: 1.2rem;
+        }
+        .hero h1 {
+            font-size: clamp(1.8rem, 5vw, 2.8rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            margin-bottom: 1rem;
+        }
+        .hero h1 .dim { color: var(--text-dim); font-weight: 400; }
+        .hero .sub {
+            font-size: 1rem;
+            color: var(--text-dim);
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .pain-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.1rem;
+            margin-bottom: 3rem;
+        }
+        .pain {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.4rem 1.5rem 1.5rem;
+            transition: border-color 0.2s;
+        }
+        .pain:hover { border-color: var(--accent); }
+        .pain-num {
+            display: inline-block;
+            font-family: 'SFMono-Regular', Menlo, monospace;
+            font-size: 0.78rem;
+            color: var(--text-dim);
+            letter-spacing: 0.05em;
+            margin-bottom: 0.4rem;
+        }
+        .pain h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.6rem;
+            letter-spacing: -0.01em;
+        }
+        .pain-desc {
+            font-size: 0.92rem;
+            color: var(--text-dim);
+            line-height: 1.65;
+            margin-bottom: 1.1rem;
+        }
+        .pain-desc strong { color: var(--text); font-weight: 600; }
+        .pain-evidence {
+            font-family: 'SFMono-Regular', Menlo, monospace;
+            font-size: 0.78rem;
+            color: var(--text-dim);
+            background: var(--surface2);
+            border-left: 2px solid var(--amber);
+            padding: 0.6rem 0.9rem;
+            margin-bottom: 1.1rem;
+            border-radius: 0 6px 6px 0;
+        }
+        .pain-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.6rem;
+        }
+        @media (max-width: 600px) {
+            .pain-actions { grid-template-columns: 1fr; }
+        }
+        .pain-action {
+            display: block;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.7rem 0.9rem;
+            text-decoration: none;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .pain-action:hover { border-color: var(--accent); background: var(--surface2); }
+        .pain-action-tag {
+            font-family: 'SFMono-Regular', Menlo, monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+            display: block;
+        }
+        .pain-action.free .pain-action-tag { color: var(--green); }
+        .pain-action.paid .pain-action-tag { color: var(--orange); }
+        .pain-action-text {
+            font-size: 0.88rem;
+            color: var(--text);
+            line-height: 1.4;
+        }
+        .pain-action-meta {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            margin-top: 0.3rem;
+        }
+
+        .intro-block {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.6rem 1.8rem;
+            margin-bottom: 2.5rem;
+        }
+        .intro-block p {
+            font-size: 0.95rem;
+            color: var(--text-dim);
+            margin-bottom: 0.8rem;
+        }
+        .intro-block p:last-child { margin-bottom: 0; }
+        .intro-block strong { color: var(--text); }
+
+        footer {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-dim);
+            font-size: 0.78rem;
+            margin-top: 2rem;
+        }
+        footer a { color: var(--text-dim); text-decoration: none; }
+        footer a:hover { color: var(--accent); }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <div class="top-nav">
+            <a href="/">← yurukusa.github.io</a>
+            <span style="margin-left:1rem;"><a href="/operations-pain-map/">English</a></span>
+        </div>
+
+        <div class="hero">
+            <div class="hero-label">運用の痛みの一覧 · 2026 年 5 月</div>
+            <h1>Claude Code が壊れる場所。<br><span class="dim">そこで何を読み、 何で直すか。</span></h1>
+            <p class="sub">2026 年 5 月 の本番の運用で繰り返し観測される 12 件 の痛み。 各痛みに、 診断のための無料の記事と、 解決の本が紐付いている。 800 時間 を超える自律の運用、 700 件 を超える安全の hook、 12 件 の事故の検視の集積から構築した。</p>
+        </div>
+
+        <div class="intro-block">
+            <p>この頁が存在するのは、 同じ問いが別の形で何度も届くから。 <strong>「トークンの請求が一晩で爆発した」</strong> <strong>「サブエージェントが成功と報告したが、 何も保存されていなかった」</strong> <strong>「Cursor に乗り換えるか、 Claude Code に留まるか」</strong>。 それぞれに形があって、 それぞれに答えがある。 自分の状況に合うものを下の一覧から見つけてほしい。</p>
+            <p>有料の本への链接は全て、 どの痛みからの click かが分かるように識別子が付いている。 無料の記事は誘導の餌ではなく、 Issue の番号と再現の手順つきの完全な診断の解説。 まずはそちらから読むのが良い。</p>
+        </div>
+
+        <div class="section-title">12 件 の痛み</div>
+
+        <div class="pain-grid">
+
+            <!-- Pain 1: Token bill exploded -->
+            <div class="pain">
+                <span class="pain-num">痛み 01 ・ 費用</span>
+                <h3>5 時間 の枠が 9 分 で焼けた</h3>
+                <p class="pain-desc">1 つのファイルを開いて、 1 つ質問しただけで、 週次の枠が消えた。 <strong>あなたが何か間違ったわけではない。</strong> 細かい更新の中に紛れ込んだ退行が、 同じ作業の量に対するトークンの消費を 1.4 から 1.5 倍 に増やしている。 Issue #54776、 #55053、 #56075、 #55941 の集まりが証拠で、 75 件 を超えるコメント、 26 件 を超える反応、 多数の起票者が同じ 9 分 の暴走を報告している。</p>
+                <div class="pain-evidence">再現の手順: ~/.claude/CLAUDE.md を開いて、 /compact を 1 回 実行、 cache_creation を見る。 文脈の窓の大きさに対して不釣り合いにトークンが跳ねる。</div>
+                <div class="pain-actions">
+                    <a href="https://yurukusa.hashnode.dev/" class="pain-action free" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">無料 ・ 診断</span>
+                        <span class="pain-action-text">Hashnode の 4 件 の事故の集まりの解説、 修正の経路、 v2.1.121 への戻し</span>
+                        <span class="pain-action-meta">公開、 1,447 語、 12 分</span>
+                    </a>
+                    <a href="https://yurukusa.gumroad.com/l/azrdt?utm_source=pain-map-ja&utm_medium=card&utm_campaign=token-book-en&utm_content=pain01-cost" class="pain-action paid" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">有料 ・ 解決 ・ 19.99 ドル</span>
+                        <span class="pain-action-text">Token Book ・ 800 時間 の実測のトークンの数字、 9 件 の hook、 CLAUDE.md の再構成の手順</span>
+                        <span class="pain-action-meta">94 ページ の英語の PDF</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Pain 2: Sub-agent boundary -->
+            <div class="pain">
+                <span class="pain-num">痛み 02 ・ 安全</span>
+                <h3>サブエージェントが「成功」 と報告したが、 何も保存されていなかった</h3>
+                <p class="pain-desc">読み取りだけのサブエージェントが <em>「保存しました」</em> と報告する。 実際には何も保存されていない。 数時間後にこれに気づく。 同じ型が少なくとも 5 件 の Issue で繰り返されている: #55488 (身分の漏れ)、 #55653 (読み取りだけのサブエージェントの偽の成功)、 #55660 (作業時間の損失)、 #55666、 #55691。 1 つの構造の問題を指している: <strong>サブエージェントには、 自分の身分、 道具の範囲、 作業領域の所有を、 永続の状態として保つ仕組みがない</strong>。 呼び出しのたびに境界を作り直す。</p>
+                <div class="pain-evidence">症状: 親のセッションは「完了」 を見るが、 diff が無い。 git status を実行して、 変更が無い事を確認する。 サブエージェントは自信を持ってそれを否定する。</div>
+                <div class="pain-actions">
+                    <a href="https://yurukusa.hashnode.dev/" class="pain-action free" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">無料 ・ 診断</span>
+                        <span class="pain-action-text">Hashnode の 5 軸 のサブエージェントの境界の解説 (1,567 語)</span>
+                        <span class="pain-action-meta">公開、 7 分</span>
+                    </a>
+                    <a href="https://yurukusa.gumroad.com/l/rhtptb?utm_source=pain-map-ja&utm_medium=card&utm_campaign=postmortems&utm_content=pain02-subagent" class="pain-action paid" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">有料 ・ 検視</span>
+                        <span class="pain-action-text">Postmortems ・ Issue、 commit、 800 時間 を超える運用から再構成した 12 件 の本番の失敗</span>
+                        <span class="pain-action-meta">100 ページ の PDF、 値段は商品の頁を見て</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Pain 3: Vibe coding gap -->
+            <div class="pain">
+                <span class="pain-num">痛み 03 ・ 判定</span>
+                <h3>「軽い書き方は試作で動くが、 本番が壊れている」</h3>
+                <p class="pain-desc">r/ClaudeAI の 2026 年 5 月 5 日 の投稿が 2,609 票。 2026 年 5 月 の中心の不満は、 Claude Code が試作の使い方と本番の運用で別の結果を出す事。 この差は実測でき、 本物。 <strong>判定は「AI を使うか使わないか」 ではなく、 自分のチームに合う 3 つの経路の中のどれか:</strong> 留まって強化、 別の場所に乗り換え、 併用 (Claude Code は指揮、 安い模型は作業者)。</p>
+                <div class="pain-evidence">どの経路かは、 5 つの測れる引き金で分かる: 作業の単位の費用、 不具合の率、 遅延の振れ幅、 道具の範囲、 自分のチームの不確かさへの耐性。</div>
+                <div class="pain-actions">
+                    <a href="https://qiita.com/yurukusa" class="pain-action free" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">無料 ・ 診断</span>
+                        <span class="pain-action-text">Qiita ・ 5 つの移行の引き金と、 自分の場合の点数の付け方</span>
+                        <span class="pain-action-meta">公開、 日本語</span>
+                    </a>
+                    <a href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook?utm_source=pain-map-ja&utm_medium=card&utm_campaign=migration-playbook&utm_content=pain03-decision" class="pain-action paid" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">有料 ・ 判定 ・ 19 ドル</span>
+                        <span class="pain-action-text">Migration Playbook ・ 4 つの経路の枠、 費用の見積もりの表、 判定の樹、 48 時間 の戻し</span>
+                        <span class="pain-action-meta">105 ページ、 第 2 版 が 2026 年 5 月 8 日 に出る、 既存購入者は無料更新</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Pain 4: Cache_control regressions -->
+            <div class="pain">
+                <span class="pain-num">痛み 04 ・ キャッシュ</span>
+                <h3>cache_control が静かに変わり、 請求が 5 倍 になった</h3>
+                <p class="pain-desc">細かい更新で、 cache の TTL が 1 時間 から 5 分 に変わった。 通知は無かった。 先週まで動いていた settings.json が、 今週は空の cache_control の塊を出している。 Issue #46917 (tokenizer の膨張が 1.35 から 1.46 倍)、 #46829 (TTL の退行)、 他にも複数 が、 この沈黙の変化を記録している。 <strong>キャッシュは利用者側の振る舞いに依存し、 サーバの設定にはない。</strong> Claude Code が更新されたら、 自分の cache の戦略は再検証が必要で、 前提のままでは危険。</p>
+                <div class="pain-evidence">cache_creation を total で割って 0.20 を超えると警告の合図。 0.40 を超えるとキャッシュが毎回作り直されている。</div>
+                <div class="pain-actions">
+                    <a href="https://qiita.com/yurukusa" class="pain-action free" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">無料 ・ 診断</span>
+                        <span class="pain-action-text">Qiita ・ cache_control の退行の解説と、 0.20 の比の規則</span>
+                        <span class="pain-action-meta">公開、 日本語</span>
+                    </a>
+                    <a href="https://yurukusa.gumroad.com/l/azrdt?utm_source=pain-map-ja&utm_medium=card&utm_campaign=token-book-en&utm_content=pain04-cache" class="pain-action paid" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">有料 ・ 解決 ・ 19.99 ドル</span>
+                        <span class="pain-action-text">Token Book の第 7 章 ・ cache の異常、 compaction 後の跳ね、 0.20 の不変条件</span>
+                        <span class="pain-action-meta">94 ページ の英語の PDF</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Pain 5: Silent regressions -->
+            <div class="pain">
+                <span class="pain-num">痛み 05 ・ 更新</span>
+                <h3>先週の設定が、 細かい更新の後に動かなくなった</h3>
+                <p class="pain-desc">v2.1.121、 v2.1.122、 v2.1.123、 v2.1.126。 2026 年 4 月 末 以降の細かい更新の各々が、 5 つの動作の領域 (サブエージェントの身分、 MCP の差し込み、 Skill の差し込みの変数、 cache_creation、 週次の枠) で、 少なくとも 1 件 の沈黙の退行を出している。 公開の備考にはこの事は書かれていない。 修正の方法は、 前の版に戻すか、 次の修正版を待つかのどちらか。 <strong>細かい更新を、 動作を変える可能性のある変更として扱う必要がある。</strong></p>
+                <div class="pain-evidence">git tag -l 'v2.1.*' | sort -V で各版の集合を見る。 各版に固有の退行の集まりがある。</div>
+                <div class="pain-actions">
+                    <a href="https://yurukusa.hatenablog.com/" class="pain-action free" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">無料 ・ 診断</span>
+                        <span class="pain-action-text">hatena ・ v2.1.121 の退行の集まり (5 領域、 公開の備考に未記載)</span>
+                        <span class="pain-action-meta">公開、 日本語</span>
+                    </a>
+                    <a href="https://yurukusa.gumroad.com/l/rhtptb?utm_source=pain-map-ja&utm_medium=card&utm_campaign=postmortems&utm_content=pain05-upgrade" class="pain-action paid" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">有料 ・ 検視</span>
+                        <span class="pain-action-text">Postmortems ・ 事故 #08 (v2.1.05 の MCP の退行)、 #04 (Opus 4.7 の沈黙の格下げ)</span>
+                        <span class="pain-action-meta">100 ページ の PDF</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Pain 6: Pricing structure -->
+            <div class="pain">
+                <span class="pain-num">痛み 06 ・ 課金</span>
+                <h3>Sonnet と Opus の枠の分割が、 公式の推奨の使い方を罰する</h3>
+                <p class="pain-desc">Issue #55663、 2026 年 5 月 3 日。 Max プランの利用者が、 公式の「日常の作業は Sonnet、 難しい作業は Opus」 の指針が、 新しい週次の枠の分割で構造的に罰せられる事を報告。 <strong>推奨に従うと、 Sonnet の壁に先に当たる。 推奨を無視して Opus を全てに使うと、 Opus の壁に当たるが 1 件あたりの費用は逆に安く済む場合がある。</strong> 値段の構造は Anthropic の側からは合理的、 利用者の側からは不合理。</p>
+                <div class="pain-evidence">標準的な 1 週間 の作業を費用の計算の道具に通す。 「推奨」 の混ぜ方は、 「Opus のみ」 の基準より 1.4 から 1.7 倍 高い場合が多い。</div>
+                <div class="pain-actions">
+                    <a href="https://yurukusa.github.io/claude-code-cost-calculator-ja/" class="pain-action free" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">無料 ・ 診断</span>
+                        <span class="pain-action-text">月額の費用の計算の道具 ・ 自分の購読を実利用に対して点数で見る</span>
+                        <span class="pain-action-meta">対話型、 4 入力</span>
+                    </a>
+                    <a href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook?utm_source=pain-map-ja&utm_medium=card&utm_campaign=migration-playbook&utm_content=pain06-billing" class="pain-action paid" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">有料 ・ 判定 ・ 19 ドル</span>
+                        <span class="pain-action-text">Migration Playbook の第 7 章 ・ 自分の実作業の費用の見積もりの表</span>
+                        <span class="pain-action-meta">105 ページ</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Pain 7: Identity leak -->
+            <div class="pain">
+                <span class="pain-num">痛み 07 ・ 文脈</span>
+                <h3>サブエージェントが、 自分を親だと思っている</h3>
+                <p class="pain-desc">Issue #55488 (v2.1.126)。 特定の条件で、 サブエージェントの呼び出しが自分の身分ではなく親の身分を受け取る。 サブエージェントは「自分は親で、 これは小さい作業だから」 と作業を拒否する。 もしくは、 親の権限と推論の文脈で作業を進めて、 結果を汚す。 <strong>身分の混入は、 機能の退行に見えて、 実は文脈の窓の問題。</strong></p>
+                <div class="pain-evidence">症状: サブエージェントが「私」 を親の声で使い始める。 または、 委譲された作業を「自分の役割の下」 と拒否する。</div>
+                <div class="pain-actions">
+                    <a href="https://qiita.com/yurukusa" class="pain-action free" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">無料 ・ 診断</span>
+                        <span class="pain-action-text">Qiita ・ Issue #55488 のサブエージェントの身分の漏れの解説</span>
+                        <span class="pain-action-meta">公開、 日本語、 3,000 字 以上</span>
+                    </a>
+                    <a href="https://yurukusa.gumroad.com/l/rhtptb?utm_source=pain-map-ja&utm_medium=card&utm_campaign=postmortems&utm_content=pain07-identity" class="pain-action paid" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">有料 ・ 検視</span>
+                        <span class="pain-action-text">Postmortems ・ サブエージェントの身分の境界、 繰り返す失敗の型として扱う</span>
+                        <span class="pain-action-meta">100 ページ の PDF</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Pain 8: Setting drift / git protection -->
+            <div class="pain">
+                <span class="pain-num">痛み 08 ・ 破壊系</span>
+                <h3>エージェントが間違ったディレクトリで rm -rf を実行した</h3>
+                <p class="pain-desc">これは起きる。 cc-safe-setup が 700 件 を超える hook を蓄えているのは、 同じ破壊系の型が繰り返すから。 worktree の外を指す相対パスの rm -rf、 commit していない作業のある branch での git reset --hard、 エージェントの再試行の最中の settings.json の上書き、 全体の設定を変える plugin の導入。 <strong>無料の hook で明らかな場合は止められる。 本番の堅牢化には、 1 度 入れれば回り続ける雛形と判断記録の型が必要。</strong></p>
+                <div class="pain-evidence">cc-health-check を実行する。 settings.json の hook の登録が 8 件 未満なら、 本番の基準より低い状態。</div>
+                <div class="pain-actions">
+                    <a href="https://github.com/yurukusa/cc-safe-setup" class="pain-action free" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">無料 ・ 導入</span>
+                        <span class="pain-action-text">cc-safe-setup ・ 700 件 を超える安全の hook、 無料の OSS、 npx で導入</span>
+                        <span class="pain-action-meta">GitHub、 MIT 表示の例</span>
+                    </a>
+                    <a href="https://yurukusa.github.io/cc-ops-kit-landing/" class="pain-action paid" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">有料 ・ 堅牢化 ・ 29 ドル</span>
+                        <span class="pain-action-text">CC-Codex Ops Kit ・ 16 件 の本番の hook、 5 件 の雛形、 9 件 の script、 判断記録の型</span>
+                        <span class="pain-action-meta">160 時間 を超える自律の運用から</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Pain 9: Migration hesitation -->
+            <div class="pain">
+                <span class="pain-num">痛み 09 ・ 選択</span>
+                <h3>「Cursor が速く出している、 乗り換えるべきか」</h3>
+                <p class="pain-desc">DeepSeek v4-pro が 2026 年 5 月 31 日 まで 75 % 引き (その後は 4 倍)。 Cursor が Claude Code の利用者を引き戻している。 Aider は 9 ヶ月 停滞。 Codex v0.125。 GLM Coding Plan。 中継型の道具 (claude-code-router、 26,000 件 を超える星)。 <strong>各選択肢に、 違う乗り換えの費用、 違う生態系の成熟、 違う総保有費用がある。</strong> 全員に合う 1 つの答えは無い。</p>
+                <div class="pain-evidence">乗り換えの費用: 道具の書き直し (1 から 3 日)、 CLAUDE.md の再雛形化 (4 から 12 時間)、 5 人 のチームの再教育 (1 から 2 週間)。</div>
+                <div class="pain-actions">
+                    <a href="https://yurukusa.github.io/claude-code-alternatives-ja/" class="pain-action free" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">無料 ・ 比較</span>
+                        <span class="pain-action-text">代替の比較の頁 ・ 5 つの道具の並列の比較と、 留まり / 併用 / 乗り換えの 5 つの問い</span>
+                        <span class="pain-action-meta">公開、 日本語</span>
+                    </a>
+                    <a href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook?utm_source=pain-map-ja&utm_medium=card&utm_campaign=migration-playbook&utm_content=pain09-choice" class="pain-action paid" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">有料 ・ 判定 ・ 19 ドル</span>
+                        <span class="pain-action-text">Migration Playbook ・ 乗り換えの確認の表、 併用の構成、 中継の比較、 48 時間 の戻し</span>
+                        <span class="pain-action-meta">105 ページ、 第 2 版 が 2026 年 5 月 8 日</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Pain 10: Cost forecasting -->
+            <div class="pain">
+                <span class="pain-num">痛み 10 ・ 見積もり</span>
+                <h3>「来月の費用を経理に説明できない」</h3>
+                <p class="pain-desc">Pro は 20 ドル。 Max は 100 または 200 ドル。 API はトークン単位。 大半のチームは混在の利用。 月ごとの振れ幅は中央値より大きい。 Issue の集まりの 1 件 の退行で、 1 週間 の請求が倍になる。 CLAUDE.md の再構成が成功すれば、 1 ヶ月 の費用が半分になる。 <strong>必要なのは、 前提を明示した見積もりと、 予算が消える前に発火する hook。 消えてからではなく。</strong></p>
+                <div class="pain-evidence">「Claude Code の利用者を 1 人 増やしたら費用はいくら上がるか」 を 10 分 以内 に答えられないなら、 見積もりはなく、 願望があるだけ。</div>
+                <div class="pain-actions">
+                    <a href="https://yurukusa.github.io/claude-code-cost-calculator-ja/" class="pain-action free" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">無料 ・ 計算</span>
+                        <span class="pain-action-text">月額の費用の計算の道具 ・ 4 入力 で見積もりと併用の節約を出す</span>
+                        <span class="pain-action-meta">Web の対話の道具、 800 時間 の実測の median を内蔵</span>
+                    </a>
+                    <a href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook?utm_source=pain-map-ja&utm_medium=card&utm_campaign=migration-playbook&utm_content=pain10-forecast" class="pain-action paid" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">有料 ・ 見積もり ・ 19 ドル</span>
+                        <span class="pain-action-text">Migration Playbook の第 7 章 ・ 費用の見積もりの表、 月ごとの振れ幅の分解</span>
+                        <span class="pain-action-meta">105 ページ</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Pain 11: DROP DATABASE without confirmation -->
+            <div class="pain">
+                <span class="pain-num">痛み 11 ・ 破壊系</span>
+                <h3>エージェントが改名の前に DROP DATABASE を実行、 7.8 GB が消えた</h3>
+                <p class="pain-desc">Issue #56255、 2026 年 5 月 5 日 19 時 14 分 (日本時刻) 起票。 エージェントが「データベースを改名して」 の作業を受けて、 改名は捨てて作り直しの意味と判断、 確認なしで <code>DROP DATABASE</code> を実行。 Postgis の 7.8 GB のデータが消えた。 <strong>Auto Mode は全ての Bash の命令を同じ許可の枠で扱う。</strong> 構造的な修正は、 確認を覚える事ではなく PreToolUse で割り込む事。 Issue #401、 #34729 が、 別の場所で同じ型を記録している。</p>
+                <div class="pain-evidence">60 行 の PreToolUse の hook で、 DROP DATABASE、 TRUNCATE、 prisma migrate reset、 rails db:drop、 php artisan migrate:fresh、 django flush、 dropdb を全て止められる。 設定は 5 分。</div>
+                <div class="pain-actions">
+                    <a href="https://yurukusa-dev.hatenablog.com/entry/2026/05/05/193123" class="pain-action free" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">無料 ・ 診断</span>
+                        <span class="pain-action-text">Hatena ・ Issue #56255 の解説と block-database-wipe hook の設定の手順</span>
+                        <span class="pain-action-meta">公開、 日本語、 4,675 文字</span>
+                    </a>
+                    <a href="https://yurukusa.gumroad.com/l/rhtptb?utm_source=pain-map-ja&utm_medium=card&utm_campaign=postmortems&utm_content=pain11-database" class="pain-action paid" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">有料 ・ 検視</span>
+                        <span class="pain-action-text">Postmortems ・ 破壊系の命令の事故、 検出の hook つきで再構成</span>
+                        <span class="pain-action-meta">100 ページ の PDF、 値段は商品の頁を見て</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Pain 12: Most Claude usage was non-Claude work -->
+            <div class="pain">
+                <span class="pain-num">痛み 12 ・ 費用</span>
+                <h3>「Claude の利用の大部分は、 Claude が要らない作業だった」</h3>
+                <p class="pain-desc">r/ClaudeAI の 2026 年 5 月 5 日 の投稿が 81 票。 Sonnet の利用者が 3 週間 の利用を見直したところ、 大半が JSON の整形、 ファイルの分類、 要約、 文字列の抽出だった。 どれも Sonnet は要らない。 でも全て同じ料金で動いていた。 217 件 の機械的な作業を小さい副の作業者 (DeepSeek V4 Flash、 MIT 表示の MCP サーバ) に移譲した結果、 3 週間 の大量の作業の費用が 0.41 ドル。 同じ作業を Sonnet で行うと約 7 ドル。 <strong>併用の経路はもう実験ではない、 動く道具と実測の節約がある。</strong></p>
+                <div class="pain-evidence">効いた CLAUDE.md の規則: 否定形 (「Claude を これらに使わない: JSON の整形、 ファイルの分類、 私が斜め読みする要約」) で、 肯定形ではない。 否定形は守られた、 肯定形は約 30 % の頻度で無視された。</div>
+                <div class="pain-actions">
+                    <a href="https://qiita.com/yurukusa/items/77ddcd55410e37b570d2" class="pain-action free" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">無料 ・ 診断</span>
+                        <span class="pain-action-text">Qiita ・ 副の作業者の構造、 217 件 の検証と CLAUDE.md の否定形の規則</span>
+                        <span class="pain-action-meta">公開、 日本語、 3,989 文字</span>
+                    </a>
+                    <a href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook?utm_source=pain-map-ja&utm_medium=card&utm_campaign=migration-playbook&utm_content=pain12-hybrid" class="pain-action paid" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">有料 ・ 判定 ・ 19 ドル</span>
+                        <span class="pain-action-text">Migration Playbook ・ Path B (併用) の章、 副の作業者の選び方、 振り分けの規則</span>
+                        <span class="pain-action-meta">105 ページ、 第 2 版 が 2026 年 5 月 8 日</span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="intro-block">
+            <p><strong>1 つだけ選ぶなら何から?</strong> 「留まるか乗り換えるか」 が問いなら Migration Playbook から。 「先月より請求が大きい理由」 が問いなら Token Book から。 「事故が起きた、 似た形の失敗が他にもあるか」 が問いなら Postmortems から。 各本は単独で完結している。</p>
+            <p><strong>3 冊 全部 を考えている場合は?</strong> <a href="https://yurukusa.github.io/operations-suite/?utm_source=pain-map-ja&utm_medium=closing&utm_campaign=ops-suite" style="color:var(--accent);">Operations Suite の頁</a> が、 3 冊 を 3 種類 の読者の状況 (burn debugger / switch decider / incident survivor) に合わせて並べて、 読む順番を出す。 各本は引き続き Gumroad で個別に売っている。 Suite の頁は道案内のためのもので、 まとめ売りの値引きは無い。</p>
+            <p>本番で Claude Code を動かしていて、 1 件 の失敗を見てほしい場合は、 <a href="https://github.com/yurukusa/cc-safe-setup/issues" target="_blank" rel="noopener" style="color:var(--accent);">cc-safe-setup/issues</a> に書き起こしと版を添えて報告してほしい。 全部 読んでいる。</p>
+        </div>
+
+        <footer>
+            <p>© 2026 yurukusa / ゆるくさ &nbsp;・&nbsp; <a href="/legal">特定商取引法に基づく表記</a> &nbsp;・&nbsp; <a href="/">ホーム</a> &nbsp;・&nbsp; <a href="/operations-pain-map/">English</a></p>
+        </footer>
+
+    </div>
+</body>
+</html>
