@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 年 5 月 の Claude Code の代替の選択肢: Cursor / Cline / Aider / Codex CLI / DeepSeek の比較 | yurukusa</title>
+    <meta name="description" content="Claude Code に留まるか、 別の道具に移るか、 併用するか。 5 つの主要な代替の道具を、 公開の頻度と値段と向く利用者で比較する。 Migration Playbook の判定の枠組みつき。">
+    <link rel="canonical" href="https://yurukusa.github.io/claude-code-alternatives-ja/">
+
+    <link rel="alternate" hreflang="en" href="https://yurukusa.github.io/claude-code-alternatives/">
+    <link rel="alternate" hreflang="ja" href="https://yurukusa.github.io/claude-code-alternatives-ja/">
+
+    <meta property="og:title" content="2026 年 5 月 の Claude Code の代替の選択肢: 数字で見る比較">
+    <meta property="og:description" content="Cursor / Cline / Aider / Codex CLI / DeepSeek の比較。 公開の頻度、 値段、 向く利用者、 そして留まるか移るかを決める 5 つの問い。">
+    <meta property="og:url" content="https://yurukusa.github.io/claude-code-alternatives-ja/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="yurukusa">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@yurukusa_dev">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #080810;
+            --surface: #10101c;
+            --surface2: #16162a;
+            --border: #1e1e38;
+            --text: #ddddf0;
+            --text-dim: #9090b0;
+            --accent: #f0883e;
+            --green: #56d364;
+            --red: #f85149;
+            --yellow: #d29922;
+        }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', "Hiragino Sans", "Yu Gothic", sans-serif;
+            line-height: 1.75;
+            font-size: 16px;
+        }
+        .container { max-width: 1000px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+        nav { font-size: 0.85rem; color: var(--text-dim); margin-bottom: 2rem; }
+        nav a { color: var(--text-dim); text-decoration: none; margin-right: 1rem; }
+        nav a:hover { color: var(--accent); }
+
+        .hero { padding: 2.5rem 0 3rem; border-bottom: 1px solid var(--border); margin-bottom: 2.5rem; }
+        h1 { font-size: 2rem; font-weight: 800; line-height: 1.3; margin-bottom: 1rem; }
+        .hero .lede { font-size: 1.05rem; color: var(--text-dim); max-width: 720px; }
+        .meta { font-size: 0.82rem; color: var(--text-dim); margin-top: 1.5rem; font-family: 'SF Mono', Menlo, monospace; }
+
+        .section { margin: 3rem 0; }
+        .section-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 1.2rem; }
+        .section p { margin-bottom: 1rem; }
+
+        table.compare { width: 100%; border-collapse: collapse; font-size: 0.92rem; margin: 1rem 0; }
+        table.compare th, table.compare td { text-align: left; padding: 0.7rem 0.8rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+        table.compare th { color: var(--text-dim); font-weight: 600; font-size: 0.78rem; letter-spacing: 0.05em; background: var(--surface); }
+        table.compare td:first-child { font-weight: 600; color: var(--accent); white-space: nowrap; }
+        .green { color: var(--green); font-weight: 600; }
+        .red { color: var(--red); font-weight: 600; }
+        .yellow { color: var(--yellow); font-weight: 600; }
+
+        .tool { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.6rem; margin: 1.4rem 0; }
+        .tool h2 { font-size: 1.3rem; color: var(--accent); margin-bottom: 0.4rem; }
+        .tool .tool-meta { font-size: 0.82rem; color: var(--text-dim); margin-bottom: 1rem; font-family: 'SF Mono', Menlo, monospace; }
+        .tool h3 { font-size: 0.95rem; margin: 1rem 0 0.4rem; font-weight: 700; }
+        .tool p { font-size: 0.93rem; margin-bottom: 0.7rem; }
+        .tool ul { list-style: none; padding: 0; margin: 0.5rem 0; }
+        .tool ul li { font-size: 0.9rem; padding: 0.3rem 0; color: var(--text-dim); }
+        .tool ul li::before { content: "・"; color: var(--accent); margin-right: 0.4rem; }
+
+        .verdict { margin-top: 0.8rem; padding: 0.7rem 1rem; background: var(--surface2); border-left: 3px solid var(--accent); border-radius: 0 6px 6px 0; font-size: 0.9rem; }
+        .verdict strong { color: var(--accent); }
+
+        .questions { counter-reset: q; }
+        .question { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.3rem; margin: 0.8rem 0; font-size: 0.93rem; }
+        .question::before { counter-increment: q; content: "Q" counter(q) "."; color: var(--accent); font-weight: 700; margin-right: 0.5rem; }
+        .question .answer-meta { display: block; margin-top: 0.4rem; font-size: 0.83rem; color: var(--text-dim); }
+
+        .closing { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.8rem; margin: 3rem 0 2rem; }
+        .closing h2 { font-size: 1.3rem; margin-bottom: 0.8rem; }
+        .closing p { margin-bottom: 0.9rem; }
+        .closing a { color: var(--accent); text-decoration: none; font-weight: 600; }
+        .closing a:hover { text-decoration: underline; }
+
+        footer { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); font-size: 0.85rem; color: var(--text-dim); text-align: center; }
+        footer a { color: var(--accent); text-decoration: none; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+<nav>
+    <a href="/">ホーム</a>
+    <a href="/operations-suite/">3 冊の本</a>
+    <a href="/operations-pain-map/">痛みの一覧</a>
+    <a href="/claude-code-alternatives/">English</a>
+</nav>
+
+<div class="hero">
+    <h1>2026 年 5 月 の Claude Code の代替の選択肢。<br>感想ではなく、 数字で見る比較。</h1>
+    <p class="lede">
+        5 つの道具が Claude Code の作業の領域を共有している。 値段、 公開の頻度、 向く利用者は、 それぞれ違う。 この頁は 5 つを並べて、 一つの問いに正直に答えるための材料を出す。 留まるか、 併用するか、 乗り換えるか。
+    </p>
+    <p class="meta">
+        最終更新 2026-05-05。 出典: GitHub の公開の API、 各社の値段の頁、 r/ClaudeAI の直近 24 時間、 Hacker News の直近 7 日間の上位。
+    </p>
+</div>
+
+<div class="section">
+    <div class="section-title">早見の比較</div>
+    <table class="compare">
+        <thead>
+            <tr>
+                <th>道具</th>
+                <th>公開の頻度</th>
+                <th>値段の形</th>
+                <th>表面</th>
+                <th>向く利用者</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Claude Code</td>
+                <td><span class="green">毎日</span> (2026-05-05 で v2.1.123、 alpha はもっと頻繁)</td>
+                <td>月 20 から 200 ドル、 加えて週次の上限あり</td>
+                <td>CLI と各種の編集器の拡張</td>
+                <td>計画と実行を 1 つの道具で行いたい、 質に対して払う意欲のある利用者</td>
+            </tr>
+            <tr>
+                <td>Cursor</td>
+                <td><span class="green">毎日</span> (閉源、 GitHub の公開の頁なし)</td>
+                <td>月 20 ドル、 Pro Plus は 40 ドル</td>
+                <td>VS Code の派生、 CLI なし</td>
+                <td>編集器の中で完結したい、 GUI の操作の方が安心な利用者</td>
+            </tr>
+            <tr>
+                <td>Cline</td>
+                <td><span class="green">毎週</span> (2026-04-24 で v3.81.0、 直近 30 日 で 5 件 公開)</td>
+                <td>BYOK、 自分の模型の業者に直接払う</td>
+                <td>VS Code の拡張</td>
+                <td>Claude Code の自律の感じが好きで、 模型の支払いを自分で管理したい利用者</td>
+            </tr>
+            <tr>
+                <td>Codex CLI</td>
+                <td><span class="green">非常に活発</span> (rust v0.125.0 安定、 alpha は毎日)</td>
+                <td>OpenAI の Plus か Pro の購読に含まれる、 加えて API</td>
+                <td>CLI</td>
+                <td>既に OpenAI の利用者で、 Claude Code と同等の道具を同じ shell で使いたい利用者</td>
+            </tr>
+            <tr>
+                <td>Aider</td>
+                <td><span class="red">停滞</span> (2025-08-09 で v0.86.0、 9 ヶ月 公開なし)</td>
+                <td>BYOK、 自分の模型の業者に直接払う</td>
+                <td>CLI</td>
+                <td>既に安定の作業の流れがある利用者、 新しい機能は不要な利用者</td>
+            </tr>
+            <tr>
+                <td>DeepSeek の wrapper</td>
+                <td><span class="yellow">新しい</span> (DeepClaude が 2026-05-04 から 24 時間で 941 stars)</td>
+                <td>DeepSeek のトークン、 同等の作業で Sonnet の約 17 分の 1 の費用</td>
+                <td>Claude Code の呼び出しを差し替える wrapper</td>
+                <td>Claude Code の shell を残したまま、 後端を安く差し替えたい利用者。 Sonnet 級の品質で良い利用者</td>
+            </tr>
+        </tbody>
+    </table>
+    <p style="font-size:0.86rem;color:var(--text-dim);margin-top:0.5rem;">
+        DeepSeek は wrapper を使わなくても直接利用できる。 Claude Code の環境変数 ANTHROPIC_BASE_URL に api.deepseek.com/anthropic を、 ANTHROPIC_AUTH_TOKEN に DeepSeek の鍵を入れる。 公式の DeepSeek の文書にこの手順が書いてある。 wrapper の方は経路の整理と切り替えの便利さが追加される。 多くの場合は環境変数の経路の方が単純。
+    </p>
+</div>
+
+<div class="section">
+    <div class="section-title">道具ごとの判定</div>
+
+    <div class="tool">
+        <h2>Cursor</h2>
+        <div class="tool-meta">閉源 ・ 編集器の中 ・ 月 20 から 40 ドル</div>
+        <h3>これは何か</h3>
+        <p>VS Code の派生で、 Anthropic の模型を Cursor の自前の後端に通す。 売りは編集器との一体感。 自分の作業の場所に AI が居る。</p>
+        <h3>Claude Code から乗り換える理由</h3>
+        <ul>
+            <li>VS Code を毎日使っているなら、 移行の摩擦がほぼ無い</li>
+            <li>エージェントの面が編集器の中で動く、 編集器を離れない</li>
+            <li>値段が決まっている、 Claude Max より安い</li>
+        </ul>
+        <h3>Claude Code に戻る理由</h3>
+        <ul>
+            <li>script 化できない、 CLI が無い</li>
+            <li>大きなリポでの複数ファイルの再構成は Claude Code の CLI のエージェントの方が速い場合がある</li>
+            <li>閉源で、 何がいつ送られるかを監査できない</li>
+        </ul>
+        <div class="verdict">
+            <strong>判定:</strong> 編集器の中で完結する作業の流れと、 1 つの値段で済ませたい場合は強い候補。 端末からの自律の作業や CI からの呼び出しが中心の場合は弱い候補。
+        </div>
+    </div>
+
+    <div class="tool">
+        <h2>Cline</h2>
+        <div class="tool-meta">VS Code の拡張 ・ BYOK ・ 2026-04-24 で v3.81.0</div>
+        <h3>これは何か</h3>
+        <p>VS Code の拡張で、 Claude Code に近いエージェントの動きをするが、 模型の鍵は自分で持つ。 Anthropic、 OpenAI、 DeepSeek、 OpenRouter、 ローカルの模型を、 同じ画面で切り替えられる。</p>
+        <h3>Claude Code から乗り換える理由</h3>
+        <ul>
+            <li>模型の請求が、 中継の業者ではなく直接の業者の請求書で見える、 上乗せが無い</li>
+            <li>同じセッションの中で、 作業ごとに別の模型に振り分けられる</li>
+            <li>毎週の公開の頻度、 直近 30 日 で 5 件 の公開</li>
+        </ul>
+        <h3>Claude Code に戻る理由</h3>
+        <ul>
+            <li>BYOK は、 全ての枠の問題を自分で扱う必要がある</li>
+            <li>VS Code の中で動く、 端末からの背景の実行はできない</li>
+            <li>エージェントの動きは良いが、 Claude Code の自動の処理よりは少し手動寄り</li>
+        </ul>
+        <div class="verdict">
+            <strong>判定:</strong> Claude Code に近い自律の感じを、 Anthropic の請求の枠の外で得たい場合は強い候補。 端末で見守りなしの実行が必要な場合は弱い候補。
+        </div>
+    </div>
+
+    <div class="tool">
+        <h2>Codex CLI</h2>
+        <div class="tool-meta">CLI ・ OpenAI ・ rust v0.125.0 安定、 alpha は毎日</div>
+        <h3>これは何か</h3>
+        <p>OpenAI の CLI のエージェント。 2026 年 に Rust で書き直された。 Claude Code と同じ役割を担う。 端末で長時間のセッション、 ファイルの編集、 道具の呼び出し、 計画と実行。</p>
+        <h3>Claude Code から乗り換える理由</h3>
+        <ul>
+            <li>既に OpenAI の購読が中心なら、 請求が 1 本にまとまる</li>
+            <li>4 月 の Rust 化で、 alpha の公開が毎日続いている。 勢いが本物</li>
+            <li>2026 年 を通して、 周辺の道具の生態系が拡大している</li>
+        </ul>
+        <h3>Claude Code に戻る理由</h3>
+        <ul>
+            <li>エージェントの個性が違う。 CLAUDE.md を整えていた人は、 o 系の模型に対して別の整え方が必要</li>
+            <li>Sonnet が得意な作業 (長文の生成、 多数のファイルの不変条件を保つ編集など) は、 別の指示の出し方が必要</li>
+            <li>毎日の alpha の公開は、 退行の頻度も上がる。 本番では安定の版に固定する方が良い</li>
+        </ul>
+        <div class="verdict">
+            <strong>判定:</strong> 既に OpenAI の購読者で、 同じ shell の中に Claude Code 相当の道具を欲しい場合は強い候補。 Sonnet 向けの指示の整え方に投資した場合は弱い候補。
+        </div>
+    </div>
+
+    <div class="tool">
+        <h2>Aider</h2>
+        <div class="tool-meta">CLI ・ BYOK ・ 2025-08-09 で v0.86.0 (9 ヶ月 停滞)</div>
+        <h3>これは何か</h3>
+        <p>CLI の作業の道具の元祖。 Claude Code より数年早く存在した。 軽量で意見の強い設計、 BYOK。</p>
+        <h3>現在の状態</h3>
+        <p>最後の公開は 2025 年 8 月 9 日 の v0.86.0。 2026 年 5 月 の時点で、 9 ヶ月 公開が無い。 主要な開発者の GitHub の活動も別の方向に移った。 報告の入口は受け付けているが、 取り込みは止まっている。 Aider は安定の状態だが凍結の状態と見るのが良い。</p>
+        <h3>今でも合う場合</h3>
+        <ul>
+            <li>Aider の特定の編集の形に依存した作業の流れがあって、 それが動いている場合</li>
+            <li>新しい機能が不要で、 自分の下で変わらない道具が欲しい場合</li>
+            <li>必要なら自分で fork を維持する余裕がある場合</li>
+        </ul>
+        <div class="verdict">
+            <strong>判定:</strong> 既に動いている古い作業の流れには合う。 2026 年 5 月 に新しく採用するなら、 Cline や Codex CLI を選ぶ方が良い。
+        </div>
+    </div>
+
+    <div class="tool">
+        <h2>DeepSeek (直接 / wrapper)</h2>
+        <div class="tool-meta">環境変数 か wrapper ・ DeepSeek V4 ・ Sonnet の同等の作業で約 17 分の 1 の費用</div>
+        <h3>これは何か</h3>
+        <p>2 つの経路がここで合流する。 ひとつは Claude Code の環境変数 ANTHROPIC_BASE_URL と ANTHROPIC_AUTH_TOKEN を、 DeepSeek の Anthropic 互換の口に向ける経路。 もうひとつは aattaran/deepclaude のような wrapper (2026-05-04 公開、 24 時間で 941 stars) を経由する経路。 どちらも結果として、 Claude Code の CLI の見た目はそのままで、 後端だけが安い模型に変わる。</p>
+        <h3>乗り換える理由</h3>
+        <ul>
+            <li>3 週間 で Sonnet なら約 7 ドル かかる作業の量が、 DeepSeek V4 Flash なら約 0.41 ドル。 17 分の 1 の比は実測で再現できる</li>
+            <li>Claude Code の見た目は変わらない、 CLAUDE.md を書き直す必要が無い</li>
+            <li>週次の上限は関係なくなる、 DeepSeek にトークン単位で直接払う</li>
+        </ul>
+        <h3>戻る理由</h3>
+        <ul>
+            <li>品質は Sonnet 級。 Opus が必要な作業はこの経路では満たせない</li>
+            <li>次の Anthropic の CLI の公開で、 環境変数の優先の順番や API の形が変わって、 経路が壊れる可能性がある。 これは仮の話ではなく現実の懸念</li>
+            <li>Anthropic 固有の口に依存する機能 (一部の MCP の道具、 特定の道具の呼び出しの形) が使えなくなる</li>
+        </ul>
+        <div class="verdict">
+            <strong>判定:</strong> Sonnet 級の品質で十分な大量の機械的な作業で、 請求が問題の場合は強い候補。 Opus の推論や Anthropic の機能の全集に依存する場合は弱い候補。
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <div class="section-title">留まるか / 併用するか / 乗り換えるか を決める 5 つの問い</div>
+    <p>留まるか、 併用するか、 乗り換えるかは、 感想ではなく数字で答える問い。 数字を出すための 5 つの問いはこれ。</p>
+    <div class="questions">
+        <div class="question">
+            直近 30 日の 1 つのマージ済の作業の単位あたりの費用はいくらか。
+            <span class="answer-meta">答えられないなら、 Token Book の第 1 章 が測定の手順を扱っている。 この数字が無いと、 残りの問いの答えは全部、 推測になる。</span>
+        </div>
+        <div class="question">
+            Claude Code の利用のうち、 どれくらいの割合が、 安い模型でできる機械的な作業か。
+            <span class="answer-meta">40 パーセント を超えるなら、 併用の経路 (機械的な作業を DeepSeek に、 判断の作業を Claude に振り分ける) が最大の効果。 r/ClaudeAI の 2026-05-05 の 81 票 の投稿が測定の手順を示した。</span>
+        </div>
+        <div class="question">
+            本番の出力の不確かさへの自分のチームの耐性はどれくらいか。
+            <span class="answer-meta">低いなら、 ここで挙げた全ての道具が苛立たせる。 解決は道具ではなく仕組み。 hook、 事後の確認、 黄金経路の検査。 Postmortems 本 が 12 件 の事故事例で、 まさにこの隙間が痛みになった事例を扱う。</span>
+        </div>
+        <div class="question">
+            自分の作業のうち、 Sonnet 級ではなく Opus 級の推論が必要な作業はどれくらいか。
+            <span class="answer-meta">多いなら、 Claude Code の Max の購読と Cursor の Pro Plus だけが、 安定して Opus を提供する。 DeepSeek と Cline の経路は、 今の段階では Sonnet 級が上限。</span>
+        </div>
+        <div class="question">
+            乗り換えにかかる人の手の時間は、 どれくらいか。
+            <span class="answer-meta">CLAUDE.md の整え直し、 hook の入れ直し、 MCP の設定の置き換え、 チームの教育。 ここを正直に見積もってから決める。 Migration Playbook の第 3 章 にこの見積りの表がある。</span>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <div class="section-title">この頁の背景にある 2 件の出来事</div>
+    <p>2026 年 4 月 22 日。 Anthropic が Pro 版の構造を変えて、 週次の上限の入れ方が変わった。 重い利用者が今までと同じ感覚で使うと、 上限に当たる場所が変わる。 Hacker News の話 (id 47963204) は 1,338 ポイント を超えて伸び続けている。 反応は「Claude Code が悪い」 ではなく「自分のチームの計算が合わなくなった」 だった。</p>
+    <p>2026 年 5 月 4 日。 aattaran/deepclaude が GitHub に作られた。 24 時間で 941 stars。 r/ClaudeAI の話は 626 ポイント、 265 件 のコメント。 これが動くのは、 Claude Code の CLI の見た目が良いから、 後端だけ別の模型に差し替えても使い続けたいから。</p>
+    <p>この 2 つの組み合わせが、 2026 年 5 月 を分岐の月にした。 CLI は愛されている、 計算は合わない、 代替の道具が動く状態にある。 Migration Playbook の第 2 版 が 2026 年 5 月 8 日 に出るのは、 この頁の 3 日後。</p>
+</div>
+
+<div class="closing">
+    <h2>3 冊の本、 自分の経路に合わせて</h2>
+    <p>この判定が難しいのは、 1 つの判定ではないから。 少なくとも 3 つの判定がある。 何にいくら払うか、 何を動かすか、 何かが壊れた時にどうするか。 この 3 つの層を、 3 冊の本がそれぞれ扱っている。</p>
+    <p><a href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook?utm_source=alternatives-ja&utm_medium=closing&utm_campaign=migration-playbook">Migration Playbook</a>: 4 つの経路を並べて、 それぞれの利点と難点を、 業者の宣伝の頁では見られない形で扱う。 第 2 版が 2026 年 5 月 8 日 に出る、 既存の購入者は無料で更新を受け取る。 105 ページ、 19 ドル。</p>
+    <p><a href="https://yurukusa.gumroad.com/l/azrdt?utm_source=alternatives-ja&utm_medium=closing&utm_campaign=token-book-en">Token Book</a>: 自分の経路の費用の見積もりと、 実際の支出の測定の方法。 94 ページ、 自分の判断で 5 ドル 以上 の値段。</p>
+    <p><a href="https://yurukusa.gumroad.com/l/rhtptb?utm_source=alternatives-ja&utm_medium=closing&utm_campaign=postmortems">Incident Postmortems</a>: 12 件 の本物の事故を、 検出と防止の hook つきで再構成した本。 100 ページ の PDF。 値段は商品の頁を見てほしい。</p>
+    <p>3 冊を一緒に見たい場合は、 <a href="https://yurukusa.github.io/operations-suite/?utm_source=alternatives-ja&utm_medium=closing&utm_campaign=ops-suite">Operations Suite の頁</a> が 3 種類 の読者の経路 (費用の調査、 乗り換えの判定、 事故の検視) を整理している。 各本は Gumroad で個別に売っている、 まとめ売りの値引きはない、 整理の頁は道案内のためのもの。</p>
+</div>
+
+<footer>
+    <p>© 2026 yurukusa / ゆるくさ &nbsp;・&nbsp; <a href="/legal">特定商取引法に基づく表記</a> &nbsp;・&nbsp; <a href="/">ホーム</a> &nbsp;・&nbsp; <a href="/operations-pain-map/">痛みの一覧</a> &nbsp;・&nbsp; <a href="/claude-code-alternatives/">English</a></p>
+</footer>
+
+</div>
+</body>
+</html>

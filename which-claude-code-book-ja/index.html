@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>どの Claude Code の本から読むか。 5 つの問いで判定する道具 | yurukusa</title>
+    <meta name="description" content="Migration Playbook、 Token Book、 Incident Postmortems。 5 つの問いで、 自分の状況に合う本がどれかを判定する。 メールアドレスは不要。">
+    <link rel="canonical" href="https://yurukusa.github.io/which-claude-code-book-ja/">
+
+    <link rel="alternate" hreflang="en" href="https://yurukusa.github.io/which-claude-code-book/">
+    <link rel="alternate" hreflang="ja" href="https://yurukusa.github.io/which-claude-code-book-ja/">
+
+    <meta property="og:title" content="どの Claude Code の本から読むか。 5 つの問いで判定する">
+    <meta property="og:description" content="5 つの問い、 1 つの推奨。 メールアドレスは不要。">
+    <meta property="og:url" content="https://yurukusa.github.io/which-claude-code-book-ja/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="yurukusa">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@yurukusa_dev">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #080810;
+            --surface: #10101c;
+            --surface2: #16162a;
+            --border: #1e1e38;
+            --text: #ddddf0;
+            --text-dim: #9090b0;
+            --accent: #f0883e;
+            --accent-soft: rgba(240, 136, 62, 0.15);
+            --green: #56d364;
+            --blue: #58a6ff;
+            --purple: #a371f7;
+        }
+        body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', "Hiragino Sans", "Yu Gothic", sans-serif; line-height: 1.75; font-size: 16px; min-height: 100vh; }
+        .container { max-width: 720px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+        nav { font-size: 0.85rem; color: var(--text-dim); margin-bottom: 1.5rem; }
+        nav a { color: var(--text-dim); text-decoration: none; margin-right: 1rem; }
+        nav a:hover { color: var(--accent); }
+
+        h1 { font-size: 1.7rem; font-weight: 800; line-height: 1.4; margin-bottom: 1rem; }
+        .lede { font-size: 1.02rem; color: var(--text-dim); margin-bottom: 0.8rem; }
+        .meta { font-size: 0.82rem; color: var(--text-dim); margin-bottom: 2rem; font-family: 'SF Mono', Menlo, monospace; }
+
+        .progress { display: flex; gap: 0.4rem; margin: 1.5rem 0 2rem; }
+        .progress-step { flex: 1; height: 6px; background: var(--surface); border-radius: 3px; transition: background 0.3s ease; }
+        .progress-step.active { background: var(--accent); }
+        .progress-step.done { background: var(--accent); opacity: 0.6; }
+
+        .question-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 2rem 1.6rem; margin: 1.5rem 0; }
+        .question-card.hidden { display: none; }
+        .question-num { font-size: 0.78rem; color: var(--accent); font-weight: 700; letter-spacing: 0.05em; margin-bottom: 0.6rem; }
+        .question-text { font-size: 1.1rem; font-weight: 700; margin-bottom: 1.4rem; line-height: 1.5; }
+
+        .answers { display: flex; flex-direction: column; gap: 0.6rem; }
+        .answer { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; text-align: left; color: var(--text); font-size: 0.95rem; cursor: pointer; transition: all 0.15s ease; font-family: inherit; line-height: 1.55; }
+        .answer:hover { border-color: var(--accent); background: var(--accent-soft); }
+
+        .result-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 2rem 1.6rem; margin: 1.5rem 0; }
+        .result-card.hidden { display: none; }
+        .result-tag { font-size: 0.78rem; color: var(--accent); font-weight: 700; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+        .result-name { font-size: 1.5rem; font-weight: 800; margin-bottom: 0.8rem; }
+        .result-why { font-size: 1rem; margin-bottom: 1.2rem; }
+        .result-detail { font-size: 0.92rem; color: var(--text-dim); background: var(--surface2); border-left: 3px solid var(--accent); border-radius: 0 6px 6px 0; padding: 0.8rem 1rem; margin: 1rem 0; }
+
+        .cta { display: inline-block; background: var(--accent); color: var(--bg); padding: 0.8rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 700; margin: 0.4rem 0; font-size: 0.95rem; }
+        .cta-secondary { display: inline-block; background: transparent; color: var(--text); border: 1px solid var(--border); padding: 0.8rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; margin: 0.4rem 0 0.4rem 0.5rem; font-size: 0.95rem; }
+        .cta:hover { opacity: 0.9; }
+        .cta-secondary:hover { border-color: var(--accent); }
+
+        .next-steps { margin-top: 1.6rem; padding-top: 1.4rem; border-top: 1px solid var(--border); }
+        .next-steps h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.6rem; }
+        .next-steps p { font-size: 0.9rem; color: var(--text-dim); margin-bottom: 0.6rem; }
+        .next-steps a { color: var(--accent); text-decoration: none; }
+        .next-steps a:hover { text-decoration: underline; }
+
+        .restart { background: transparent; border: 1px solid var(--border); color: var(--text-dim); padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.85rem; font-family: inherit; cursor: pointer; margin-top: 1rem; }
+        .restart:hover { color: var(--text); border-color: var(--accent); }
+
+        footer { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.8rem; color: var(--text-dim); text-align: center; }
+        footer a { color: var(--accent); text-decoration: none; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+<nav>
+    <a href="/">ホーム</a>
+    <a href="/operations-suite/">3 冊の本</a>
+    <a href="/operations-pain-map/">痛みの一覧</a>
+    <a href="/which-claude-code-book/">English</a>
+</nav>
+
+<h1>どの Claude Code の本から読むか。</h1>
+<p class="lede">5 つの問いに答えると、 自分の状況に合う 1 冊が出る。 メールアドレスは不要。 答えは自分のブラウザの中だけに残る。</p>
+<p class="meta">最終更新 2026-05-05。 3 冊の本は yurukusa が 800 時間 を超える Claude Code の自律の運用から書いた。</p>
+
+<div class="progress" id="progress">
+    <div class="progress-step active"></div>
+    <div class="progress-step"></div>
+    <div class="progress-step"></div>
+    <div class="progress-step"></div>
+    <div class="progress-step"></div>
+</div>
+
+<div class="question-card" data-q="1">
+    <div class="question-num">5 問 中 の 1 問 目</div>
+    <div class="question-text">今、 Claude Code について一番気になっている事は何か。</div>
+    <div class="answers">
+        <button class="answer" data-points="token:3">請求が予想より多くて、 理由が分からない</button>
+        <button class="answer" data-points="migration:3">Claude Code に留まるか、 別の道具に乗り換えるかを判定中</button>
+        <button class="answer" data-points="postmortems:3">何かが既に壊れた、 同じ事を繰り返したくない</button>
+        <button class="answer" data-points="postmortems:2,token:1">本番で小さな驚きが続いている</button>
+    </div>
+</div>
+
+<div class="question-card hidden" data-q="2">
+    <div class="question-num">5 問 中 の 2 問 目</div>
+    <div class="question-text">Claude Code を実際の作業で使い始めてからどれくらい経つか。</div>
+    <div class="answers">
+        <button class="answer" data-points="migration:2">1 ヶ月 未満、 評価の段階</button>
+        <button class="answer" data-points="token:2,postmortems:1">1 ヶ月 から 6 ヶ月、 毎日 使っている</button>
+        <button class="answer" data-points="token:3">6 ヶ月 を超えて、 費用が増え続けている</button>
+        <button class="answer" data-points="postmortems:2,migration:1">使った事はある、 問題が出て選択肢を考えている</button>
+    </div>
+</div>
+
+<div class="question-card hidden" data-q="3">
+    <div class="question-num">5 問 中 の 3 問 目</div>
+    <div class="question-text">Claude Code の作業のうち、 機械的な作業 (整形、 分類、 要約、 抽出) はおおよそどれくらいの割合か。</div>
+    <div class="answers">
+        <button class="answer" data-points="migration:3">40 パーセント を超える、 大量の作業がある</button>
+        <button class="answer" data-points="token:2">20 から 40 パーセント、 混在している</button>
+        <button class="answer" data-points="token:1">20 パーセント 未満、 ほぼ判断の作業</button>
+        <button class="answer" data-points="token:2">測定した事がない</button>
+    </div>
+</div>
+
+<div class="question-card hidden" data-q="4">
+    <div class="question-num">5 問 中 の 4 問 目</div>
+    <div class="question-text">Claude Code の予想外の出力に対するチームの耐性はどれくらいか。</div>
+    <div class="answers">
+        <button class="answer" data-points="postmortems:3">低い、 予測可能性が今すぐ必要</button>
+        <button class="answer" data-points="postmortems:1,token:2">小さな驚きは吸収できる</button>
+        <button class="answer" data-points="migration:2">驚きは作業の一部として受け入れている</button>
+        <button class="answer" data-points="token:1,postmortems:1">単独で作業していて、 自分が判断できる</button>
+    </div>
+</div>
+
+<div class="question-card hidden" data-q="5">
+    <div class="question-num">5 問 中 の 5 問 目</div>
+    <div class="question-text">30 日 後の成功は、 どんな形になっていればよいか。</div>
+    <div class="answers">
+        <button class="answer" data-points="token:3">費用が 30 パーセント 以上 削減できている</button>
+        <button class="answer" data-points="migration:3">留まるか、 併用するか、 乗り換えるかの判定が出ている</button>
+        <button class="answer" data-points="postmortems:3">新しい事故がゼロ、 チームが道具を信頼し直している</button>
+        <button class="answer" data-points="suite:3">3 つ全部</button>
+    </div>
+</div>
+
+<div class="result-card hidden" id="result-token">
+    <div class="result-tag">推奨</div>
+    <div class="result-name">Token Book</div>
+    <div class="result-why">あなたの答えは、 費用の層を指している。 請求、 支出の元、 見えない漏れ。 Token Book がまさにこの入口のために書かれている。</div>
+    <div class="result-detail">94 ページ。 自分の判断で 5 ドル 以上 の値段。 第 1 章 は <a href="https://yurukusa.github.io/cc-safe-setup/token-book.html#en">yurukusa.github.io/cc-safe-setup/token-book.html</a> で無料で読める。 内容は、 まず測定 (見えないものは直せない)、 次に 6 種類 の漏れの形、 最後にそれぞれを防ぐ hook の解説。</div>
+    <a href="https://yurukusa.gumroad.com/l/azrdt?utm_source=which-book-quiz-ja&utm_medium=result&utm_campaign=token-book-en" class="cta" target="_blank" rel="noopener">Gumroad で Token Book を読む</a>
+    <a href="https://yurukusa.github.io/cc-safe-setup/token-book.html#en" class="cta-secondary" target="_blank" rel="noopener">無料の第 1 章 から</a>
+    <div class="next-steps">
+        <h3>次に見る場所</h3>
+        <p>30 日 で吸収できないほど費用が大きい場合は、 <a href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook?utm_source=which-book-quiz-ja&utm_medium=next-step&utm_campaign=migration-playbook">Migration Playbook</a> が構造的な選択肢 (Path B の併用の経路) を扱う。 17 倍 の機械的な作業を、 安い副の作業者に流せる。</p>
+        <p><a href="https://yurukusa.github.io/operations-suite/?utm_source=which-book-quiz-ja&utm_medium=next-step&utm_campaign=ops-suite">Operations Suite の頁</a> は、 3 冊が一緒にどう機能するかを見たい時の入口。</p>
+    </div>
+    <button class="restart" onclick="restartQuiz()">もう一度判定する</button>
+</div>
+
+<div class="result-card hidden" id="result-migration">
+    <div class="result-tag">推奨</div>
+    <div class="result-name">Migration Playbook</div>
+    <div class="result-why">あなたの答えは、 判定の層を指している。 留まる、 併用する、 乗り換える。 Migration Playbook が、 4 つの経路を並べて、 業者の宣伝の頁では見られない比較を出す。</div>
+    <div class="result-detail">105 ページ。 Gumroad で 19 ドル。 第 2 版 が 2026 年 5 月 8 日 に出る、 既存の購入者は無料で更新を受け取る。 Path A (留まる)、 Path B (併用)、 Path C (独自の経路)、 Path D (乗り換え) の 4 つを、 費用の見積もりの表と 48 時間 の戻しの計画つきで扱う。</div>
+    <a href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook?utm_source=which-book-quiz-ja&utm_medium=result&utm_campaign=migration-playbook" class="cta" target="_blank" rel="noopener">Gumroad で Migration Playbook を読む</a>
+    <a href="https://yurukusa.github.io/claude-code-alternatives-ja/" class="cta-secondary">先に代替の道具を比較する</a>
+    <div class="next-steps">
+        <h3>次に見る場所</h3>
+        <p>経路を選んだ後は、 <a href="https://yurukusa.gumroad.com/l/azrdt?utm_source=which-book-quiz-ja&utm_medium=next-step&utm_campaign=token-book-en">Token Book</a> が、 どの方向に進む場合でも費用の見積もりの方法を出す。</p>
+        <p>留まる方向に傾く場合、 <a href="https://yurukusa.gumroad.com/l/rhtptb?utm_source=which-book-quiz-ja&utm_medium=next-step&utm_campaign=postmortems">Incident Postmortems</a> が、 どの経路を選んでも残る失敗の形を扱う。 確定の前に読む。</p>
+    </div>
+    <button class="restart" onclick="restartQuiz()">もう一度判定する</button>
+</div>
+
+<div class="result-card hidden" id="result-postmortems">
+    <div class="result-tag">推奨</div>
+    <div class="result-name">Incident Postmortems</div>
+    <div class="result-why">あなたの答えは、 信頼の層を指している。 何かが壊れた、 または壊れそう、 チームが事故の形を事前に見ておく必要がある。 Postmortems がこの入口のために書かれている。</div>
+    <div class="result-detail">100 ページ の PDF。 Gumroad で 2026 年 5 月 5 日 から販売中。 GitHub の Issue、 commits、 800 時間 を超える自律の運用から再構成した 12 件 の本物の事故事例で、 それぞれに検出の hook と防止の経路がついている。</div>
+    <a href="https://yurukusa.gumroad.com/l/rhtptb?utm_source=which-book-quiz-ja&utm_medium=result&utm_campaign=postmortems" class="cta" target="_blank" rel="noopener">Gumroad で Incident Postmortems を読む</a>
+    <a href="https://yurukusa.github.io/operations-pain-map/" class="cta-secondary">先に痛みの一覧を見る</a>
+    <div class="next-steps">
+        <h3>次に見る場所</h3>
+        <p>事故が落ち着いた後は、 <a href="https://yurukusa.gumroad.com/l/azrdt?utm_source=which-book-quiz-ja&utm_medium=next-step&utm_campaign=token-book-en">Token Book</a> が、 進行中の支出を点検する手順を出す。 次の驚きが金銭の驚きにならないために。</p>
+        <p>事故の証拠が揃った後の判定は、 <a href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook?utm_source=which-book-quiz-ja&utm_medium=next-step&utm_campaign=migration-playbook">Migration Playbook</a> が留まるか乗り換えるかの選択肢を扱う。</p>
+    </div>
+    <button class="restart" onclick="restartQuiz()">もう一度判定する</button>
+</div>
+
+<div class="result-card hidden" id="result-suite">
+    <div class="result-tag">推奨</div>
+    <div class="result-name">Operations Suite (3 冊 全部)</div>
+    <div class="result-why">あなたの答えは、 3 つの層が同時に重要だと言っている。 Operations Suite の頁が、 3 冊 を 3 種類 の読者の状況に合わせて並べて、 どの問題を先に解くかに応じた読む順番を出す。</div>
+    <div class="result-detail">3 冊、 合計 299 ページ、 個別に買うと 60 ドル 以上。 まとめ売りの値引きは無い、 Suite の頁は道案内のための頁で、 自分の状況に合わせてどの本から読むかを決める助けになる。 burn debugger / switch decider / incident survivor の 3 種類 の読者の経路を、 順番つきで整理している。</div>
+    <a href="https://yurukusa.github.io/operations-suite/?utm_source=which-book-quiz-ja&utm_medium=result&utm_campaign=ops-suite" class="cta">Operations Suite の頁を開く</a>
+    <a href="https://yurukusa.github.io/operations-pain-map/" class="cta-secondary">先に痛みの一覧を見る</a>
+    <div class="next-steps">
+        <h3>次に見る場所</h3>
+        <p>もっと細かく見たい場合は、 <a href="https://yurukusa.github.io/operations-pain-map/">痛みの一覧</a> が 12 件 の具体の運用の痛みを挙げて、 それぞれを正しい本に対応させている。</p>
+    </div>
+    <button class="restart" onclick="restartQuiz()">もう一度判定する</button>
+</div>
+
+<footer>
+    <p>© 2026 yurukusa / ゆるくさ &nbsp;・&nbsp; <a href="/legal">特定商取引法に基づく表記</a> &nbsp;・&nbsp; <a href="/">ホーム</a> &nbsp;・&nbsp; <a href="/which-claude-code-book/">English</a></p>
+</footer>
+
+</div>
+
+<script>
+const scores = { token: 0, migration: 0, postmortems: 0, suite: 0 };
+let currentQ = 1;
+const totalQ = 5;
+
+function showQuestion(n) {
+    document.querySelectorAll('.question-card').forEach(c => c.classList.add('hidden'));
+    const card = document.querySelector(`.question-card[data-q="${n}"]`);
+    if (card) card.classList.remove('hidden');
+    updateProgress(n);
+}
+
+function updateProgress(n) {
+    const steps = document.querySelectorAll('.progress-step');
+    steps.forEach((step, i) => {
+        step.classList.remove('active', 'done');
+        if (i + 1 < n) step.classList.add('done');
+        else if (i + 1 === n) step.classList.add('active');
+    });
+}
+
+function recordAnswer(pointsStr) {
+    pointsStr.split(',').forEach(pair => {
+        const [book, pts] = pair.split(':');
+        scores[book] = (scores[book] || 0) + parseInt(pts, 10);
+    });
+}
+
+function showResult() {
+    document.querySelectorAll('.question-card').forEach(c => c.classList.add('hidden'));
+    document.getElementById('progress').style.display = 'none';
+
+    const winner = Object.entries(scores).reduce((a, b) => a[1] >= b[1] ? a : b)[0];
+
+    let target;
+    const margin = scores[winner] - Math.max(...Object.entries(scores).filter(([k]) => k !== winner).map(([, v]) => v));
+    if (winner === 'suite' && scores.suite >= 3) {
+        target = 'result-suite';
+    } else if (margin <= 1 && scores.suite >= 2) {
+        target = 'result-suite';
+    } else {
+        target = `result-${winner}`;
+    }
+
+    const card = document.getElementById(target);
+    if (card) {
+        card.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+}
+
+function restartQuiz() {
+    Object.keys(scores).forEach(k => scores[k] = 0);
+    currentQ = 1;
+    document.querySelectorAll('.result-card').forEach(c => c.classList.add('hidden'));
+    document.getElementById('progress').style.display = 'flex';
+    showQuestion(1);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.querySelectorAll('.answer').forEach(btn => {
+    btn.addEventListener('click', () => {
+        recordAnswer(btn.dataset.points);
+        currentQ += 1;
+        if (currentQ <= totalQ) {
+            showQuestion(currentQ);
+        } else {
+            showResult();
+        }
+    });
+});
+</script>
+
+</body>
+</html>
