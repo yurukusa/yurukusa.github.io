@@ -1,25 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Claude Code Operations Suite — three books for three layers | yurukusa</title>
-    <meta name="description" content="Claude Code in production has three layers: decide, cost, forensics. Three books cover each layer. Migration Playbook ($19, 105 pages), Token Book ($12 PWYW, 94 pages), Incident Postmortems ($29, 100 pages). Read together, each one sharpens the others.">
-    <link rel="canonical" href="https://yurukusa.github.io/operations-suite/">
+    <title>Claude Code 運用 の 3 冊の本: 判定・費用・検視 の 3 層 を扱う | yurukusa</title>
+    <meta name="description" content="Claude Code の本番の運用には 3 つの層がある: 判定、 費用、 検視。 3 冊の本がそれぞれの層を扱う。 Migration Playbook (19 ドル、 105 ページ)、 Token Book (5 ドル 以上 のお気持ち価格、 94 ページ)、 Incident Postmortems (100 ページ、 値段は商品の頁を見て)。 一緒に読むと、 各本が他の 2 冊 を補強する。">
+    <link rel="canonical" href="https://yurukusa.github.io/operations-suite-ja/">
+
     <link rel="alternate" hreflang="en" href="https://yurukusa.github.io/operations-suite/">
     <link rel="alternate" hreflang="ja" href="https://yurukusa.github.io/operations-suite-ja/">
 
-    <meta property="og:title" content="Claude Code Operations Suite — three books for three layers">
-    <meta property="og:description" content="Decide. Cost. Forensics. Three books, 299 pages, one operations stack.">
+    <meta property="og:title" content="Claude Code 運用 の 3 冊の本: 判定・費用・検視 の 3 層 を扱う">
+    <meta property="og:description" content="判定、 費用、 検視。 3 冊、 299 ページ、 1 つの運用の構成。">
     <meta property="og:image" content="https://yurukusa.github.io/images/ogp.png">
-    <meta property="og:url" content="https://yurukusa.github.io/operations-suite/">
+    <meta property="og:url" content="https://yurukusa.github.io/operations-suite-ja/">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="yurukusa">
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@yurukusa_dev">
-    <meta name="twitter:title" content="Claude Code Operations Suite — three books for three layers">
-    <meta name="twitter:description" content="Decide. Cost. Forensics. Three books, one operations stack.">
+    <meta name="twitter:title" content="Claude Code 運用 の 3 冊の本">
+    <meta name="twitter:description" content="判定、 費用、 検視。 3 冊、 1 つの運用の構成。">
     <meta name="twitter:image" content="https://yurukusa.github.io/images/ogp.png">
 
     <style>
@@ -335,88 +336,88 @@
     <div class="container">
         <div class="top-nav">
             <a href="/">← yurukusa.github.io</a>
-            <span style="margin-left:1rem;"><a href="/operations-suite-ja/">日本語</a></span>
+            <span style="margin-left:1rem;"><a href="/operations-suite/">English</a></span>
         </div>
 
         <div class="hero">
             <span class="hero-label">Operations Suite</span>
-            <h1>Claude Code in production has <span class="dim">three layers.</span><br>Three books, one for each.</h1>
+            <h1>Claude Code の本番の運用には <span class="dim">3 つの層がある。</span><br>3 冊の本が、 それぞれを扱う。</h1>
             <p class="sub">
-                Decide whether to migrate. Control your token bill. Read failures before you make them. The three books are sold separately on Gumroad. This page exists because reading any two of them sharpens the third.
+                乗り換えるかを判定する。 トークンの請求を制御する。 事故が起きる前に他人の失敗を読む。 3 冊の本は Gumroad で個別に売っている。 この頁が存在するのは、 どの 2 冊 を読んでも、 残る 1 冊 の意味が深まるから。
             </p>
         </div>
 
         <div class="section">
-            <div class="section-title">The three layers</div>
+            <div class="section-title">3 つの層</div>
             <div class="layers">
                 <div class="layer">
-                    <div class="layer-num">Layer 1 · Decide</div>
-                    <h3>Stay, switch, or hybrid?</h3>
-                    <div class="layer-tag">When the question is which platform to run on.</div>
+                    <div class="layer-num">第 1 層 ・ 判定</div>
+                    <h3>留まるか、 乗り換えるか、 併用するか?</h3>
+                    <div class="layer-tag">どの場所で動かすかが問いの場合。</div>
                     <div class="layer-pain">
-                        Anthropic's April 22 Pro plan reshuffle, weekly limit confusion, GPU contention, OpenClaw mention bans, deepseek-v4 price drops. The decision is no longer "Claude Code, yes or no" — it is which lane to run on.
+                        Anthropic の 4 月 22 日 の Pro 版の構造の変更、 週次の枠の混乱、 GPU の取り合い、 OpenClaw の言及の禁止、 DeepSeek V4 の値段の下げ。 判定は「Claude Code を使うか使わないか」 ではなく、 どの経路で動かすか。
                     </div>
                     <div class="layer-book">
                         <h4>Migration Playbook</h4>
-                        <div class="book-meta">$19 · 105 pages · English · Edition 2 ships 2026-05-08</div>
-                        <p>Five measurable triggers, three-path framework (stay / switch / hybrid), cost-forecast worksheet, decision tree, 48-hour rollback checklist. Edition 2 adds hybrid delegation, proxy architectures, and enterprise stay paths.</p>
-                        <a href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook?utm_source=operations-suite-lp&utm_medium=layer-card&utm_campaign=migration-playbook" class="buy-button" target="_blank" rel="noopener">View on Gumroad →</a>
+                        <div class="book-meta">19 ドル ・ 105 ページ ・ 英語 ・ 第 2 版 が 2026 年 5 月 8 日 出る</div>
+                        <p>5 つの測れる引き金、 3 つの経路の枠 (留まる / 乗り換える / 併用)、 費用の見積もりの表、 判定の樹、 48 時間 の戻しの確認の表。 第 2 版 は併用の経路、 中継の構造、 大企業の留まりの経路を追加。</p>
+                        <a href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook?utm_source=operations-suite-lp-ja&utm_medium=layer-card&utm_campaign=migration-playbook" class="buy-button" target="_blank" rel="noopener">Gumroad で見る →</a>
                     </div>
                 </div>
 
                 <div class="layer">
-                    <div class="layer-num">Layer 2 · Cost</div>
-                    <h3>Where do the tokens go?</h3>
-                    <div class="layer-tag">When the bill grows faster than the output.</div>
+                    <div class="layer-num">第 2 層 ・ 費用</div>
+                    <h3>トークンはどこに消えるのか?</h3>
+                    <div class="layer-tag">出力より請求の伸びが速い場合。</div>
                     <div class="layer-pain">
-                        cache_creation rising past 0.20 of total. CLAUDE.md bloating to 100+ lines and dragging cache hit rate. Subagent fan-out without budget. Post-compaction spikes. The fix is measurable, not vibes.
+                        cache_creation が total の 0.20 を超え始めた。 CLAUDE.md が 100 行 を超えて cache の当たり方が落ちた。 サブエージェントが予算なしで広がる。 compaction の後の跳ね。 解決は実測でできる、 感想ではない。
                     </div>
                     <div class="layer-book">
-                        <h4>Token Book — English</h4>
-                        <div class="book-meta">PWYW from $12 · 94 pages · English · Edition 1</div>
-                        <p>800+ measured hours distilled into 10 chapters. CLAUDE.md restructuring (100→35 lines, cache hit 89%→95%), 9 hook-based token guards, context management timing, cache_control bug recovery, post-compaction spike forensics.</p>
-                        <a href="https://yurukusa.gumroad.com/l/azrdt?utm_source=operations-suite-lp&utm_medium=layer-card&utm_campaign=token-book-en" class="buy-button" target="_blank" rel="noopener">View on Gumroad →</a>
+                        <h4>Token Book ・ 英語</h4>
+                        <div class="book-meta">5 ドル 以上 のお気持ち価格 ・ 94 ページ ・ 英語 ・ 第 1 版</div>
+                        <p>800 時間 を超える実測を 10 章 に整理。 CLAUDE.md の再構成 (100 行 → 35 行、 cache の当たり率 89 % → 95 %)、 9 件 の hook によるトークンの守り、 文脈の管理の時刻、 cache_control の不具合からの回復、 compaction の後の跳ねの検視。</p>
+                        <a href="https://yurukusa.gumroad.com/l/azrdt?utm_source=operations-suite-lp-ja&utm_medium=layer-card&utm_campaign=token-book-en" class="buy-button" target="_blank" rel="noopener">Gumroad で見る →</a>
                     </div>
                 </div>
 
                 <div class="layer">
-                    <div class="layer-num">Layer 3 · Forensics</div>
-                    <h3>Read failures before you ship.</h3>
-                    <div class="layer-tag">When you want to know what already broke for everyone else.</div>
+                    <div class="layer-num">第 3 層 ・ 検視</div>
+                    <h3>事故が起きる前に、 他人の失敗を読む。</h3>
+                    <div class="layer-tag">他のチームで既に何が壊れたかを知りたい場合。</div>
                     <div class="layer-pain">
-                        Subagent identity leak (Issue 55488). Five-hour quota burned in 9 minutes 39 seconds (54776). Silent regressions across versions 2.1.121, 2.1.126, 2.1.128. Closures with no changelog entry. The pattern is what matters, not the bug list.
+                        サブエージェントの身分の漏れ (Issue 55488)。 5 時間 の枠が 9 分 39 秒 で焼けた (54776)。 v2.1.121、 2.1.126、 2.1.128 の沈黙の退行。 公式の備考に何も記載のない閉鎖。 重要なのは個別の不具合の一覧ではなく、 繰り返す型。
                     </div>
                     <div class="layer-book">
                         <h4>Incident Postmortems</h4>
-                        <div class="book-meta">100 pages · Live since 2026-05-05 · See product page for current price</div>
-                        <p>Ten production-level incidents reverse-engineered from public Issues, commits, and 800+ verified hours. Detection hooks for each pattern. The book is the body of evidence the changelog left out.</p>
-                        <a href="https://yurukusa.gumroad.com/l/rhtptb?utm_source=operations-suite-lp&utm_medium=layer-card&utm_campaign=postmortems" class="buy-button" target="_blank" rel="noopener">View on Gumroad →</a>
+                        <div class="book-meta">100 ページ ・ 2026 年 5 月 5 日 から販売中 ・ 値段は商品の頁を見て</div>
+                        <p>公開の Issue、 commit、 800 時間 を超える運用から再構成した、 12 件 の本番の事故。 各型に検出の hook が付く。 公式の備考に書かれていない、 証拠の集積。</p>
+                        <a href="https://yurukusa.gumroad.com/l/rhtptb?utm_source=operations-suite-lp-ja&utm_medium=layer-card&utm_campaign=postmortems" class="buy-button" target="_blank" rel="noopener">Gumroad で見る →</a>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="section">
-            <div class="section-title">Why three books, not one</div>
+            <div class="section-title">なぜ 3 冊 で、 1 冊 ではないか</div>
             <div class="narrative">
                 <p>
-                    Each book was built around a specific decision. <strong>Migration Playbook</strong> answers "should I move?" with five measurable triggers and a three-path comparison. <strong>Token Book</strong> answers "where is the bill going?" with cache ratio targets and 9 enforcement hooks. <strong>Incident Postmortems</strong> answers "what already broke?" with ten reverse-engineered production failures.
+                    各本が 1 つの判定の問いの周りに作られている。 <strong>Migration Playbook</strong> は「乗り換えるべきか?」 に、 5 つの測れる引き金と 3 つの経路の比較で答える。 <strong>Token Book</strong> は「請求はどこに行っているか?」 に、 cache の比の目標と 9 件 の hook で答える。 <strong>Incident Postmortems</strong> は「他で何が壊れたか?」 に、 12 件 の本番の事故の再構成で答える。
                 </p>
                 <p>
-                    A single 300-page book would have collapsed all three decisions into one chapter each, and the reader would have skipped two of them. Splitting forces honesty: each book has to earn its price on its own. The reader who finishes one is the reader who is ready for the next.
+                    1 冊 の 300 ページ の本にすると、 3 つの判定が各 1 章 に圧縮されて、 読者は 2 つを読み飛ばす。 分割すると正直になる。 各本が単独で値段に見合う必要がある。 1 冊 を読み終えた読者は、 次の本の準備ができている。
                 </p>
                 <p>
-                    There is no enforced reading order. The most common path is <strong>Token Book → Postmortems → Migration Playbook</strong> for someone already in production, or <strong>Migration Playbook → Postmortems → Token Book</strong> for someone deciding before they start.
+                    決まった読む順番は無い。 既に本番で動かしている人は <strong>Token Book → Postmortems → Migration Playbook</strong> の経路が多い。 始める前に判定したい人は <strong>Migration Playbook → Postmortems → Token Book</strong> の経路が多い。
                 </p>
             </div>
         </div>
 
         <div class="section">
-            <div class="section-title">Which book solves which pain</div>
+            <div class="section-title">どの痛みを どの本が解くか</div>
             <table class="compare-table">
                 <thead>
                     <tr>
-                        <th>Pain</th>
+                        <th>痛み</th>
                         <th>Migration<br>Playbook</th>
                         <th>Token<br>Book</th>
                         <th>Incident<br>Postmortems</th>
@@ -424,61 +425,61 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Pro plan got reshuffled — should I switch?</td>
+                        <td>Pro 版の構造が変わった、 乗り換えるべきか?</td>
                         <td class="x">●</td>
                         <td class="dot">·</td>
                         <td class="dot">·</td>
                     </tr>
                     <tr>
-                        <td>Five-hour quota burned in 9 minutes</td>
+                        <td>5 時間 の枠が 9 分 で焼けた</td>
                         <td class="dot">·</td>
                         <td class="x">●</td>
                         <td class="x">●</td>
                     </tr>
                     <tr>
-                        <td>cache_creation rising past 0.20</td>
+                        <td>cache_creation が 0.20 を超え始めた</td>
                         <td class="dot">·</td>
                         <td class="x">●</td>
                         <td class="dot">·</td>
                     </tr>
                     <tr>
-                        <td>Subagent identity leak / boundary failure</td>
+                        <td>サブエージェントの身分の漏れ / 境界の不在</td>
                         <td class="dot">·</td>
                         <td class="dot">·</td>
                         <td class="x">●</td>
                     </tr>
                     <tr>
-                        <td>Silent regression across version bumps</td>
+                        <td>版を上げると沈黙の退行が起きる</td>
                         <td class="dot">·</td>
                         <td class="dot">·</td>
                         <td class="x">●</td>
                     </tr>
                     <tr>
-                        <td>CLAUDE.md is 100+ lines and slowing me</td>
+                        <td>CLAUDE.md が 100 行 を超えて遅い</td>
                         <td class="dot">·</td>
                         <td class="x">●</td>
                         <td class="dot">·</td>
                     </tr>
                     <tr>
-                        <td>Comparing Claude Code to Cursor / Codex</td>
+                        <td>Claude Code を Cursor や Codex と比較したい</td>
                         <td class="x">●</td>
                         <td class="dot">·</td>
                         <td class="dot">·</td>
                     </tr>
                     <tr>
-                        <td>Post-compaction usage spike</td>
+                        <td>compaction の後に利用量が跳ねる</td>
                         <td class="dot">·</td>
                         <td class="x">●</td>
                         <td class="x">●</td>
                     </tr>
                     <tr>
-                        <td>Building a rollback checklist before migrating</td>
+                        <td>乗り換えの前に戻しの確認の表を作る</td>
                         <td class="x">●</td>
                         <td class="dot">·</td>
                         <td class="dot">·</td>
                     </tr>
                     <tr>
-                        <td>Hybrid delegation between Claude and a cheaper model</td>
+                        <td>Claude と安い模型の併用の経路を作る</td>
                         <td class="x">●</td>
                         <td class="dot">·</td>
                         <td class="dot">·</td>
@@ -488,116 +489,116 @@
         </div>
 
         <div class="section">
-            <div class="section-title">Pricing</div>
+            <div class="section-title">値段</div>
             <div class="price-summary">
                 <div class="price-row">
-                    <span class="price-name">Migration Playbook (Edition 2 ships 2026-05-08)</span>
-                    <span class="price-num">$19</span>
+                    <span class="price-name">Migration Playbook (第 2 版 が 2026 年 5 月 8 日 出る)</span>
+                    <span class="price-num">19 ドル</span>
                 </div>
                 <div class="price-row">
-                    <span class="price-name">Token Book — English (Pay what you want, suggested $12)</span>
-                    <span class="price-num">$12+</span>
+                    <span class="price-name">Token Book ・ 英語 (お気持ち価格、 推奨 12 ドル)</span>
+                    <span class="price-num">5 ドル 以上</span>
                 </div>
                 <div class="price-row">
-                    <span class="price-name">Incident Postmortems (live since 2026-05-05)</span>
-                    <span class="price-num">see page</span>
+                    <span class="price-name">Incident Postmortems (2026 年 5 月 5 日 から販売中)</span>
+                    <span class="price-num">商品の頁を見て</span>
                 </div>
                 <div class="total-row">
-                    <span>Three books · 299 pages</span>
-                    <span class="total-num">$60+</span>
+                    <span>3 冊 ・ 299 ページ</span>
+                    <span class="total-num">60 ドル 以上</span>
                 </div>
                 <div class="price-note">
-                    Each book is sold individually on Gumroad. There is no shared bundle SKU yet. Buy what you need first; come back for the next layer when the symptom appears. All payment, refund, and update mechanics live on Gumroad — yurukusa.github.io is just the curation page.
+                    各本は Gumroad で個別に販売。 まとめ売りの値引きは無い。 必要なものから買って、 症状が出たら次の層を買う。 支払い、 返金、 更新の仕組みは全て Gumroad が扱う。 yurukusa.github.io は道案内の頁。
                 </div>
             </div>
         </div>
 
         <div class="section">
-            <div class="section-title">Reading paths</div>
+            <div class="section-title">読む経路</div>
             <p style="color:var(--text-dim);margin-bottom:1.4rem;font-size:0.95rem;">
-                Three books mean three entry points. Pick the one that matches what is hurting right now. The other two stay on the shelf until the matching symptom appears.
+                3 冊 ということは、 3 つの入口がある。 今 痛い場所に合うものを選ぶ。 残りの 2 冊 は、 その症状が出るまで読まない。
             </p>
             <div class="paths">
                 <div class="path-card">
-                    <div class="path-name">The burn debugger</div>
+                    <div class="path-name">費用の調査の人</div>
                     <div class="path-situation">
-                        You opened the Anthropic console this week and the bill was higher than your team expected. Nobody is sure where the burn is coming from. You have not had an outage yet, but the trajectory is wrong.
+                        今週 Anthropic の管理画面を開いたら、 請求がチームの予想より大きかった。 どこで消えているかは誰も分からない。 まだ事故は起きていないが、 行き先が悪い。
                     </div>
-                    <div class="path-step"><strong>1.</strong> Token Book. Locate the leak before guessing at fixes.</div>
-                    <div class="path-step"><strong>2.</strong> Incident Postmortems. See what happens to teams that did not catch the burn in time.</div>
-                    <div class="path-step"><strong>3.</strong> Migration Playbook. Only if controls inside Claude Code do not bring spend back into range.</div>
+                    <div class="path-step"><strong>1.</strong> Token Book。 推測の前に、 漏れの場所を見つける。</div>
+                    <div class="path-step"><strong>2.</strong> Incident Postmortems。 同じ状況で気づくのが遅れたチームが、 どうなったかを読む。</div>
+                    <div class="path-step"><strong>3.</strong> Migration Playbook。 Claude Code の中の制御で支出が戻らない時のみ。</div>
                 </div>
                 <div class="path-card">
-                    <div class="path-name">The switch decider</div>
+                    <div class="path-name">乗り換えの判定の人</div>
                     <div class="path-situation">
-                        Your team is in evaluation mode. Stay on Claude Code, hybrid with a cheaper model, custom routing, or move to a different vendor are all on the table. The decision needs evidence, not vibes.
+                        チームが評価の段階。 Claude Code に留まる、 安い模型と併用、 独自の routing、 別の業者に乗り換える。 全部が選択肢にある。 判定には感想ではなく証拠が必要。
                     </div>
-                    <div class="path-step"><strong>1.</strong> Migration Playbook. The four paths laid out side by side, with the trade-offs you cannot get from a vendor blog.</div>
-                    <div class="path-step"><strong>2.</strong> Token Book. Cost projections for whichever path you start to favor.</div>
-                    <div class="path-step"><strong>3.</strong> Incident Postmortems. The failure modes that survive on every path. Read before committing.</div>
+                    <div class="path-step"><strong>1.</strong> Migration Playbook。 4 つの経路を並べて、 業者の宣伝の頁では見られない比較を読む。</div>
+                    <div class="path-step"><strong>2.</strong> Token Book。 選んだ経路の費用の見積もり。</div>
+                    <div class="path-step"><strong>3.</strong> Incident Postmortems。 どの経路を選んでも残る失敗の形。 確定の前に読む。</div>
                 </div>
                 <div class="path-card">
-                    <div class="path-name">The incident survivor</div>
+                    <div class="path-name">事故の生存者</div>
                     <div class="path-situation">
-                        Something already broke. A subagent leaked credentials, an Agent ran a destructive command, a 5-hour quota was burned in 9 minutes by a single command. You are doing post-mortem work right now.
+                        既に何かが壊れた。 サブエージェントが秘密を漏らした、 Agent が破壊系の命令を実行した、 5 時間 の枠が 1 つの命令で 9 分 で焼けた。 今 検視の作業をしている。
                     </div>
-                    <div class="path-step"><strong>1.</strong> Incident Postmortems. Find the pattern. Twelve real incidents, with detection and prevention hooks.</div>
-                    <div class="path-step"><strong>2.</strong> Token Book. Audit ongoing burn so the next surprise is not financial.</div>
-                    <div class="path-step"><strong>3.</strong> Migration Playbook. Once you have evidence, the option-awareness step.</div>
+                    <div class="path-step"><strong>1.</strong> Incident Postmortems。 型を見つける。 12 件 の本物の事故、 検出と防止の hook つき。</div>
+                    <div class="path-step"><strong>2.</strong> Token Book。 進行中の支出を点検、 次の驚きが金銭の驚きにならないように。</div>
+                    <div class="path-step"><strong>3.</strong> Migration Playbook。 証拠が揃った後、 選択肢を知る段階。</div>
                 </div>
             </div>
         </div>
 
         <div class="section">
-            <div class="section-title">What sits behind these books</div>
+            <div class="section-title">これらの本の背景</div>
             <div class="trust">
                 <div class="trust-item">
-                    <div class="trust-num">800+</div>
-                    <div class="trust-label">verified autonomous hours</div>
+                    <div class="trust-num">800 +</div>
+                    <div class="trust-label">検証済の自律の時間</div>
                 </div>
                 <div class="trust-item">
                     <div class="trust-num">718</div>
-                    <div class="trust-label">safety hooks (cc-safe-setup)</div>
+                    <div class="trust-label">安全の hook (cc-safe-setup)</div>
                 </div>
                 <div class="trust-item">
-                    <div class="trust-num">9,200+</div>
-                    <div class="trust-label">tests run on the hooks</div>
+                    <div class="trust-num">9,200 +</div>
+                    <div class="trust-label">hook の検査の実行</div>
                 </div>
                 <div class="trust-item">
-                    <div class="trust-num">100+</div>
-                    <div class="trust-label">articles, GitHub Issues, Gists</div>
+                    <div class="trust-num">100 +</div>
+                    <div class="trust-label">記事、 GitHub の Issue、 Gist</div>
                 </div>
             </div>
         </div>
 
         <div class="section">
-            <div class="section-title">Frequent questions</div>
+            <div class="section-title">よくある質問</div>
             <dl class="faq">
-                <dt>Is this a discount bundle?</dt>
-                <dd>No. Each book is on its own Gumroad listing at its own price. This page is a curation, not a SKU. If a discounted bundle goes live later, this page will say so.</dd>
+                <dt>これはまとめ売りの値引きか?</dt>
+                <dd>違う。 各本は Gumroad で個別の値段で販売中。 この頁は道案内で、 値引きの商品の登録は無い。 後でまとめ売りが出たら、 この頁に書く。</dd>
 
-                <dt>If I only want one, which one first?</dt>
-                <dd>If your bill is the issue, start with Token Book. If you are deciding whether to switch platforms, start with Migration Playbook. If something already broke, start with Incident Postmortems.</dd>
+                <dt>1 冊 だけ買う場合は、 どれから?</dt>
+                <dd>請求が問題なら Token Book。 乗り換えの判定なら Migration Playbook。 既に何かが壊れたなら Incident Postmortems。</dd>
 
-                <dt>I have not used Claude Code in production yet.</dt>
-                <dd>Read the free articles at <a href="https://yurukusa.github.io/" style="color:var(--accent);">yurukusa.github.io</a> first. None of these books are intended as introductions.</dd>
+                <dt>Claude Code を本番で使った事がない場合は?</dt>
+                <dd>先に <a href="https://yurukusa.github.io/" style="color:var(--accent);">yurukusa.github.io</a> の無料の記事を読む。 これらの本は入門書ではない。</dd>
 
-                <dt>What language are the books in?</dt>
-                <dd>All three are English. Token Book also has a Japanese edition (¥2,500, ~100 pages, sold separately on Gumroad).</dd>
+                <dt>本の言語は何か?</dt>
+                <dd>3 冊 とも英語。 Token Book は日本語の版もある (2,500 円、 約 100 ページ、 Gumroad で個別販売)。</dd>
 
-                <dt>Are there future updates?</dt>
-                <dd>Migration Playbook ships free verified-update sweeps via Gumroad library re-download. Edition 2 lands 2026-05-08 with no extra charge for Edition 1 buyers. Token Book ships periodic updates. Postmortems is versioned at the file level.</dd>
+                <dt>更新はあるか?</dt>
+                <dd>Migration Playbook は Gumroad の蔵書から再 download で更新を受け取れる。 第 2 版 が 2026 年 5 月 8 日 に出る、 第 1 版 の購入者は無料で更新を受け取る。 Token Book は定期の更新を出す。 Postmortems はファイル単位で版を管理する。</dd>
 
-                <dt>Is there a way to keep getting incident updates after I read the books?</dt>
-                <dd>Yes — <a href="https://ko-fi.com/yurukusa?utm_source=operations-suite-lp&utm_medium=faq-monthly&utm_campaign=safety-lab" style="color:var(--accent);" target="_blank" rel="noopener">Claude Code Safety Lab</a> is a monthly subscription on Ko-fi (¥500/month, world-first Claude Code monthly incident postmortem subscription). The three books are point-in-time references; Safety Lab is the continuous feed — every month it delivers a structured roundup of new incidents, fix recipes, and detection hooks. Founding members keep the ¥500 rate after price changes.</dd>
+                <dt>本を読んだ後も事故の続報を受け取りたい場合は?</dt>
+                <dd>はい、 <a href="https://ko-fi.com/yurukusa?utm_source=operations-suite-lp-ja&utm_medium=faq-monthly&utm_campaign=safety-lab" style="color:var(--accent);" target="_blank" rel="noopener">Claude Code Safety Lab</a> が Ko-fi の月額の購読 (月 500 円、 世界初の Claude Code 専門の月次の事故事例の購読の媒体) として動いている。 3 冊 の本は時点の参照、 Safety Lab は継続の経路。 毎月、 新しい事故、 修正の手順、 検出の hook を構造化して届ける。 Founding member の値段は据え置き。</dd>
 
-                <dt>Who is the author?</dt>
-                <dd>yurukusa, a non-engineer from Tokyo running Claude Code autonomously for 800+ verified hours. Maintainer of <a href="https://github.com/yurukusa/cc-safe-setup" style="color:var(--accent);">cc-safe-setup</a>. Books are written from measured production data, not from speculation.</dd>
+                <dt>著者は誰か?</dt>
+                <dd>yurukusa、 東京の非エンジニア、 800 時間 を超える Claude Code の自律の運用者。 <a href="https://github.com/yurukusa/cc-safe-setup" style="color:var(--accent);">cc-safe-setup</a> の維持者。 本は推測ではなく、 実測の本番の数字から書いている。</dd>
             </dl>
         </div>
 
         <div class="footer">
-            Three books for three layers, plus a monthly continuous feed · maintained by <a href="https://yurukusa.github.io/">yurukusa</a> · last updated 2026-05-05
+            3 つの層 の 3 冊 と、 月次の継続の経路 ・ <a href="https://yurukusa.github.io/">yurukusa</a> が維持 ・ 最終更新 2026 年 5 月 5 日
         </div>
     </div>
 </body>
