@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Code alternatives in May 2026: Cursor, Cline, Aider, Codex CLI, DeepSeek wrapper | yurukusa</title>
+    <meta name="description" content="Stay or switch? Real release cadence, pricing, and ideal use case for Claude Code's five main alternatives, with the decision framework from the Migration Playbook.">
+    <link rel="canonical" href="https://yurukusa.github.io/claude-code-alternatives/">
+
+    <meta property="og:title" content="Claude Code alternatives in May 2026: real numbers, not vibes">
+    <meta property="og:description" content="Cursor, Cline, Aider, Codex CLI, DeepSeek wrapper. Release cadence, pricing, ideal use case, and the five questions that decide whether you should switch.">
+    <meta property="og:url" content="https://yurukusa.github.io/claude-code-alternatives/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="yurukusa">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@yurukusa_dev">
+    <meta name="twitter:title" content="Claude Code alternatives in May 2026">
+    <meta name="twitter:description" content="Five alternatives, five questions, three books, one decision.">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #080810;
+            --surface: #10101c;
+            --surface2: #16162a;
+            --border: #1e1e38;
+            --text: #ddddf0;
+            --text-dim: #9090b0;
+            --accent: #f0883e;
+            --green: #56d364;
+            --red: #f85149;
+            --yellow: #d29922;
+        }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.65;
+            font-size: 16px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+        }
+        nav {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            margin-bottom: 2rem;
+        }
+        nav a {
+            color: var(--text-dim);
+            text-decoration: none;
+            margin-right: 1rem;
+        }
+        nav a:hover { color: var(--accent); }
+
+        .hero {
+            padding: 2.5rem 0 3rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2.5rem;
+        }
+        h1 {
+            font-size: 2.1rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+        .hero .lede {
+            font-size: 1.05rem;
+            color: var(--text-dim);
+            max-width: 720px;
+        }
+        .meta {
+            font-size: 0.82rem;
+            color: var(--text-dim);
+            margin-top: 1.5rem;
+            font-family: 'SF Mono', Menlo, monospace;
+        }
+
+        .section {
+            margin: 3rem 0;
+        }
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            color: var(--text);
+        }
+        .section p {
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        table.compare {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.92rem;
+            margin: 1rem 0;
+        }
+        table.compare th, table.compare td {
+            text-align: left;
+            padding: 0.7rem 0.8rem;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+        table.compare th {
+            color: var(--text-dim);
+            font-weight: 600;
+            font-size: 0.78rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            background: var(--surface);
+        }
+        table.compare td:first-child {
+            font-weight: 600;
+            color: var(--accent);
+            white-space: nowrap;
+        }
+        .green { color: var(--green); font-weight: 600; }
+        .red { color: var(--red); font-weight: 600; }
+        .yellow { color: var(--yellow); font-weight: 600; }
+
+        .tool {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.6rem;
+            margin: 1.4rem 0;
+        }
+        .tool h2 {
+            font-size: 1.3rem;
+            color: var(--accent);
+            margin-bottom: 0.4rem;
+        }
+        .tool .tool-meta {
+            font-size: 0.82rem;
+            color: var(--text-dim);
+            margin-bottom: 1rem;
+            font-family: 'SF Mono', Menlo, monospace;
+        }
+        .tool h3 {
+            font-size: 0.95rem;
+            color: var(--text);
+            margin: 1rem 0 0.4rem;
+            font-weight: 700;
+        }
+        .tool p {
+            font-size: 0.93rem;
+            color: var(--text);
+            margin-bottom: 0.7rem;
+        }
+        .tool ul {
+            list-style: none;
+            padding: 0;
+            margin: 0.5rem 0;
+        }
+        .tool ul li {
+            font-size: 0.9rem;
+            padding: 0.3rem 0;
+            color: var(--text-dim);
+        }
+        .tool ul li::before {
+            content: "・";
+            color: var(--accent);
+            margin-right: 0.4rem;
+        }
+
+        .verdict {
+            margin-top: 0.8rem;
+            padding: 0.7rem 1rem;
+            background: var(--surface2);
+            border-left: 3px solid var(--accent);
+            border-radius: 0 6px 6px 0;
+            font-size: 0.9rem;
+        }
+        .verdict strong { color: var(--accent); }
+
+        .questions {
+            counter-reset: q;
+        }
+        .question {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem 1.3rem;
+            margin: 0.8rem 0;
+            font-size: 0.93rem;
+        }
+        .question::before {
+            counter-increment: q;
+            content: "Q" counter(q) ".";
+            color: var(--accent);
+            font-weight: 700;
+            margin-right: 0.5rem;
+        }
+        .question .answer-meta {
+            display: block;
+            margin-top: 0.4rem;
+            font-size: 0.83rem;
+            color: var(--text-dim);
+        }
+
+        .closing {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.8rem;
+            margin: 3rem 0 2rem;
+        }
+        .closing h2 {
+            font-size: 1.3rem;
+            color: var(--text);
+            margin-bottom: 0.8rem;
+        }
+        .closing p { margin-bottom: 0.9rem; }
+        .closing a { color: var(--accent); text-decoration: none; font-weight: 600; }
+        .closing a:hover { text-decoration: underline; }
+
+        footer {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            text-align: center;
+        }
+        footer a { color: var(--accent); text-decoration: none; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+<nav>
+    <a href="/">home</a>
+    <a href="/operations-suite/">three books</a>
+    <a href="/operations-pain-map/">pain map</a>
+</nav>
+
+<div class="hero">
+    <h1>Claude Code alternatives in May 2026.<br>Real numbers, not vibes.</h1>
+    <p class="lede">
+        Five tools share the workload Claude Code does. Each has different trade-offs in pricing, release cadence, and ideal use case. This page lays them out side by side so you can answer one question honestly: should you stay, hybrid, or switch.
+    </p>
+    <p class="meta">
+        Last updated 2026-05-05. Source data: GitHub Releases API, vendor pricing pages, r/ClaudeAI 24h scan, Hacker News 7-day top.
+    </p>
+</div>
+
+<div class="section">
+    <div class="section-title">Quick comparison</div>
+    <table class="compare">
+        <thead>
+            <tr>
+                <th>Tool</th>
+                <th>Release cadence</th>
+                <th>Pricing model</th>
+                <th>Surface</th>
+                <th>Ideal user</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Claude Code</td>
+                <td><span class="green">Daily</span> (v2.1.123 on 2026-05-05, alphas more often)</td>
+                <td>$20 to $200 per month, plus hard weekly limits</td>
+                <td>CLI plus IDE plugins</td>
+                <td>You want one tool that does plan and execute, are willing to pay for quality</td>
+            </tr>
+            <tr>
+                <td>Cursor</td>
+                <td><span class="green">Daily</span> (closed-source, no GitHub releases)</td>
+                <td>$20 per month, $40 for Pro Plus</td>
+                <td>VS Code fork, no CLI</td>
+                <td>You live in your editor and prefer GUI control over scriptability</td>
+            </tr>
+            <tr>
+                <td>Cline</td>
+                <td><span class="green">Weekly</span> (v3.81.0 on 2026-04-24, 5 releases in 30 days)</td>
+                <td>BYOK, you pay your model provider directly</td>
+                <td>VS Code extension</td>
+                <td>You want Claude Code style autonomy with your own model bill</td>
+            </tr>
+            <tr>
+                <td>Codex CLI</td>
+                <td><span class="green">Very active</span> (rust v0.125.0, alpha builds daily)</td>
+                <td>OpenAI Plus or Pro subscription rolls in, plus API</td>
+                <td>CLI</td>
+                <td>You are already in the OpenAI orbit and want a Claude Code peer</td>
+            </tr>
+            <tr>
+                <td>Aider</td>
+                <td><span class="red">Stalled</span> (v0.86.0 on 2025-08-09, 9 months no release)</td>
+                <td>BYOK, you pay your model provider directly</td>
+                <td>CLI</td>
+                <td>You have a stable workflow already; new features are not landing</td>
+            </tr>
+            <tr>
+                <td>DeepSeek wrapper</td>
+                <td><span class="yellow">New</span> (DeepClaude reached 941 stars in 24 hours, 2026-05-04)</td>
+                <td>DeepSeek tokens, roughly 17x cheaper than Sonnet on equivalent work</td>
+                <td>Wrapper that intercepts Claude Code calls</td>
+                <td>You want the Claude Code shell with a cheaper engine; you accept 'Sonnet-level' quality</td>
+            </tr>
+        </tbody>
+    </table>
+    <p style="font-size:0.86rem;color:var(--text-dim);margin-top:0.5rem;">
+        DeepSeek can also be used directly without the wrapper. Set ANTHROPIC_BASE_URL to api.deepseek.com/anthropic and ANTHROPIC_AUTH_TOKEN to your DeepSeek key. The official DeepSeek docs document this. The wrapper exists because it adds nicer routing and fallback; for many use cases the env-var path is simpler.
+    </p>
+</div>
+
+<div class="section">
+    <div class="section-title">Tool by tool, with the verdict</div>
+
+    <div class="tool">
+        <h2>Cursor</h2>
+        <div class="tool-meta">closed-source · IDE-based · $20 to $40 per month</div>
+        <h3>What it is</h3>
+        <p>A VS Code fork with Anthropic models routed through Cursor's own back-end. The selling point is the editor integration; your AI lives where your cursor is.</p>
+        <h3>Why people switch to it from Claude Code</h3>
+        <ul>
+            <li>If you already use VS Code daily, the friction is zero</li>
+            <li>The agent panel feels native; you do not leave the editor</li>
+            <li>Pricing is predictable and below Claude Max</li>
+        </ul>
+        <h3>Why people switch back</h3>
+        <ul>
+            <li>You cannot script it; there is no CLI</li>
+            <li>Multi-file refactors are slower than the Claude Code CLI agent for large codebases</li>
+            <li>Closed source means you cannot audit what is sent and when</li>
+        </ul>
+        <div class="verdict">
+            <strong>Verdict:</strong> Strong fit if your work happens inside an editor and you want a single price point. Weak fit if you run autonomous workflows from a terminal or CI.
+        </div>
+    </div>
+
+    <div class="tool">
+        <h2>Cline</h2>
+        <div class="tool-meta">VS Code extension · BYOK · v3.81.0 on 2026-04-24</div>
+        <h3>What it is</h3>
+        <p>A VS Code extension that runs an agent loop similar to Claude Code, but you bring your own model key. You can point it at Anthropic, OpenAI, DeepSeek, OpenRouter, or local models.</p>
+        <h3>Why people switch to it from Claude Code</h3>
+        <ul>
+            <li>You see your model bill on your provider's invoice, with no opaque markup</li>
+            <li>You can route different tasks to different models inside the same session</li>
+            <li>Active weekly cadence; 5 releases in the last 30 days</li>
+        </ul>
+        <h3>Why people switch back</h3>
+        <ul>
+            <li>BYOK means you handle every quota issue yourself</li>
+            <li>Lives inside VS Code; you cannot run it headless or from cron</li>
+            <li>The agent loop is good but slightly more manual than Claude Code's auto-mode</li>
+        </ul>
+        <div class="verdict">
+            <strong>Verdict:</strong> Strong fit if you want Claude Code style autonomy without the Anthropic billing model. Weak fit if you need a CLI agent for unattended runs.
+        </div>
+    </div>
+
+    <div class="tool">
+        <h2>Codex CLI</h2>
+        <div class="tool-meta">CLI · OpenAI · rust v0.125.0 stable, alpha builds daily</div>
+        <h3>What it is</h3>
+        <p>OpenAI's CLI agent, rewritten in Rust in 2026. Plays the same role as Claude Code: long-running terminal session, file edits, tool calls, plan and execute.</p>
+        <h3>Why people switch to it from Claude Code</h3>
+        <ul>
+            <li>Your subscription stack is already OpenAI; one bill, not two</li>
+            <li>The Rust rewrite shipped daily alphas through April; momentum is real</li>
+            <li>Tool ecosystem has grown fast through 2026</li>
+        </ul>
+        <h3>Why people switch back</h3>
+        <ul>
+            <li>The agent personality differs; if you have tuned CLAUDE.md, expect to retune for o-series models</li>
+            <li>Some tasks where Sonnet shines (long-form writing, structured editing of code with many cross-file invariants) need different prompting</li>
+            <li>Daily alphas mean faster regressions; pin to stable for production</li>
+        </ul>
+        <div class="verdict">
+            <strong>Verdict:</strong> Strong fit if you are already an OpenAI subscriber and want a Claude Code peer in the same shell. Weak fit if you have invested heavily in Sonnet-specific prompting.
+        </div>
+    </div>
+
+    <div class="tool">
+        <h2>Aider</h2>
+        <div class="tool-meta">CLI · BYOK · v0.86.0 on 2025-08-09 (9 months stalled)</div>
+        <h3>What it is</h3>
+        <p>The original CLI coding agent, predates Claude Code by years. Lightweight, opinionated, BYOK.</p>
+        <h3>Current state</h3>
+        <p>Last release v0.86.0 was August 9, 2025. As of May 2026, no new release in 9 months. The project's main contributor's GitHub activity has shifted; the issue tracker still gets new entries but no merges. Treat Aider as a stable but frozen tool.</p>
+        <h3>When it still makes sense</h3>
+        <ul>
+            <li>You have a workflow that depends on Aider's specific edit format and it works</li>
+            <li>You do not need newer features and want a tool that will not change under you</li>
+            <li>You are comfortable maintaining your own forks if needed</li>
+        </ul>
+        <div class="verdict">
+            <strong>Verdict:</strong> Reasonable for legacy workflows that already work. Not a good landing spot for new adoption in May 2026; pick Cline or Codex CLI instead.
+        </div>
+    </div>
+
+    <div class="tool">
+        <h2>DeepSeek (direct or wrapper)</h2>
+        <div class="tool-meta">env-var or wrapper · DeepSeek V4 · roughly 17x cheaper than Sonnet on equivalent work</div>
+        <h3>What it is</h3>
+        <p>Two paths converge here. Path one: set ANTHROPIC_BASE_URL and ANTHROPIC_AUTH_TOKEN to point Claude Code at DeepSeek's Anthropic-compatible endpoint. Path two: a wrapper like aattaran/deepclaude (941 GitHub stars in 24 hours after launch on 2026-05-04) that does the routing for you. Both end up with Claude Code's CLI shell talking to a cheaper model.</p>
+        <h3>Why people switch to it</h3>
+        <ul>
+            <li>Three weeks of bulk work that cost about $7 on Sonnet costs about $0.41 on DeepSeek V4 Flash. The 17x ratio is real and reproducible</li>
+            <li>The Claude Code shell stays the same; nothing in your CLAUDE.md needs to change</li>
+            <li>Weekly limits become irrelevant; you pay per token to DeepSeek directly</li>
+        </ul>
+        <h3>Why people switch back</h3>
+        <ul>
+            <li>The quality is roughly Sonnet-level. For tasks where you want Opus, this path will not satisfy you</li>
+            <li>The next Anthropic CLI release may change env-var precedence and break the routing. This is a real risk, not a hypothetical</li>
+            <li>You lose features that depend on Anthropic-specific endpoints (some MCP servers, certain tool-call shapes)</li>
+        </ul>
+        <div class="verdict">
+            <strong>Verdict:</strong> Strong fit for high-volume mechanical work where Sonnet-level quality is enough and the bill is the issue. Weak fit if you depend on Opus reasoning or on Anthropic's full feature surface.
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <div class="section-title">The five questions that decide it</div>
+    <p>Stay, hybrid, or switch is a question that gets answered by your numbers, not your feelings. Here are the five that matter.</p>
+    <div class="questions">
+        <div class="question">
+            What is your dollar cost per merged commit, last 30 days?
+            <span class="answer-meta">If you cannot answer, the Token Book first chapter walks through the measurement. Without this number, every other answer is a guess.</span>
+        </div>
+        <div class="question">
+            What percentage of your Claude Code calls do mechanical work that any cheap model could do?
+            <span class="answer-meta">If above 40 percent, the hybrid path (DeepSeek for the mechanical work, Claude for judgment) is the highest leverage move. r/ClaudeAI 81-vote post on 2026-05-05 shows the measurement method.</span>
+        </div>
+        <div class="question">
+            What is your tolerance for non-determinism in production output?
+            <span class="answer-meta">If low, every tool here will frustrate you. The fix is process: hooks, post-conditions, golden-path tests. The Postmortems book documents twelve incidents where exactly this gap hurt teams.</span>
+        </div>
+        <div class="question">
+            How much of your work needs Opus-level reasoning, not Sonnet-level execution?
+            <span class="answer-meta">If high, only Claude Code with the Max plan and Cursor's Pro Plus give you reliable Opus. DeepSeek and Cline routes top out at Sonnet-level for now.</span>
+        </div>
+        <div class="question">
+            What is your switching cost in person-hours?
+            <span class="answer-meta">CLAUDE.md retuning, hook re-installation, MCP server reconfiguration, team training. Map this honestly before deciding. The Migration Playbook chapter 3 has a worksheet.</span>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <div class="section-title">A note on the two news items behind this page</div>
+    <p>April 22, 2026: Anthropic shifted the Pro plan structure with weekly limits that reshuffled how heavy users hit caps. The thread on Hacker News (item 47963204) is at 1,338 points and growing. The reaction was not "Claude Code is bad" but "the math no longer works for my team."</p>
+    <p>May 4, 2026: aattaran/deepclaude was created on GitHub. In the first 24 hours it reached 941 stars. The thread on r/ClaudeAI is at 626 points, 265 comments. It works because Claude Code's CLI surface is good enough that people want to keep using it with a different engine.</p>
+    <p>The combination is what made May 2026 the inflection point. The CLI is loved; the math is contested; alternatives have working tooling. This is why the Migration Playbook second edition ships on 2026-05-08, three days after this page goes live.</p>
+</div>
+
+<div class="closing">
+    <h2>Three books, mapped to the path you take</h2>
+    <p>The decision is hard because it is not one decision; it is at least three. What you should pay, what you should run, what you should do when something breaks. Three books cover those three layers.</p>
+    <p><a href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook?utm_source=alternatives-page&utm_medium=closing&utm_campaign=migration-playbook">Migration Playbook</a>: the four paths laid out with the trade-offs you cannot get from a vendor blog. Edition 2 ships 2026-05-08; current buyers get the update for free. 105 pages, $19.</p>
+    <p><a href="https://yurukusa.gumroad.com/l/azrdt?utm_source=alternatives-page&utm_medium=closing&utm_campaign=token-book-en">Token Book</a>: cost projections for whichever path you pick, plus the measurement method to know your real spend. 94 pages, pay what you want from $5 up.</p>
+    <p><a href="https://yurukusa.gumroad.com/l/rhtptb?utm_source=alternatives-page&utm_medium=closing&utm_campaign=postmortems">Incident Postmortems</a>: twelve real failures with detection and prevention hooks, regardless of which tool you run. 100 pages PDF, see product page for current price.</p>
+    <p>If you want to see the three together with reading-order guidance for three reader profiles, the <a href="https://yurukusa.github.io/operations-suite/?utm_source=alternatives-page&utm_medium=closing&utm_campaign=ops-suite">Operations Suite curation page</a> maps each book to a specific question. Each book is sold separately on Gumroad; the suite page is a navigation aid, not a discounted bundle.</p>
+</div>
+
+<footer>
+    <p>© 2026 yurukusa / ゆるくさ &nbsp;·&nbsp; <a href="/legal">特定商取引法に基づく表記</a> &nbsp;·&nbsp; <a href="/">home</a> &nbsp;·&nbsp; <a href="/operations-pain-map/">pain map</a></p>
+</footer>
+
+</div>
+</body>
+</html>
