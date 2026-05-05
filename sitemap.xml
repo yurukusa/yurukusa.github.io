@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <url>
+    <loc>https://yurukusa.github.io/</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <url>
+    <loc>https://yurukusa.github.io/operations-suite/</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yurukusa.github.io/operations-suite/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://yurukusa.github.io/operations-suite-ja/"/>
+  </url>
+  <url>
+    <loc>https://yurukusa.github.io/operations-suite-ja/</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yurukusa.github.io/operations-suite/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://yurukusa.github.io/operations-suite-ja/"/>
+  </url>
+
+  <url>
+    <loc>https://yurukusa.github.io/operations-pain-map/</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yurukusa.github.io/operations-pain-map/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://yurukusa.github.io/operations-pain-map-ja/"/>
+  </url>
+  <url>
+    <loc>https://yurukusa.github.io/operations-pain-map-ja/</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yurukusa.github.io/operations-pain-map/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://yurukusa.github.io/operations-pain-map-ja/"/>
+  </url>
+
+  <url>
+    <loc>https://yurukusa.github.io/claude-code-alternatives/</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yurukusa.github.io/claude-code-alternatives/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://yurukusa.github.io/claude-code-alternatives-ja/"/>
+  </url>
+  <url>
+    <loc>https://yurukusa.github.io/claude-code-alternatives-ja/</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yurukusa.github.io/claude-code-alternatives/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://yurukusa.github.io/claude-code-alternatives-ja/"/>
+  </url>
+
+  <url>
+    <loc>https://yurukusa.github.io/which-claude-code-book/</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yurukusa.github.io/which-claude-code-book/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://yurukusa.github.io/which-claude-code-book-ja/"/>
+  </url>
+  <url>
+    <loc>https://yurukusa.github.io/which-claude-code-book-ja/</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yurukusa.github.io/which-claude-code-book/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://yurukusa.github.io/which-claude-code-book-ja/"/>
+  </url>
+
+  <url>
+    <loc>https://yurukusa.github.io/claude-code-cost-calculator/</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yurukusa.github.io/claude-code-cost-calculator/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://yurukusa.github.io/claude-code-cost-calculator-ja/"/>
+  </url>
+  <url>
+    <loc>https://yurukusa.github.io/claude-code-cost-calculator-ja/</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://yurukusa.github.io/claude-code-cost-calculator/"/>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://yurukusa.github.io/claude-code-cost-calculator-ja/"/>
+  </url>
+
+  <url>
+    <loc>https://yurukusa.github.io/50-days/</loc>
+    <lastmod>2026-04-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>https://yurukusa.github.io/ai-ready/</loc>
+    <lastmod>2026-04-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>https://yurukusa.github.io/legal/</loc>
+    <lastmod>2026-04-15</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+</urlset>
