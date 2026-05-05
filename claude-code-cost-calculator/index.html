@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Code monthly cost calculator: project your Anthropic bill, see hybrid savings | yurukusa</title>
+    <meta name="description" content="Estimate your Claude Code monthly bill based on plan, daily hours, and workload mix. See projected savings if you offload mechanical tasks to a cheaper side worker.">
+    <link rel="canonical" href="https://yurukusa.github.io/claude-code-cost-calculator/">
+
+    <meta property="og:title" content="Claude Code monthly cost calculator">
+    <meta property="og:description" content="Project your bill. See where the leak is. See the hybrid savings.">
+    <meta property="og:url" content="https://yurukusa.github.io/claude-code-cost-calculator/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="yurukusa">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@yurukusa_dev">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #080810;
+            --surface: #10101c;
+            --surface2: #16162a;
+            --border: #1e1e38;
+            --text: #ddddf0;
+            --text-dim: #9090b0;
+            --accent: #f0883e;
+            --accent-soft: rgba(240, 136, 62, 0.15);
+            --green: #56d364;
+            --red: #f85149;
+            --blue: #58a6ff;
+        }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.65;
+            font-size: 16px;
+            min-height: 100vh;
+        }
+        .container { max-width: 760px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+        nav { font-size: 0.85rem; color: var(--text-dim); margin-bottom: 1.5rem; }
+        nav a { color: var(--text-dim); text-decoration: none; margin-right: 1rem; }
+        nav a:hover { color: var(--accent); }
+
+        h1 { font-size: 1.9rem; font-weight: 800; line-height: 1.25; margin-bottom: 0.8rem; }
+        .lede { font-size: 1rem; color: var(--text-dim); margin-bottom: 0.8rem; }
+        .meta { font-size: 0.82rem; color: var(--text-dim); margin-bottom: 2rem; font-family: 'SF Mono', Menlo, monospace; }
+
+        .input-group {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.4rem 1.4rem 1rem;
+            margin: 1.2rem 0;
+        }
+        .input-label {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.4rem;
+        }
+        .input-help {
+            font-size: 0.83rem;
+            color: var(--text-dim);
+            margin-bottom: 0.8rem;
+        }
+        .options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 0.5rem;
+        }
+        .option {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.7rem 0.9rem;
+            text-align: center;
+            color: var(--text);
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            font-family: inherit;
+        }
+        .option:hover {
+            border-color: var(--accent);
+            background: var(--accent-soft);
+        }
+        .option.selected {
+            background: var(--accent);
+            color: var(--bg);
+            border-color: var(--accent);
+            font-weight: 700;
+        }
+
+        .slider-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        input[type="range"] {
+            flex: 1;
+            -webkit-appearance: none;
+            background: var(--surface2);
+            height: 6px;
+            border-radius: 3px;
+            outline: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--accent);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: var(--accent);
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+        .slider-value {
+            min-width: 80px;
+            text-align: right;
+            font-family: 'SF Mono', Menlo, monospace;
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        .result-section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.8rem 1.6rem;
+            margin: 2rem 0 1rem;
+        }
+        .result-title {
+            font-size: 0.78rem;
+            color: var(--accent);
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+        .result-rows {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding-bottom: 0.6rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .result-row:last-child { border-bottom: none; }
+        .result-label {
+            font-size: 0.92rem;
+            color: var(--text);
+        }
+        .result-label-sub {
+            display: block;
+            font-size: 0.78rem;
+            color: var(--text-dim);
+            margin-top: 0.2rem;
+        }
+        .result-value {
+            font-family: 'SF Mono', Menlo, monospace;
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: var(--accent);
+            white-space: nowrap;
+        }
+        .result-value.green { color: var(--green); }
+        .result-value.red { color: var(--red); }
+        .result-value.dim { color: var(--text-dim); font-weight: 400; }
+
+        .recommendation {
+            background: var(--accent-soft);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+            padding: 1.2rem;
+            margin: 1.2rem 0;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+        .recommendation strong { color: var(--accent); }
+        .recommendation a {
+            color: var(--accent);
+            font-weight: 700;
+            text-decoration: none;
+        }
+        .recommendation a:hover { text-decoration: underline; }
+
+        .disclaimer {
+            font-size: 0.82rem;
+            color: var(--text-dim);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.9rem 1.1rem;
+            margin: 1.5rem 0;
+        }
+
+        footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            text-align: center;
+        }
+        footer a { color: var(--accent); text-decoration: none; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+<nav>
+    <a href="/">home</a>
+    <a href="/operations-suite/">three books</a>
+    <a href="/which-claude-code-book/">quiz</a>
+    <a href="/claude-code-alternatives/">alternatives</a>
+</nav>
+
+<h1>Claude Code monthly cost calculator</h1>
+<p class="lede">Project your monthly Anthropic bill. See how much hybrid delegation could save. Decide whether to stay, hybrid, or migrate based on numbers, not vibes.</p>
+<p class="meta">Updated 2026-05-05. Pricing reflects post-2026-04-22 Anthropic Pro plan reshuffle and current API rates. Hybrid savings model uses the 2026-05-05 r/ClaudeAI 81-vote validation: 217 mechanical tasks, $0.41 on DeepSeek V4 Flash vs about $7 on Sonnet, 17x ratio.</p>
+
+<div class="input-group">
+    <div class="input-label">1. Which plan are you on?</div>
+    <div class="input-help">Pick the one that matches your current Anthropic subscription. The calculator uses post-April 22 pricing.</div>
+    <div class="options" id="plan-options">
+        <button class="option" data-plan="pro" data-cost="20">Pro ($20/mo)</button>
+        <button class="option" data-plan="max5" data-cost="100">Max 5x ($100/mo)</button>
+        <button class="option selected" data-plan="max20" data-cost="200">Max 20x ($200/mo)</button>
+        <button class="option" data-plan="api" data-cost="0">API only (pay per token)</button>
+    </div>
+</div>
+
+<div class="input-group">
+    <div class="input-label">2. How many hours per day do you actively run Claude Code?</div>
+    <div class="input-help">Active session time. Sleeping or idle terminal does not count.</div>
+    <div class="slider-row">
+        <input type="range" id="hours" min="1" max="12" value="6" step="1">
+        <div class="slider-value" id="hours-value">6 h/day</div>
+    </div>
+</div>
+
+<div class="input-group">
+    <div class="input-label">3. What share of your work is mechanical?</div>
+    <div class="input-help">Formatting, classification, summarization, field extraction. Tasks that any cheap model could do, but you currently send to Sonnet anyway.</div>
+    <div class="options" id="mechanical-options">
+        <button class="option" data-mech="0.1">Less than 20% (mostly judgment)</button>
+        <button class="option selected" data-mech="0.3">20 to 40% (mixed)</button>
+        <button class="option" data-mech="0.5">40 to 60% (a lot of bulk)</button>
+        <button class="option" data-mech="0.7">More than 60% (mostly bulk)</button>
+    </div>
+</div>
+
+<div class="input-group">
+    <div class="input-label">4. What is your Sonnet to Opus mix?</div>
+    <div class="input-help">When you do call Claude, which model handles most of the work?</div>
+    <div class="options" id="model-options">
+        <button class="option selected" data-model="sonnet">Sonnet only</button>
+        <button class="option" data-model="mostly-sonnet">80% Sonnet, 20% Opus</button>
+        <button class="option" data-model="balanced">50% Sonnet, 50% Opus</button>
+        <button class="option" data-model="mostly-opus">Mostly Opus</button>
+    </div>
+</div>
+
+<div class="result-section">
+    <div class="result-title">PROJECTED MONTHLY COST</div>
+    <div class="result-rows">
+        <div class="result-row">
+            <div class="result-label">
+                Current path (everything on Claude)
+                <span class="result-label-sub">Plan baseline plus any API overflow at current model mix</span>
+            </div>
+            <div class="result-value" id="current-cost">...</div>
+        </div>
+        <div class="result-row">
+            <div class="result-label">
+                Hybrid path (Path B)
+                <span class="result-label-sub">Mechanical work to a cheap side worker, judgment work stays on Claude</span>
+            </div>
+            <div class="result-value green" id="hybrid-cost">...</div>
+        </div>
+        <div class="result-row">
+            <div class="result-label">
+                Estimated monthly savings vs current path
+                <span class="result-label-sub">Difference between current and hybrid</span>
+            </div>
+            <div class="result-value green" id="savings">...</div>
+        </div>
+        <div class="result-row">
+            <div class="result-label">
+                Annual savings if hybrid sticks
+                <span class="result-label-sub">12x the monthly difference</span>
+            </div>
+            <div class="result-value dim" id="annual-savings">...</div>
+        </div>
+    </div>
+</div>
+
+<div class="recommendation" id="recommendation">
+    <!-- populated by JS -->
+</div>
+
+<div class="disclaimer">
+    These numbers are projections, not measurements. Actual costs depend on your specific token mix, cache hit ratio, model routing, and how much each session burns in cache_creation. The Token Book chapter 1 explains how to measure your real spend; the projections here use averages from 800+ verified hours of autonomous Claude Code operation. Hybrid savings assume the cheap side worker is well configured (deny-list CLAUDE.md rule, supervised output review). Do not run unsupervised side-worker output in production.
+</div>
+
+<footer>
+    <p>© 2026 yurukusa / ゆるくさ &nbsp;·&nbsp; <a href="/legal">特定商取引法に基づく表記</a> &nbsp;·&nbsp; <a href="/">home</a></p>
+</footer>
+
+</div>
+
+<script>
+const state = {
+    plan: 'max20',
+    planCost: 200,
+    hours: 6,
+    mechShare: 0.3,
+    modelMix: 'sonnet'
+};
+
+function setupOptionGroup(containerId, key, ...extraKeys) {
+    const container = document.getElementById(containerId);
+    container.querySelectorAll('.option').forEach(btn => {
+        btn.addEventListener('click', () => {
+            container.querySelectorAll('.option').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            const data = btn.dataset;
+            if (data.plan) {
+                state.plan = data.plan;
+                state.planCost = parseFloat(data.cost);
+            }
+            if (data.mech) state.mechShare = parseFloat(data.mech);
+            if (data.model) state.modelMix = data.model;
+            recalc();
+        });
+    });
+}
+
+setupOptionGroup('plan-options');
+setupOptionGroup('mechanical-options');
+setupOptionGroup('model-options');
+
+const hoursInput = document.getElementById('hours');
+const hoursValue = document.getElementById('hours-value');
+hoursInput.addEventListener('input', () => {
+    state.hours = parseInt(hoursInput.value, 10);
+    hoursValue.textContent = `${state.hours} h/day`;
+    recalc();
+});
+
+function modelBlend(mix) {
+    switch (mix) {
+        case 'sonnet': return { sonnetShare: 1.0, opusShare: 0.0 };
+        case 'mostly-sonnet': return { sonnetShare: 0.8, opusShare: 0.2 };
+        case 'balanced': return { sonnetShare: 0.5, opusShare: 0.5 };
+        case 'mostly-opus': return { sonnetShare: 0.2, opusShare: 0.8 };
+    }
+    return { sonnetShare: 1.0, opusShare: 0.0 };
+}
+
+function calcCurrent() {
+    const planFloor = state.planCost;
+    const blend = modelBlend(state.modelMix);
+    const hoursMonth = state.hours * 22;
+    const tokensPerHour = 1500000;
+    const sonnetIn = 3.0, sonnetOut = 15.0;
+    const opusIn = 15.0, opusOut = 75.0;
+    const usageCost = (hoursMonth * tokensPerHour / 1000000) * (
+        blend.sonnetShare * (sonnetIn * 0.7 + sonnetOut * 0.3) +
+        blend.opusShare * (opusIn * 0.7 + opusOut * 0.3)
+    );
+    let billed;
+    if (state.plan === 'api') {
+        billed = usageCost;
+    } else {
+        const planValue = state.plan === 'pro' ? 100 : state.plan === 'max5' ? 500 : 2000;
+        billed = planFloor + Math.max(0, usageCost - planValue);
+    }
+    return { billed, usageCost };
+}
+
+function calcHybrid(currentBilled) {
+    const moveable = state.mechShare;
+    const ratioSonnetToDeepseek = 17;
+    const blend = modelBlend(state.modelMix);
+    const sonnetUsageShare = blend.sonnetShare;
+    const reducibleShare = moveable * sonnetUsageShare;
+    const planFloor = state.planCost;
+    const reducedUsage = currentBilled * (1 - reducibleShare * (1 - 1 / ratioSonnetToDeepseek));
+    let billed = state.plan === 'api' ? reducedUsage : Math.max(planFloor, reducedUsage);
+    return billed;
+}
+
+function fmt(n) {
+    if (!isFinite(n)) return 'n/a';
+    return '$' + n.toFixed(2);
+}
+
+function recalc() {
+    const { billed: current } = calcCurrent();
+    const hybrid = calcHybrid(current);
+    const savings = Math.max(0, current - hybrid);
+    const annual = savings * 12;
+
+    document.getElementById('current-cost').textContent = fmt(current);
+    document.getElementById('hybrid-cost').textContent = fmt(hybrid);
+    document.getElementById('savings').textContent = savings > 0.5 ? fmt(savings) : '$0.00';
+    document.getElementById('annual-savings').textContent = annual > 0.5 ? fmt(annual) : '$0.00';
+    updateRecommendation(current, hybrid, savings);
+}
+
+function updateRecommendation(current, hybrid, savings) {
+    const rec = document.getElementById('recommendation');
+    const monthlySave = savings;
+    const mechShare = state.mechShare;
+
+    let body = '';
+    if (mechShare >= 0.4 && monthlySave >= 30) {
+        body = `<strong>Recommended path: hybrid.</strong> Your mechanical work share (${Math.round(mechShare * 100)}%) makes Path B (Migration Playbook) the highest-leverage move. Projected monthly savings of about ${fmt(monthlySave)} should pay back the setup time inside one month. Start with the <a href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook?utm_source=cost-calc&utm_medium=recommendation&utm_campaign=migration-playbook">Migration Playbook</a> Path B chapter for the side-worker selection and routing rules. Then verify your real numbers with the <a href="https://yurukusa.gumroad.com/l/azrdt?utm_source=cost-calc&utm_medium=recommendation&utm_campaign=token-book-en">Token Book</a> measurement chapter.`;
+    } else if (current >= 150) {
+        body = `<strong>Recommended path: measure first, then decide.</strong> Your projected monthly bill is high, but your mechanical share is low enough that hybrid may not move the needle as much as cache and prompt optimization would. Start with the <a href="https://yurukusa.gumroad.com/l/azrdt?utm_source=cost-calc&utm_medium=recommendation&utm_campaign=token-book-en">Token Book</a> to find where the real spend is going. If the measurement reveals more mechanical work than this projection assumes, the <a href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook?utm_source=cost-calc&utm_medium=recommendation&utm_campaign=migration-playbook">Migration Playbook</a> is the next step.`;
+    } else if (mechShare < 0.2) {
+        body = `<strong>Recommended path: stay and optimize.</strong> Your mechanical work share is small, so hybrid will not unlock big savings. Focus on cache hit ratio and prompt density. The <a href="https://yurukusa.gumroad.com/l/azrdt?utm_source=cost-calc&utm_medium=recommendation&utm_campaign=token-book-en">Token Book</a> covers both. If incidents become the issue rather than cost, the <a href="https://yurukusa.gumroad.com/l/rhtptb?utm_source=cost-calc&utm_medium=recommendation&utm_campaign=postmortems">Incident Postmortems</a> book has 12 production failures with prevention hooks.`;
+    } else {
+        body = `<strong>Recommended path: hybrid is worth a trial.</strong> Your projected savings of about ${fmt(monthlySave)} per month are real but moderate. A two-week trial of Path B (Migration Playbook chapter) on a subset of your mechanical work will tell you if the savings stick. If they do, scale up; if not, the <a href="https://yurukusa.gumroad.com/l/azrdt?utm_source=cost-calc&utm_medium=recommendation&utm_campaign=token-book-en">Token Book</a> has other optimization paths that might fit better.`;
+    }
+
+    body += `<br><br>For the full three-book curation with reading paths for three reader profiles, see the <a href="https://yurukusa.github.io/operations-suite/?utm_source=cost-calc&utm_medium=recommendation&utm_campaign=ops-suite">Operations Suite</a>.`;
+
+    rec.innerHTML = body;
+}
+
+recalc();
+</script>
+
+</body>
+</html>
