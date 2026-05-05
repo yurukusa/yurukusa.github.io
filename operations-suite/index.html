@@ -279,6 +279,45 @@
             border-left: 2px solid var(--border);
         }
 
+        .paths {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+        .path-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.4rem;
+        }
+        .path-name {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.6rem;
+        }
+        .path-situation {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        .path-step {
+            font-size: 0.88rem;
+            color: var(--text);
+            padding: 0.5rem 0;
+            border-top: 1px solid var(--border);
+        }
+        .path-step:first-of-type {
+            border-top: none;
+        }
+        .path-step strong {
+            display: inline-block;
+            min-width: 1.4rem;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
         .footer {
             margin-top: 4rem;
             padding-top: 2rem;
@@ -466,6 +505,42 @@
                 </div>
                 <div class="price-note">
                     Each book is sold individually on Gumroad. There is no shared bundle SKU yet. Buy what you need first; come back for the next layer when the symptom appears. All payment, refund, and update mechanics live on Gumroad — yurukusa.github.io is just the curation page.
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Reading paths</div>
+            <p style="color:var(--text-dim);margin-bottom:1.4rem;font-size:0.95rem;">
+                Three books mean three entry points. Pick the one that matches what is hurting right now. The other two stay on the shelf until the matching symptom appears.
+            </p>
+            <div class="paths">
+                <div class="path-card">
+                    <div class="path-name">The burn debugger</div>
+                    <div class="path-situation">
+                        You opened the Anthropic console this week and the bill was higher than your team expected. Nobody is sure where the burn is coming from. You have not had an outage yet, but the trajectory is wrong.
+                    </div>
+                    <div class="path-step"><strong>1.</strong> Token Book. Locate the leak before guessing at fixes.</div>
+                    <div class="path-step"><strong>2.</strong> Incident Postmortems. See what happens to teams that did not catch the burn in time.</div>
+                    <div class="path-step"><strong>3.</strong> Migration Playbook. Only if controls inside Claude Code do not bring spend back into range.</div>
+                </div>
+                <div class="path-card">
+                    <div class="path-name">The switch decider</div>
+                    <div class="path-situation">
+                        Your team is in evaluation mode. Stay on Claude Code, hybrid with a cheaper model, custom routing, or move to a different vendor are all on the table. The decision needs evidence, not vibes.
+                    </div>
+                    <div class="path-step"><strong>1.</strong> Migration Playbook. The four paths laid out side by side, with the trade-offs you cannot get from a vendor blog.</div>
+                    <div class="path-step"><strong>2.</strong> Token Book. Cost projections for whichever path you start to favor.</div>
+                    <div class="path-step"><strong>3.</strong> Incident Postmortems. The failure modes that survive on every path. Read before committing.</div>
+                </div>
+                <div class="path-card">
+                    <div class="path-name">The incident survivor</div>
+                    <div class="path-situation">
+                        Something already broke. A subagent leaked credentials, an Agent ran a destructive command, a 5-hour quota was burned in 9 minutes by a single command. You are doing post-mortem work right now.
+                    </div>
+                    <div class="path-step"><strong>1.</strong> Incident Postmortems. Find the pattern. Twelve real incidents, with detection and prevention hooks.</div>
+                    <div class="path-step"><strong>2.</strong> Token Book. Audit ongoing burn so the next surprise is not financial.</div>
+                    <div class="path-step"><strong>3.</strong> Migration Playbook. Once you have evidence, the option-awareness step.</div>
                 </div>
             </div>
         </div>
