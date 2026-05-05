@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Which Claude Code book should you read first? Five questions, one answer | yurukusa</title>
+    <meta name="description" content="Migration Playbook, Token Book, or Incident Postmortems. Five short questions tell you which one solves your problem now. No email required.">
+    <link rel="canonical" href="https://yurukusa.github.io/which-claude-code-book/">
+
+    <meta property="og:title" content="Which Claude Code book should you read first?">
+    <meta property="og:description" content="Five questions, one recommendation. No email required.">
+    <meta property="og:url" content="https://yurukusa.github.io/which-claude-code-book/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="yurukusa">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@yurukusa_dev">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #080810;
+            --surface: #10101c;
+            --surface2: #16162a;
+            --border: #1e1e38;
+            --text: #ddddf0;
+            --text-dim: #9090b0;
+            --accent: #f0883e;
+            --accent-soft: rgba(240, 136, 62, 0.15);
+            --green: #56d364;
+            --blue: #58a6ff;
+            --purple: #a371f7;
+        }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.65;
+            font-size: 16px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+        }
+        nav {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            margin-bottom: 1.5rem;
+        }
+        nav a {
+            color: var(--text-dim);
+            text-decoration: none;
+            margin-right: 1rem;
+        }
+        nav a:hover { color: var(--accent); }
+
+        h1 {
+            font-size: 1.9rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+        .lede {
+            font-size: 1.02rem;
+            color: var(--text-dim);
+            margin-bottom: 0.8rem;
+        }
+        .meta {
+            font-size: 0.82rem;
+            color: var(--text-dim);
+            margin-bottom: 2rem;
+            font-family: 'SF Mono', Menlo, monospace;
+        }
+
+        .progress {
+            display: flex;
+            gap: 0.4rem;
+            margin: 1.5rem 0 2rem;
+        }
+        .progress-step {
+            flex: 1;
+            height: 6px;
+            background: var(--surface);
+            border-radius: 3px;
+            transition: background 0.3s ease;
+        }
+        .progress-step.active { background: var(--accent); }
+        .progress-step.done { background: var(--accent); opacity: 0.6; }
+
+        .question-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem 1.6rem;
+            margin: 1.5rem 0;
+        }
+        .question-card.hidden { display: none; }
+        .question-num {
+            font-size: 0.78rem;
+            color: var(--accent);
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.6rem;
+        }
+        .question-text {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 1.4rem;
+            line-height: 1.4;
+        }
+
+        .answers {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+        .answer {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem 1.2rem;
+            text-align: left;
+            color: var(--text);
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            font-family: inherit;
+            line-height: 1.45;
+        }
+        .answer:hover {
+            border-color: var(--accent);
+            background: var(--accent-soft);
+        }
+
+        .result-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem 1.6rem;
+            margin: 1.5rem 0;
+        }
+        .result-card.hidden { display: none; }
+        .result-tag {
+            font-size: 0.78rem;
+            color: var(--accent);
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+        .result-name {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 0.8rem;
+        }
+        .result-why {
+            font-size: 1rem;
+            color: var(--text);
+            margin-bottom: 1.2rem;
+        }
+        .result-detail {
+            font-size: 0.92rem;
+            color: var(--text-dim);
+            background: var(--surface2);
+            border-left: 3px solid var(--accent);
+            border-radius: 0 6px 6px 0;
+            padding: 0.8rem 1rem;
+            margin: 1rem 0;
+        }
+
+        .cta {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--bg);
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            margin: 0.4rem 0;
+            font-size: 0.95rem;
+        }
+        .cta-secondary {
+            display: inline-block;
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 0.4rem 0 0.4rem 0.5rem;
+            font-size: 0.95rem;
+        }
+        .cta:hover { opacity: 0.9; }
+        .cta-secondary:hover { border-color: var(--accent); }
+
+        .next-steps {
+            margin-top: 1.6rem;
+            padding-top: 1.4rem;
+            border-top: 1px solid var(--border);
+        }
+        .next-steps h3 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.6rem;
+        }
+        .next-steps p {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            margin-bottom: 0.6rem;
+        }
+        .next-steps a { color: var(--accent); text-decoration: none; }
+        .next-steps a:hover { text-decoration: underline; }
+
+        .restart {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-family: inherit;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+        .restart:hover { color: var(--text); border-color: var(--accent); }
+
+        footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            text-align: center;
+        }
+        footer a { color: var(--accent); text-decoration: none; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+<nav>
+    <a href="/">home</a>
+    <a href="/operations-suite/">three books</a>
+    <a href="/operations-pain-map/">pain map</a>
+    <a href="/claude-code-alternatives/">alternatives</a>
+</nav>
+
+<h1>Which Claude Code book should you read first?</h1>
+<p class="lede">Five questions. No email. Your answers stay in your browser.</p>
+<p class="meta">Updated 2026-05-05. The three books are written by yurukusa from 800+ verified hours of autonomous Claude Code operation.</p>
+
+<div class="progress" id="progress">
+    <div class="progress-step active"></div>
+    <div class="progress-step"></div>
+    <div class="progress-step"></div>
+    <div class="progress-step"></div>
+    <div class="progress-step"></div>
+</div>
+
+<div class="question-card" data-q="1">
+    <div class="question-num">QUESTION 1 OF 5</div>
+    <div class="question-text">What is the most pressing thing on your mind about Claude Code right now?</div>
+    <div class="answers">
+        <button class="answer" data-points="token:3">The bill is bigger than I expected and I do not know why</button>
+        <button class="answer" data-points="migration:3">I am deciding whether to stay on Claude Code or switch to something else</button>
+        <button class="answer" data-points="postmortems:3">Something already broke; I want to make sure it does not happen again</button>
+        <button class="answer" data-points="postmortems:2,token:1">Production keeps surprising us in small ways</button>
+    </div>
+</div>
+
+<div class="question-card hidden" data-q="2">
+    <div class="question-num">QUESTION 2 OF 5</div>
+    <div class="question-text">How long have you been running Claude Code in real work?</div>
+    <div class="answers">
+        <button class="answer" data-points="migration:2">Less than a month; evaluating</button>
+        <button class="answer" data-points="token:2,postmortems:1">One to six months; using it daily</button>
+        <button class="answer" data-points="token:3">More than six months; costs are growing</button>
+        <button class="answer" data-points="postmortems:2,migration:1">Used it, hit problems, considering options</button>
+    </div>
+</div>
+
+<div class="question-card hidden" data-q="3">
+    <div class="question-num">QUESTION 3 OF 5</div>
+    <div class="question-text">Roughly what percentage of your Claude Code work is mechanical (formatting, classification, summarization, extraction)?</div>
+    <div class="answers">
+        <button class="answer" data-points="migration:3">More than 40 percent; lots of bulk work</button>
+        <button class="answer" data-points="token:2">20 to 40 percent; mixed</button>
+        <button class="answer" data-points="token:1">Less than 20 percent; mostly judgment work</button>
+        <button class="answer" data-points="token:2">I have not measured this</button>
+    </div>
+</div>
+
+<div class="question-card hidden" data-q="4">
+    <div class="question-num">QUESTION 4 OF 5</div>
+    <div class="question-text">How well does your team handle surprise output from Claude Code?</div>
+    <div class="answers">
+        <button class="answer" data-points="postmortems:3">Poorly; we need predictability and need it now</button>
+        <button class="answer" data-points="postmortems:1,token:2">OK with small surprises; can absorb them</button>
+        <button class="answer" data-points="migration:2">Fine; surprises are part of the work</button>
+        <button class="answer" data-points="token:1,postmortems:1">Solo, so it is just me</button>
+    </div>
+</div>
+
+<div class="question-card hidden" data-q="5">
+    <div class="question-num">QUESTION 5 OF 5</div>
+    <div class="question-text">What would success look like in 30 days?</div>
+    <div class="answers">
+        <button class="answer" data-points="token:3">Cost cut by at least 30 percent</button>
+        <button class="answer" data-points="migration:3">A clear decision on whether to stay, hybrid, or switch</button>
+        <button class="answer" data-points="postmortems:3">Zero new incidents; the team trusts the tool again</button>
+        <button class="answer" data-points="suite:3">All of the above</button>
+    </div>
+</div>
+
+<div class="result-card hidden" id="result-token">
+    <div class="result-tag">RECOMMENDED</div>
+    <div class="result-name">Token Book</div>
+    <div class="result-why">Your answers point to the cost layer. The bill, the burn, the unknown. Token Book is built for exactly this entry point.</div>
+    <div class="result-detail">94 pages. Pay what you want, suggested $12. Chapter 1 is free at <a href="https://yurukusa.github.io/cc-safe-setup/token-book.html#en">yurukusa.github.io/cc-safe-setup/token-book.html</a>. The book covers measurement first (you cannot fix what you cannot see), then the six leak shapes, then the hooks that prevent each one.</div>
+    <a href="https://yurukusa.gumroad.com/l/azrdt?utm_source=which-book-quiz&utm_medium=result&utm_campaign=token-book-en" class="cta" target="_blank" rel="noopener">Read Token Book on Gumroad</a>
+    <a href="https://yurukusa.github.io/cc-safe-setup/token-book.html#en" class="cta-secondary" target="_blank" rel="noopener">Free Chapter 1 first</a>
+    <div class="next-steps">
+        <h3>Where to look next</h3>
+        <p>If costs are bigger than your team can absorb in the next 30 days, the <a href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook?utm_source=which-book-quiz&utm_medium=next-step&utm_campaign=migration-playbook">Migration Playbook</a> covers the structural option (Path B hybrid delegation) that can move 17x more bulk work to a cheap side worker.</p>
+        <p>The <a href="https://yurukusa.github.io/operations-suite/?utm_source=which-book-quiz&utm_medium=next-step&utm_campaign=ops-suite">Operations Suite</a> page shows how all three books fit together if you want to plan ahead.</p>
+    </div>
+    <button class="restart" onclick="restartQuiz()">Take the quiz again</button>
+</div>
+
+<div class="result-card hidden" id="result-migration">
+    <div class="result-tag">RECOMMENDED</div>
+    <div class="result-name">Migration Playbook</div>
+    <div class="result-why">Your answers point to the decision layer. Stay, hybrid, switch. Migration Playbook lays out the four paths side by side with the trade-offs you cannot get from a vendor blog.</div>
+    <div class="result-detail">105 pages. $19 on Gumroad. Edition 2 ships 2026-05-08; current buyers get the update for free. Covers Path A (stay and harden), Path B (hybrid with cheaper models), Path C (custom routing), and Path D (full migration), each with a cost-forecast worksheet and a 48-hour rollback plan.</div>
+    <a href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook?utm_source=which-book-quiz&utm_medium=result&utm_campaign=migration-playbook" class="cta" target="_blank" rel="noopener">Read Migration Playbook on Gumroad</a>
+    <a href="https://yurukusa.github.io/claude-code-alternatives/" class="cta-secondary">Compare alternatives first</a>
+    <div class="next-steps">
+        <h3>Where to look next</h3>
+        <p>Once you pick a path, the <a href="https://yurukusa.gumroad.com/l/azrdt?utm_source=which-book-quiz&utm_medium=next-step&utm_campaign=token-book-en">Token Book</a> gives you the cost projection method for whichever direction you go.</p>
+        <p>If you might end up staying, the <a href="https://yurukusa.gumroad.com/l/rhtptb?utm_source=which-book-quiz&utm_medium=next-step&utm_campaign=postmortems">Incident Postmortems</a> book documents the failure modes that survive on every path; read before committing.</p>
+    </div>
+    <button class="restart" onclick="restartQuiz()">Take the quiz again</button>
+</div>
+
+<div class="result-card hidden" id="result-postmortems">
+    <div class="result-tag">RECOMMENDED</div>
+    <div class="result-name">Incident Postmortems</div>
+    <div class="result-why">Your answers point to the trust layer. Something broke or might break, and the team needs to see the failure shapes before they happen again. Postmortems is built for this entry point.</div>
+    <div class="result-detail">100 pages PDF. Live on Gumroad since 2026-05-05. Twelve real production incidents reverse-engineered from GitHub Issues, commits, and 800 plus hours of autonomous operation, each with a detection hook and a prevention path.</div>
+    <a href="https://yurukusa.gumroad.com/l/rhtptb?utm_source=which-book-quiz&utm_medium=result&utm_campaign=postmortems" class="cta" target="_blank" rel="noopener">Read Incident Postmortems on Gumroad</a>
+    <a href="https://yurukusa.github.io/operations-pain-map/" class="cta-secondary">Browse the pain map first</a>
+    <div class="next-steps">
+        <h3>Where to look next</h3>
+        <p>Once incidents are under control, the <a href="https://yurukusa.gumroad.com/l/azrdt?utm_source=which-book-quiz&utm_medium=next-step&utm_campaign=token-book-en">Token Book</a> audits ongoing burn so the next surprise is not financial.</p>
+        <p>The <a href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook?utm_source=which-book-quiz&utm_medium=next-step&utm_campaign=migration-playbook">Migration Playbook</a> is the next step once you have evidence and need to decide whether to stay or move.</p>
+    </div>
+    <button class="restart" onclick="restartQuiz()">Take the quiz again</button>
+</div>
+
+<div class="result-card hidden" id="result-suite">
+    <div class="result-tag">RECOMMENDED</div>
+    <div class="result-name">Operations Suite (all three books)</div>
+    <div class="result-why">Your answers say all three layers matter at once. The Operations Suite curation page maps the three books to three reader profiles and tells you the order to read them based on which problem to solve first.</div>
+    <div class="result-detail">Three books, 299 pages combined, $60 plus when bought separately. There is no shared discount SKU; the suite page is a navigation aid that tells you which book to start with for your specific situation, plus reading-order paths for the burn debugger, switch decider, and incident survivor profiles.</div>
+    <a href="https://yurukusa.github.io/operations-suite/?utm_source=which-book-quiz&utm_medium=result&utm_campaign=ops-suite" class="cta">Open the Operations Suite page</a>
+    <a href="https://yurukusa.github.io/operations-pain-map/" class="cta-secondary">Browse the pain map first</a>
+    <div class="next-steps">
+        <h3>Where to look next</h3>
+        <p>If you want a more granular view, the <a href="https://yurukusa.github.io/operations-pain-map/">Pain Map</a> lists 12 specific operational pains with each one mapped to the right book.</p>
+    </div>
+    <button class="restart" onclick="restartQuiz()">Take the quiz again</button>
+</div>
+
+<footer>
+    <p>© 2026 yurukusa / ゆるくさ &nbsp;·&nbsp; <a href="/legal">特定商取引法に基づく表記</a> &nbsp;·&nbsp; <a href="/">home</a></p>
+</footer>
+
+</div>
+
+<script>
+const scores = { token: 0, migration: 0, postmortems: 0, suite: 0 };
+let currentQ = 1;
+const totalQ = 5;
+
+function showQuestion(n) {
+    document.querySelectorAll('.question-card').forEach(c => c.classList.add('hidden'));
+    const card = document.querySelector(`.question-card[data-q="${n}"]`);
+    if (card) card.classList.remove('hidden');
+    updateProgress(n);
+}
+
+function updateProgress(n) {
+    const steps = document.querySelectorAll('.progress-step');
+    steps.forEach((step, i) => {
+        step.classList.remove('active', 'done');
+        if (i + 1 < n) step.classList.add('done');
+        else if (i + 1 === n) step.classList.add('active');
+    });
+}
+
+function recordAnswer(pointsStr) {
+    pointsStr.split(',').forEach(pair => {
+        const [book, pts] = pair.split(':');
+        scores[book] = (scores[book] || 0) + parseInt(pts, 10);
+    });
+}
+
+function showResult() {
+    document.querySelectorAll('.question-card').forEach(c => c.classList.add('hidden'));
+    document.getElementById('progress').style.display = 'none';
+
+    const winner = Object.entries(scores).reduce((a, b) => a[1] >= b[1] ? a : b)[0];
+
+    let target;
+    const margin = scores[winner] - Math.max(...Object.entries(scores).filter(([k]) => k !== winner).map(([, v]) => v));
+    if (winner === 'suite' && scores.suite >= 3) {
+        target = 'result-suite';
+    } else if (margin <= 1 && scores.suite >= 2) {
+        target = 'result-suite';
+    } else {
+        target = `result-${winner}`;
+    }
+
+    const card = document.getElementById(target);
+    if (card) {
+        card.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+}
+
+function restartQuiz() {
+    Object.keys(scores).forEach(k => scores[k] = 0);
+    currentQ = 1;
+    document.querySelectorAll('.result-card').forEach(c => c.classList.add('hidden'));
+    document.getElementById('progress').style.display = 'flex';
+    showQuestion(1);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.querySelectorAll('.answer').forEach(btn => {
+    btn.addEventListener('click', () => {
+        recordAnswer(btn.dataset.points);
+        currentQ += 1;
+        if (currentQ <= totalQ) {
+            showQuestion(currentQ);
+        } else {
+            showResult();
+        }
+    });
+});
+</script>
+
+</body>
+</html>
