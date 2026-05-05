@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Code の月額の費用の計算の道具: Anthropic の請求の見立てと併用の節約 | yurukusa</title>
+    <meta name="description" content="プラン、 1 日の作業時間、 機械的な作業の割合から、 Claude Code の月額の費用を見立てる。 機械的な作業を安い副の作業者に流した場合の節約も計算する。">
+    <link rel="canonical" href="https://yurukusa.github.io/claude-code-cost-calculator-ja/">
+
+    <link rel="alternate" hreflang="en" href="https://yurukusa.github.io/claude-code-cost-calculator/">
+    <link rel="alternate" hreflang="ja" href="https://yurukusa.github.io/claude-code-cost-calculator-ja/">
+
+    <meta property="og:title" content="Claude Code の月額の費用の計算の道具">
+    <meta property="og:description" content="請求の見立て。 漏れの場所を見る。 併用の節約を見る。">
+    <meta property="og:url" content="https://yurukusa.github.io/claude-code-cost-calculator-ja/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="yurukusa">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@yurukusa_dev">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #080810;
+            --surface: #10101c;
+            --surface2: #16162a;
+            --border: #1e1e38;
+            --text: #ddddf0;
+            --text-dim: #9090b0;
+            --accent: #f0883e;
+            --accent-soft: rgba(240, 136, 62, 0.15);
+            --green: #56d364;
+            --red: #f85149;
+            --blue: #58a6ff;
+        }
+        body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', "Hiragino Sans", "Yu Gothic", sans-serif; line-height: 1.75; font-size: 16px; min-height: 100vh; }
+        .container { max-width: 760px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+        nav { font-size: 0.85rem; color: var(--text-dim); margin-bottom: 1.5rem; }
+        nav a { color: var(--text-dim); text-decoration: none; margin-right: 1rem; }
+        nav a:hover { color: var(--accent); }
+
+        h1 { font-size: 1.75rem; font-weight: 800; line-height: 1.4; margin-bottom: 0.8rem; }
+        .lede { font-size: 1rem; color: var(--text-dim); margin-bottom: 0.8rem; }
+        .meta { font-size: 0.82rem; color: var(--text-dim); margin-bottom: 2rem; font-family: 'SF Mono', Menlo, monospace; }
+
+        .input-group { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.4rem 1.4rem 1rem; margin: 1.2rem 0; }
+        .input-label { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; }
+        .input-help { font-size: 0.83rem; color: var(--text-dim); margin-bottom: 0.8rem; }
+        .options { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0.5rem; }
+        .option { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 0.7rem 0.9rem; text-align: center; color: var(--text); font-size: 0.88rem; cursor: pointer; transition: all 0.15s ease; font-family: inherit; }
+        .option:hover { border-color: var(--accent); background: var(--accent-soft); }
+        .option.selected { background: var(--accent); color: var(--bg); border-color: var(--accent); font-weight: 700; }
+
+        .slider-row { display: flex; align-items: center; gap: 1rem; }
+        input[type="range"] { flex: 1; -webkit-appearance: none; background: var(--surface2); height: 6px; border-radius: 3px; outline: none; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; background: var(--accent); border-radius: 50%; cursor: pointer; }
+        input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; background: var(--accent); border-radius: 50%; cursor: pointer; border: none; }
+        .slider-value { min-width: 100px; text-align: right; font-family: 'SF Mono', Menlo, monospace; color: var(--accent); font-weight: 700; font-size: 0.95rem; }
+
+        .result-section { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.8rem 1.6rem; margin: 2rem 0 1rem; }
+        .result-title { font-size: 0.78rem; color: var(--accent); font-weight: 700; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+        .result-rows { display: flex; flex-direction: column; gap: 0.8rem; }
+        .result-row { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 0.6rem; border-bottom: 1px solid var(--border); gap: 1rem; }
+        .result-row:last-child { border-bottom: none; }
+        .result-label { font-size: 0.92rem; }
+        .result-label-sub { display: block; font-size: 0.78rem; color: var(--text-dim); margin-top: 0.2rem; }
+        .result-value { font-family: 'SF Mono', Menlo, monospace; font-weight: 700; font-size: 1.15rem; color: var(--accent); white-space: nowrap; }
+        .result-value.green { color: var(--green); }
+        .result-value.dim { color: var(--text-dim); font-weight: 400; }
+
+        .recommendation { background: var(--accent-soft); border: 1px solid var(--accent); border-radius: 8px; padding: 1.2rem; margin: 1.2rem 0; font-size: 0.95rem; line-height: 1.8; }
+        .recommendation strong { color: var(--accent); }
+        .recommendation a { color: var(--accent); font-weight: 700; text-decoration: none; }
+        .recommendation a:hover { text-decoration: underline; }
+
+        .disclaimer { font-size: 0.82rem; color: var(--text-dim); background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 0.9rem 1.1rem; margin: 1.5rem 0; line-height: 1.8; }
+
+        footer { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.8rem; color: var(--text-dim); text-align: center; }
+        footer a { color: var(--accent); text-decoration: none; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+<nav>
+    <a href="/">ホーム</a>
+    <a href="/operations-suite/">3 冊の本</a>
+    <a href="/which-claude-code-book-ja/">判定の道具</a>
+    <a href="/claude-code-alternatives-ja/">代替の比較</a>
+    <a href="/claude-code-cost-calculator/">English</a>
+</nav>
+
+<h1>Claude Code の月額の費用の計算の道具</h1>
+<p class="lede">月の Anthropic の請求の見立てを出す。 機械的な作業を安い副の作業者に流した場合 (Path B の併用) の節約の見立ても出す。 留まるか、 併用するか、 乗り換えるかを、 数字で判定する。</p>
+<p class="meta">最終更新 2026-05-05。 値段は 2026-04-22 以後の Anthropic の Pro 版の構造の変更と、 現在の API の単価で計算する。 併用の節約の比は 2026-05-05 の r/ClaudeAI の 81 票 の検証 (217 件 の機械的な作業、 DeepSeek V4 Flash で 0.41 ドル、 Sonnet で約 7 ドル、 17 分の 1 の比) を用いる。</p>
+
+<div class="input-group">
+    <div class="input-label">1. 今のプランは何か。</div>
+    <div class="input-help">現在の Anthropic の購読に合うものを選ぶ。 4 月 22 日 以後の値段を使う。</div>
+    <div class="options" id="plan-options">
+        <button class="option" data-plan="pro" data-cost="20">Pro (月 20 ドル)</button>
+        <button class="option" data-plan="max5" data-cost="100">Max 5x (月 100 ドル)</button>
+        <button class="option selected" data-plan="max20" data-cost="200">Max 20x (月 200 ドル)</button>
+        <button class="option" data-plan="api" data-cost="0">API のみ (使った分払い)</button>
+    </div>
+</div>
+
+<div class="input-group">
+    <div class="input-label">2. 1 日 のうち、 Claude Code を実際に動かす時間はどれくらいか。</div>
+    <div class="input-help">作業のセッションが活発な時間。 端末を開いたまま放置の時間は含めない。</div>
+    <div class="slider-row">
+        <input type="range" id="hours" min="1" max="12" value="6" step="1">
+        <div class="slider-value" id="hours-value">6 時間 / 日</div>
+    </div>
+</div>
+
+<div class="input-group">
+    <div class="input-label">3. 機械的な作業の割合はどれくらいか。</div>
+    <div class="input-help">整形、 分類、 要約、 抽出。 安い模型でできるが、 今は Sonnet に流している作業の割合。</div>
+    <div class="options" id="mechanical-options">
+        <button class="option" data-mech="0.1">20 パーセント 未満 (ほぼ判断の作業)</button>
+        <button class="option selected" data-mech="0.3">20 から 40 パーセント (混在)</button>
+        <button class="option" data-mech="0.5">40 から 60 パーセント (大量の作業)</button>
+        <button class="option" data-mech="0.7">60 パーセント を超える (ほぼ大量の作業)</button>
+    </div>
+</div>
+
+<div class="input-group">
+    <div class="input-label">4. Sonnet と Opus の使う割合は。</div>
+    <div class="input-help">Claude を呼ぶ時、 どちらの模型を主に使うか。</div>
+    <div class="options" id="model-options">
+        <button class="option selected" data-model="sonnet">Sonnet のみ</button>
+        <button class="option" data-model="mostly-sonnet">Sonnet 80% / Opus 20%</button>
+        <button class="option" data-model="balanced">Sonnet 50% / Opus 50%</button>
+        <button class="option" data-model="mostly-opus">主に Opus</button>
+    </div>
+</div>
+
+<div class="result-section">
+    <div class="result-title">月額の費用の見立て</div>
+    <div class="result-rows">
+        <div class="result-row">
+            <div class="result-label">
+                現状の経路 (全て Claude)
+                <span class="result-label-sub">プランの基本料金と、 はみ出した分の API の料金</span>
+            </div>
+            <div class="result-value" id="current-cost">...</div>
+        </div>
+        <div class="result-row">
+            <div class="result-label">
+                併用の経路 (Path B)
+                <span class="result-label-sub">機械的な作業を安い副の作業者に流す、 判断の作業は Claude のまま</span>
+            </div>
+            <div class="result-value green" id="hybrid-cost">...</div>
+        </div>
+        <div class="result-row">
+            <div class="result-label">
+                月の節約の見立て
+                <span class="result-label-sub">現状と併用の差額</span>
+            </div>
+            <div class="result-value green" id="savings">...</div>
+        </div>
+        <div class="result-row">
+            <div class="result-label">
+                併用が続いた場合の年の節約
+                <span class="result-label-sub">月の差額の 12 倍</span>
+            </div>
+            <div class="result-value dim" id="annual-savings">...</div>
+        </div>
+    </div>
+</div>
+
+<div class="recommendation" id="recommendation">
+</div>
+
+<div class="disclaimer">
+    この数字は見立てで、 実測ではない。 実際の費用は、 トークンの混ざり方、 cache の当たり方、 模型の振り分け、 1 セッションごとの cache_creation の量で変わる。 Token Book の第 1 章 が、 自分の実際の支出の測り方を扱う。 ここの見立ては 800 時間 を超える Claude Code の自律の運用の median の値で計算している。 併用の節約は、 副の作業者を正しく設定した場合の数字 (CLAUDE.md の deny 形のルール、 出力の人による確認) を前提にする。 確認なしで本番に流すのは危険。
+</div>
+
+<footer>
+    <p>© 2026 yurukusa / ゆるくさ &nbsp;・&nbsp; <a href="/legal">特定商取引法に基づく表記</a> &nbsp;・&nbsp; <a href="/">ホーム</a> &nbsp;・&nbsp; <a href="/claude-code-cost-calculator/">English</a></p>
+</footer>
+
+</div>
+
+<script>
+const state = {
+    plan: 'max20',
+    planCost: 200,
+    hours: 6,
+    mechShare: 0.3,
+    modelMix: 'sonnet'
+};
+
+function setupOptionGroup(containerId) {
+    const container = document.getElementById(containerId);
+    container.querySelectorAll('.option').forEach(btn => {
+        btn.addEventListener('click', () => {
+            container.querySelectorAll('.option').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            const data = btn.dataset;
+            if (data.plan) {
+                state.plan = data.plan;
+                state.planCost = parseFloat(data.cost);
+            }
+            if (data.mech) state.mechShare = parseFloat(data.mech);
+            if (data.model) state.modelMix = data.model;
+            recalc();
+        });
+    });
+}
+
+setupOptionGroup('plan-options');
+setupOptionGroup('mechanical-options');
+setupOptionGroup('model-options');
+
+const hoursInput = document.getElementById('hours');
+const hoursValue = document.getElementById('hours-value');
+hoursInput.addEventListener('input', () => {
+    state.hours = parseInt(hoursInput.value, 10);
+    hoursValue.textContent = `${state.hours} 時間 / 日`;
+    recalc();
+});
+
+function modelBlend(mix) {
+    switch (mix) {
+        case 'sonnet': return { sonnetShare: 1.0, opusShare: 0.0 };
+        case 'mostly-sonnet': return { sonnetShare: 0.8, opusShare: 0.2 };
+        case 'balanced': return { sonnetShare: 0.5, opusShare: 0.5 };
+        case 'mostly-opus': return { sonnetShare: 0.2, opusShare: 0.8 };
+    }
+    return { sonnetShare: 1.0, opusShare: 0.0 };
+}
+
+function calcCurrent() {
+    const planFloor = state.planCost;
+    const blend = modelBlend(state.modelMix);
+    const hoursMonth = state.hours * 22;
+    const tokensPerHour = 1500000;
+    const sonnetIn = 3.0, sonnetOut = 15.0;
+    const opusIn = 15.0, opusOut = 75.0;
+    const usageCost = (hoursMonth * tokensPerHour / 1000000) * (
+        blend.sonnetShare * (sonnetIn * 0.7 + sonnetOut * 0.3) +
+        blend.opusShare * (opusIn * 0.7 + opusOut * 0.3)
+    );
+    let billed;
+    if (state.plan === 'api') {
+        billed = usageCost;
+    } else {
+        const planValue = state.plan === 'pro' ? 100 : state.plan === 'max5' ? 500 : 2000;
+        billed = planFloor + Math.max(0, usageCost - planValue);
+    }
+    return { billed, usageCost };
+}
+
+function calcHybrid(currentBilled) {
+    const moveable = state.mechShare;
+    const ratioSonnetToDeepseek = 17;
+    const blend = modelBlend(state.modelMix);
+    const sonnetUsageShare = blend.sonnetShare;
+    const reducibleShare = moveable * sonnetUsageShare;
+    const planFloor = state.planCost;
+    const reducedUsage = currentBilled * (1 - reducibleShare * (1 - 1 / ratioSonnetToDeepseek));
+    let billed = state.plan === 'api' ? reducedUsage : Math.max(planFloor, reducedUsage);
+    return billed;
+}
+
+function fmt(n) {
+    if (!isFinite(n)) return 'n/a';
+    return '$' + n.toFixed(2);
+}
+
+function recalc() {
+    const { billed: current } = calcCurrent();
+    const hybrid = calcHybrid(current);
+    const savings = Math.max(0, current - hybrid);
+    const annual = savings * 12;
+
+    document.getElementById('current-cost').textContent = fmt(current);
+    document.getElementById('hybrid-cost').textContent = fmt(hybrid);
+    document.getElementById('savings').textContent = savings > 0.5 ? fmt(savings) : '$0.00';
+    document.getElementById('annual-savings').textContent = annual > 0.5 ? fmt(annual) : '$0.00';
+    updateRecommendation(current, hybrid, savings);
+}
+
+function updateRecommendation(current, hybrid, savings) {
+    const rec = document.getElementById('recommendation');
+    const monthlySave = savings;
+    const mechShare = state.mechShare;
+
+    let body = '';
+    if (mechShare >= 0.4 && monthlySave >= 30) {
+        body = `<strong>推奨の経路: 併用 (Path B)。</strong> 機械的な作業の割合 (${Math.round(mechShare * 100)} %) が大きいので、 Path B の併用が最大の効果。 月の節約の見立てが約 ${fmt(monthlySave)} で、 設定の手間は 1 ヶ月 以内 で回収できる見立て。 まず <a href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook?utm_source=cost-calc-ja&utm_medium=recommendation&utm_campaign=migration-playbook">Migration Playbook</a> の Path B の章 で、 副の作業者の選び方と振り分けの規則を読む。 次に <a href="https://yurukusa.gumroad.com/l/azrdt?utm_source=cost-calc-ja&utm_medium=recommendation&utm_campaign=token-book-en">Token Book</a> の測定の章 で実際の数字を確かめる。`;
+    } else if (current >= 150) {
+        body = `<strong>推奨の経路: 先に測ってから判定する。</strong> 月の請求の見立てが大きいが、 機械的な作業の割合がそこまで高くないので、 併用より cache の最適化や指示の整え方の方が効く可能性。 まず <a href="https://yurukusa.gumroad.com/l/azrdt?utm_source=cost-calc-ja&utm_medium=recommendation&utm_campaign=token-book-en">Token Book</a> で、 実際の支出がどこに行っているかを測る。 機械的な作業の割合が見立てより多いと分かれば、 <a href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook?utm_source=cost-calc-ja&utm_medium=recommendation&utm_campaign=migration-playbook">Migration Playbook</a> が次の段階。`;
+    } else if (mechShare < 0.2) {
+        body = `<strong>推奨の経路: 留まって最適化する。</strong> 機械的な作業の割合が小さいので、 併用の経路は大きな節約にならない。 cache の当たり方と、 指示の密度の改善に集中する。 <a href="https://yurukusa.gumroad.com/l/azrdt?utm_source=cost-calc-ja&utm_medium=recommendation&utm_campaign=token-book-en">Token Book</a> がこの 2 つを扱う。 費用ではなく事故が問題になった場合は、 <a href="https://yurukusa.gumroad.com/l/rhtptb?utm_source=cost-calc-ja&utm_medium=recommendation&utm_campaign=postmortems">Incident Postmortems</a> が 12 件 の本番の失敗を、 防止の hook つきで扱う。`;
+    } else {
+        body = `<strong>推奨の経路: 併用を試す価値あり。</strong> 月の節約の見立てが約 ${fmt(monthlySave)} で、 効果は中程度。 Path B (Migration Playbook の章) を機械的な作業の一部で 2 週間 試して、 節約が定着するかを見る。 定着するなら拡大、 しないなら <a href="https://yurukusa.gumroad.com/l/azrdt?utm_source=cost-calc-ja&utm_medium=recommendation&utm_campaign=token-book-en">Token Book</a> の他の最適化の経路を試す。`;
+    }
+
+    body += `<br><br>3 冊 を一緒に見て、 3 種類 の読者の経路を確認したい場合は、 <a href="https://yurukusa.github.io/operations-suite/?utm_source=cost-calc-ja&utm_medium=recommendation&utm_campaign=ops-suite">Operations Suite の頁</a> へ。`;
+
+    rec.innerHTML = body;
+}
+
+recalc();
+</script>
+
+</body>
+</html>
