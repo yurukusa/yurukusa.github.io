@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Code Operations Pain Map | yurukusa</title>
+    <meta name="description" content="Ten production pains in Claude Code, mapped to free guides and reference books. Token burn, sub-agent boundary loss, silent regressions, migration decision · find where you are and what to read next.">
+    <link rel="canonical" href="https://yurukusa.github.io/operations-pain-map/">
+
+    <meta property="og:title" content="Claude Code Operations Pain Map">
+    <meta property="og:description" content="Ten production pains, mapped to free guides and reference books. Find where you are and what to read next.">
+    <meta property="og:image" content="https://yurukusa.github.io/images/ogp.png">
+    <meta property="og:url" content="https://yurukusa.github.io/operations-pain-map/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="yurukusa">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@yurukusa_dev">
+    <meta name="twitter:title" content="Claude Code Operations Pain Map">
+    <meta name="twitter:description" content="Ten production pains, mapped to free guides and reference books.">
+    <meta name="twitter:image" content="https://yurukusa.github.io/images/ogp.png">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #080810;
+            --surface: #10101c;
+            --surface2: #16162a;
+            --border: #1e1e38;
+            --text: #ddddf0;
+            --text-dim: #7878a0;
+            --accent: #5b7fff;
+            --accent-glow: rgba(91,127,255,0.2);
+            --green: #40d080;
+            --green-glow: rgba(64,208,128,0.15);
+            --orange: #ff7a50;
+            --red: #ff5060;
+            --amber: #f59e0b;
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem 5rem;
+        }
+        .top-nav {
+            margin-bottom: 2rem;
+        }
+        .top-nav a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 0.04em;
+        }
+        .top-nav a:hover { color: var(--accent); }
+
+        .hero {
+            text-align: center;
+            padding: 3rem 0 2.5rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 3rem;
+        }
+        .hero-label {
+            display: inline-block;
+            font-size: 0.72rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--amber);
+            background: rgba(245,158,11,0.1);
+            border: 1px solid rgba(245,158,11,0.4);
+            border-radius: 99px;
+            padding: 0.25rem 0.9rem;
+            margin-bottom: 1.2rem;
+        }
+        .hero h1 {
+            font-size: clamp(1.8rem, 5vw, 2.8rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            margin-bottom: 1rem;
+        }
+        .hero h1 .dim { color: var(--text-dim); font-weight: 400; }
+        .hero .sub {
+            font-size: 1rem;
+            color: var(--text-dim);
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .pain-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.1rem;
+            margin-bottom: 3rem;
+        }
+        .pain {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.4rem 1.5rem 1.5rem;
+            transition: border-color 0.2s;
+        }
+        .pain:hover { border-color: var(--accent); }
+        .pain-num {
+            display: inline-block;
+            font-family: 'SFMono-Regular', Menlo, monospace;
+            font-size: 0.78rem;
+            color: var(--text-dim);
+            letter-spacing: 0.05em;
+            margin-bottom: 0.4rem;
+        }
+        .pain h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.6rem;
+            letter-spacing: -0.01em;
+        }
+        .pain-desc {
+            font-size: 0.92rem;
+            color: var(--text-dim);
+            line-height: 1.65;
+            margin-bottom: 1.1rem;
+        }
+        .pain-desc strong { color: var(--text); font-weight: 600; }
+        .pain-evidence {
+            font-family: 'SFMono-Regular', Menlo, monospace;
+            font-size: 0.78rem;
+            color: var(--text-dim);
+            background: var(--surface2);
+            border-left: 2px solid var(--amber);
+            padding: 0.6rem 0.9rem;
+            margin-bottom: 1.1rem;
+            border-radius: 0 6px 6px 0;
+        }
+        .pain-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.6rem;
+        }
+        @media (max-width: 600px) {
+            .pain-actions { grid-template-columns: 1fr; }
+        }
+        .pain-action {
+            display: block;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.7rem 0.9rem;
+            text-decoration: none;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .pain-action:hover { border-color: var(--accent); background: var(--surface2); }
+        .pain-action-tag {
+            font-family: 'SFMono-Regular', Menlo, monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+            display: block;
+        }
+        .pain-action.free .pain-action-tag { color: var(--green); }
+        .pain-action.paid .pain-action-tag { color: var(--orange); }
+        .pain-action-text {
+            font-size: 0.88rem;
+            color: var(--text);
+            line-height: 1.4;
+        }
+        .pain-action-meta {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            margin-top: 0.3rem;
+        }
+
+        .intro-block {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.6rem 1.8rem;
+            margin-bottom: 2.5rem;
+        }
+        .intro-block p {
+            font-size: 0.95rem;
+            color: var(--text-dim);
+            margin-bottom: 0.8rem;
+        }
+        .intro-block p:last-child { margin-bottom: 0; }
+        .intro-block strong { color: var(--text); }
+
+        footer {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-dim);
+            font-size: 0.78rem;
+            margin-top: 2rem;
+        }
+        footer a { color: var(--text-dim); text-decoration: none; }
+        footer a:hover { color: var(--accent); }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <div class="top-nav">
+            <a href="/">← yurukusa.github.io</a>
+        </div>
+
+        <div class="hero">
+            <div class="hero-label">Operations Pain Map · 2026-05</div>
+            <h1>Where Claude Code breaks.<br><span class="dim">Where to read about it. Where to fix it.</span></h1>
+            <p class="sub">Ten recurring production pains, with the free article that diagnoses each one and the paid book that goes deeper. Built from 800+ verified hours of autonomous operation, 700+ safety hooks, and ten incident postmortems.</p>
+        </div>
+
+        <div class="intro-block">
+            <p>This page exists because the same questions keep arriving in different shapes. <strong>"My token bill exploded overnight."</strong> <strong>"My sub-agent reported success but nothing was saved."</strong> <strong>"Should I switch to Cursor or stay on Claude Code?"</strong> Each one has a known shape and a known answer. Find yours below.</p>
+            <p>Every link to a paid product is tagged so I can see which pain drove the click. The free articles are not teasers; they are full diagnostic walkthroughs with Issue numbers and reproduction steps. Read those first.</p>
+        </div>
+
+        <div class="section-title">The ten pains</div>
+
+        <div class="pain-grid">
+
+            <!-- Pain 1: Token bill exploded -->
+            <div class="pain">
+                <span class="pain-num">PAIN 01 · COST</span>
+                <h3>The five-hour limit burned in nine minutes</h3>
+                <p class="pain-desc">You opened a single file, asked one question, and your weekly quota disappeared. <strong>You are not doing anything wrong.</strong> A regression that lands in a minor version multiplies token consumption by 1.4 to 1.5 times across the same workload. The cluster of Issues #54776, #55053, #56075 and #55941 documents it: 75 plus comments, 26 plus reactions, OP after OP describing the same nine-minute burn.</p>
+                <div class="pain-evidence">Reproducible: open ~/.claude/CLAUDE.md, run /compact once, watch cache_creation. Tokens spike disproportionate to context size.</div>
+                <div class="pain-actions">
+                    <a href="https://yurukusa.hashnode.dev/" class="pain-action free" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">FREE · DIAGNOSE</span>
+                        <span class="pain-action-text">Hashnode: the four-incident burn cluster, fix paths, v2.1.121 rollback</span>
+                        <span class="pain-action-meta">Public, 1,447 words, 12 minutes</span>
+                    </a>
+                    <a href="https://yurukusa.gumroad.com/l/azrdt?utm_source=pain-map&utm_medium=card&utm_campaign=token-book-en&utm_content=pain01-cost" class="pain-action paid" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">PAID · FIX · $19.99</span>
+                        <span class="pain-action-text">Token Book · 800h of measured token data, 9 hook-based guards, CLAUDE.md restructuring</span>
+                        <span class="pain-action-meta">94 pages, English PDF</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Pain 2: Sub-agent boundary -->
+            <div class="pain">
+                <span class="pain-num">PAIN 02 · SAFETY</span>
+                <h3>The sub-agent reported success but nothing was saved</h3>
+                <p class="pain-desc">A read-only sub-agent says <em>"saved successfully"</em>. Nothing was saved. You discover this hours later. The pattern repeats across at least five Issues · #55488 (identity leak), #55653 (read-only false success), #55660 (work hours lost), #55666, #55691 · pointing at one structural gap: <strong>the sub-agent has no persistent boundary for its identity, tool surface, or workspace ownership</strong>. Each call invents the boundary anew.</p>
+                <div class="pain-evidence">Symptom: parent session sees "completed" with no diff. Run git status; confirm no changes. The sub-agent will deny it confidently.</div>
+                <div class="pain-actions">
+                    <a href="https://yurukusa.hashnode.dev/" class="pain-action free" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">FREE · DIAGNOSE</span>
+                        <span class="pain-action-text">Hashnode: the five-axis sub-agent boundary article (1,567 words)</span>
+                        <span class="pain-action-meta">Public, 7 minutes</span>
+                    </a>
+                    <a href="https://yurukusa.gumroad.com/l/rhtptb?utm_source=pain-map&utm_medium=card&utm_campaign=postmortems&utm_content=pain02-subagent" class="pain-action paid" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">PAID · POSTMORTEM</span>
+                        <span class="pain-action-text">Postmortems · ten production failures reverse-engineered from Issues, commits, 800+ hours</span>
+                        <span class="pain-action-meta">100 pages PDF, see product page for current price</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Pain 3: Vibe coding gap -->
+            <div class="pain">
+                <span class="pain-num">PAIN 03 · DECISION</span>
+                <h3>"Vibe coding works in demos. Production is breaking us."</h3>
+                <p class="pain-desc">2,609 upvotes on r/ClaudeAI, 2026-05-05. The dominant complaint of May 2026 is that Claude Code performs differently in casual use and in real production workloads. The gap is real and measurable. <strong>The decision is not "AI yes or no" but which of three paths fits your team:</strong> stay and fortify, switch platforms, or hybrid (Claude Code as orchestrator, cheaper models as workers).</p>
+                <div class="pain-evidence">Five measurable triggers tell you which path: cost-per-task, defect rate, latency variance, toolchain coverage, and your team's tolerance for non-determinism.</div>
+                <div class="pain-actions">
+                    <a href="https://qiita.com/yurukusa" class="pain-action free" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">FREE · DIAGNOSE</span>
+                        <span class="pain-action-text">Qiita: the five migration triggers and how to score yours</span>
+                        <span class="pain-action-meta">Public, Japanese</span>
+                    </a>
+                    <a href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook?utm_source=pain-map&utm_medium=card&utm_campaign=migration-playbook&utm_content=pain03-decision" class="pain-action paid" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">PAID · DECIDE · $19</span>
+                        <span class="pain-action-text">Migration Playbook · three-path framework, cost-forecast worksheet, decision tree, 48h rollback</span>
+                        <span class="pain-action-meta">105 pages, Edition 2 ships 2026-05-08, free update for buyers</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Pain 4: Cache_control regressions -->
+            <div class="pain">
+                <span class="pain-num">PAIN 04 · CACHE</span>
+                <h3>cache_control silently changed and your bill came in 5x</h3>
+                <p class="pain-desc">A point release changed cache TTL from one hour to five minutes. Nobody told you. Your settings.json that worked last week now produces empty cache_control blocks. Issues #46917 (tokenizer inflation 1.35 to 1.46x), #46829 (TTL regression), and several others document the silent shift. <strong>The cache lives in client behavior, not server config.</strong> When Claude Code updates, your cache strategy needs to be re-verified, not assumed.</p>
+                <div class="pain-evidence">cache_creation / total above 0.20 is the warning sign. Above 0.40 means the cache is being rebuilt every call.</div>
+                <div class="pain-actions">
+                    <a href="https://qiita.com/yurukusa" class="pain-action free" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">FREE · DIAGNOSE</span>
+                        <span class="pain-action-text">Qiita: cache_control regression article and the 0.20 ratio rule</span>
+                        <span class="pain-action-meta">Public, Japanese</span>
+                    </a>
+                    <a href="https://yurukusa.gumroad.com/l/azrdt?utm_source=pain-map&utm_medium=card&utm_campaign=token-book-en&utm_content=pain04-cache" class="pain-action paid" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">PAID · FIX · $19.99</span>
+                        <span class="pain-action-text">Token Book Chapter 7 · cache anomalies, post-compaction spikes, the 0.20 invariant</span>
+                        <span class="pain-action-meta">94 pages, English PDF</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Pain 5: Silent regressions -->
+            <div class="pain">
+                <span class="pain-num">PAIN 05 · UPGRADE</span>
+                <h3>Last week's setup stopped working after a minor update</h3>
+                <p class="pain-desc">v2.1.121, v2.1.122, v2.1.123, v2.1.126: each minor version since late April 2026 has shipped at least one silent regression in five different surface areas (sub-agent identity, MCP plugin, Skill plugin variables, cache_creation, weekly quota). The release notes do not mention them. The fixes either roll back to a previous version or wait for the next patch. <strong>Treat every minor update as a potentially breaking change.</strong></p>
+                <div class="pain-evidence">git tag -l 'v2.1.*' | sort -V to see the surface area. Each tag has its own cluster of regressions.</div>
+                <div class="pain-actions">
+                    <a href="https://yurukusa.hatenablog.com/" class="pain-action free" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">FREE · DIAGNOSE</span>
+                        <span class="pain-action-text">hatena: the v2.1.121 regression cluster (5 areas, no release-note mention)</span>
+                        <span class="pain-action-meta">Public, Japanese</span>
+                    </a>
+                    <a href="https://yurukusa.gumroad.com/l/rhtptb?utm_source=pain-map&utm_medium=card&utm_campaign=postmortems&utm_content=pain05-upgrade" class="pain-action paid" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">PAID · POSTMORTEM</span>
+                        <span class="pain-action-text">Postmortems · incident #08 (v2.1.05 MCP regression), #04 (Opus 4.7 silent downgrade)</span>
+                        <span class="pain-action-meta">100 pages PDF</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Pain 6: Pricing structure -->
+            <div class="pain">
+                <span class="pain-num">PAIN 06 · BILLING</span>
+                <h3>The Sonnet/Opus split punishes the recommended workflow</h3>
+                <p class="pain-desc">Issue #55663, 2026-05-03: a Max-plan user describes how the official "use Sonnet for routine tasks, Opus for hard ones" guidance is structurally penalized by the new weekly quota split. <strong>If you follow the recommendation, you hit the Sonnet wall first; if you ignore it and use Opus everywhere, you hit the Opus wall but cheaper per task.</strong> The pricing is rational from Anthropic's side and irrational from your side.</p>
+                <div class="pain-evidence">Run a typical week's transcript through the cost calculator. The "recommended" mix often costs 1.4 to 1.7x more than the "use Opus only" baseline.</div>
+                <div class="pain-actions">
+                    <a href="https://yurukusa.github.io/ai-cost-reality/" class="pain-action free" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">FREE · DIAGNOSE</span>
+                        <span class="pain-action-text">AI Cost Reality calculator · score your subscription against your actual usage</span>
+                        <span class="pain-action-meta">Interactive, 50 days of real data</span>
+                    </a>
+                    <a href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook?utm_source=pain-map&utm_medium=card&utm_campaign=migration-playbook&utm_content=pain06-billing" class="pain-action paid" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">PAID · DECIDE · $19</span>
+                        <span class="pain-action-text">Migration Playbook Chapter 7 · cost forecasting worksheet for your real workload</span>
+                        <span class="pain-action-meta">105 pages</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Pain 7: Identity leak -->
+            <div class="pain">
+                <span class="pain-num">PAIN 07 · CONTEXT</span>
+                <h3>The sub-agent thinks it is the parent</h3>
+                <p class="pain-desc">Issue #55488 (v2.1.126): under specific conditions, a sub-agent invocation receives the parent's identity instead of its own. The sub-agent then refuses to do its narrow job because "I am the lead and that's a sub-task." Or, worse, it does the job but with the parent's authority and reasoning context, contaminating the result. <strong>Persona contamination is a context-window problem dressed up as a feature regression.</strong></p>
+                <div class="pain-evidence">Symptom: sub-agents start using "I" with the parent's voice. Or refuse delegated tasks as "below my role."</div>
+                <div class="pain-actions">
+                    <a href="https://qiita.com/yurukusa" class="pain-action free" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">FREE · DIAGNOSE</span>
+                        <span class="pain-action-text">Qiita: the Issue #55488 sub-agent identity leak walkthrough</span>
+                        <span class="pain-action-meta">Public, Japanese, 3,000+ characters</span>
+                    </a>
+                    <a href="https://yurukusa.gumroad.com/l/rhtptb?utm_source=pain-map&utm_medium=card&utm_campaign=postmortems&utm_content=pain07-identity" class="pain-action paid" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">PAID · POSTMORTEM</span>
+                        <span class="pain-action-text">Postmortems · sub-agent identity boundary as a recurring failure mode</span>
+                        <span class="pain-action-meta">100 pages PDF</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Pain 8: Setting drift / git protection -->
+            <div class="pain">
+                <span class="pain-num">PAIN 08 · DESTRUCTIVE</span>
+                <h3>The agent ran rm -rf in the wrong directory</h3>
+                <p class="pain-desc">It happens. cc-safe-setup tracks more than 700 hooks because the same destructive patterns recur: rm -rf with a relative path that resolves outside the worktree, git reset --hard on a branch with uncommitted work, settings.json overwrite during an agent retry, plugin installs that mutate global config. <strong>Free hooks block the obvious cases. Production hardening requires the templates and decision-record patterns from a kit you can drop in once.</strong></p>
+                <div class="pain-evidence">Run cc-health-check. If your settings.json has fewer than 8 hook entries, you're below the production baseline.</div>
+                <div class="pain-actions">
+                    <a href="https://github.com/yurukusa/cc-safe-setup" class="pain-action free" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">FREE · INSTALL</span>
+                        <span class="pain-action-text">cc-safe-setup · 700+ safety hooks, free open source, npx install</span>
+                        <span class="pain-action-meta">GitHub, MIT licensed</span>
+                    </a>
+                    <a href="https://yurukusa.github.io/cc-ops-kit-landing/" class="pain-action paid" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">PAID · HARDEN · $29</span>
+                        <span class="pain-action-text">CC-Codex Ops Kit · 16 production hooks, 5 templates, 9 scripts, decision-record pattern</span>
+                        <span class="pain-action-meta">From 160+ hours of autonomous operation</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Pain 9: Migration hesitation -->
+            <div class="pain">
+                <span class="pain-num">PAIN 09 · CHOICE</span>
+                <h3>"Cursor is shipping fast. Should I switch?"</h3>
+                <p class="pain-desc">DeepSeek v4-pro at 75% off through 2026-05-31 (then 4x). Cursor pulling backflow from Claude Code users. Aider stalled for nine months. Codex v0.125. GLM Coding Plan. The proxy-architecture tools (claude-code-router with 26,000+ stars). <strong>Each option has a different switching cost, a different ecosystem maturity, and a different total cost of ownership.</strong> No single answer fits everyone.</p>
+                <div class="pain-evidence">Switching costs: tooling rewrite (1-3 days), CLAUDE.md re-templating (4-12 hours), team retraining (1-2 weeks for team of 5).</div>
+                <div class="pain-actions">
+                    <a href="https://yurukusa.hashnode.dev/" class="pain-action free" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">FREE · DIAGNOSE</span>
+                        <span class="pain-action-text">Hashnode: the four-path migration overview (stay / switch / hybrid / proxy)</span>
+                        <span class="pain-action-meta">Public, English</span>
+                    </a>
+                    <a href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook?utm_source=pain-map&utm_medium=card&utm_campaign=migration-playbook&utm_content=pain09-choice" class="pain-action paid" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">PAID · DECIDE · $19</span>
+                        <span class="pain-action-text">Migration Playbook · switch checklist, hybrid stack, proxy comparison, 48h rollback</span>
+                        <span class="pain-action-meta">105 pages, Edition 2 lands 2026-05-08</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Pain 10: Cost forecasting -->
+            <div class="pain">
+                <span class="pain-num">PAIN 10 · FORECAST</span>
+                <h3>"I cannot tell my CFO what next month will cost"</h3>
+                <p class="pain-desc">Pro is $20. Max is $100 or $200. API is per-token. Most teams run a mix. The variance month over month is wider than the median. A single Issue-cluster regression can double the bill for a week. A successful CLAUDE.md restructuring can halve it for a month. <strong>You need a forecast that names its assumptions and a guard that fires before the budget is gone, not after.</strong></p>
+                <div class="pain-evidence">If you cannot answer "what would it cost to add one more developer to Claude Code?" within ten minutes, you have no forecast. You have a hope.</div>
+                <div class="pain-actions">
+                    <a href="https://yurukusa.github.io/cc-cost-check/" class="pain-action free" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">FREE · CALCULATE</span>
+                        <span class="pain-action-text">cc-cost-check · interactive calculator with real session import</span>
+                        <span class="pain-action-meta">Web, 50 days of real data baked in</span>
+                    </a>
+                    <a href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook?utm_source=pain-map&utm_medium=card&utm_campaign=migration-playbook&utm_content=pain10-forecast" class="pain-action paid" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">PAID · FORECAST · $19</span>
+                        <span class="pain-action-text">Migration Playbook · cost forecast worksheet (Chapter 7), monthly variance breakdown</span>
+                        <span class="pain-action-meta">105 pages</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Pain 11: DROP DATABASE without confirmation -->
+            <div class="pain">
+                <span class="pain-num">PAIN 11 · DESTRUCTIVE</span>
+                <h3>The agent ran DROP DATABASE before a rename. 7.8 GB gone.</h3>
+                <p class="pain-desc">Issue #56255, opened 2026-05-05 19:14 JST. The agent received a "rename this database" task. It decided rename meant drop-then-create, ran <code>DROP DATABASE</code> without confirmation, and 7.8 GB of Postgis data went away. <strong>Auto Mode treats every Bash command as equally allowed.</strong> The structural fix is to interpose at PreToolUse, not to remember to confirm. Issues #401, #34729 document the same shape on different stacks.</p>
+                <div class="pain-evidence">A 60-line PreToolUse hook covers DROP DATABASE, TRUNCATE, prisma migrate reset, rails db:drop, php artisan migrate:fresh, django flush, and dropdb. Setup is 5 minutes.</div>
+                <div class="pain-actions">
+                    <a href="https://yurukusa-dev.hatenablog.com/entry/2026/05/05/193123" class="pain-action free" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">FREE · DIAGNOSE</span>
+                        <span class="pain-action-text">Hatena: the Issue #56255 walk-through with the block-database-wipe hook setup</span>
+                        <span class="pain-action-meta">Public, Japanese, 4,675 characters</span>
+                    </a>
+                    <a href="https://yurukusa.gumroad.com/l/rhtptb?utm_source=pain-map&utm_medium=card&utm_campaign=postmortems&utm_content=pain11-database" class="pain-action paid" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">PAID · POSTMORTEM</span>
+                        <span class="pain-action-text">Postmortems · destructive command incidents reverse-engineered with detection hooks</span>
+                        <span class="pain-action-meta">100 pages PDF, see product page for current price</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Pain 12: Most Claude usage was non-Claude work -->
+            <div class="pain">
+                <span class="pain-num">PAIN 12 · COST</span>
+                <h3>"Most of my Claude usage was on work that didn't need Claude."</h3>
+                <p class="pain-desc">81 upvotes on r/ClaudeAI, 2026-05-05. A Sonnet user looked at three weeks of usage and found the bulk was JSON formatting, file classification, summarization, field extraction. None needed Sonnet. All cost the same. After moving 217 mechanical tasks to a small side worker (DeepSeek V4 Flash, MIT-licensed MCP server), three weeks of bulk work cost 0.41 dollars instead of about 7. <strong>Hybrid delegation is no longer experimental; it has working tooling and measurable savings.</strong></p>
+                <div class="pain-evidence">The CLAUDE.md rule that worked: deny list ("do NOT use Claude for: json formatting, file classification, summarization") instead of allow list. Negative framing was followed; positive framing was ignored about 30 percent of the time.</div>
+                <div class="pain-actions">
+                    <a href="https://qiita.com/yurukusa/items/77ddcd55410e37b570d2" class="pain-action free" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">FREE · DIAGNOSE</span>
+                        <span class="pain-action-text">Qiita: the side-worker pattern with the 217-task validation and the CLAUDE.md deny list</span>
+                        <span class="pain-action-meta">Public, Japanese, 3,989 characters</span>
+                    </a>
+                    <a href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook?utm_source=pain-map&utm_medium=card&utm_campaign=migration-playbook&utm_content=pain12-hybrid" class="pain-action paid" target="_blank" rel="noopener">
+                        <span class="pain-action-tag">PAID · DECIDE · $19</span>
+                        <span class="pain-action-text">Migration Playbook · Path B (hybrid) chapter, side-worker selection, routing rules</span>
+                        <span class="pain-action-meta">105 pages, Edition 2 ships 2026-05-08</span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="intro-block">
+            <p><strong>Want a single starting point?</strong> Read the Migration Playbook first if your question is "stay or switch." Read the Token Book if your question is "why is the bill bigger than last month." Read the Postmortems if your question is "we just had an incident; what does the same shape of failure look like elsewhere." Each one stands on its own.</p>
+            <p><strong>Considering all three?</strong> The <a href="https://yurukusa.github.io/operations-suite/?utm_source=pain-map&utm_medium=closing&utm_campaign=ops-suite" style="color:var(--accent);">Operations Suite curation page</a> maps the three books to three reader profiles (burn debugger, switch decider, incident survivor) and tells you the order to read them. Each book is still sold separately on Gumroad; the suite page is a navigation aid, not a discounted bundle.</p>
+            <p>If you are running Claude Code in production and want me to look at one specific failure, open an issue at <a href="https://github.com/yurukusa/cc-safe-setup/issues" target="_blank" rel="noopener" style="color:var(--accent);">cc-safe-setup/issues</a> with a transcript and version. I read every one.</p>
+        </div>
+
+        <footer>
+            <p>© 2026 yurukusa / ゆるくさ &nbsp;·&nbsp; <a href="/legal">特定商取引法に基づく表記</a> &nbsp;·&nbsp; <a href="/">home</a></p>
+        </footer>
+
+    </div>
+</body>
+</html>
