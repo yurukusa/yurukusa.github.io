@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Code Operations Suite — three books for three layers | yurukusa</title>
+    <meta name="description" content="Claude Code in production has three layers: decide, cost, forensics. Three books cover each layer. Migration Playbook ($19, 105 pages), Token Book ($12 PWYW, 94 pages), Incident Postmortems ($29, 100 pages). Read together, each one sharpens the others.">
+    <link rel="canonical" href="https://yurukusa.github.io/operations-suite/">
+
+    <meta property="og:title" content="Claude Code Operations Suite — three books for three layers">
+    <meta property="og:description" content="Decide. Cost. Forensics. Three books, 299 pages, one operations stack.">
+    <meta property="og:image" content="https://yurukusa.github.io/images/ogp.png">
+    <meta property="og:url" content="https://yurukusa.github.io/operations-suite/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="yurukusa">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@yurukusa_dev">
+    <meta name="twitter:title" content="Claude Code Operations Suite — three books for three layers">
+    <meta name="twitter:description" content="Decide. Cost. Forensics. Three books, one operations stack.">
+    <meta name="twitter:image" content="https://yurukusa.github.io/images/ogp.png">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #080810;
+            --surface: #10101c;
+            --surface2: #16162a;
+            --border: #1e1e38;
+            --text: #ddddf0;
+            --text-dim: #7878a0;
+            --accent: #5b7fff;
+            --accent-glow: rgba(91,127,255,0.2);
+            --green: #40d080;
+            --green-glow: rgba(64,208,128,0.15);
+            --orange: #ff7a50;
+            --amber: #f59e0b;
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem 5rem;
+        }
+        .top-nav { margin-bottom: 2rem; }
+        .top-nav a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 0.04em;
+        }
+        .top-nav a:hover { color: var(--accent); }
+
+        .hero {
+            text-align: center;
+            padding: 3rem 0 2.5rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 3rem;
+        }
+        .hero-label {
+            display: inline-block;
+            font-size: 0.72rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent);
+            background: var(--accent-glow);
+            border: 1px solid var(--accent);
+            border-radius: 99px;
+            padding: 0.25rem 0.9rem;
+            margin-bottom: 1.2rem;
+        }
+        .hero h1 {
+            font-size: clamp(1.8rem, 5vw, 2.8rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            margin-bottom: 1rem;
+        }
+        .hero h1 .dim { color: var(--text-dim); font-weight: 400; }
+        .hero .sub {
+            font-size: 1.05rem;
+            color: var(--text-dim);
+            max-width: 660px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 1.4rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section { margin-bottom: 4rem; }
+
+        .layers {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.2rem;
+        }
+        .layer {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.6rem;
+            display: flex;
+            flex-direction: column;
+        }
+        .layer:hover { border-color: var(--accent); }
+        .layer-num {
+            font-size: 0.7rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+        .layer h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .layer .layer-tag {
+            font-size: 0.78rem;
+            color: var(--text-dim);
+            margin-bottom: 1rem;
+        }
+        .layer-pain {
+            font-size: 0.92rem;
+            color: var(--text);
+            margin-bottom: 0.8rem;
+            padding-left: 0.8rem;
+            border-left: 2px solid var(--orange);
+        }
+        .layer-book {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: auto;
+        }
+        .layer-book h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+        .layer-book .book-meta {
+            font-size: 0.78rem;
+            color: var(--text-dim);
+            margin-bottom: 0.7rem;
+        }
+        .layer-book p {
+            font-size: 0.88rem;
+            color: var(--text-dim);
+            margin-bottom: 1rem;
+        }
+        .buy-button {
+            display: inline-block;
+            background: var(--accent);
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.88rem;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+        }
+        .buy-button:hover { background: #4a6cdc; }
+
+        .narrative {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+        }
+        .narrative p {
+            font-size: 0.98rem;
+            margin-bottom: 1rem;
+        }
+        .narrative p:last-child { margin-bottom: 0; }
+        .narrative strong { color: var(--accent); }
+
+        .compare-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        .compare-table th, .compare-table td {
+            text-align: left;
+            padding: 0.8rem 0.6rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .compare-table th {
+            color: var(--text-dim);
+            font-size: 0.75rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        .compare-table td.x { color: var(--green); font-weight: 700; text-align: center; }
+        .compare-table td.dot { color: var(--text-dim); text-align: center; }
+
+        .price-summary {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+        }
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+        }
+        .price-row:last-of-type { border-bottom: none; margin-bottom: 1rem; }
+        .price-row .price-name { text-align: left; }
+        .price-row .price-num { color: var(--accent); font-weight: 600; }
+        .total-row {
+            font-size: 1.2rem;
+            font-weight: 700;
+            padding-top: 1rem;
+            margin-top: 0.6rem;
+            border-top: 2px solid var(--accent);
+            display: flex;
+            justify-content: space-between;
+        }
+        .total-row .total-num { color: var(--accent); }
+        .price-note {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            margin-top: 1rem;
+        }
+
+        .trust {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+        .trust-item {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.2rem;
+            text-align: center;
+        }
+        .trust-num {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 0.3rem;
+        }
+        .trust-label {
+            font-size: 0.78rem;
+            color: var(--text-dim);
+            letter-spacing: 0.04em;
+        }
+
+        .faq dt {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--text);
+            margin-top: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        .faq dd {
+            font-size: 0.92rem;
+            color: var(--text-dim);
+            padding-left: 1rem;
+            border-left: 2px solid var(--border);
+        }
+
+        .footer {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            text-align: center;
+        }
+        .footer a { color: var(--accent); text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="top-nav">
+            <a href="/">← yurukusa.github.io</a>
+        </div>
+
+        <div class="hero">
+            <span class="hero-label">Operations Suite</span>
+            <h1>Claude Code in production has <span class="dim">three layers.</span><br>Three books, one for each.</h1>
+            <p class="sub">
+                Decide whether to migrate. Control your token bill. Read failures before you make them. The three books are sold separately on Gumroad. This page exists because reading any two of them sharpens the third.
+            </p>
+        </div>
+
+        <div class="section">
+            <div class="section-title">The three layers</div>
+            <div class="layers">
+                <div class="layer">
+                    <div class="layer-num">Layer 1 · Decide</div>
+                    <h3>Stay, switch, or hybrid?</h3>
+                    <div class="layer-tag">When the question is which platform to run on.</div>
+                    <div class="layer-pain">
+                        Anthropic's April 22 Pro plan reshuffle, weekly limit confusion, GPU contention, OpenClaw mention bans, deepseek-v4 price drops. The decision is no longer "Claude Code, yes or no" — it is which lane to run on.
+                    </div>
+                    <div class="layer-book">
+                        <h4>Migration Playbook</h4>
+                        <div class="book-meta">$19 · 105 pages · English · Edition 2 ships 2026-05-08</div>
+                        <p>Five measurable triggers, three-path framework (stay / switch / hybrid), cost-forecast worksheet, decision tree, 48-hour rollback checklist. Edition 2 adds hybrid delegation, proxy architectures, and enterprise stay paths.</p>
+                        <a href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook?utm_source=operations-suite-lp&utm_medium=layer-card&utm_campaign=migration-playbook" class="buy-button" target="_blank" rel="noopener">View on Gumroad →</a>
+                    </div>
+                </div>
+
+                <div class="layer">
+                    <div class="layer-num">Layer 2 · Cost</div>
+                    <h3>Where do the tokens go?</h3>
+                    <div class="layer-tag">When the bill grows faster than the output.</div>
+                    <div class="layer-pain">
+                        cache_creation rising past 0.20 of total. CLAUDE.md bloating to 100+ lines and dragging cache hit rate. Subagent fan-out without budget. Post-compaction spikes. The fix is measurable, not vibes.
+                    </div>
+                    <div class="layer-book">
+                        <h4>Token Book — English</h4>
+                        <div class="book-meta">PWYW from $12 · 94 pages · English · Edition 1</div>
+                        <p>800+ measured hours distilled into 10 chapters. CLAUDE.md restructuring (100→35 lines, cache hit 89%→95%), 9 hook-based token guards, context management timing, cache_control bug recovery, post-compaction spike forensics.</p>
+                        <a href="https://yurukusa.gumroad.com/l/azrdt?utm_source=operations-suite-lp&utm_medium=layer-card&utm_campaign=token-book-en" class="buy-button" target="_blank" rel="noopener">View on Gumroad →</a>
+                    </div>
+                </div>
+
+                <div class="layer">
+                    <div class="layer-num">Layer 3 · Forensics</div>
+                    <h3>Read failures before you ship.</h3>
+                    <div class="layer-tag">When you want to know what already broke for everyone else.</div>
+                    <div class="layer-pain">
+                        Subagent identity leak (Issue 55488). Five-hour quota burned in 9 minutes 39 seconds (54776). Silent regressions across versions 2.1.121, 2.1.126, 2.1.128. Closures with no changelog entry. The pattern is what matters, not the bug list.
+                    </div>
+                    <div class="layer-book">
+                        <h4>Incident Postmortems</h4>
+                        <div class="book-meta">100 pages · Live since 2026-05-05 · See product page for current price</div>
+                        <p>Ten production-level incidents reverse-engineered from public Issues, commits, and 800+ verified hours. Detection hooks for each pattern. The book is the body of evidence the changelog left out.</p>
+                        <a href="https://yurukusa.gumroad.com/l/rhtptb?utm_source=operations-suite-lp&utm_medium=layer-card&utm_campaign=postmortems" class="buy-button" target="_blank" rel="noopener">View on Gumroad →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Why three books, not one</div>
+            <div class="narrative">
+                <p>
+                    Each book was built around a specific decision. <strong>Migration Playbook</strong> answers "should I move?" with five measurable triggers and a three-path comparison. <strong>Token Book</strong> answers "where is the bill going?" with cache ratio targets and 9 enforcement hooks. <strong>Incident Postmortems</strong> answers "what already broke?" with ten reverse-engineered production failures.
+                </p>
+                <p>
+                    A single 300-page book would have collapsed all three decisions into one chapter each, and the reader would have skipped two of them. Splitting forces honesty: each book has to earn its price on its own. The reader who finishes one is the reader who is ready for the next.
+                </p>
+                <p>
+                    There is no enforced reading order. The most common path is <strong>Token Book → Postmortems → Migration Playbook</strong> for someone already in production, or <strong>Migration Playbook → Postmortems → Token Book</strong> for someone deciding before they start.
+                </p>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Which book solves which pain</div>
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th>Pain</th>
+                        <th>Migration<br>Playbook</th>
+                        <th>Token<br>Book</th>
+                        <th>Incident<br>Postmortems</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Pro plan got reshuffled — should I switch?</td>
+                        <td class="x">●</td>
+                        <td class="dot">·</td>
+                        <td class="dot">·</td>
+                    </tr>
+                    <tr>
+                        <td>Five-hour quota burned in 9 minutes</td>
+                        <td class="dot">·</td>
+                        <td class="x">●</td>
+                        <td class="x">●</td>
+                    </tr>
+                    <tr>
+                        <td>cache_creation rising past 0.20</td>
+                        <td class="dot">·</td>
+                        <td class="x">●</td>
+                        <td class="dot">·</td>
+                    </tr>
+                    <tr>
+                        <td>Subagent identity leak / boundary failure</td>
+                        <td class="dot">·</td>
+                        <td class="dot">·</td>
+                        <td class="x">●</td>
+                    </tr>
+                    <tr>
+                        <td>Silent regression across version bumps</td>
+                        <td class="dot">·</td>
+                        <td class="dot">·</td>
+                        <td class="x">●</td>
+                    </tr>
+                    <tr>
+                        <td>CLAUDE.md is 100+ lines and slowing me</td>
+                        <td class="dot">·</td>
+                        <td class="x">●</td>
+                        <td class="dot">·</td>
+                    </tr>
+                    <tr>
+                        <td>Comparing Claude Code to Cursor / Codex</td>
+                        <td class="x">●</td>
+                        <td class="dot">·</td>
+                        <td class="dot">·</td>
+                    </tr>
+                    <tr>
+                        <td>Post-compaction usage spike</td>
+                        <td class="dot">·</td>
+                        <td class="x">●</td>
+                        <td class="x">●</td>
+                    </tr>
+                    <tr>
+                        <td>Building a rollback checklist before migrating</td>
+                        <td class="x">●</td>
+                        <td class="dot">·</td>
+                        <td class="dot">·</td>
+                    </tr>
+                    <tr>
+                        <td>Hybrid delegation between Claude and a cheaper model</td>
+                        <td class="x">●</td>
+                        <td class="dot">·</td>
+                        <td class="dot">·</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Pricing</div>
+            <div class="price-summary">
+                <div class="price-row">
+                    <span class="price-name">Migration Playbook (Edition 2 ships 2026-05-08)</span>
+                    <span class="price-num">$19</span>
+                </div>
+                <div class="price-row">
+                    <span class="price-name">Token Book — English (Pay what you want, suggested $12)</span>
+                    <span class="price-num">$12+</span>
+                </div>
+                <div class="price-row">
+                    <span class="price-name">Incident Postmortems (live since 2026-05-05)</span>
+                    <span class="price-num">see page</span>
+                </div>
+                <div class="total-row">
+                    <span>Three books · 299 pages</span>
+                    <span class="total-num">$60+</span>
+                </div>
+                <div class="price-note">
+                    Each book is sold individually on Gumroad. There is no shared bundle SKU yet. Buy what you need first; come back for the next layer when the symptom appears. All payment, refund, and update mechanics live on Gumroad — yurukusa.github.io is just the curation page.
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">What sits behind these books</div>
+            <div class="trust">
+                <div class="trust-item">
+                    <div class="trust-num">800+</div>
+                    <div class="trust-label">verified autonomous hours</div>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-num">718</div>
+                    <div class="trust-label">safety hooks (cc-safe-setup)</div>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-num">9,200+</div>
+                    <div class="trust-label">tests run on the hooks</div>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-num">100+</div>
+                    <div class="trust-label">articles, GitHub Issues, Gists</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Frequent questions</div>
+            <dl class="faq">
+                <dt>Is this a discount bundle?</dt>
+                <dd>No. Each book is on its own Gumroad listing at its own price. This page is a curation, not a SKU. If a discounted bundle goes live later, this page will say so.</dd>
+
+                <dt>If I only want one, which one first?</dt>
+                <dd>If your bill is the issue, start with Token Book. If you are deciding whether to switch platforms, start with Migration Playbook. If something already broke, start with Incident Postmortems.</dd>
+
+                <dt>I have not used Claude Code in production yet.</dt>
+                <dd>Read the free articles at <a href="https://yurukusa.github.io/" style="color:var(--accent);">yurukusa.github.io</a> first. None of these books are intended as introductions.</dd>
+
+                <dt>What language are the books in?</dt>
+                <dd>All three are English. Token Book also has a Japanese edition (¥2,500, ~100 pages, sold separately on Gumroad).</dd>
+
+                <dt>Are there future updates?</dt>
+                <dd>Migration Playbook ships free verified-update sweeps via Gumroad library re-download. Edition 2 lands 2026-05-08 with no extra charge for Edition 1 buyers. Token Book ships periodic updates. Postmortems is versioned at the file level.</dd>
+
+                <dt>Who is the author?</dt>
+                <dd>yurukusa, a non-engineer from Tokyo running Claude Code autonomously for 800+ verified hours. Maintainer of <a href="https://github.com/yurukusa/cc-safe-setup" style="color:var(--accent);">cc-safe-setup</a>. Books are written from measured production data, not from speculation.</dd>
+            </dl>
+        </div>
+
+        <div class="footer">
+            Three books for three layers · maintained by <a href="https://yurukusa.github.io/">yurukusa</a> · last updated 2026-05-05
+        </div>
+    </div>
+</body>
+</html>
