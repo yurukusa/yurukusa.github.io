@@ -122,4 +122,11 @@
     <priority>0.3</priority>
   </url>
 
+  <url>
+    <loc>https://yurukusa.github.io/migration-decision-check/</loc>
+    <lastmod>2026-05-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
 </urlset>

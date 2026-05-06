@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Are You Ready for an AI Agent? — 10-Question Readiness Check</title>
+  <title>Are You Ready for an AI Agent?: 10-Question Readiness Check</title>
   <meta name="description" content="10 questions based on real experience running an autonomous AI for 50 days. Find out if you're ready to hand the keyboard to an AI agent.">
   <meta property="og:title" content="Are You Ready for an AI Agent?">
   <meta property="og:description" content="10 questions from someone who actually did it. 50 days of data. Find your AI readiness type.">
@@ -370,7 +370,7 @@ const QUESTIONS = [
     ]
   },
   {
-    scenario: "Real situation: The AI published a game on itch.io, wrote a devlog, and posted it on Twitter — all without asking.",
+    scenario: "Real situation: The AI published a game on itch.io, wrote a devlog, and posted it on Twitter, all without asking.",
     question: "Your AI publishes something publicly without checking with you first. How do you feel?",
     options: [
       { text: "That's the dream. Fully autonomous publishing pipeline.", scores: { autonomous: 3, visionary: 2 } },
@@ -432,7 +432,7 @@ const TYPES = {
       { text: "Long-term thinker", color: "var(--green)" },
       { text: "Comfortable with chaos", color: "var(--gold)" },
     ],
-    desc: "You see AI agents as the future and you're willing to bet on it. You don't need to control every step — you set the direction and trust the system. <strong>This is exactly the mindset that makes autonomous AI work.</strong> The risk? You might overlook problems until they're expensive. Set up monitoring (even if you don't watch it).",
+    desc: "You see AI agents as the future and you're willing to bet on it. You don't need to control every step, you set the direction and trust the system. <strong>This is exactly the mindset that makes autonomous AI work.</strong> The risk? You might overlook problems until they're expensive. Set up monitoring (even if you don't watch it).",
     rec: "Start with a full autonomous setup. You'll thrive with Claude Code Max and minimal guardrails. Just add backups.",
   },
   pragmatic_builder: {
@@ -456,7 +456,7 @@ const TYPES = {
       { text: "Quality-focused", color: "var(--blue)" },
       { text: "Needs control", color: "var(--red)" },
     ],
-    desc: "You're interested in AI agents but not comfortable giving up control. That's a legitimate position — <strong>most people who rush in get burned</strong>. Your instinct to verify everything will serve you well when you DO start. The danger is waiting too long while the landscape moves without you.",
+    desc: "You're interested in AI agents but not comfortable giving up control. That's a legitimate position, <strong>most people who rush in get burned</strong>. Your instinct to verify everything will serve you well when you DO start. The danger is waiting too long while the landscape moves without you.",
     rec: "Start with AI as a copilot, not an agent. Use it interactively before trying autonomous mode. Read about real experiences first.",
   },
   curious_explorer: {
@@ -626,7 +626,7 @@ function showResults() {
     <div class="cta-card">
       <h3>Curious about real AI agent data?</h3>
       <div class="cta-links">
-        <a href="https://yurukusa.github.io/50-days/">50 Days of AI — see the raw data from the experiment</a>
+        <a href="https://yurukusa.github.io/50-days/">50 Days of AI, see the raw data from the experiment</a>
         <a href="https://yurukusa.github.io/cc-cost-check/">Calculate your own AI cost per commit</a>
         <a href="https://yurukusa.github.io/cc-health-check/">Check if your AI setup is production-ready</a>
         <a href="https://dev.to/yurukusa">Read the full story on dev.to</a>
@@ -642,7 +642,7 @@ function shareTw() {
   const type = TYPES[typeKey];
   const total = Object.values(scores).reduce((a, b) => a + b, 0);
   const readiness = Math.round((scores.autonomous + scores.visionary + scores.pragmatic) / total * 100);
-  const text = `My AI Agent Readiness: ${readiness}% — ${type.title}\n\nTake the quiz (based on 50 days of real AI data):\nhttps://yurukusa.github.io/ai-ready/\n\n#ClaudeCode #AI`;
+  const text = `My AI Agent Readiness: ${readiness}%, ${type.title}\n\nTake the quiz (based on 50 days of real AI data):\nhttps://yurukusa.github.io/ai-ready/\n\n#ClaudeCode #AI`;
   window.open('https://x.com/intent/tweet?text=' + encodeURIComponent(text), '_blank');
 }
 
@@ -651,7 +651,7 @@ function copyResult() {
   const type = TYPES[typeKey];
   const total = Object.values(scores).reduce((a, b) => a + b, 0);
   const readiness = Math.round((scores.autonomous + scores.visionary + scores.pragmatic) / total * 100);
-  const text = `AI Agent Readiness: ${readiness}% — ${type.title}\n${type.subtitle}\n\nhttps://yurukusa.github.io/ai-ready/`;
+  const text = `AI Agent Readiness: ${readiness}%, ${type.title}\n${type.subtitle}\n\nhttps://yurukusa.github.io/ai-ready/`;
   navigator.clipboard.writeText(text).then(() => {
     event.target.textContent = 'Copied!';
     setTimeout(() => { event.target.textContent = 'Copy Text'; }, 2000);
