@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>50 Days of AI — What Happens When You Let an AI Run Your Life</title>
+  <title>50 Days of AI: What Happens When You Let an AI Run Your Life</title>
   <meta name="description" content="An interactive visualization of 50 days of autonomous AI operation. 739 sessions. 458 commits. 5 games. $4.99 in revenue. The real data behind one non-engineer's experiment with Claude Code.">
-  <meta property="og:title" content="50 Days of AI — The Experiment">
+  <meta property="og:title" content="50 Days of AI: The Experiment">
   <meta property="og:description" content="739 sessions. 458 commits. 5 games. $4.99 revenue. What happens when a non-engineer lets an AI run autonomously for 50 days.">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
@@ -380,7 +380,7 @@
   <section>
     <div class="section-title">Daily Activity</div>
     <h2 class="section-heading">When the AI Worked</h2>
-    <p class="section-desc">Each cell is one day. Darker = more sessions. Hover for details. The AI ran 47 out of 50 days — it only rested 3 days.</p>
+    <p class="section-desc">Each cell is one day. Darker = more sessions. Hover for details. The AI ran 47 out of 50 days, it only rested 3 days.</p>
     <div class="calendar-wrap">
       <div class="calendar" id="calendar"></div>
     </div>
@@ -400,7 +400,7 @@
   <section>
     <div class="section-title">Hour × Day of Week</div>
     <h2 class="section-heading">The AI Never Sleeps</h2>
-    <p class="section-desc">Sessions by hour of day and day of week. Notice the late-night clusters — the AI's peak productivity is between midnight and 3 AM.</p>
+    <p class="section-desc">Sessions by hour of day and day of week. Notice the late-night clusters, the AI's peak productivity is between midnight and 3 AM.</p>
     <div class="hour-grid" id="hourGrid"></div>
   </section>
 
@@ -470,7 +470,7 @@
     <h2 class="section-heading">Fun Facts</h2>
     <div class="facts-grid">
       <div class="fact-card">
-        <div class="fact-text"><strong>187 sessions in one day</strong> (Feb 2). The AI was in a frenzy — building, testing, deploying, and fixing across 10 hours straight.</div>
+        <div class="fact-text"><strong>187 sessions in one day</strong> (Feb 2). The AI was in a frenzy, building, testing, deploying, and fixing across 10 hours straight.</div>
       </div>
       <div class="fact-card">
         <div class="fact-text"><strong>Peak hours: midnight to 3 AM.</strong> The AI does its best work when no one is watching. Thursday nights are especially productive.</div>
@@ -482,7 +482,7 @@
         <div class="fact-text"><strong>$0.87 per commit.</strong> Less than a dollar for each unit of work. A junior dev would cost 40x more per hour.</div>
       </div>
       <div class="fact-card">
-        <div class="fact-text"><strong>Only 3 days off</strong> in 50. The AI took breaks on Jan 14, Jan 17, and Feb 12. Not by choice — those were infrastructure issues.</div>
+        <div class="fact-text"><strong>Only 3 days off</strong> in 50. The AI took breaks on Jan 14, Jan 17, and Feb 12. Not by choice, those were infrastructure issues.</div>
       </div>
       <div class="fact-card">
         <div class="fact-text"><strong>$4.99 total revenue.</strong> The most expensive indie game studio per dollar earned. But the factory is built.</div>
@@ -494,7 +494,7 @@
 
 <footer>
   <p>
-    Built by <a href="https://yurukusa.github.io/">yurukusa</a> — a non-engineer from Tokyo living with an autonomous AI.<br>
+    Built by <a href="https://yurukusa.github.io/">yurukusa</a>, a non-engineer from Tokyo living with an autonomous AI.<br>
     All data is real. Nothing is edited. The experiment continues.
   </p>
   <div class="footer-links">
@@ -513,11 +513,11 @@ const DAYS = [{"date":"2026-01-10","sessions":5,"activeHours":3},{"date":"2026-0
 const HEATMAP = [[1,2,0,0,0,0,0,0,0,3,3,4,6,5,7,3,1,1,10,12,11,25,8,18],[4,5,11,0,0,0,0,1,0,0,1,2,8,2,1,1,0,2,8,18,10,19,34,92],[0,6,1,0,0,0,0,1,1,4,6,4,17,5,0,2,0,1,0,1,9,3,8,3],[4,1,3,9,9,9,9,9,2,1,1,0,0,0,0,0,2,1,2,0,1,0,6,6],[21,6,24,5,0,0,0,0,2,1,2,1,0,0,2,0,2,2,0,1,5,10,19,15],[17,7,2,3,3,0,0,14,5,1,0,2,0,1,0,1,0,2,0,3,3,9,2,2],[0,4,6,2,0,0,0,0,1,1,5,7,0,0,3,1,8,1,4,2,2,2,0,9]];
 
 const MILESTONES = [
-  { date: '2026-01-10', text: 'Day 1 — Claude Code activated. First session ever.', type: 'start' },
+  { date: '2026-01-10', text: 'Day 1, Claude Code activated. First session ever.', type: 'start' },
   { date: '2026-01-15', text: 'Azure Flame: first playable roguelike dungeon', type: 'game' },
   { date: '2026-02-01', text: 'First game published on itch.io', type: 'ship' },
   { date: '2026-02-02', text: 'Record day: 187 sessions in 10 hours', type: 'milestone' },
-  { date: '2026-02-08', text: 'Spell Cascade v0.1 — auto-shooting survivor', type: 'game' },
+  { date: '2026-02-08', text: 'Spell Cascade v0.1, auto-shooting survivor', type: 'game' },
   { date: '2026-02-15', text: 'First revenue: $2.00 (Azure Flame sale)', type: 'revenue' },
   { date: '2026-02-19', text: '1000+ hours of cumulative AI operation', type: 'milestone' },
   { date: '2026-02-22', text: 'cc-health-check: first developer tool created', type: 'tool' },
@@ -620,7 +620,7 @@ function renderHourGrid() {
         else if (pct > 0.08) cell.classList.add('h2');
         else cell.classList.add('h1');
       }
-      cell.title = `${names[d]} ${String(h).padStart(2,'0')}:00 — ${val} sessions`;
+      cell.title = `${names[d]} ${String(h).padStart(2,'0')}:00, ${val} sessions`;
       grid.appendChild(cell);
     }
   }
