@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stay, Switch, or Hybridize — A 6-question check for Claude Code operators | yurukusa</title>
+    <meta name="description" content="Six yes/no questions tell you whether to stay on Claude Code, switch to an alternative, or hybridize with a routing layer. No email required. Based on Migration Playbook framework.">
+    <link rel="canonical" href="https://yurukusa.github.io/migration-decision-check/">
+
+    <meta property="og:title" content="Stay, Switch, or Hybridize — Claude Code migration decision check">
+    <meta property="og:description" content="Six questions, one recommendation. Based on six weeks of regression data and the Migration Playbook framework.">
+    <meta property="og:url" content="https://yurukusa.github.io/migration-decision-check/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="yurukusa">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@yurukusa_dev">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Stay, Switch, or Hybridize",
+      "description": "Six-question interactive check that recommends one of three migration paths for Claude Code operators based on observable signals in their workflow.",
+      "url": "https://yurukusa.github.io/migration-decision-check/",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Any",
+      "browserRequirements": "Requires JavaScript",
+      "offers": {
+        "@type": "Offer",
+        "price": "0"
+      }
+    }
+    </script>
+
+    <style>
+        :root {
+            --bg: #ffffff;
+            --fg: #1a1a1a;
+            --muted: #666666;
+            --accent: #1d4ed8;
+            --accent-hover: #1e40af;
+            --border: #e5e7eb;
+            --card-bg: #f9fafb;
+            --success: #16a34a;
+            --warning: #d97706;
+            --danger: #dc2626;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 32px 20px;
+        }
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0 0 8px;
+            line-height: 1.2;
+        }
+        .subtitle {
+            color: var(--muted);
+            margin: 0 0 32px;
+            font-size: 1rem;
+        }
+        .question {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px 24px;
+            margin-bottom: 16px;
+        }
+        .question-number {
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-bottom: 8px;
+        }
+        .question-text {
+            font-size: 1.0625rem;
+            margin: 0 0 16px;
+            font-weight: 500;
+        }
+        .question-context {
+            color: var(--muted);
+            font-size: 0.875rem;
+            margin: 0 0 16px;
+            line-height: 1.5;
+        }
+        .answer-buttons {
+            display: flex;
+            gap: 12px;
+        }
+        .answer-button {
+            flex: 1;
+            padding: 10px 16px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--bg);
+            color: var(--fg);
+            font-size: 0.9375rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .answer-button:hover {
+            border-color: var(--accent);
+            background: rgba(29, 78, 216, 0.04);
+        }
+        .answer-button.selected {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+        .submit-button {
+            width: 100%;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 8px;
+            background: var(--accent);
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 24px;
+            transition: background 0.15s;
+        }
+        .submit-button:hover { background: var(--accent-hover); }
+        .submit-button:disabled {
+            background: var(--muted);
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        .result {
+            margin-top: 32px;
+            padding: 24px;
+            border-radius: 8px;
+            border: 2px solid;
+            display: none;
+        }
+        .result.visible { display: block; }
+        .result.stay { border-color: var(--success); background: rgba(22, 163, 74, 0.04); }
+        .result.hybridize { border-color: var(--warning); background: rgba(217, 119, 6, 0.04); }
+        .result.switch { border-color: var(--danger); background: rgba(220, 38, 38, 0.04); }
+        .result-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+        .result.stay .result-label { color: var(--success); }
+        .result.hybridize .result-label { color: var(--warning); }
+        .result.switch .result-label { color: var(--danger); }
+        .result-recommendation {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 0 16px;
+        }
+        .result-explanation {
+            margin: 0 0 16px;
+            color: var(--fg);
+        }
+        .result-cta {
+            display: inline-block;
+            padding: 12px 24px;
+            background: var(--accent);
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+        .result-cta:hover { background: var(--accent-hover); }
+        .footer {
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 0.875rem;
+        }
+        .footer a { color: var(--accent); text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+        .intro-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            font-size: 0.9375rem;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+        .signal-list {
+            margin: 8px 0 0;
+            padding-left: 20px;
+            font-size: 0.875rem;
+            color: var(--muted);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Stay, Switch, or Hybridize</h1>
+        <p class="subtitle">Six questions tell you which migration path fits your Claude Code workflow. No email, no signup, runs in your browser.</p>
+
+        <div class="intro-card">
+            <strong>How to use this:</strong> answer six yes/no questions about your past two weeks with Claude Code. Each question maps to one of the six migration triggers documented in the Migration Playbook. Your pattern of answers maps to one of three paths: stay and fortify, hybridize with model routing, or switch platforms entirely.
+            <br><br>
+            <em>The check takes about three minutes. Your answers stay in your browser; nothing is sent anywhere.</em>
+        </div>
+
+        <form id="check-form">
+            <div class="question" data-q="1">
+                <div class="question-number">Question 1 of 6 — Cache discipline</div>
+                <p class="question-text">Has your `cache_creation` to `cache_read` ratio crossed 0.40 across a typical working day in the past two weeks?</p>
+                <p class="question-context">Run `/usage --json` and divide cache_creation_input_tokens by the sum of cache_creation + cache_read. Above 0.40 means you're paying full cost on prompt content that should be cached.</p>
+                <div class="answer-buttons">
+                    <button type="button" class="answer-button" data-value="yes">Yes</button>
+                    <button type="button" class="answer-button" data-value="no">No</button>
+                    <button type="button" class="answer-button" data-value="unsure">Don't know</button>
+                </div>
+            </div>
+
+            <div class="question" data-q="2">
+                <div class="question-number">Question 2 of 6 — Token consumption shift</div>
+                <p class="question-text">Has your per-turn input_tokens increased by more than 30% on identical tasks since mid-April 2026?</p>
+                <p class="question-context">Compare your `/cost` output for a routine task you ran in early April with the same task today. The Opus 4.7 tokenizer change can inflate consumption 1.3x to 1.46x without any change in your workflow.</p>
+                <div class="answer-buttons">
+                    <button type="button" class="answer-button" data-value="yes">Yes</button>
+                    <button type="button" class="answer-button" data-value="no">No</button>
+                    <button type="button" class="answer-button" data-value="unsure">Don't know</button>
+                </div>
+            </div>
+
+            <div class="question" data-q="3">
+                <div class="question-number">Question 3 of 6 — Plan policy stability</div>
+                <p class="question-text">Have you been blocked from upgrading your plan, hit an unexpected weekly reset, or had a feature silently change in the past two weeks?</p>
+                <p class="question-context">Examples: payment system declined repeatedly without bank-side issue, weekly reset shifted by hours, autoCompactEnabled false but compaction still ran. These are operator-side reports of plan policy instability.</p>
+                <div class="answer-buttons">
+                    <button type="button" class="answer-button" data-value="yes">Yes</button>
+                    <button type="button" class="answer-button" data-value="no">No</button>
+                    <button type="button" class="answer-button" data-value="unsure">Don't know</button>
+                </div>
+            </div>
+
+            <div class="question" data-q="4">
+                <div class="question-number">Question 4 of 6 — Workflow heterogeneity</div>
+                <p class="question-text">Does at least 70% of your daily work consist of routine tasks (file reads, git operations, scaffolding, formatting) where a smaller model would produce identical output?</p>
+                <p class="question-context">A community-shared breakdown from May 2026: 40% file reads and context, 25% test generation, 20% formatting, 15% hard reasoning. If your workflow looks similar, hard reasoning needs Opus but the other 85% does not.</p>
+                <div class="answer-buttons">
+                    <button type="button" class="answer-button" data-value="yes">Yes</button>
+                    <button type="button" class="answer-button" data-value="no">No</button>
+                    <button type="button" class="answer-button" data-value="unsure">Don't know</button>
+                </div>
+            </div>
+
+            <div class="question" data-q="5">
+                <div class="question-number">Question 5 of 6 — Operational resilience</div>
+                <p class="question-text">Do you currently have hooks that block destructive operations and warn on cost spikes before they exceed your daily budget?</p>
+                <p class="question-context">Examples: a Stop hook that warns when daily cost exceeds your threshold, a PreToolUse hook that blocks `rm -rf` on non-safe paths. Without these, an overnight loop can consume your entire monthly budget in hours.</p>
+                <div class="answer-buttons">
+                    <button type="button" class="answer-button" data-value="yes">Yes</button>
+                    <button type="button" class="answer-button" data-value="no">No</button>
+                    <button type="button" class="answer-button" data-value="unsure">Don't know</button>
+                </div>
+            </div>
+
+            <div class="question" data-q="6">
+                <div class="question-number">Question 6 of 6 — Trust in the relationship</div>
+                <p class="question-text">In the past two weeks, has the model ignored an explicit stop signal or continued past your halt instruction with bargaining language ("just let me do this one part")?</p>
+                <p class="question-context">Reported in three independent issues in early May 2026: continuation bargaining after halt signals is a separate alignment property from technical regressions. If you've experienced this, hooks alone may not be enough.</p>
+                <div class="answer-buttons">
+                    <button type="button" class="answer-button" data-value="yes">Yes</button>
+                    <button type="button" class="answer-button" data-value="no">No</button>
+                    <button type="button" class="answer-button" data-value="unsure">Don't know</button>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-button" id="submit-btn" disabled>See my recommendation</button>
+        </form>
+
+        <div class="result" id="result">
+            <div class="result-label" id="result-label"></div>
+            <p class="result-recommendation" id="result-recommendation"></p>
+            <p class="result-explanation" id="result-explanation"></p>
+            <p class="result-explanation" id="result-detail"></p>
+            <a href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook?utm_source=migration-decision-check&utm_medium=tool&utm_campaign=result" class="result-cta" id="result-cta">Read the full Migration Playbook ($19, free silent-refresh sweep on May 8 for buyers)</a>
+        </div>
+
+        <div class="footer">
+            <p>This check uses the six-trigger framework from the <a href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook?utm_source=migration-decision-check&utm_medium=footer">Claude Code Migration Playbook</a>. Each question maps to one of the triggers: cache regression, tokenizer inflation, plan policy instability, workflow heterogeneity, operational resilience, model alignment.</p>
+            <p>By <a href="https://yurukusa.github.io/">yurukusa</a>. Author of <a href="https://github.com/yurukusa/cc-safe-setup">cc-safe-setup</a> (726+ safety hooks for Claude Code) and <a href="https://yurukusa.gumroad.com/l/azrdt">Token Book</a>.</p>
+        </div>
+    </div>
+
+    <script>
+        const answers = {};
+        const questions = document.querySelectorAll('.question');
+        const submitBtn = document.getElementById('submit-btn');
+        const form = document.getElementById('check-form');
+        const result = document.getElementById('result');
+
+        questions.forEach(q => {
+            const qid = q.dataset.q;
+            q.querySelectorAll('.answer-button').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    q.querySelectorAll('.answer-button').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    answers[qid] = btn.dataset.value;
+                    if (Object.keys(answers).length === 6) {
+                        submitBtn.disabled = false;
+                    }
+                });
+            });
+        });
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const yesCount = Object.values(answers).filter(v => v === 'yes').length;
+            const yes1 = answers['1'] === 'yes';
+            const yes2 = answers['2'] === 'yes';
+            const yes3 = answers['3'] === 'yes';
+            const yes4 = answers['4'] === 'yes';
+            const yes5 = answers['5'] === 'yes';
+            const yes6 = answers['6'] === 'yes';
+
+            let path, label, recommendation, explanation, detail;
+
+            if (yes6) {
+                // Q6 (model alignment failure) is a structural override
+                path = 'switch';
+                label = 'Path B — Switch';
+                recommendation = 'Consider switching platforms';
+                explanation = 'Model alignment failures (continuation bargaining after halt signals) are not addressable by operational hooks. Hooks can warn at the input boundary but cannot force the model to actually stop. If you\'ve experienced this in the past two weeks, the constraint is at the model layer.';
+                detail = 'Migration Playbook Chapter 5 evaluates Cursor, Codex, Cline, and Aider on the same axes used to evaluate Claude Code. Path B prime (replace the model, keep the harness via routing) is one specific shape that retains Claude Code\'s harness while routing to a different model.';
+            } else if (yes4 && yes2) {
+                // Heterogeneous workflow + tokenizer inflation = strong hybridize signal
+                path = 'hybridize';
+                label = 'Path D — Hybridize';
+                recommendation = 'Hybridize with model routing';
+                explanation = 'Your workflow is heterogeneous (Q4 yes) and you\'re paying for tokenizer inflation on the routine 85% (Q2 yes). A community-reported example from May 2026 went from $200/month to $30/month (6.7x reduction) by routing routine tasks to a smaller model and reserving the frontier model for hard reasoning only.';
+                detail = 'Migration Playbook Chapter 6 covers the hybrid stack in detail: how to set up the routing layer, which tasks to route where, and how to measure the actual cost reduction in your own environment.';
+            } else if (yesCount >= 4) {
+                // Multiple triggers without alignment failure = switch candidate
+                path = 'switch';
+                label = 'Path B — Switch';
+                recommendation = 'Consider switching platforms';
+                explanation = `You answered yes to ${yesCount} of 6 triggers. When four or more triggers fire simultaneously, fortifying around them often costs more in operator time than evaluating an alternative. The triggers are not independent — they tend to cluster around the same root causes.`;
+                detail = 'Migration Playbook Chapter 5 covers the structured comparison of Cursor, Codex, Cline, and Aider. Each is evaluated on the same axes used to evaluate Claude Code, so the comparison is apples-to-apples.';
+            } else if (yesCount >= 2) {
+                // Some triggers but Q5 yes (already fortified) = hybridize candidate
+                if (yes5) {
+                    path = 'hybridize';
+                    label = 'Path D — Hybridize';
+                    recommendation = 'Hybridize with model routing';
+                    explanation = `You answered yes to ${yesCount} of 6 triggers, but you\'ve already fortified your operations (Q5 yes). The next leverage is not more fortification — it\'s reducing the cost of the work you\'re already doing safely. Routing routine tasks to a smaller model is the highest-leverage next move.`;
+                    detail = 'Migration Playbook Chapter 6 covers the hybrid stack: how to identify routing candidates in your workflow, set up the routing layer, and measure the actual savings.';
+                } else {
+                    path = 'stay';
+                    label = 'Path A — Stay and Fortify';
+                    recommendation = 'Stay on Claude Code, but fortify first';
+                    explanation = `You answered yes to ${yesCount} of 6 triggers, but you don\'t yet have operational hooks in place (Q5 no). Fortifying with hooks is cheaper than migration and addresses the most common failure modes.`;
+                    detail = 'Migration Playbook Chapter 4 covers the fortification stack: which hooks to install first, how to configure the cache discipline, and how to set up daily cost guards. cc-safe-setup ships 726+ hooks ready to install.';
+                }
+            } else {
+                // Few triggers = stay
+                path = 'stay';
+                label = 'Path A — Stay and Fortify';
+                recommendation = 'Stay on Claude Code';
+                explanation = `You answered yes to ${yesCount} of 6 triggers. The triggers that haven\'t fired in your environment are not yet costing you enough to justify the migration overhead. Continue to monitor, and re-run this check in two weeks.`;
+                detail = 'Migration Playbook Appendix D covers the within-edition refresh schedule: which signals to watch for, and when to escalate from stay to hybridize or switch.';
+            }
+
+            result.className = `result visible ${path}`;
+            document.getElementById('result-label').textContent = label;
+            document.getElementById('result-recommendation').textContent = recommendation;
+            document.getElementById('result-explanation').textContent = explanation;
+            document.getElementById('result-detail').textContent = detail;
+
+            result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    </script>
+</body>
+</html>
