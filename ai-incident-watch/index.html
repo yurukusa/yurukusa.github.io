@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Incident Watch — Claude Code bug reports, triaged daily</title>
+<meta name="description" content="A free, ad-free daily snapshot of Claude Code bug reports from the public issue tracker. Filter by has-repro, regression, or area to find what is hitting users right now.">
+<meta name="keywords" content="Claude Code, AI, incident, bug, report, regression, postmortem, daily, watch, tracker">
+<link rel="canonical" href="https://yurukusa.github.io/ai-incident-watch/">
+<meta property="og:title" content="AI Incident Watch — Claude Code bug reports, triaged daily">
+<meta property="og:description" content="What broke in Claude Code today. Free, ad-free, no signup.">
+<meta property="og:type" content="website">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.6;color:#c9d1d9;background:#0d1117;max-width:880px;margin:0 auto;padding:2rem 1.5rem}
+h1{font-size:1.9rem;color:#f0f6fc;margin-bottom:.4rem;line-height:1.2}
+.lede{color:#8b949e;font-size:.95rem;margin-bottom:.4rem}
+.stamp{color:#8b949e;font-size:.78rem;margin-bottom:1.5rem}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+input[type=search]{width:100%;padding:.8rem 1rem;font-size:.95rem;background:#161b22;border:1px solid #30363d;border-radius:8px;color:#e6edf3;font-family:inherit}
+input[type=search]:focus{outline:none;border-color:#58a6ff}
+.filters{margin:.8rem 0 1.2rem;display:flex;gap:.4rem;flex-wrap:wrap}
+.filter{background:#161b22;border:1px solid #30363d;border-radius:99px;padding:.3rem .8rem;font-size:.82rem;color:#8b949e;cursor:pointer;font-family:inherit}
+.filter:hover{color:#58a6ff;border-color:#58a6ff}
+.filter.active{background:#1f6feb;color:#fff;border-color:#1f6feb}
+.count{color:#8b949e;font-size:.85rem;margin-bottom:.6rem}
+.item{background:#161b22;border:1px solid #21262d;border-radius:8px;padding:.9rem 1.1rem;margin:.5rem 0}
+.item h3{font-size:.98rem;color:#f0f6fc;margin-bottom:.35rem;font-weight:600}
+.item h3 a{color:#f0f6fc}
+.item h3 a:hover{color:#58a6ff}
+.item-meta{display:flex;gap:.7rem;flex-wrap:wrap;font-size:.75rem;color:#8b949e;margin-top:.3rem}
+.item-meta .num{color:#58a6ff;font-weight:600}
+.item-meta .date{color:#8b949e}
+.tag{display:inline-block;background:#21262d;color:#8b949e;font-size:.7rem;padding:.05rem .4rem;border-radius:99px}
+.tag.repro{background:#0d2818;color:#3fb950}
+.tag.regression{background:#3b1818;color:#f87171}
+.tag.area{background:#1c2128;color:#79c0ff}
+.intro{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:1rem 1.25rem;margin:1.2rem 0;font-size:.92rem}
+.intro strong{color:#f0f6fc}
+footer{text-align:center;color:#8b949e;font-size:.8rem;margin-top:3rem;padding-top:1rem;border-top:1px solid #21262d}
+mark{background:#3fb95040;color:#e6edf3;padding:0 2px;border-radius:2px}
+</style>
+</head>
+<body>
+<h1>AI Incident Watch</h1>
+<p class="lede">A daily snapshot of bug reports filed against Claude Code on the public issue tracker. Free, ad-free, no signup, no tracking.</p>
+<p class="stamp" id="stamp">Loading data...</p>
+
+<div class="intro">
+  <strong>Why this exists.</strong> The upstream issue tracker is the most accurate signal of what is actually broken in Claude Code, but it is large and unfiltered. This page surfaces the most recent open bug reports with the labels that matter for triage: <span class="tag repro">has repro</span> means someone wrote down how to reproduce it, <span class="tag regression">regression</span> means it worked before. Click an item to read the full report.
+</div>
+
+<input type="search" id="q" placeholder="Filter by symptom, version, area...">
+
+<div class="filters">
+  <button class="filter active" data-filter="all">All</button>
+  <button class="filter" data-filter="has-repro">Has repro</button>
+  <button class="filter" data-filter="regression">Regression</button>
+  <button class="filter" data-filter="windows">Windows</button>
+  <button class="filter" data-filter="macos">macOS</button>
+  <button class="filter" data-filter="linux">Linux</button>
+  <button class="filter" data-filter="hooks">Hooks</button>
+  <button class="filter" data-filter="agents">Subagents</button>
+  <button class="filter" data-filter="auth">Auth</button>
+  <button class="filter" data-filter="tui">TUI</button>
+  <button class="filter" data-filter="ide">IDE</button>
+  <button class="filter" data-filter="mcp">MCP</button>
+</div>
+
+<div class="count" id="count"></div>
+<div id="results"></div>
+
+<footer>
+<p>Source: <a href="https://github.com/anthropics/claude-code/issues">github.com/anthropics/claude-code/issues</a> (open bug issues). This page does not endorse, judge, or aggregate beyond what the upstream maintainers have already labeled.</p>
+<p style="margin-top:.6rem">Built and maintained by <a href="https://github.com/yurukusa">yurukusa</a>. <a href="../">Home</a> · <a href="https://github.com/yurukusa/cc-safe-setup">cc-safe-setup</a></p>
+</footer>
+
+<script>
+const stamp = document.getElementById('stamp');
+const results = document.getElementById('results');
+const count = document.getElementById('count');
+const q = document.getElementById('q');
+const filterButtons = document.querySelectorAll('.filter');
+let state = { items: [], filter: 'all', query: '' };
+
+function escapeHTML(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function relativeDate(iso) {
+  const d = new Date(iso);
+  const diff = Date.now() - d.getTime();
+  const hours = Math.floor(diff / 3600000);
+  if (hours < 24) return hours + 'h ago';
+  const days = Math.floor(hours / 24);
+  if (days < 30) return days + 'd ago';
+  return d.toISOString().slice(0, 10);
+}
+
+function highlight(text, query) {
+  let html = escapeHTML(text);
+  if (!query) return html;
+  const re = new RegExp('(' + query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+  return html.replace(re, '<mark>$1</mark>');
+}
+
+function matchesFilter(item, filter) {
+  if (filter === 'all') return true;
+  if (filter === 'has-repro') return item.has_repro;
+  if (filter === 'regression') return item.is_regression;
+  const labelKeyMap = {
+    'windows': 'platform:windows',
+    'macos': 'platform:macos',
+    'linux': 'platform:linux',
+    'hooks': 'area:hooks',
+    'agents': 'area:agents',
+    'auth': 'area:auth',
+    'tui': 'area:tui',
+    'ide': 'area:ide',
+    'mcp': 'area:mcp',
+  };
+  const labelKey = labelKeyMap[filter];
+  return labelKey ? item.labels.includes(labelKey) : false;
+}
+
+function render() {
+  const filtered = state.items.filter(it => matchesFilter(it, state.filter));
+  const queried = state.query
+    ? filtered.filter(it => (it.title + ' ' + it.labels.join(' ') + ' ' + it.number).toLowerCase().includes(state.query.toLowerCase()))
+    : filtered;
+  count.textContent = queried.length + ' of ' + state.items.length + ' issues';
+  if (queried.length === 0) {
+    results.innerHTML = '<p style="color:#8b949e;padding:1rem 0">No matches.</p>';
+    return;
+  }
+  results.innerHTML = queried.map(it => {
+    const reproTag = it.has_repro ? '<span class="tag repro">has repro</span>' : '';
+    const regressionTag = it.is_regression ? '<span class="tag regression">regression</span>' : '';
+    const areaLabels = it.labels.filter(l => l.startsWith('area:')).slice(0, 3);
+    const platformLabels = it.labels.filter(l => l.startsWith('platform:')).slice(0, 2);
+    const tags = [
+      ...areaLabels.map(l => '<span class="tag area">' + escapeHTML(l.replace('area:', '')) + '</span>'),
+      ...platformLabels.map(l => '<span class="tag">' + escapeHTML(l.replace('platform:', '')) + '</span>'),
+    ].join(' ');
+    return `
+      <div class="item">
+        <h3><a href="${escapeHTML(it.url)}" target="_blank" rel="noopener">${highlight(it.title, state.query)}</a></h3>
+        <div class="item-meta">
+          <span class="num">#${it.number}</span>
+          <span class="date">${relativeDate(it.created_at)}</span>
+          ${reproTag} ${regressionTag} ${tags}
+          ${it.comments > 0 ? `<span>${it.comments} comments</span>` : ''}
+          ${it.reactions > 0 ? `<span>👍 ${it.reactions}</span>` : ''}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+fetch('data.json')
+  .then(r => r.json())
+  .then(data => {
+    state.items = data.items;
+    const generated = new Date(data.generated_at);
+    stamp.textContent = `Last refreshed ${generated.toUTCString()}. ${data.count} open bugs.`;
+    render();
+  })
+  .catch(e => {
+    stamp.textContent = 'Failed to load data. Reload the page.';
+  });
+
+q.addEventListener('input', () => { state.query = q.value; render(); });
+filterButtons.forEach(b => b.addEventListener('click', () => {
+  filterButtons.forEach(x => x.classList.remove('active'));
+  b.classList.add('active');
+  state.filter = b.dataset.filter;
+  render();
+}));
+</script>
+</body>
+</html>
