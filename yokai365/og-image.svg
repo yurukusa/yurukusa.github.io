@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f8f3e7"/>
+      <stop offset="100%" stop-color="#ede2c4"/>
+    </linearGradient>
+    <pattern id="dots" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <circle cx="20" cy="20" r="1.5" fill="#c2613f" opacity="0.15"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#dots)"/>
+
+  <!-- Decorative left brush stroke -->
+  <path d="M 60 80 Q 80 200 60 320 Q 40 440 60 560" stroke="#c2613f" stroke-width="6" fill="none" opacity="0.7"/>
+
+  <!-- Title -->
+  <text x="600" y="170" font-family="'Hiragino Mincho ProN', 'Yu Mincho', 'Noto Serif JP', serif" font-size="92" font-weight="bold" fill="#2a2a2a" text-anchor="middle" letter-spacing="20">現代妖怪百科</text>
+
+  <!-- Subtitle -->
+  <text x="600" y="240" font-family="'Hiragino Mincho ProN', 'Yu Mincho', 'Noto Serif JP', serif" font-size="32" fill="#c2613f" text-anchor="middle" letter-spacing="8">365 体の街角の妖怪</text>
+
+  <!-- Sample yokai names in 3 rows -->
+  <g font-family="'Hiragino Mincho ProN', 'Yu Mincho', 'Noto Serif JP', serif" font-size="26" fill="#2a2a2a" text-anchor="middle">
+    <text x="200" y="370">001 終電のがし</text>
+    <text x="600" y="370">002 雪解けまち</text>
+    <text x="1000" y="370">003 商店街のほぐし手</text>
+
+    <text x="200" y="420">004 ねぶたの残り火</text>
+    <text x="600" y="420">005 わんこの数えびと</text>
+    <text x="1000" y="420">006 牛タンの蒸気</text>
+
+    <text x="200" y="470">007 米のひと粒</text>
+    <text x="600" y="470">013 江ノ島の砂踊り</text>
+    <text x="1000" y="470">020 鵜飼いの提灯</text>
+  </g>
+
+  <!-- Bottom line -->
+  <line x1="100" y1="540" x2="1100" y2="540" stroke="#b6a98a" stroke-width="1.5"/>
+
+  <!-- Footer -->
+  <text x="600" y="580" font-family="'Hiragino Mincho ProN', 'Yu Mincho', 'Noto Serif JP', serif" font-size="22" fill="#777" text-anchor="middle">日本全国の街角・夜・季節の風景に住む現代の妖怪を、 1 日 1 体ずつ描き起こす図鑑</text>
+
+  <!-- Decorative right brush stroke -->
+  <path d="M 1140 80 Q 1160 200 1140 320 Q 1120 440 1140 560" stroke="#c2613f" stroke-width="6" fill="none" opacity="0.7"/>
+</svg>
