@@ -551,7 +551,7 @@
                         <span class="tag tag-genre">Forensic Case Study</span>
                     </div>
                     <h3>Claim-Verify Handbook</h3>
-                    <p class="card-desc">One operator lost $80–$135 in API spend and several hours of working time, six of seven sessions returning zero usable output (issue #57485). This book organizes 55 forensic cases (15 body + 40 appendix D) of the same claim-vs-reality divergence pattern from `anthropics/claude-code`, with a 3-stage framework + 14 user defenses + 5 detection tools (all 5 implemented, 165+ tests passing). ~58,000 words / 55 pages. Edition 1 launches 2026-05-22, same day as Migration Playbook Edition 2. Free preview Gist linked here.</p>
+                    <p class="card-desc">One operator lost $80–$135 in API spend and several hours of working time, six of seven sessions returning zero usable output (issue #57485). This book organizes 58 forensic cases (15 body + 43 appendix D) of the same claim-vs-reality divergence pattern from `anthropics/claude-code`, with a 3-stage framework + 14 user defenses + 5 detection tools (all 5 implemented, 165+ tests passing). ~60,000 words / ~63 pages. Edition 1 launches 2026-05-22, same day as Migration Playbook Edition 2. Free preview Gist linked here.</p>
                     <span class="card-arrow">↗</span>
                 </a>
 
@@ -574,6 +574,28 @@
                     </div>
                     <h3>Five silent failure modes in Claude Code (May 2026)</h3>
                     <p class="card-desc">Synthesis of five user-filed bug reports from the past 24 hours into one structural pattern: claim-verify gap (#58212), auto-mode classifier (#58222), subagent invisible cost (#58217), sandbox analyzer overprompt (#58214), WebFetch tag fabrication (#58227). Each mode with reproducible structure and user-side detection or mitigation. ~1,200 words, English, no signup.</p>
+                    <span class="card-arrow">↗</span>
+                </a>
+
+                <a href="https://gist.github.com/yurukusa/e2fb2b2dadab456c5396704a485b789c?utm_source=yurukusa-io&utm_medium=card&utm_campaign=claim-verify-audit" class="card" target="_blank" rel="noopener">
+                    <div class="card-tags">
+                        <span class="tag tag-new">2026-05-13</span>
+                        <span class="tag tag-paid">Free / MIT</span>
+                        <span class="tag tag-genre">Diagnostic Tool</span>
+                    </div>
+                    <h3>claim-verify-audit.sh — 8 diagnostic checks</h3>
+                    <p class="card-desc">One-shot read-only audit for the May 2026 Claude Code failure-mode cluster. Eight checks: settings.json JSON validity (#57491 family), Windows 8.3 short-name allow-rule bypass (#58614), skill bloat token tax (Reddit 1tbbove), session backup absence (#58608), .env subagent inheritance (#57068), auto-compact drift (#57490 + #58373), bypassPermissions remote override (#57810), cache-trail forensic indicator (#58608). Each finding cites the source issue + prevention chapter. Single bash file, ~280 lines, MIT, runs in ~1 second. No destructive operations, no network access, no telemetry. Bundled in cc-safe-setup pending merge.</p>
+                    <span class="card-arrow">↗</span>
+                </a>
+
+                <a href="https://gist.github.com/yurukusa/129e09b53a0a00ad1d6568e280709473?utm_source=yurukusa-io&utm_medium=card&utm_campaign=6-failure-modes-2026-05-13" class="card" target="_blank" rel="noopener">
+                    <div class="card-tags">
+                        <span class="tag tag-new">2026-05-13</span>
+                        <span class="tag tag-paid">Free</span>
+                        <span class="tag tag-genre">Pattern Analysis</span>
+                    </div>
+                    <h3>Six failure-mode reports surfaced 2026-05-13</h3>
+                    <p class="card-desc">Structural read of six independent reports from the past 24 hours: agent-id mismatch with 270K token leak (#58604), Windows auto-update silent session deletion (#58608), Opus 4.7 unauthorized production code proposal (#58609), 8.3 short-name allow-rule bypass (#58614), Max 20x upgrade silently deleting subscription (Reddit 1tb4rou), 2,596 skills loading at ~$91/month invisible tax (Reddit 1tbbove). All six share one shape: response surface claims one state while runtime does another. Detection paths + hook-based defense with two open-source tools (cc-safe-setup, skill-tax). ~1,400 words, English, no signup.</p>
                     <span class="card-arrow">↗</span>
                 </a>
 
