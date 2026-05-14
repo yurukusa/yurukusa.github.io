@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>June 15 Cliff Hub — Resources for Claude Code's Agent SDK Credit Change</title>
+<meta name="description" content="A single landing page for all free and paid resources on Anthropic's June 15, 2026 Agent SDK pricing change. Six guides, two interactive tools, one paid playbook.">
+<link rel="canonical" href="https://yurukusa.github.io/june-15-cliff/">
+
+<meta property="og:title" content="June 15 Cliff Hub — Resources for Claude Code's Agent SDK Credit Change">
+<meta property="og:description" content="Free guides, interactive tools, and the deeper Migration Playbook for operators facing the June 15 pricing change.">
+<meta property="og:url" content="https://yurukusa.github.io/june-15-cliff/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@yurukusa_dev">
+
+<style>
+  :root {
+    --bg: #0a0a14; --surface: #16162a; --border: #2a2a44;
+    --text: #e0e0f0; --dim: #8888aa; --accent: #5b8fff;
+    --green: #4ade80; --orange: #fb923c; --paid: #f0c040;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, "Hiragino Sans", "Yu Gothic", "Segoe UI", sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; min-height: 100vh; }
+  .container { max-width: 880px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+
+  .hero { text-align: center; padding: 2rem 0 3rem; border-bottom: 1px solid var(--border); margin-bottom: 3rem; }
+  .label { display: inline-block; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); background: rgba(91,143,255,0.15); border: 1px solid var(--accent); border-radius: 99px; padding: 0.3rem 1rem; margin-bottom: 1.2rem; }
+  h1 { font-size: clamp(1.8rem, 5vw, 2.8rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 1rem; }
+  .hero p { color: var(--dim); max-width: 580px; margin: 0 auto; font-size: 1.05rem; }
+  .urgency { background: rgba(240,124,60,0.1); border: 1px solid var(--orange); border-radius: 8px; padding: 1rem 1.5rem; margin: 2rem auto 0; max-width: 580px; font-size: 0.95rem; }
+  .urgency strong { color: var(--orange); }
+
+  .section-title { font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  .section { margin-bottom: 3.5rem; }
+
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; text-decoration: none; color: var(--text); transition: all 0.15s; display: block; }
+  .card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .card.tool { border-color: rgba(74,222,128,0.3); }
+  .card.tool:hover { border-color: var(--green); }
+  .card.paid { border-color: rgba(240,192,64,0.3); }
+  .card.paid:hover { border-color: var(--paid); }
+  .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.7rem; }
+  .tag { font-size: 0.7rem; padding: 0.2rem 0.6rem; border-radius: 4px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); }
+  .tag-free { color: var(--green); border-color: rgba(74,222,128,0.4); }
+  .tag-paid { color: var(--paid); border-color: rgba(240,192,64,0.4); }
+  .tag-new { color: var(--accent); border-color: rgba(91,143,255,0.4); }
+  .tag-jp { color: #ff7ab8; border-color: rgba(255,122,184,0.4); }
+  .card h3 { font-size: 1.05rem; margin-bottom: 0.5rem; line-height: 1.4; }
+  .card p { color: var(--dim); font-size: 0.9rem; }
+  .arrow { color: var(--accent); margin-left: 0.3rem; }
+
+  .toc { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; margin-bottom: 3rem; }
+  .toc h2 { font-size: 1rem; margin-bottom: 0.8rem; color: var(--dim); }
+  .toc ol { padding-left: 1.5rem; }
+  .toc li { margin-bottom: 0.3rem; }
+  .toc a { color: var(--text); text-decoration: none; }
+  .toc a:hover { color: var(--accent); }
+
+  .change-summary { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem; }
+  .change-summary h3 { color: var(--accent); margin-bottom: 0.8rem; font-size: 1.05rem; }
+  .change-summary p { color: var(--text); font-size: 0.95rem; margin-bottom: 0.7rem; }
+  .change-summary table { width: 100%; border-collapse: collapse; margin-top: 0.8rem; font-size: 0.9rem; }
+  .change-summary td, .change-summary th { padding: 0.5rem 0.8rem; border-bottom: 1px solid var(--border); text-align: left; }
+  .change-summary th { color: var(--dim); font-weight: normal; font-size: 0.85rem; }
+
+  .footer { color: var(--dim); font-size: 0.85rem; margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); text-align: center; }
+  .footer a { color: var(--accent); text-decoration: none; }
+  code { background: rgba(255,255,255,0.08); padding: 0.1rem 0.4rem; border-radius: 3px; font-size: 0.9em; font-family: ui-monospace, monospace; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="hero">
+  <div class="label">2026-05-14 published · 2026-06-15 activation</div>
+  <h1>June 15 Cliff Hub</h1>
+  <p>Free guides, interactive tools, and deeper resources for Claude Code operators facing Anthropic's Agent SDK monthly credit change.</p>
+  <div class="urgency">
+    <strong>32 days remaining.</strong> The single highest-leverage action is the SDK credit opt-in in the <a href="https://console.anthropic.com" style="color:var(--accent)">Anthropic Console</a>. Schedule it for week 1, not week 4.
+  </div>
+</div>
+
+<div class="toc">
+  <h2>On this page</h2>
+  <ol>
+    <li><a href="#change">What changes on June 15</a></li>
+    <li><a href="#tools">Interactive decision tools (2)</a></li>
+    <li><a href="#guides">Free written guides (3)</a></li>
+    <li><a href="#deeper">Paid resources for deeper questions</a></li>
+    <li><a href="#ongoing">Ongoing tracking</a></li>
+  </ol>
+</div>
+
+<div class="section" id="change">
+  <div class="section-title">1 · What changes</div>
+  <div class="change-summary">
+    <h3>The change in one paragraph</h3>
+    <p>Before June 15, a Claude Code subscriber running <code>claude -p</code> automation drew from the same usage pool as their interactive session. After June 15, the Agent SDK path draws from a separate monthly dollar credit, sized by plan. Beyond the credit, calls bill at standard API rates (if extra-usage is enabled) or stop (if it is not). Source: <a href="https://support.claude.com/en/articles/15036540-use-the-claude-agent-sdk-with-your-claude-plan" style="color:var(--accent)">Anthropic support article 15036540</a>.</p>
+    <table>
+      <tr><th>Plan</th><th>New monthly SDK credit</th></tr>
+      <tr><td>Pro / Team Standard</td><td>$20/mo</td></tr>
+      <tr><td>Max 5x / Team Premium / Enterprise (usage-based)</td><td>$100/mo</td></tr>
+      <tr><td>Max 20x / Enterprise (seat-based Premium)</td><td>$200/mo</td></tr>
+      <tr><td>Direct API key only</td><td>Unaffected</td></tr>
+    </table>
+    <p style="margin-top:0.8rem; font-size:0.85rem; color:var(--dim);">Community reaction in the first 24 hours after the May 13 announcement: approximately 4,039 points across r/ClaudeCode, r/ClaudeAI, and Hacker News. Multiple independent operators report 10x effective cost increase for typical heavy-SDK workloads.</p>
+  </div>
+</div>
+
+<div class="section" id="tools">
+  <div class="section-title">2 · Interactive decision tools</div>
+  <div class="card-grid">
+    <a href="https://htmlpreview.github.io/?https://gist.githubusercontent.com/yurukusa/51170c1df29dd502d7eccc8f549fa41b/raw" class="card tool" target="_blank" rel="noopener">
+      <div class="tags">
+        <span class="tag tag-new">2026-05-14</span>
+        <span class="tag tag-free">Free</span>
+      </div>
+      <h3>June 15 Path Finder <span class="arrow">↗</span></h3>
+      <p>5-question interactive aid. Outputs your projected post-cliff monthly bill, credit utilization, and a recommended path in 30 seconds. All browser-side, no signup.</p>
+    </a>
+
+    <a href="https://htmlpreview.github.io/?https://gist.githubusercontent.com/yurukusa/3631db5c38c3fb2fb3ddb7cd3b5f1018/raw" class="card tool" target="_blank" rel="noopener">
+      <div class="tags">
+        <span class="tag tag-new">2026-05-14</span>
+        <span class="tag tag-free">Free</span>
+        <span class="tag tag-jp">日本語</span>
+      </div>
+      <h3>6月15日の経路の判定 (Path Finder JP) <span class="arrow">↗</span></h3>
+      <p>5問の interactive な道具の日本語版。月の請求の予測と推奨の経路を返す。すべて browser 内で完結。</p>
+    </a>
+  </div>
+</div>
+
+<div class="section" id="guides">
+  <div class="section-title">3 · Free written guides</div>
+  <div class="card-grid">
+    <a href="https://gist.github.com/yurukusa/7111a16d903870a95841aab36781618e" class="card" target="_blank" rel="noopener">
+      <div class="tags">
+        <span class="tag tag-new">2026-05-14</span>
+        <span class="tag tag-free">Free · 2,142 words</span>
+      </div>
+      <h3>The 32-Day Window <span class="arrow">↗</span></h3>
+      <p>The structured response framework. Four paths, the single number that picks between them, the opt-in trap, the 32-day timeline (measure → decide → implement → verify).</p>
+    </a>
+
+    <a href="https://gist.github.com/yurukusa/9c037f7d63e86f8eed2818199f6df9c1" class="card" target="_blank" rel="noopener">
+      <div class="tags">
+        <span class="tag tag-new">2026-05-14</span>
+        <span class="tag tag-free">Free · 1,491 words</span>
+      </div>
+      <h3>Post-June-15 Decision Matrix <span class="arrow">↗</span></h3>
+      <p>5 effective-usage rows × 5 alternative platforms. Shows where Cursor Ultra and Codex Pro 20x absorb workloads that post-cliff Claude Code Max would charge $1,000-1,500/mo overage on.</p>
+    </a>
+
+    <a href="https://yurukusa-dev.hatenablog.com/entry/2026/05/14/204022" class="card" target="_blank" rel="noopener">
+      <div class="tags">
+        <span class="tag tag-new">2026-05-14</span>
+        <span class="tag tag-free">Free · 1,689 字</span>
+        <span class="tag tag-jp">日本語</span>
+      </div>
+      <h3>Max 5x の利用者が6月15日までに決めるべきこと <span class="arrow">↗</span></h3>
+      <p>日本語の整理。単一の指標 M、4つの経路、加入の落とし穴、32日の時系列。Max 5x で `claude -p` の自動化を運用している利用者の判断の整理。</p>
+    </a>
+  </div>
+</div>
+
+<div class="section" id="deeper">
+  <div class="section-title">4 · Paid resources for deeper questions</div>
+  <div class="card-grid">
+    <a href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook" class="card paid" target="_blank" rel="noopener">
+      <div class="tags">
+        <span class="tag tag-paid">USD 19</span>
+        <span class="tag tag-new">Edition 2 ships 2026-05-22</span>
+      </div>
+      <h3>Claude Code Migration Playbook <span class="arrow">↗</span></h3>
+      <p>Stay / Switch / Stack framework. Edition 1 live since 2026-04-25. Edition 2 incorporates the June 15 cliff as Trigger 12 (billing-system change) and expands Path A' (harness reduction), Path B' (switch routes), Path D (hybrid delegation). Free update for all Edition 1 buyers. ~120 pages.</p>
+    </a>
+
+    <a href="https://yurukusa.gumroad.com/l/claim-verify-handbook" class="card paid" target="_blank" rel="noopener">
+      <div class="tags">
+        <span class="tag tag-paid">USD 19</span>
+        <span class="tag tag-new">Ships 2026-05-22</span>
+      </div>
+      <h3>Claim-Verify Handbook <span class="arrow">↗</span></h3>
+      <p>Companion on a separate axis: when Claude Code's response surface claims success while the underlying state diverges. 79 cases (15 in-text + 64 Appendix D), three-stage framework, 14 operator defenses, 5 detection tools (all implemented and tested, 165+ test cases passing).</p>
+    </a>
+  </div>
+</div>
+
+<div class="section" id="ongoing">
+  <div class="section-title">5 · Ongoing tracking</div>
+  <div class="card-grid">
+    <a href="https://ko-fi.com/yurukusa/tiers" class="card paid" target="_blank" rel="noopener">
+      <div class="tags">
+        <span class="tag tag-paid">¥500/mo</span>
+        <span class="tag tag-new">Monthly</span>
+      </div>
+      <h3>Safety Lab Founder Membership <span class="arrow">↗</span></h3>
+      <p>Each month: 4-8 verified incidents, a deep-dive case, copy-paste safety hooks, an updated checklist. June 2026 issue (ships 6/1) centers on the cliff context, with one chapter on the pricing-quality coupling structure.</p>
+    </a>
+
+    <a href="https://gist.github.com/yurukusa/2d41b6aa681558c5db221ffd0fc51e6d" class="card" target="_blank" rel="noopener">
+      <div class="tags">
+        <span class="tag tag-new">2026-05-13</span>
+        <span class="tag tag-free">Free preview · ~14,500 words</span>
+      </div>
+      <h3>Safety Lab June 2026 issue preview <span class="arrow">↗</span></h3>
+      <p>Three chapter intros: complexity trap, pricing-quality coupling, irreversible operations, trust boundary collapse. Includes the 5/14 update with the 4,039-point community signal integration.</p>
+    </a>
+  </div>
+</div>
+
+<div class="footer">
+  <p>Compiled 2026-05-14 by <a href="https://github.com/yurukusa">yurukusa</a> · <a href="https://x.com/yurukusa_dev">@yurukusa_dev</a></p>
+  <p style="margin-top:0.5rem;"><a href="https://yurukusa.github.io/">← Back to yurukusa.github.io</a></p>
+</div>
+
+</div>
+</body>
+</html>
