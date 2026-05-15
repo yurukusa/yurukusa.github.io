@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Code 6月15日 credit cliff 計算機 | yurukusa</title>
+    <meta name="description" content="2026年6月15日のAnthropicの課金構造の変更で、 月の$20/$100/$200のAgent SDKの credit がいつ枯渇するかをブラウザで計算する道具。 無料、 登録不要、 ブラウザだけで動く。">
+    <link rel="canonical" href="https://yurukusa.github.io/claude-code-credit-cliff-calculator-ja/">
+
+    <meta property="og:title" content="Claude Code 6月15日 credit cliff 計算機">
+    <meta property="og:description" content="新しい課金構造で月のSDKのcreditがいつ尽きるか、32日間の判定の入力の道具。">
+    <meta property="og:url" content="https://yurukusa.github.io/claude-code-credit-cliff-calculator-ja/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="yurukusa">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@yurukusa_dev">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Claude Code credit cliff calculator (JP)",
+      "description": "2026年6月15日の Anthropic の Agent SDK の credit の月の枯渇の予想の道具。 2つの入力の経路 (実測の費用 / トークンの内訳) と4件の対応の経路の判定を提供。",
+      "url": "https://yurukusa.github.io/claude-code-credit-cliff-calculator-ja/",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Any",
+      "browserRequirements": "Requires JavaScript",
+      "isAccessibleForFree": true,
+      "inLanguage": "ja",
+      "creator": { "@type": "Person", "name": "yurukusa", "url": "https://yurukusa.github.io/" },
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+    }
+    </script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #080810;
+            --surface: #10101c;
+            --surface2: #16162a;
+            --border: #1e1e38;
+            --text: #ddddf0;
+            --text-dim: #9090b0;
+            --accent: #f0883e;
+            --accent-soft: rgba(240, 136, 62, 0.15);
+            --green: #56d364;
+            --red: #f85149;
+            --yellow: #d29922;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Yu Gothic", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            padding: 24px 16px;
+            min-height: 100vh;
+        }
+        .wrap { max-width: 760px; margin: 0 auto; }
+        header { margin-bottom: 32px; }
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            color: var(--text);
+            line-height: 1.4;
+        }
+        h1 .accent { color: var(--accent); }
+        .lead {
+            color: var(--text-dim);
+            font-size: 0.92rem;
+            margin-bottom: 16px;
+        }
+        .lang-switch {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+        .lang-switch a {
+            color: var(--accent);
+            text-decoration: none;
+            margin-right: 8px;
+        }
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+        h2 {
+            font-size: 1.05rem;
+            margin-bottom: 12px;
+            color: var(--accent);
+            font-weight: 600;
+        }
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .field { flex: 1; min-width: 180px; }
+        label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            margin-bottom: 4px;
+        }
+        select, input[type="number"], input[type="text"] {
+            width: 100%;
+            padding: 8px 10px;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-radius: 4px;
+            font-size: 0.95rem;
+            font-family: inherit;
+        }
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        .mode-toggle {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 16px;
+            background: var(--surface2);
+            border-radius: 6px;
+            padding: 4px;
+        }
+        .mode-toggle button {
+            flex: 1;
+            padding: 8px;
+            background: transparent;
+            border: none;
+            color: var(--text-dim);
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 0.88rem;
+            font-family: inherit;
+        }
+        .mode-toggle button.active {
+            background: var(--accent-soft);
+            color: var(--accent);
+        }
+        .hint {
+            font-size: 0.78rem;
+            color: var(--text-dim);
+            margin-top: 4px;
+        }
+        .calc-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--accent);
+            border: none;
+            color: #000;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 8px;
+            font-family: inherit;
+        }
+        .calc-btn:hover { opacity: 0.9; }
+        .out-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.93rem;
+        }
+        .out-row:last-child { border-bottom: none; }
+        .out-row .label { color: var(--text-dim); }
+        .out-row .value { font-weight: 600; font-family: ui-monospace, "SF Mono", monospace; }
+        .verdict {
+            margin-top: 16px;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            border-left: 3px solid var(--accent);
+            background: var(--accent-soft);
+        }
+        .verdict.green { border-color: var(--green); background: rgba(86, 211, 100, 0.1); }
+        .verdict.yellow { border-color: var(--yellow); background: rgba(210, 153, 34, 0.1); }
+        .verdict.red { border-color: var(--red); background: rgba(248, 81, 73, 0.1); }
+        .verdict strong { display: block; margin-bottom: 4px; }
+        .hidden { display: none; }
+        footer {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            font-size: 0.82rem;
+            color: var(--text-dim);
+        }
+        footer p { margin-bottom: 8px; }
+        footer a { color: var(--accent); text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+        code {
+            background: var(--surface2);
+            padding: 1px 6px;
+            border-radius: 3px;
+            font-size: 0.85em;
+            font-family: ui-monospace, "SF Mono", monospace;
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <header>
+        <h1>Claude Code <span class="accent">6月15日</span> credit cliff 計算機</h1>
+        <p class="lead">2026年6月15日のAnthropicの課金構造の変更で、 月の Agent SDK の credit がいつ枯渇するかを計算する道具。 無料、 登録不要、 ブラウザだけで動く。</p>
+        <p class="lang-switch"><a href="../claude-code-credit-cliff-calculator/">English</a> · <a href="https://yurukusa.github.io/">他の道具の一覧</a></p>
+    </header>
+
+    <div class="card">
+        <h2>6月15日に何が変わるか</h2>
+        <p style="font-size:0.92rem;color:var(--text-dim);margin-bottom:8px;">現在、 <code>claude -p</code> と Agent SDK の呼び出しは、 対話の Claude Code と同じ枠を使う。 6月15日からは、 別の月の credit の枠が分離される:</p>
+        <ul style="font-size:0.92rem;color:var(--text-dim);padding-left:20px;margin-bottom:8px;">
+            <li>Pro / Team Standard: <strong>月$20の credit</strong></li>
+            <li>Max 5x / Team Premium: <strong>月$100の credit</strong></li>
+            <li>Max 20x / Enterprise Premium: <strong>月$200の credit</strong></li>
+        </ul>
+        <p style="font-size:0.85rem;color:var(--text-dim);">credit を超えた分は API の単価で課金される。 出典: <a href="https://support.claude.com/en/articles/15036540" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">Anthropic の support article 15036540</a> (2026年5月13日付)。</p>
+    </div>
+
+    <div class="card">
+        <h2>入力</h2>
+
+        <div class="row">
+            <div class="field">
+                <label for="plan">利用している枠</label>
+                <select id="plan">
+                    <option value="pro">Pro / Team Standard ($20の credit)</option>
+                    <option value="max5x" selected>Max 5x / Team Premium ($100の credit)</option>
+                    <option value="max20x">Max 20x / Enterprise Premium ($200の credit)</option>
+                </select>
+            </div>
+            <div class="field">
+                <label for="window">観測の期間 (日数)</label>
+                <input type="number" id="window" value="30" min="1" max="90" step="1">
+                <p class="hint">入力の費用が何日分の利用かを書く。</p>
+            </div>
+        </div>
+
+        <div class="mode-toggle" role="tablist">
+            <button id="mode-a-btn" class="active" onclick="setMode('a')">経路A: 合計の費用を持っている</button>
+            <button id="mode-b-btn" onclick="setMode('b')">経路B: トークンの内訳を持っている</button>
+        </div>
+
+        <div id="mode-a">
+            <div class="field">
+                <label for="cost">観測した SDK の合計の費用 (米ドル)</label>
+                <input type="number" id="cost" value="50" step="1" min="0">
+                <p class="hint">Anthropic の Console の利用の頁から、 非対話の呼び出しの分を取得。</p>
+            </div>
+        </div>
+
+        <div id="mode-b" class="hidden">
+            <div class="row">
+                <div class="field">
+                    <label for="model">模型</label>
+                    <select id="model">
+                        <option value="opus-4.7">Opus 4.7</option>
+                        <option value="opus-4.6">Opus 4.6</option>
+                        <option value="sonnet-4.6">Sonnet 4.6</option>
+                        <option value="sonnet-4.5" selected>Sonnet 4.5</option>
+                        <option value="haiku-4.5">Haiku 4.5</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="field">
+                    <label for="in-tok">入力のトークン</label>
+                    <input type="number" id="in-tok" value="5000000" min="0" step="1000">
+                </div>
+                <div class="field">
+                    <label for="out-tok">出力のトークン</label>
+                    <input type="number" id="out-tok" value="1200000" min="0" step="1000">
+                </div>
+            </div>
+            <div class="row">
+                <div class="field">
+                    <label for="cache-read">cache read のトークン</label>
+                    <input type="number" id="cache-read" value="18000000" min="0" step="1000">
+                </div>
+                <div class="field">
+                    <label for="cache-5m">cache write 5m のトークン</label>
+                    <input type="number" id="cache-5m" value="600000" min="0" step="1000">
+                </div>
+            </div>
+            <div class="row">
+                <div class="field">
+                    <label for="cache-1h">cache write 1h のトークン</label>
+                    <input type="number" id="cache-1h" value="0" min="0" step="1000">
+                </div>
+            </div>
+            <p class="hint">対話の Claude Code の中で <code>/usage --json</code> の指令から取得、 または Anthropic の Console の利用の頁から API の呼び出しごとに分解して見積もる。</p>
+        </div>
+
+        <button class="calc-btn" onclick="calculate()">計算する</button>
+    </div>
+
+    <div id="results" class="card hidden">
+        <h2>予想の結果</h2>
+        <div class="out-row"><span class="label">利用している枠</span><span class="value" id="r-plan">—</span></div>
+        <div class="out-row"><span class="label">月の credit</span><span class="value" id="r-credit">—</span></div>
+        <div class="out-row"><span class="label">月の SDK の予想の費用</span><span class="value" id="r-monthly">—</span></div>
+        <div class="out-row"><span class="label">日の SDK の予想の費用</span><span class="value" id="r-daily">—</span></div>
+        <div class="out-row"><span class="label">credit の利用率</span><span class="value" id="r-util">—</span></div>
+        <div class="out-row"><span class="label">credit が持つ期間</span><span class="value" id="r-days">—</span></div>
+        <div class="out-row"><span class="label">月の超過分の API の単価の費用</span><span class="value" id="r-overage">—</span></div>
+        <div id="r-verdict" class="verdict"></div>
+    </div>
+
+    <footer>
+        <p>値段の表は <a href="https://claude.com/pricing" target="_blank" rel="noopener">claude.com/pricing</a> から 2026年5月14日に取得。 本道具は非公式の見積もりで、 Anthropic とは直接の関係なし。 実際の費用は、 利用者の本物のトークンの内訳、 cache の hit の比率、 模型の振り分けの状態で変動する。</p>
+        <p>関連の道具: <a href="https://gist.github.com/yurukusa/60ae86714f97af51a9cf470440f7fd93" target="_blank" rel="noopener">Python の CLI 版</a> (同じ論理) · <a href="https://qiita.com/yurukusa/items/6dc849eea5a9b3fd926c" target="_blank" rel="noopener">背景の解説の記事</a> · <a href="https://yurukusa.github.io/claude-code-cost-calculator-ja/" target="_blank" rel="noopener">月の費用の計算の道具</a> (広い範囲の判定) · <a href="https://yurukusa.github.io/" target="_blank" rel="noopener">他の道具の一覧</a></p>
+        <p>作者は <a href="https://yurukusa.github.io/" target="_blank" rel="noopener">yurukusa</a>。 MIT 同等のライセンスで、 自由に使い、 写し、 改変してよい。</p>
+    </footer>
+</div>
+
+<script>
+const PRICING = {
+    "opus-4.7":  {input: 5.0,  cache_write_5m: 6.25,  cache_write_1h: 10.0, cache_read: 0.50, output: 25.0},
+    "opus-4.6":  {input: 5.0,  cache_write_5m: 6.25,  cache_write_1h: 10.0, cache_read: 0.50, output: 25.0},
+    "sonnet-4.6":{input: 3.0,  cache_write_5m: 3.75,  cache_write_1h: 6.0,  cache_read: 0.30, output: 15.0},
+    "sonnet-4.5":{input: 3.0,  cache_write_5m: 3.75,  cache_write_1h: 6.0,  cache_read: 0.30, output: 15.0},
+    "haiku-4.5": {input: 1.0,  cache_write_5m: 1.25,  cache_write_1h: 2.0,  cache_read: 0.10, output: 5.0},
+};
+const PLAN_CREDITS = { pro: 20, max5x: 100, max20x: 200 };
+let mode = 'a';
+
+function setMode(m) {
+    mode = m;
+    document.getElementById('mode-a').classList.toggle('hidden', m !== 'a');
+    document.getElementById('mode-b').classList.toggle('hidden', m !== 'b');
+    document.getElementById('mode-a-btn').classList.toggle('active', m === 'a');
+    document.getElementById('mode-b-btn').classList.toggle('active', m === 'b');
+}
+
+function costFromTokens(model, inTok, outTok, cacheRead, cache5m, cache1h) {
+    const p = PRICING[model];
+    return (inTok * p.input + outTok * p.output + cacheRead * p.cache_read
+            + cache5m * p.cache_write_5m + cache1h * p.cache_write_1h) / 1_000_000;
+}
+
+function fmtMoney(n, prec) {
+    if (prec === undefined) prec = 2;
+    return '$' + n.toLocaleString('en-US', {minimumFractionDigits: prec, maximumFractionDigits: prec});
+}
+
+function calculate() {
+    const plan = document.getElementById('plan').value;
+    const windowDays = Math.max(1, parseInt(document.getElementById('window').value, 10) || 30);
+    const credit = PLAN_CREDITS[plan];
+
+    let observed;
+    if (mode === 'a') {
+        observed = parseFloat(document.getElementById('cost').value) || 0;
+    } else {
+        const model = document.getElementById('model').value;
+        observed = costFromTokens(
+            model,
+            parseInt(document.getElementById('in-tok').value, 10) || 0,
+            parseInt(document.getElementById('out-tok').value, 10) || 0,
+            parseInt(document.getElementById('cache-read').value, 10) || 0,
+            parseInt(document.getElementById('cache-5m').value, 10) || 0,
+            parseInt(document.getElementById('cache-1h').value, 10) || 0
+        );
+    }
+
+    const daily = observed / windowDays;
+    const monthly = daily * 30;
+    const daysToZero = daily > 0 ? credit / daily : Infinity;
+    const excess = Math.max(0, monthly - credit);
+    const fraction = credit > 0 ? monthly / credit : Infinity;
+
+    const planLabels = {
+        pro: "Pro / Team Standard",
+        max5x: "Max 5x / Team Premium",
+        max20x: "Max 20x / Enterprise Premium"
+    };
+
+    document.getElementById('r-plan').textContent = planLabels[plan];
+    document.getElementById('r-credit').textContent = fmtMoney(credit, 0) + '/月';
+    document.getElementById('r-monthly').textContent = fmtMoney(monthly);
+    document.getElementById('r-daily').textContent = fmtMoney(daily, 4);
+    document.getElementById('r-util').textContent = (fraction * 100).toFixed(1) + '% ($' + credit + '中)';
+    document.getElementById('r-days').textContent = (daysToZero === Infinity)
+        ? '尽きない (利用なし)'
+        : daysToZero.toFixed(1) + '日 (30日の周期の中で)';
+    document.getElementById('r-overage').textContent = fmtMoney(excess);
+
+    const verdict = document.getElementById('r-verdict');
+    verdict.classList.remove('green', 'yellow', 'red');
+    let cls, title, body;
+    if (fraction < 0.5) {
+        cls = 'green';
+        title = '余裕がある状態。';
+        body = 'SDK の利用は credit の半分未満で、 当面は対処の必要なし。';
+    } else if (fraction < 1.0) {
+        cls = 'yellow';
+        title = '逼迫の状態。';
+        body = 'SDK の利用が credit の上限に近づいている。 経路の選択肢: extra-usage の課金を有効化、 cache の cold な session を減らして余裕を作る。';
+    } else if (fraction < 2.0) {
+        cls = 'yellow';
+        title = '超過の状態。';
+        body = '毎月、 周期の途中で credit が枯渇する。 経路の選択肢: (1) SDK の作業の一部を対話の Claude Code に組み込む、 (2) 予約の流れを Claude Developer Platform の API の鍵に移して予想可能な単価で動かす、 (3) cache の hit の比率を高めて1呼び出しあたりの費用を下げる。';
+    } else {
+        cls = 'red';
+        title = '大幅な超過の状態。';
+        body = '新しい構造は本作業に対して根本的に高い。 経路の選択肢: Claude Developer Platform の API の鍵 (予想可能な従量の課金) 、 SDK の作業の主要な部分を対話の Claude Code の利用に移す、 別の harness の検討 (Aider、 Cline、 Codex CLI)、 機械の作業を別の安い模型に振り分ける混合の構成。';
+    }
+    verdict.classList.add(cls);
+    verdict.innerHTML = '<strong>' + title + '</strong>' + body;
+
+    document.getElementById('results').classList.remove('hidden');
+    document.getElementById('results').scrollIntoView({behavior: 'smooth', block: 'nearest'});
+}
+</script>
+</body>
+</html>
