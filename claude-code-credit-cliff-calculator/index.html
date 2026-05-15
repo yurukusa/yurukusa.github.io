@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Code June 15, 2026 credit cliff calculator | yurukusa</title>
+    <meta name="description" content="Estimate how many days your $20 / $100 / $200 monthly Agent SDK credit will last after Anthropic's June 15, 2026 billing change. Free, no signup, runs entirely in your browser.">
+    <link rel="canonical" href="https://yurukusa.github.io/claude-code-credit-cliff-calculator/">
+
+    <meta property="og:title" content="Claude Code June 15, 2026 credit cliff calculator">
+    <meta property="og:description" content="Find out when your monthly SDK credit will run out under the new billing structure. 32 days to plan.">
+    <meta property="og:url" content="https://yurukusa.github.io/claude-code-credit-cliff-calculator/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="yurukusa">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@yurukusa_dev">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Claude Code credit cliff calculator",
+      "description": "Estimate Anthropic Agent SDK monthly credit burn under the June 15, 2026 billing change. Two input modes (observed cost or token breakdown) with mitigation guidance.",
+      "url": "https://yurukusa.github.io/claude-code-credit-cliff-calculator/",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Any",
+      "browserRequirements": "Requires JavaScript",
+      "isAccessibleForFree": true,
+      "inLanguage": "en",
+      "creator": { "@type": "Person", "name": "yurukusa", "url": "https://yurukusa.github.io/" },
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+    }
+    </script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #080810;
+            --surface: #10101c;
+            --surface2: #16162a;
+            --border: #1e1e38;
+            --text: #ddddf0;
+            --text-dim: #9090b0;
+            --accent: #f0883e;
+            --accent-soft: rgba(240, 136, 62, 0.15);
+            --green: #56d364;
+            --red: #f85149;
+            --yellow: #d29922;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 24px 16px;
+            min-height: 100vh;
+        }
+        .wrap { max-width: 760px; margin: 0 auto; }
+        header { margin-bottom: 32px; }
+        h1 {
+            font-size: 1.7rem;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+        h1 .accent { color: var(--accent); }
+        .lead {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            margin-bottom: 16px;
+        }
+        .lang-switch {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+        .lang-switch a {
+            color: var(--accent);
+            text-decoration: none;
+            margin-right: 8px;
+        }
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+        h2 {
+            font-size: 1.05rem;
+            margin-bottom: 12px;
+            color: var(--accent);
+            font-weight: 600;
+        }
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .field { flex: 1; min-width: 180px; }
+        label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            margin-bottom: 4px;
+        }
+        select, input[type="number"], input[type="text"] {
+            width: 100%;
+            padding: 8px 10px;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-radius: 4px;
+            font-size: 0.95rem;
+            font-family: inherit;
+        }
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        .mode-toggle {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 16px;
+            background: var(--surface2);
+            border-radius: 6px;
+            padding: 4px;
+        }
+        .mode-toggle button {
+            flex: 1;
+            padding: 8px;
+            background: transparent;
+            border: none;
+            color: var(--text-dim);
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-family: inherit;
+        }
+        .mode-toggle button.active {
+            background: var(--accent-soft);
+            color: var(--accent);
+        }
+        .hint {
+            font-size: 0.78rem;
+            color: var(--text-dim);
+            margin-top: 4px;
+        }
+        .calc-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--accent);
+            border: none;
+            color: #000;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 8px;
+            font-family: inherit;
+        }
+        .calc-btn:hover { opacity: 0.9; }
+        .out-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+        }
+        .out-row:last-child { border-bottom: none; }
+        .out-row .label { color: var(--text-dim); }
+        .out-row .value { font-weight: 600; font-family: ui-monospace, "SF Mono", monospace; }
+        .verdict {
+            margin-top: 16px;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            border-left: 3px solid var(--accent);
+            background: var(--accent-soft);
+        }
+        .verdict.green { border-color: var(--green); background: rgba(86, 211, 100, 0.1); }
+        .verdict.yellow { border-color: var(--yellow); background: rgba(210, 153, 34, 0.1); }
+        .verdict.red { border-color: var(--red); background: rgba(248, 81, 73, 0.1); }
+        .verdict strong { display: block; margin-bottom: 4px; }
+        .hidden { display: none; }
+        footer {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            font-size: 0.82rem;
+            color: var(--text-dim);
+        }
+        footer p { margin-bottom: 8px; }
+        footer a { color: var(--accent); text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+        code {
+            background: var(--surface2);
+            padding: 1px 6px;
+            border-radius: 3px;
+            font-size: 0.85em;
+            font-family: ui-monospace, "SF Mono", monospace;
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <header>
+        <h1>Claude Code <span class="accent">June 15, 2026</span> credit cliff calculator</h1>
+        <p class="lead">Estimate when your monthly Agent SDK credit will run out under Anthropic's new billing structure. Free, no signup, runs entirely in your browser.</p>
+        <p class="lang-switch"><a href="../claude-code-credit-cliff-calculator-ja/">日本語</a> · <a href="https://yurukusa.github.io/">Other tools</a></p>
+    </header>
+
+    <div class="card">
+        <h2>What changes on June 15, 2026</h2>
+        <p style="font-size:0.92rem;color:var(--text-dim);margin-bottom:8px;">Currently, <code>claude -p</code> and Agent SDK calls share your interactive Claude Code quota. From June 15, they will draw from a separate monthly credit bucket:</p>
+        <ul style="font-size:0.92rem;color:var(--text-dim);padding-left:20px;margin-bottom:8px;">
+            <li>Pro / Team Standard: <strong>$20/month credit</strong></li>
+            <li>Max 5x / Team Premium: <strong>$100/month credit</strong></li>
+            <li>Max 20x / Enterprise Premium: <strong>$200/month credit</strong></li>
+        </ul>
+        <p style="font-size:0.85rem;color:var(--text-dim);">Above-credit usage is billed at API rates. Source: <a href="https://support.claude.com/en/articles/15036540" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">Anthropic support article 15036540</a> (2026-05-13).</p>
+    </div>
+
+    <div class="card">
+        <h2>Inputs</h2>
+
+        <div class="row">
+            <div class="field">
+                <label for="plan">Your plan</label>
+                <select id="plan">
+                    <option value="pro">Pro / Team Standard ($20 credit)</option>
+                    <option value="max5x" selected>Max 5x / Team Premium ($100 credit)</option>
+                    <option value="max20x">Max 20x / Enterprise Premium ($200 credit)</option>
+                </select>
+            </div>
+            <div class="field">
+                <label for="window">Window observed (days)</label>
+                <input type="number" id="window" value="30" min="1" max="90" step="1">
+                <p class="hint">How many days your usage data covers.</p>
+            </div>
+        </div>
+
+        <div class="mode-toggle" role="tablist">
+            <button id="mode-a-btn" class="active" onclick="setMode('a')">Mode A: I have my total cost</button>
+            <button id="mode-b-btn" onclick="setMode('b')">Mode B: I have token counts</button>
+        </div>
+
+        <div id="mode-a">
+            <div class="field">
+                <label for="cost">Total observed SDK cost (USD)</label>
+                <input type="number" id="cost" value="50" step="1" min="0">
+                <p class="hint">From the Anthropic Console usage page, filtered to non-interactive calls if possible.</p>
+            </div>
+        </div>
+
+        <div id="mode-b" class="hidden">
+            <div class="row">
+                <div class="field">
+                    <label for="model">Model</label>
+                    <select id="model">
+                        <option value="opus-4.7">Opus 4.7</option>
+                        <option value="opus-4.6">Opus 4.6</option>
+                        <option value="sonnet-4.6">Sonnet 4.6</option>
+                        <option value="sonnet-4.5" selected>Sonnet 4.5</option>
+                        <option value="haiku-4.5">Haiku 4.5</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="field">
+                    <label for="in-tok">Input tokens</label>
+                    <input type="number" id="in-tok" value="5000000" min="0" step="1000">
+                </div>
+                <div class="field">
+                    <label for="out-tok">Output tokens</label>
+                    <input type="number" id="out-tok" value="1200000" min="0" step="1000">
+                </div>
+            </div>
+            <div class="row">
+                <div class="field">
+                    <label for="cache-read">Cache read tokens</label>
+                    <input type="number" id="cache-read" value="18000000" min="0" step="1000">
+                </div>
+                <div class="field">
+                    <label for="cache-5m">Cache write 5m tokens</label>
+                    <input type="number" id="cache-5m" value="600000" min="0" step="1000">
+                </div>
+            </div>
+            <div class="row">
+                <div class="field">
+                    <label for="cache-1h">Cache write 1h tokens</label>
+                    <input type="number" id="cache-1h" value="0" min="0" step="1000">
+                </div>
+            </div>
+            <p class="hint">From <code>/usage --json</code> in an interactive Claude Code session, or estimated from the Anthropic Console usage page broken down by API call.</p>
+        </div>
+
+        <button class="calc-btn" onclick="calculate()">Calculate</button>
+    </div>
+
+    <div id="results" class="card hidden">
+        <h2>Projection</h2>
+        <div class="out-row"><span class="label">Plan</span><span class="value" id="r-plan">—</span></div>
+        <div class="out-row"><span class="label">Monthly credit</span><span class="value" id="r-credit">—</span></div>
+        <div class="out-row"><span class="label">Projected monthly SDK cost</span><span class="value" id="r-monthly">—</span></div>
+        <div class="out-row"><span class="label">Projected daily SDK cost</span><span class="value" id="r-daily">—</span></div>
+        <div class="out-row"><span class="label">Credit utilization</span><span class="value" id="r-util">—</span></div>
+        <div class="out-row"><span class="label">Credit lasts</span><span class="value" id="r-days">—</span></div>
+        <div class="out-row"><span class="label">Monthly overage at API rates</span><span class="value" id="r-overage">—</span></div>
+        <div id="r-verdict" class="verdict"></div>
+    </div>
+
+    <footer>
+        <p>Pricing data from <a href="https://claude.com/pricing" target="_blank" rel="noopener">claude.com/pricing</a> verified 2026-05-14. The estimator is unofficial and not affiliated with Anthropic. Actual costs depend on your real token mix, cache hit ratio, and model routing.</p>
+        <p>Related: <a href="https://gist.github.com/yurukusa/60ae86714f97af51a9cf470440f7fd93" target="_blank" rel="noopener">Python CLI version</a> (same logic) · <a href="https://qiita.com/yurukusa/items/6dc849eea5a9b3fd926c" target="_blank" rel="noopener">Background article in Japanese</a> · <a href="https://yurukusa.github.io/claude-code-cost-calculator/" target="_blank" rel="noopener">Monthly cost calculator</a> (broader scope) · <a href="https://yurukusa.github.io/" target="_blank" rel="noopener">More tools</a></p>
+        <p>Built by <a href="https://yurukusa.github.io/" target="_blank" rel="noopener">yurukusa</a>. MIT-equivalent: free to use, copy, adapt.</p>
+    </footer>
+</div>
+
+<script>
+const PRICING = {
+    "opus-4.7":  {input: 5.0,  cache_write_5m: 6.25,  cache_write_1h: 10.0, cache_read: 0.50, output: 25.0},
+    "opus-4.6":  {input: 5.0,  cache_write_5m: 6.25,  cache_write_1h: 10.0, cache_read: 0.50, output: 25.0},
+    "sonnet-4.6":{input: 3.0,  cache_write_5m: 3.75,  cache_write_1h: 6.0,  cache_read: 0.30, output: 15.0},
+    "sonnet-4.5":{input: 3.0,  cache_write_5m: 3.75,  cache_write_1h: 6.0,  cache_read: 0.30, output: 15.0},
+    "haiku-4.5": {input: 1.0,  cache_write_5m: 1.25,  cache_write_1h: 2.0,  cache_read: 0.10, output: 5.0},
+};
+const PLAN_CREDITS = { pro: 20, max5x: 100, max20x: 200 };
+let mode = 'a';
+
+function setMode(m) {
+    mode = m;
+    document.getElementById('mode-a').classList.toggle('hidden', m !== 'a');
+    document.getElementById('mode-b').classList.toggle('hidden', m !== 'b');
+    document.getElementById('mode-a-btn').classList.toggle('active', m === 'a');
+    document.getElementById('mode-b-btn').classList.toggle('active', m === 'b');
+}
+
+function costFromTokens(model, inTok, outTok, cacheRead, cache5m, cache1h) {
+    const p = PRICING[model];
+    return (inTok * p.input + outTok * p.output + cacheRead * p.cache_read
+            + cache5m * p.cache_write_5m + cache1h * p.cache_write_1h) / 1_000_000;
+}
+
+function fmtMoney(n, prec) {
+    if (prec === undefined) prec = 2;
+    return '$' + n.toLocaleString('en-US', {minimumFractionDigits: prec, maximumFractionDigits: prec});
+}
+
+function calculate() {
+    const plan = document.getElementById('plan').value;
+    const windowDays = Math.max(1, parseInt(document.getElementById('window').value, 10) || 30);
+    const credit = PLAN_CREDITS[plan];
+
+    let observed;
+    if (mode === 'a') {
+        observed = parseFloat(document.getElementById('cost').value) || 0;
+    } else {
+        const model = document.getElementById('model').value;
+        observed = costFromTokens(
+            model,
+            parseInt(document.getElementById('in-tok').value, 10) || 0,
+            parseInt(document.getElementById('out-tok').value, 10) || 0,
+            parseInt(document.getElementById('cache-read').value, 10) || 0,
+            parseInt(document.getElementById('cache-5m').value, 10) || 0,
+            parseInt(document.getElementById('cache-1h').value, 10) || 0
+        );
+    }
+
+    const daily = observed / windowDays;
+    const monthly = daily * 30;
+    const daysToZero = daily > 0 ? credit / daily : Infinity;
+    const excess = Math.max(0, monthly - credit);
+    const fraction = credit > 0 ? monthly / credit : Infinity;
+
+    const planLabels = {
+        pro: "Pro / Team Standard",
+        max5x: "Max 5x / Team Premium",
+        max20x: "Max 20x / Enterprise Premium"
+    };
+
+    document.getElementById('r-plan').textContent = planLabels[plan];
+    document.getElementById('r-credit').textContent = fmtMoney(credit, 0) + '/month';
+    document.getElementById('r-monthly').textContent = fmtMoney(monthly);
+    document.getElementById('r-daily').textContent = fmtMoney(daily, 4);
+    document.getElementById('r-util').textContent = (fraction * 100).toFixed(1) + '% of $' + credit;
+    document.getElementById('r-days').textContent = (daysToZero === Infinity)
+        ? 'never (no usage)'
+        : daysToZero.toFixed(1) + ' days into 30-day cycle';
+    document.getElementById('r-overage').textContent = fmtMoney(excess);
+
+    const verdict = document.getElementById('r-verdict');
+    verdict.classList.remove('green', 'yellow', 'red');
+    let cls, title, body;
+    if (fraction < 0.5) {
+        cls = 'green';
+        title = 'Comfortable.';
+        body = 'SDK usage uses under half the credit; no action needed for now.';
+    } else if (fraction < 1.0) {
+        cls = 'yellow';
+        title = 'Tight.';
+        body = 'SDK usage approaches the credit ceiling. Options: turn on extra-usage billing, or reduce cache-cold sessions to leave headroom.';
+    } else if (fraction < 2.0) {
+        cls = 'yellow';
+        title = 'Over budget.';
+        body = 'Each month the credit will empty before cycle-end. Consider: (1) collapse some SDK work into interactive Claude Code; (2) move scheduled jobs to a Claude Developer Platform API key for predictable pay-as-you-go rates; (3) push cache hit rate higher to reduce per-call cost.';
+    } else {
+        cls = 'red';
+        title = 'Far over budget.';
+        body = 'The new structure is materially more expensive for this workload. Consider: API key on the Claude Developer Platform (predictable pay-as-you-go), migrating SDK-heavy work to interactive Claude Code sessions, evaluating alternative harnesses (Aider, Cline, Codex CLI), or hybrid delegation with a cheaper side-worker model for mechanical tasks.';
+    }
+    verdict.classList.add(cls);
+    verdict.innerHTML = '<strong>' + title + '</strong>' + body;
+
+    document.getElementById('results').classList.remove('hidden');
+    document.getElementById('results').scrollIntoView({behavior: 'smooth', block: 'nearest'});
+}
+</script>
+</body>
+</html>
