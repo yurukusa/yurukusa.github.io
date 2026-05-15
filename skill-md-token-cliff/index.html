@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SKILL.md Token Cliff: paste your CLAUDE.md, see the per-session token cost and the 5 patterns to fix | yurukusa</title>
+    <meta name="description" content="Free analysis tool. Paste your CLAUDE.md or SKILL.md. See the estimated tokens consumed every session, the per-month cost at your plan, and the 5 specific patterns to fix to recover up to 40% of those tokens via Skills migration.">
+    <link rel="canonical" href="https://yurukusa.github.io/skill-md-token-cliff/">
+
+    <meta property="og:title" content="SKILL.md Token Cliff: see what your CLAUDE.md is costing you">
+    <meta property="og:description" content="Paste your CLAUDE.md. See per-session tokens, per-month cost, 5 patterns to fix.">
+    <meta property="og:url" content="https://yurukusa.github.io/skill-md-token-cliff/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="yurukusa">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@yurukusa_dev">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "SKILL.md Token Cliff",
+      "description": "Paste your CLAUDE.md to see per-session token cost, per-month projected bill, and 5 specific patterns to fix for up to 40% reduction via Skills migration.",
+      "url": "https://yurukusa.github.io/skill-md-token-cliff/",
+      "applicationCategory": "DeveloperTools",
+      "operatingSystem": "Any",
+      "browserRequirements": "Requires JavaScript",
+      "isAccessibleForFree": true,
+      "inLanguage": "en",
+      "creator": { "@type": "Person", "name": "yurukusa", "url": "https://yurukusa.github.io/" },
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+    }
+    </script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #080810;
+            --surface: #10101c;
+            --surface2: #16162a;
+            --border: #1e1e38;
+            --text: #ddddf0;
+            --text-dim: #9090b0;
+            --accent: #f0883e;
+            --accent-soft: rgba(240, 136, 62, 0.15);
+            --green: #56d364;
+            --red: #f85149;
+            --yellow: #d29922;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Sans", "Yu Gothic", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.65;
+            min-height: 100vh;
+        }
+        .container { max-width: 880px; margin: 0 auto; padding: 1.5rem 1.2rem; }
+        nav {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        nav a {
+            color: var(--text-dim);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+        }
+        nav a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+        h1 {
+            font-size: 1.6rem;
+            margin-bottom: 0.6rem;
+            line-height: 1.3;
+        }
+        .lede {
+            font-size: 1rem;
+            color: var(--text-dim);
+            margin-bottom: 0.5rem;
+            line-height: 1.55;
+        }
+        .meta {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin-bottom: 1.8rem;
+            font-style: italic;
+        }
+        .input-group {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.1rem 1.2rem;
+            margin-bottom: 1rem;
+        }
+        .input-label {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+        }
+        .input-help {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            margin-bottom: 0.8rem;
+        }
+        .options {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .option {
+            background: var(--surface2);
+            color: var(--text);
+            border: 1px solid var(--border);
+            padding: 0.55rem 0.95rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-family: inherit;
+            transition: all 0.15s;
+        }
+        .option:hover { border-color: var(--accent); }
+        .option.selected {
+            background: var(--accent-soft);
+            border-color: var(--accent);
+            color: var(--accent);
+            font-weight: 600;
+        }
+        .slider-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        input[type="range"] {
+            flex: 1;
+            -webkit-appearance: none;
+            appearance: none;
+            background: var(--surface2);
+            height: 6px;
+            border-radius: 3px;
+            outline: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--accent);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: var(--accent);
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+        .slider-value {
+            font-weight: 600;
+            color: var(--accent);
+            min-width: 90px;
+            text-align: right;
+        }
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            background: var(--surface2);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.8rem;
+            font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            resize: vertical;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        .result-section {
+            background: var(--surface);
+            border: 1px solid var(--accent);
+            border-radius: 10px;
+            padding: 1.4rem;
+            margin: 1.5rem 0;
+        }
+        .result-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid var(--border);
+            gap: 1rem;
+        }
+        .result-row:last-child { border-bottom: none; }
+        .result-label {
+            font-size: 0.92rem;
+            color: var(--text);
+            flex: 1;
+        }
+        .result-label-sub {
+            display: block;
+            font-size: 0.78rem;
+            color: var(--text-dim);
+            font-weight: 400;
+        }
+        .result-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+            text-align: right;
+        }
+        .result-value.green { color: var(--green); }
+        .result-value.red { color: var(--red); }
+        .result-value.dim { color: var(--text-dim); font-weight: 400; font-size: 1rem; }
+
+        .pattern-list {
+            margin-top: 1.2rem;
+        }
+        .pattern {
+            background: var(--surface);
+            border-left: 3px solid var(--yellow);
+            padding: 0.8rem 1rem;
+            margin: 0.6rem 0;
+            border-radius: 0 6px 6px 0;
+        }
+        .pattern.detected { border-left-color: var(--red); }
+        .pattern.clean { border-left-color: var(--green); }
+        .pattern-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        .pattern-status {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+        .pattern.detected .pattern-status { color: var(--red); }
+        .pattern.clean .pattern-status { color: var(--green); }
+        .pattern-detail {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            margin-top: 0.4rem;
+            line-height: 1.55;
+        }
+        .pattern-fix {
+            font-size: 0.83rem;
+            color: var(--text);
+            margin-top: 0.4rem;
+            line-height: 1.55;
+            background: var(--surface2);
+            padding: 0.5rem 0.7rem;
+            border-radius: 4px;
+        }
+
+        .recommendation {
+            background: var(--accent-soft);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+            padding: 1.2rem;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+        .recommendation strong { color: var(--accent); }
+        .recommendation a {
+            color: var(--accent);
+            font-weight: 700;
+            text-decoration: none;
+        }
+        .recommendation a:hover { text-decoration: underline; }
+
+        .disclaimer {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.9rem 1.1rem;
+            margin: 1.5rem 0;
+        }
+
+        footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            text-align: center;
+        }
+        footer a { color: var(--accent); text-decoration: none; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+<nav>
+    <a href="/">home</a>
+    <a href="/operations-suite/">three books</a>
+    <a href="/which-claude-code-book/">quiz</a>
+    <a href="/claude-code-cost-calculator/">cost calculator</a>
+    <a href="/claude-code-alternatives/">alternatives</a>
+</nav>
+
+<h1>SKILL.md Token Cliff</h1>
+<p class="lede">Paste your CLAUDE.md. See the per-session token cost, the per-month bill at your plan, and the 5 specific patterns that are eating tokens you do not have to spend.</p>
+<p class="meta">Updated 2026-05-16. Token estimates use the OpenAI BPE approximation (1 token per ~4 characters of English, ~2 characters of Japanese). Cost projections use post-2026-04-22 Anthropic Pro plan rates and the assumption that CLAUDE.md is read once per turn. The 40% reduction figure comes from a Qiita article with 30,000+ reads and a documented Skills migration of one operator's own configuration.</p>
+
+<div class="input-group">
+    <div class="input-label">1. Paste your CLAUDE.md (or SKILL.md, or any always-loaded reference file)</div>
+    <div class="input-help">Nothing leaves your browser. The analysis runs locally in JavaScript. Try with your real config; the patterns mean nothing on a placeholder.</div>
+    <textarea id="claude-md" placeholder="Paste the contents of your CLAUDE.md here..."></textarea>
+</div>
+
+<div class="input-group">
+    <div class="input-label">2. Which plan are you on?</div>
+    <div class="input-help">Used to project the per-month cost of the tokens this file consumes.</div>
+    <div class="options" id="plan-options">
+        <button class="option" data-plan="pro" data-rate="3.0">Pro ($20/mo, mostly Sonnet)</button>
+        <button class="option" data-plan="max5" data-rate="3.0">Max 5x ($100/mo)</button>
+        <button class="option selected" data-plan="max20" data-rate="3.0">Max 20x ($200/mo)</button>
+        <button class="option" data-plan="api-sonnet" data-rate="3.0">API Sonnet ($3/M in)</button>
+        <button class="option" data-plan="api-opus" data-rate="15.0">API Opus ($15/M in)</button>
+    </div>
+</div>
+
+<div class="input-group">
+    <div class="input-label">3. How many turns per day on average?</div>
+    <div class="input-help">A "turn" is one round-trip with Claude. CLAUDE.md is read on every turn, so this multiplies the cost.</div>
+    <div class="slider-row">
+        <input type="range" id="turns" min="20" max="500" value="120" step="10">
+        <div class="slider-value" id="turns-value">120 turns/day</div>
+    </div>
+</div>
+
+<div class="result-section">
+    <div class="result-title">YOUR CLAUDE.MD IS COSTING YOU</div>
+    <div class="result-rows">
+        <div class="result-row">
+            <div class="result-label">
+                Estimated tokens
+                <span class="result-label-sub">Per turn (CLAUDE.md is sent every turn)</span>
+            </div>
+            <div class="result-value" id="tokens-per-turn">...</div>
+        </div>
+        <div class="result-row">
+            <div class="result-label">
+                Per-day input tokens from this file
+                <span class="result-label-sub">Tokens per turn × turns per day</span>
+            </div>
+            <div class="result-value" id="tokens-per-day">...</div>
+        </div>
+        <div class="result-row">
+            <div class="result-label">
+                Per-month cost from this file alone
+                <span class="result-label-sub">At your plan's rate, assuming uncached. Real cost depends on cache hit ratio.</span>
+            </div>
+            <div class="result-value red" id="cost-per-month">...</div>
+        </div>
+        <div class="result-row">
+            <div class="result-label">
+                Estimated monthly recovery if you fix the detected patterns
+                <span class="result-label-sub">Up to 40% reduction is documented; this projection is the lower bound from detected patterns only.</span>
+            </div>
+            <div class="result-value green" id="recovery">...</div>
+        </div>
+    </div>
+</div>
+
+<div class="result-section" id="patterns-section" style="display:none;">
+    <div class="result-title">5 PATTERNS THAT EAT TOKENS</div>
+    <div class="pattern-list" id="pattern-list"></div>
+</div>
+
+<div class="recommendation" id="recommendation" style="display:none;">
+    <!-- populated by JS -->
+</div>
+
+<div class="disclaimer">
+    These numbers are projections, not measurements. Actual cost depends on your plan's caching behavior, the Sonnet/Opus model mix, and whether CLAUDE.md is loaded as a system prompt (cached) or in the conversation (less reliably cached). The Anthropic 5-minute prompt cache TTL means CLAUDE.md is re-billed at full rate after 5 minutes of inactivity. The pattern detection is heuristic and conservative; for a thorough audit see the linked book. Nothing leaves your browser.
+</div>
+
+<footer>
+    <p>© 2026 yurukusa / ゆるくさ &nbsp;·&nbsp; <a href="/legal">特定商取引法に基づく表記</a> &nbsp;·&nbsp; <a href="/">home</a></p>
+</footer>
+
+</div>
+
+<script>
+const state = {
+    plan: 'max20',
+    rate: 3.0,
+    turns: 120,
+    text: ''
+};
+
+function setupOptionGroup(containerId, key) {
+    const container = document.getElementById(containerId);
+    container.querySelectorAll('.option').forEach(btn => {
+        btn.addEventListener('click', () => {
+            container.querySelectorAll('.option').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            const data = btn.dataset;
+            if (data.plan) {
+                state.plan = data.plan;
+                state.rate = parseFloat(data.rate);
+            }
+            recalc();
+        });
+    });
+}
+
+setupOptionGroup('plan-options');
+
+const turnsInput = document.getElementById('turns');
+const turnsValue = document.getElementById('turns-value');
+turnsInput.addEventListener('input', () => {
+    state.turns = parseInt(turnsInput.value, 10);
+    turnsValue.textContent = state.turns + ' turns/day';
+    recalc();
+});
+
+const textInput = document.getElementById('claude-md');
+textInput.addEventListener('input', () => {
+    state.text = textInput.value;
+    recalc();
+});
+
+function estimateTokens(text) {
+    // Rough estimate: count CJK chars vs ASCII chars separately
+    // English: ~4 chars per token. Japanese: ~2 chars per token (for the Anthropic tokenizer)
+    let cjk = 0, ascii = 0;
+    for (const ch of text) {
+        const cp = ch.codePointAt(0);
+        if (cp >= 0x3000 && cp <= 0x9fff) cjk++;
+        else if (cp >= 0xff00 && cp <= 0xffef) cjk++;
+        else ascii++;
+    }
+    return Math.ceil(cjk / 2 + ascii / 4);
+}
+
+function detectPatterns(text) {
+    const patterns = [];
+    const lines = text.split('\n');
+
+    // Pattern 1: Long ban list (5+ "do not / never / 禁止 / use なし" lines)
+    const banLines = lines.filter(l => /^[-\*\d\.\s]*(?:do not|don't|never|must not|do_not|prohibit|forbidden|禁止|使うな|してはいけない|しないで)/i.test(l)).length;
+    patterns.push({
+        title: 'Pattern 1: Ban list instead of allow list',
+        detected: banLines >= 5,
+        detail: banLines >= 5 ? `Found ${banLines} ban-pattern lines. Ban lists are always incomplete; the model retries until it hits the right action, burning tokens on each rejection.` : `Only ${banLines} ban-pattern lines detected.`,
+        fix: 'Replace with an allow list ("operations permitted: read, commit, push to feature branch; everything else: ask first"). Same coverage in fewer tokens, plus deterministic safety.',
+        weight: 0.08
+    });
+
+    // Pattern 2: Repeated examples (same code block opener appears 3+ times)
+    const codeOpens = (text.match(/```/g) || []).length;
+    const codeBlocks = Math.floor(codeOpens / 2);
+    patterns.push({
+        title: 'Pattern 2: Multiple examples instead of one',
+        detected: codeBlocks >= 4,
+        detail: codeBlocks >= 4 ? `${codeBlocks} code blocks in this file. The model needs one canonical example to learn the pattern; multiples consume tokens without improving compliance.` : `${codeBlocks} code blocks; manageable.`,
+        fix: 'Pick one example. Move the rest into a Skill that loads only when relevant via Progressive Disclosure.',
+        weight: 0.07
+    });
+
+    // Pattern 3: Long verbose explanations (any single paragraph > 300 chars)
+    const paragraphs = text.split(/\n\n+/);
+    const longParas = paragraphs.filter(p => p.length > 300).length;
+    patterns.push({
+        title: 'Pattern 3: Verbose explanations the model skims',
+        detected: longParas >= 2,
+        detail: longParas >= 2 ? `${longParas} paragraphs over 300 characters. Long explanations get summarized internally; the model loses the specific rule and falls back on its training default.` : 'Paragraphs are short enough.',
+        fix: 'Replace prose explanations with bullet rules. One rule per line, imperative voice, no "because" clauses.',
+        weight: 0.10
+    });
+
+    // Pattern 4: Multi-step procedures that should be Skills
+    const procedureMatches = lines.filter(l => /^(\d+)\.\s/.test(l)).length;
+    patterns.push({
+        title: 'Pattern 4: Multi-step procedures that belong in Skills',
+        detected: procedureMatches >= 8,
+        detail: procedureMatches >= 8 ? `${procedureMatches} numbered procedure lines detected. These belong in Skills (loaded only when needed) rather than in CLAUDE.md (loaded every turn).` : `${procedureMatches} numbered lines; reasonable.`,
+        fix: 'Move multi-step procedures into named Skills under .claude/skills/. CLAUDE.md keeps the index ("for X, use the X skill"); the procedure itself loads only on invocation.',
+        weight: 0.12
+    });
+
+    // Pattern 5: Repetition signals (ABSOLUTE, MUST, NEVER, 必ず, 絶対 etc.)
+    const repSignals = (text.match(/\b(ABSOLUTE|MUST|NEVER|ALWAYS|CRITICAL|REQUIRED|MANDATORY)\b/g) || []).length
+        + (text.match(/必ず|絶対|決して|常に/g) || []).length;
+    patterns.push({
+        title: 'Pattern 5: Emphasis stacking the model ignores under load',
+        detected: repSignals >= 6,
+        detail: repSignals >= 6 ? `${repSignals} emphasis markers (ABSOLUTE / MUST / 必ず / 絶対 etc.). High emphasis density is a signal to the model that everything is "important", which collapses to "nothing is."` : `${repSignals} emphasis markers; restrained.`,
+        fix: 'Demote prose-level rules to hooks. PreToolUse exit-2 hooks enforce hard rules deterministically. CLAUDE.md keeps the why, not the enforcement.',
+        weight: 0.09
+    });
+
+    return patterns;
+}
+
+function fmt(n) {
+    if (!isFinite(n)) return 'n/a';
+    if (n >= 100) return '$' + n.toFixed(0);
+    return '$' + n.toFixed(2);
+}
+
+function fmtTokens(n) {
+    if (n >= 1000000) return (n / 1000000).toFixed(2) + 'M';
+    if (n >= 1000) return (n / 1000).toFixed(1) + 'K';
+    return String(n);
+}
+
+function recalc() {
+    const tokens = estimateTokens(state.text);
+    const dailyTokens = tokens * state.turns;
+    const monthlyTokens = dailyTokens * 30;
+    // Cost = monthlyTokens / 1M * rate
+    const monthlyCost = (monthlyTokens / 1000000) * state.rate;
+
+    document.getElementById('tokens-per-turn').textContent = fmtTokens(tokens);
+    document.getElementById('tokens-per-day').textContent = fmtTokens(dailyTokens);
+    document.getElementById('cost-per-month').textContent = fmt(monthlyCost);
+
+    if (tokens === 0) {
+        document.getElementById('recovery').textContent = '...';
+        document.getElementById('patterns-section').style.display = 'none';
+        document.getElementById('recommendation').style.display = 'none';
+        return;
+    }
+
+    // Pattern detection
+    const patterns = detectPatterns(state.text);
+    const patternsList = document.getElementById('pattern-list');
+    patternsList.innerHTML = '';
+    let totalRecoveryWeight = 0;
+    let detectedCount = 0;
+
+    for (const p of patterns) {
+        if (p.detected) {
+            detectedCount++;
+            totalRecoveryWeight += p.weight;
+        }
+        const div = document.createElement('div');
+        div.className = 'pattern ' + (p.detected ? 'detected' : 'clean');
+        div.innerHTML = `
+            <div class="pattern-title">
+                <span>${p.title}</span>
+                <span class="pattern-status">${p.detected ? '⚠ detected' : '✓ clean'}</span>
+            </div>
+            <div class="pattern-detail">${p.detail}</div>
+            ${p.detected ? `<div class="pattern-fix"><strong>Fix:</strong> ${p.fix}</div>` : ''}
+        `;
+        patternsList.appendChild(div);
+    }
+
+    document.getElementById('patterns-section').style.display = '';
+
+    const recoveryRate = Math.min(0.40, totalRecoveryWeight); // cap at 40%
+    const monthlyRecovery = monthlyCost * recoveryRate;
+    document.getElementById('recovery').textContent = recoveryRate > 0 ? '−' + fmt(monthlyRecovery) + ' (' + Math.round(recoveryRate * 100) + '%)' : '$0';
+
+    updateRecommendation(monthlyCost, monthlyRecovery, detectedCount, tokens);
+}
+
+function updateRecommendation(monthlyCost, monthlyRecovery, detectedCount, tokens) {
+    const rec = document.getElementById('recommendation');
+    rec.style.display = '';
+
+    let body = '';
+    if (tokens === 0) {
+        rec.style.display = 'none';
+        return;
+    } else if (detectedCount >= 3 && monthlyRecovery >= 5) {
+        body = `<strong>${detectedCount} of 5 patterns detected. Estimated monthly recovery: ${fmt(monthlyRecovery)}.</strong> The Skills migration approach (move procedures and examples out of CLAUDE.md, keep the index) is documented end-to-end with 10 implementation recipes in <a href="https://zenn.dev/yurukusa/books/a1b2c3d4e5f6g7?utm_source=skill-md-cliff&utm_medium=recommendation&utm_campaign=skills-cookbook">Skills 実践レシピ集</a> (¥500, chapters 1 and 2 free, 9 chapters total). The book is the companion to a Qiita article that documented one operator's 40% reduction; both are linked here. For broader token-saving paths beyond Skills (cache hit ratio, Opus 4.7 tokenizer overhead, microcompact behavior), the <a href="https://zenn.dev/yurukusa/books/token-savings-guide?utm_source=skill-md-cliff&utm_medium=recommendation&utm_campaign=token-book">Token Book</a> (¥2,500, chapter 1 free) covers the full ground.`;
+    } else if (detectedCount >= 1) {
+        body = `<strong>${detectedCount} of 5 patterns detected.</strong> Even one or two of these patterns are worth fixing if your daily turns are high. The fix recipes above are the operator-side first pass; for the full design framework (Progressive Disclosure, 3-layer SKILL.md split, 10 worked examples), see <a href="https://zenn.dev/yurukusa/books/a1b2c3d4e5f6g7?utm_source=skill-md-cliff&utm_medium=recommendation&utm_campaign=skills-cookbook">Skills 実践レシピ集</a> (¥500, 2 chapters free).`;
+    } else {
+        body = `<strong>0 of 5 patterns detected. Your CLAUDE.md is already compact.</strong> If your monthly bill is still climbing, the cost is somewhere else (cache miss rate, MCP schema overhead, subagent token leak). The <a href="https://zenn.dev/yurukusa/books/token-savings-guide?utm_source=skill-md-cliff&utm_medium=recommendation&utm_campaign=token-book">Token Book</a> (¥2,500) walks through the other layers of cost. For incident-side issues that look like "tokens disappearing", the <a href="https://yurukusa.gumroad.com/l/rhtptb?utm_source=skill-md-cliff&utm_medium=recommendation&utm_campaign=postmortems">Incident Postmortems</a> book covers the silent-burn class of bugs.`;
+    }
+
+    body += `<br><br>For broader cost projections that account for plan rates, hybrid delegation, and migration paths, see the <a href="/claude-code-cost-calculator/?utm_source=skill-md-cliff&utm_medium=footer&utm_campaign=cost-calc">monthly cost calculator</a>. For the three-book curation, see the <a href="/operations-suite/?utm_source=skill-md-cliff&utm_medium=footer&utm_campaign=ops-suite">Operations Suite</a>.`;
+
+    rec.innerHTML = body;
+}
+
+// Pre-fill with a representative example for first impression
+textInput.value = `# Project rules
+
+## Forbidden actions
+- Do not use rm -rf
+- Do not use git reset --hard
+- Do not use git push --force
+- Do not delete .env files
+- Do not delete node_modules
+- Do not use sudo
+- Do not commit to main directly
+
+## Required style
+- Always run tests before commit
+- Never skip pre-commit hooks
+- Always include type annotations
+- Must follow the existing code style precisely
+
+## Multi-step deployment procedure
+
+1. Run tests with the full integration suite
+2. Update the changelog with the version bump
+3. Create a release branch from main
+4. Update version in package.json and pyproject.toml
+5. Push the release branch and open a PR
+6. Wait for two reviews before merging
+7. After merge, tag the commit with the version
+8. Push the tag and trigger the deploy workflow
+9. Monitor the deploy logs for 10 minutes
+10. Update the team channel with the release notes
+
+## Code review checklist
+
+When reviewing PRs, the agent should consider the following criteria. First, the code style should match the existing patterns in the codebase, paying attention to indentation, naming conventions, and the placement of imports. Second, the test coverage should not decrease; new code should add tests. Third, the commit messages should follow conventional commits. Fourth, security implications of any new dependency should be reviewed by checking the package's recent activity and known vulnerabilities.
+
+## Architecture notes
+
+The system has three layers: the API layer handles HTTP routing and request validation, the service layer encapsulates business logic and orchestrates calls to repositories, and the repository layer abstracts database access through interfaces. Cross-cutting concerns like logging and tracing are handled by middleware in the API layer. Authentication is JWT-based with refresh tokens stored in HttpOnly cookies.
+`;
+state.text = textInput.value;
+recalc();
+</script>
+
+</body>
+</html>
