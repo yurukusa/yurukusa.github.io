@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SKILL.md Token Cliff: CLAUDE.md を貼って、 1 セッションの token の費用と直すべき 5 件の型を見る | yurukusa</title>
+    <meta name="description" content="無料の道具。 CLAUDE.md または SKILL.md を貼り付けると、 セッション毎の token の数の見立て、 plan 毎の月の費用、 5 件の浪費の型 (禁止の一覧 / 反復の例 / 冗長の説明 / 多段の手順 / 強調の積み重ね) の検出が出る。 Skills への移行で token を 40% 取り戻す経路の入口。">
+    <link rel="canonical" href="https://yurukusa.github.io/skill-md-token-cliff-ja/">
+
+    <link rel="alternate" hreflang="en" href="https://yurukusa.github.io/skill-md-token-cliff/">
+    <link rel="alternate" hreflang="ja" href="https://yurukusa.github.io/skill-md-token-cliff-ja/">
+
+    <meta property="og:title" content="SKILL.md Token Cliff: CLAUDE.md の token の費用と 5 件の浪費の型">
+    <meta property="og:description" content="CLAUDE.md を貼って、 1 セッションの token の数、 月の費用の見立て、 5 件の浪費の型の検出を見る。">
+    <meta property="og:url" content="https://yurukusa.github.io/skill-md-token-cliff-ja/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="yurukusa">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@yurukusa_dev">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "SKILL.md Token Cliff",
+      "description": "CLAUDE.md を貼り付けると、 1 セッションの token の数、 月の費用の見立て、 5 件の浪費の型の検出と修正の手順、 Skills 実践レシピ集 (¥500) への動線が出る無料の道具。",
+      "url": "https://yurukusa.github.io/skill-md-token-cliff-ja/",
+      "applicationCategory": "DeveloperTools",
+      "operatingSystem": "Any",
+      "browserRequirements": "JavaScript が必要",
+      "isAccessibleForFree": true,
+      "inLanguage": "ja",
+      "creator": { "@type": "Person", "name": "yurukusa", "url": "https://yurukusa.github.io/" },
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+    }
+    </script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #080810;
+            --surface: #10101c;
+            --surface2: #16162a;
+            --border: #1e1e38;
+            --text: #ddddf0;
+            --text-dim: #9090b0;
+            --accent: #f0883e;
+            --accent-soft: rgba(240, 136, 62, 0.15);
+            --green: #56d364;
+            --red: #f85149;
+            --yellow: #d29922;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Sans", "Yu Gothic", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.75;
+            min-height: 100vh;
+        }
+        .container { max-width: 880px; margin: 0 auto; padding: 1.5rem 1.2rem; }
+        nav {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        nav a {
+            color: var(--text-dim);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+        }
+        nav a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+        h1 {
+            font-size: 1.6rem;
+            margin-bottom: 0.6rem;
+            line-height: 1.4;
+        }
+        .lede {
+            font-size: 1rem;
+            color: var(--text-dim);
+            margin-bottom: 0.5rem;
+            line-height: 1.65;
+        }
+        .meta {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin-bottom: 1.8rem;
+            font-style: italic;
+        }
+        .input-group {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.1rem 1.2rem;
+            margin-bottom: 1rem;
+        }
+        .input-label {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+        }
+        .input-help {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            margin-bottom: 0.8rem;
+        }
+        .options {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .option {
+            background: var(--surface2);
+            color: var(--text);
+            border: 1px solid var(--border);
+            padding: 0.55rem 0.95rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-family: inherit;
+            transition: all 0.15s;
+        }
+        .option:hover { border-color: var(--accent); }
+        .option.selected {
+            background: var(--accent-soft);
+            border-color: var(--accent);
+            color: var(--accent);
+            font-weight: 600;
+        }
+        .slider-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        input[type="range"] {
+            flex: 1;
+            -webkit-appearance: none;
+            appearance: none;
+            background: var(--surface2);
+            height: 6px;
+            border-radius: 3px;
+            outline: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--accent);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: var(--accent);
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+        .slider-value {
+            font-weight: 600;
+            color: var(--accent);
+            min-width: 110px;
+            text-align: right;
+        }
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            background: var(--surface2);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.8rem;
+            font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            resize: vertical;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        .result-section {
+            background: var(--surface);
+            border: 1px solid var(--accent);
+            border-radius: 10px;
+            padding: 1.4rem;
+            margin: 1.5rem 0;
+        }
+        .result-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid var(--border);
+            gap: 1rem;
+        }
+        .result-row:last-child { border-bottom: none; }
+        .result-label {
+            font-size: 0.92rem;
+            color: var(--text);
+            flex: 1;
+        }
+        .result-label-sub {
+            display: block;
+            font-size: 0.78rem;
+            color: var(--text-dim);
+            font-weight: 400;
+        }
+        .result-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+            text-align: right;
+        }
+        .result-value.green { color: var(--green); }
+        .result-value.red { color: var(--red); }
+        .result-value.dim { color: var(--text-dim); font-weight: 400; font-size: 1rem; }
+
+        .pattern-list {
+            margin-top: 1.2rem;
+        }
+        .pattern {
+            background: var(--surface);
+            border-left: 3px solid var(--yellow);
+            padding: 0.8rem 1rem;
+            margin: 0.6rem 0;
+            border-radius: 0 6px 6px 0;
+        }
+        .pattern.detected { border-left-color: var(--red); }
+        .pattern.clean { border-left-color: var(--green); }
+        .pattern-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        .pattern-status {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+        .pattern.detected .pattern-status { color: var(--red); }
+        .pattern.clean .pattern-status { color: var(--green); }
+        .pattern-detail {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            margin-top: 0.4rem;
+            line-height: 1.65;
+        }
+        .pattern-fix {
+            font-size: 0.83rem;
+            color: var(--text);
+            margin-top: 0.4rem;
+            line-height: 1.65;
+            background: var(--surface2);
+            padding: 0.5rem 0.7rem;
+            border-radius: 4px;
+        }
+
+        .recommendation {
+            background: var(--accent-soft);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+            padding: 1.2rem;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+            line-height: 1.75;
+        }
+        .recommendation strong { color: var(--accent); }
+        .recommendation a {
+            color: var(--accent);
+            font-weight: 700;
+            text-decoration: none;
+        }
+        .recommendation a:hover { text-decoration: underline; }
+
+        .disclaimer {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.9rem 1.1rem;
+            margin: 1.5rem 0;
+            line-height: 1.7;
+        }
+
+        footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            text-align: center;
+        }
+        footer a { color: var(--accent); text-decoration: none; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+<nav>
+    <a href="/">入口</a>
+    <a href="/operations-suite-ja/">3 冊の本</a>
+    <a href="/which-claude-code-book-ja/">判定の道具</a>
+    <a href="/claude-code-cost-calculator-ja/">月の費用の計算</a>
+    <a href="/claude-code-alternatives-ja/">他の道具との比較</a>
+    <a href="/skill-md-token-cliff/">English</a>
+</nav>
+
+<h1>SKILL.md Token Cliff</h1>
+<p class="lede">CLAUDE.md を貼り付ける。 1 セッション毎の token の数、 plan に応じた月の費用の見立て、 5 件の浪費の型 (禁止の一覧 / 反復の例 / 冗長の説明 / 多段の手順 / 強調の積み重ね) の検出と、 各々の修正の手順が出る。</p>
+<p class="meta">2026-05-16 更新。 token の見立ては OpenAI の BPE の概算 (英語は 4 文字で 1 token、 日本語は 2 文字で 1 token)。 月の費用は 2026-04-22 以降の Anthropic の価格と、 CLAUDE.md が毎ターン読み込まれる前提の見立て。 40% の節約の数値は、 30,000 閲覧超の Qiita 記事で記録された 1 利用者の Skills への移行の事例の上限の値。</p>
+
+<div class="input-group">
+    <div class="input-label">1. CLAUDE.md (または SKILL.md、 毎セッション読み込まれる任意の参照ファイル) の中身を貼る</div>
+    <div class="input-help">中身は外部に送信されない。 全ての解析はブラウザの中で動く。 自分の本物の設定で試した方が、 検出の意味が出る。</div>
+    <textarea id="claude-md" placeholder="CLAUDE.md の中身をここに貼り付ける..."></textarea>
+</div>
+
+<div class="input-group">
+    <div class="input-label">2. 利用中の plan は?</div>
+    <div class="input-help">月の費用の見立てに使う。</div>
+    <div class="options" id="plan-options">
+        <button class="option" data-plan="pro" data-rate="3.0">Pro ($20/月、 主に Sonnet)</button>
+        <button class="option" data-plan="max5" data-rate="3.0">Max 5x ($100/月)</button>
+        <button class="option selected" data-plan="max20" data-rate="3.0">Max 20x ($200/月)</button>
+        <button class="option" data-plan="api-sonnet" data-rate="3.0">API Sonnet ($3/M 入力)</button>
+        <button class="option" data-plan="api-opus" data-rate="15.0">API Opus ($15/M 入力)</button>
+    </div>
+</div>
+
+<div class="input-group">
+    <div class="input-label">3. 1 日 の平均の turn の数 は?</div>
+    <div class="input-help">「turn」 は Claude との 1 往復のこと。 CLAUDE.md は毎ターン読み込まれるため、 turn の数で費用が乗算する。</div>
+    <div class="slider-row">
+        <input type="range" id="turns" min="20" max="500" value="120" step="10">
+        <div class="slider-value" id="turns-value">120 turn/日</div>
+    </div>
+</div>
+
+<div class="result-section">
+    <div class="result-title">あなたの CLAUDE.md の費用</div>
+    <div class="result-rows">
+        <div class="result-row">
+            <div class="result-label">
+                token の見立て
+                <span class="result-label-sub">1 ターン毎 (CLAUDE.md は毎ターン送られる)</span>
+            </div>
+            <div class="result-value" id="tokens-per-turn">...</div>
+        </div>
+        <div class="result-row">
+            <div class="result-label">
+                1 日 の入力 token の数 (CLAUDE.md だけ)
+                <span class="result-label-sub">1 ターンの token × 1 日 の turn の数</span>
+            </div>
+            <div class="result-value" id="tokens-per-day">...</div>
+        </div>
+        <div class="result-row">
+            <div class="result-label">
+                月の費用 (CLAUDE.md だけ)
+                <span class="result-label-sub">plan の単価 × 月の token、 cache 無しの想定。 実際の費用は cache の当たり率に依存する。</span>
+            </div>
+            <div class="result-value red" id="cost-per-month">...</div>
+        </div>
+        <div class="result-row">
+            <div class="result-label">
+                検出した型を直した場合の月の節約の見立て
+                <span class="result-label-sub">最大 40% の節約は記録あり。 ここに出る数値は検出した型だけの下限の見立て。</span>
+            </div>
+            <div class="result-value green" id="recovery">...</div>
+        </div>
+    </div>
+</div>
+
+<div class="result-section" id="patterns-section" style="display:none;">
+    <div class="result-title">token を食う 5 件 の 型</div>
+    <div class="pattern-list" id="pattern-list"></div>
+</div>
+
+<div class="recommendation" id="recommendation" style="display:none;">
+    <!-- populated by JS -->
+</div>
+
+<div class="disclaimer">
+    数値は見立てで、 実測ではない。 実際の費用は plan の cache の挙動、 Sonnet と Opus の使う割合、 CLAUDE.md が system prompt として読み込まれているか会話の中に入っているか (cache の当たり方が違う) で大きく変わる。 Anthropic の prompt cache の有効期間は 5 分で、 5 分以上の無作業の後は cache が外れて全額の課金となる。 型の検出は概算で、 詳細な点検は商品の本で扱う。 中身はブラウザの外には出ない。
+</div>
+
+<footer>
+    <p>© 2026 yurukusa / ゆるくさ &nbsp;·&nbsp; <a href="/legal">特定商取引法に基づく表記</a> &nbsp;·&nbsp; <a href="/">入口</a></p>
+</footer>
+
+</div>
+
+<script>
+const state = {
+    plan: 'max20',
+    rate: 3.0,
+    turns: 120,
+    text: ''
+};
+
+function setupOptionGroup(containerId) {
+    const container = document.getElementById(containerId);
+    container.querySelectorAll('.option').forEach(btn => {
+        btn.addEventListener('click', () => {
+            container.querySelectorAll('.option').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            const data = btn.dataset;
+            if (data.plan) {
+                state.plan = data.plan;
+                state.rate = parseFloat(data.rate);
+            }
+            recalc();
+        });
+    });
+}
+
+setupOptionGroup('plan-options');
+
+const turnsInput = document.getElementById('turns');
+const turnsValue = document.getElementById('turns-value');
+turnsInput.addEventListener('input', () => {
+    state.turns = parseInt(turnsInput.value, 10);
+    turnsValue.textContent = state.turns + ' turn/日';
+    recalc();
+});
+
+const textInput = document.getElementById('claude-md');
+textInput.addEventListener('input', () => {
+    state.text = textInput.value;
+    recalc();
+});
+
+function estimateTokens(text) {
+    let cjk = 0, ascii = 0;
+    for (const ch of text) {
+        const cp = ch.codePointAt(0);
+        if (cp >= 0x3000 && cp <= 0x9fff) cjk++;
+        else if (cp >= 0xff00 && cp <= 0xffef) cjk++;
+        else ascii++;
+    }
+    return Math.ceil(cjk / 2 + ascii / 4);
+}
+
+function detectPatterns(text) {
+    const patterns = [];
+    const lines = text.split('\n');
+
+    const banLines = lines.filter(l => /^[-\*\d\.\s]*(?:do not|don't|never|must not|do_not|prohibit|forbidden|禁止|使うな|してはいけない|しないで)/i.test(l)).length;
+    patterns.push({
+        title: '型 1: 禁止の一覧 (許可の一覧で書き直す)',
+        detected: banLines >= 5,
+        detail: banLines >= 5 ? `${banLines} 行 の禁止の対パターンを検出。 禁止の一覧は常に不完全で、 模型は別の経路を試して hook で阻止される度に token を消費する。` : `${banLines} 行 の禁止の対パターン。 許容の範囲。`,
+        fix: '許可の一覧で書き直す。 「許可の操作: 読み取り、 commit、 feature 枝への push。 それ以外は確認」。 同じ範囲を少ない token で表現でき、 安全側の既定が確実に効く。',
+        weight: 0.08
+    });
+
+    const codeOpens = (text.match(/```/g) || []).length;
+    const codeBlocks = Math.floor(codeOpens / 2);
+    patterns.push({
+        title: '型 2: 反復の例 (1 件 で十分)',
+        detected: codeBlocks >= 4,
+        detail: codeBlocks >= 4 ? `code の段が ${codeBlocks} 件。 模型は 1 件 の代表の例で型を学べる。 複数の例は token を消費するだけで効果は逓減する。` : `code の段は ${codeBlocks} 件 で適切。`,
+        fix: '代表の 1 件 だけ残す。 残りは Skill に切り出して、 必要な時だけ読み込む (Progressive Disclosure)。',
+        weight: 0.07
+    });
+
+    const paragraphs = text.split(/\n\n+/);
+    const longParas = paragraphs.filter(p => p.length > 300).length;
+    patterns.push({
+        title: '型 3: 冗長の説明 (模型は要約して飛ばす)',
+        detected: longParas >= 2,
+        detail: longParas >= 2 ? `300 文字超の段落が ${longParas} 件。 長い説明は模型の側で要約されて、 元の規則の細部が失われ、 訓練の既定の挙動に戻ってしまう。` : '段落の長さは適切。',
+        fix: '説明の段落を箇条書きの規則に書き直す。 1 行 1 規則、 命令の文体、 「なぜなら」 の節を省く。',
+        weight: 0.10
+    });
+
+    const procedureMatches = lines.filter(l => /^(\d+)\.\s/.test(l)).length;
+    patterns.push({
+        title: '型 4: 多段の手順 (Skills に出す)',
+        detected: procedureMatches >= 8,
+        detail: procedureMatches >= 8 ? `${procedureMatches} 件 の番号付きの行を検出。 多段の手順は CLAUDE.md (毎ターン読まれる) ではなく、 Skills (必要な時だけ読まれる) に置くべき。` : `${procedureMatches} 件 の番号付きの行。 適切な範囲。`,
+        fix: '多段の手順を .claude/skills/ の中の名前付きの Skill に出す。 CLAUDE.md は索引だけ残す (「X の場合は X の skill を使う」)。 手順の本体は呼び出された時だけ読み込まれる。',
+        weight: 0.12
+    });
+
+    const repSignals = (text.match(/\b(ABSOLUTE|MUST|NEVER|ALWAYS|CRITICAL|REQUIRED|MANDATORY)\b/g) || []).length
+        + (text.match(/必ず|絶対|決して|常に/g) || []).length;
+    patterns.push({
+        title: '型 5: 強調の積み重ね (負荷の段で模型が無視する)',
+        detected: repSignals >= 6,
+        detail: repSignals >= 6 ? `${repSignals} 件 の強調の合図 (ABSOLUTE / MUST / 必ず / 絶対 等)。 強調の密度が高いと、 模型は 「全部が大事 = 何も大事ではない」 に縮退する。` : `${repSignals} 件 の強調の合図。 抑制の範囲。`,
+        fix: '文の規則を hook に降ろす。 PreToolUse の exit 2 の hook で硬い強制を実装する。 CLAUDE.md は理由だけ残す。',
+        weight: 0.09
+    });
+
+    return patterns;
+}
+
+function fmt(n) {
+    if (!isFinite(n)) return 'n/a';
+    if (n >= 100) return '$' + n.toFixed(0);
+    return '$' + n.toFixed(2);
+}
+
+function fmtTokens(n) {
+    if (n >= 1000000) return (n / 1000000).toFixed(2) + 'M';
+    if (n >= 1000) return (n / 1000).toFixed(1) + 'K';
+    return String(n);
+}
+
+function recalc() {
+    const tokens = estimateTokens(state.text);
+    const dailyTokens = tokens * state.turns;
+    const monthlyTokens = dailyTokens * 30;
+    const monthlyCost = (monthlyTokens / 1000000) * state.rate;
+
+    document.getElementById('tokens-per-turn').textContent = fmtTokens(tokens);
+    document.getElementById('tokens-per-day').textContent = fmtTokens(dailyTokens);
+    document.getElementById('cost-per-month').textContent = fmt(monthlyCost);
+
+    if (tokens === 0) {
+        document.getElementById('recovery').textContent = '...';
+        document.getElementById('patterns-section').style.display = 'none';
+        document.getElementById('recommendation').style.display = 'none';
+        return;
+    }
+
+    const patterns = detectPatterns(state.text);
+    const patternsList = document.getElementById('pattern-list');
+    patternsList.innerHTML = '';
+    let totalRecoveryWeight = 0;
+    let detectedCount = 0;
+
+    for (const p of patterns) {
+        if (p.detected) {
+            detectedCount++;
+            totalRecoveryWeight += p.weight;
+        }
+        const div = document.createElement('div');
+        div.className = 'pattern ' + (p.detected ? 'detected' : 'clean');
+        div.innerHTML = `
+            <div class="pattern-title">
+                <span>${p.title}</span>
+                <span class="pattern-status">${p.detected ? '⚠ 検出' : '✓ 該当なし'}</span>
+            </div>
+            <div class="pattern-detail">${p.detail}</div>
+            ${p.detected ? `<div class="pattern-fix"><strong>直し方:</strong> ${p.fix}</div>` : ''}
+        `;
+        patternsList.appendChild(div);
+    }
+
+    document.getElementById('patterns-section').style.display = '';
+
+    const recoveryRate = Math.min(0.40, totalRecoveryWeight);
+    const monthlyRecovery = monthlyCost * recoveryRate;
+    document.getElementById('recovery').textContent = recoveryRate > 0 ? '−' + fmt(monthlyRecovery) + ' (' + Math.round(recoveryRate * 100) + '%)' : '$0';
+
+    updateRecommendation(monthlyCost, monthlyRecovery, detectedCount, tokens);
+}
+
+function updateRecommendation(monthlyCost, monthlyRecovery, detectedCount, tokens) {
+    const rec = document.getElementById('recommendation');
+    rec.style.display = '';
+
+    let body = '';
+    if (tokens === 0) {
+        rec.style.display = 'none';
+        return;
+    } else if (detectedCount >= 3 && monthlyRecovery >= 5) {
+        body = `<strong>5 件 中 ${detectedCount} 件 の型を検出。 月の節約の見立て: ${fmt(monthlyRecovery)}。</strong> Skills への移行の手順 (手順と例を CLAUDE.md から出す、 索引だけ残す) は、 <a href="https://zenn.dev/yurukusa/books/a1b2c3d4e5f6g7?utm_source=skill-md-cliff-ja&utm_medium=recommendation&utm_campaign=skills-cookbook">Skills 実践レシピ集</a> (¥500、 第 1-2 章 無料、 全 9 章) で 10 件 の実装の型を扱う。 本書の起源は 30,000 閲覧 を超える Qiita 記事 で、 自分の設定の 40% の token の節約を記録した事例の解説である。 token の節約の他の経路 (cache の当たり率、 Opus 4.7 の token の増加、 短い圧縮の動作) は、 <a href="https://zenn.dev/yurukusa/books/token-savings-guide?utm_source=skill-md-cliff-ja&utm_medium=recommendation&utm_campaign=token-book">Token Book</a> (¥2,500、 第 1 章 無料) で全章を扱う。`;
+    } else if (detectedCount >= 1) {
+        body = `<strong>5 件 中 ${detectedCount} 件 の型を検出。</strong> 1 件 か 2 件 でも、 1 日 の turn の数が多い場合は直す価値がある。 上の修正の手順は利用者の側の最初の対処。 全ての設計の枠組み (Progressive Disclosure、 SKILL.md の 3 層 の分割、 10 件 の作業の例) は <a href="https://zenn.dev/yurukusa/books/a1b2c3d4e5f6g7?utm_source=skill-md-cliff-ja&utm_medium=recommendation&utm_campaign=skills-cookbook">Skills 実践レシピ集</a> (¥500、 第 1-2 章 無料) で扱う。`;
+    } else {
+        body = `<strong>5 件 中 0 件 の型。 あなたの CLAUDE.md は既に簡潔。</strong> 月の請求が増えている場合、 費用の漏れは別の場所にある (cache の当たり率の低下、 MCP の schema の負荷、 子 の作業者の token の漏洩 等)。 <a href="https://zenn.dev/yurukusa/books/token-savings-guide?utm_source=skill-md-cliff-ja&utm_medium=recommendation&utm_campaign=token-book">Token Book</a> (¥2,500) は他の層の費用の問題を扱う。 「token が消える」 ような事故の系統は、 <a href="https://yurukusa.gumroad.com/l/rhtptb?utm_source=skill-md-cliff-ja&utm_medium=recommendation&utm_campaign=postmortems">事故報告本</a> が静かな漏洩 の事例 を扱う。`;
+    }
+
+    body += `<br><br>plan の費用と併用 の節約 の費用 の見立ては <a href="/claude-code-cost-calculator-ja/?utm_source=skill-md-cliff-ja&utm_medium=footer&utm_campaign=cost-calc">月 の費用 の計算 の道具</a> を参照。 3 冊 の本 のまとめは <a href="/operations-suite-ja/?utm_source=skill-md-cliff-ja&utm_medium=footer&utm_campaign=ops-suite">Operations Suite</a>。`;
+
+    rec.innerHTML = body;
+}
+
+textInput.value = `# プロジェクト の規則
+
+## 禁止事項
+- rm -rf を使うな
+- git reset --hard を使うな
+- git push --force を使うな
+- .env ファイル を削除するな
+- node_modules を削除するな
+- sudo を使うな
+- main へ の直接の commit はするな
+
+## 必須 のスタイル
+- 必ず commit の前に試験を実行する
+- 決して pre-commit の hook を飛ばさない
+- 必ず 型 の注釈 を付ける
+- 既存 の code の様式 を厳密 に守る ALWAYS
+
+## 多段 の deploy の手順
+
+1. 全ての統合 の試験 を実行する
+2. 版 の変更 の changelog を更新する
+3. main から release の枝 を作る
+4. package.json と pyproject.toml の版 を更新する
+5. release の枝 を push して PR を開く
+6. 2 件 の review を待ってから merge する
+7. merge の後、 commit に版 の tag を打つ
+8. tag を push して deploy の workflow を起動する
+9. deploy の log を 10 分 監視する
+10. team の channel に release の覚え書き を投稿する
+
+## code の review の点検 の項目
+
+PR の review の段、 作業者は次 の基準 を考慮 する。 まず、 code の様式 は既存 の様式 と整合する必要 がある。 indent、 命名 の慣例、 import の配置 に注意 する。 次 に、 試験 の被覆 は減らさない。 新 の code は試験 を加える。 第 3 に、 commit の覚え書き は conventional commits に従う。 第 4 に、 新 の依存 の安全 の影響 は、 package の直近 の活動 と既知 の脆弱性 の点検 で確認 する。
+
+## 構造 の覚え書き
+
+system は 3 層 で構成 する。 API の層 は HTTP の経路 と要求 の検証 を担当 する。 service の層 は業務 の論理 を包括 し、 repository への呼び出し を司 る。 repository の層 は database への接続 を interface で抽象化 する。 横断 の関心 (記録 と追跡) は middleware で扱う。 認証 は JWT で、 refresh の token は HttpOnly の cookie に保存 する。
+`;
+state.text = textInput.value;
+recalc();
+</script>
+
+</body>
+</html>
