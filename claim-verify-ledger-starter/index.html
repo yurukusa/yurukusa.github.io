@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claim-Verify Ledger Starter: log Claude Code claim divergences in 3 columns | yurukusa</title>
+    <meta name="description" content="Free starter ledger for tracking Claude Code claim-vs-reality divergences. Three columns (verbatim claim, verification outcome, cost if claim was false). Browser-only, exports CSV, runs entirely client-side. Designed for the structural-detection discipline derived from Anthropic's April 23 postmortem.">
+    <link rel="canonical" href="https://yurukusa.github.io/claim-verify-ledger-starter/">
+
+    <meta property="og:title" content="Claim-Verify Ledger Starter: 3 columns, 30 days, structural assessment">
+    <meta property="og:description" content="Log Claude Code claim divergences. Browser-only. Exports CSV. Free.">
+    <meta property="og:url" content="https://yurukusa.github.io/claim-verify-ledger-starter/">
+    <meta property="og:type" content="website">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@yurukusa_dev">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Claim-Verify Ledger Starter",
+      "description": "Browser-only ledger tool for tracking Claude Code claim-vs-reality divergences. Three columns, CSV export.",
+      "url": "https://yurukusa.github.io/claim-verify-ledger-starter/",
+      "applicationCategory": "DeveloperTools",
+      "operatingSystem": "Any",
+      "browserRequirements": "Requires JavaScript",
+      "isAccessibleForFree": true,
+      "inLanguage": "en"
+    }
+    </script>
+
+    <style>
+        :root {
+            --bg: #fafbfc;
+            --panel: #ffffff;
+            --border: #e1e5ea;
+            --fg: #1a1a2e;
+            --muted: #5f6368;
+            --accent: #16a34a;
+            --accent-hover: #15803d;
+            --danger: #dc2626;
+            --link: #2563eb;
+            --row-alt: #f8fafc;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            line-height: 1.55;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 32px 20px 80px;
+        }
+        h1 { font-size: 1.7em; margin: 0 0 8px; }
+        h2 { font-size: 1.15em; margin: 24px 0 10px; }
+        .lede { color: var(--muted); font-size: 0.95em; margin: 0 0 20px; }
+        .panel {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+        }
+        @media (max-width: 720px) {
+            .form-grid { grid-template-columns: 1fr; }
+        }
+        label {
+            display: block;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--fg);
+        }
+        label .hint {
+            color: var(--muted);
+            font-weight: 400;
+            font-size: 0.9em;
+            margin-left: 4px;
+        }
+        textarea, input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 14px;
+            line-height: 1.4;
+            resize: vertical;
+        }
+        textarea { min-height: 90px; }
+        textarea:focus, input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+        button:hover { background: var(--accent-hover); }
+        button.secondary {
+            background: transparent;
+            color: var(--fg);
+            border: 1px solid var(--border);
+        }
+        button.danger {
+            background: transparent;
+            color: var(--danger);
+            border: 1px solid var(--border);
+            font-size: 0.85em;
+            padding: 6px 12px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.92em;
+        }
+        thead th {
+            text-align: left;
+            font-weight: 600;
+            background: var(--row-alt);
+            padding: 10px 12px;
+            border-bottom: 2px solid var(--border);
+            color: var(--fg);
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        tbody td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+        tbody tr:nth-child(even) {
+            background: var(--row-alt);
+        }
+        .col-claim { width: 35%; }
+        .col-verify { width: 35%; }
+        .col-cost { width: 15%; text-align: right; }
+        .col-meta { width: 10%; font-size: 0.85em; color: var(--muted); }
+        .col-actions { width: 5%; text-align: center; }
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--muted);
+            font-size: 0.95em;
+        }
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        @media (max-width: 720px) {
+            .summary { grid-template-columns: repeat(2, 1fr); }
+        }
+        .summary-cell {
+            background: var(--row-alt);
+            border-radius: 6px;
+            padding: 12px;
+            text-align: center;
+        }
+        .summary-cell .value {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .summary-cell .label {
+            font-size: 0.75em;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+        .privacy-note {
+            background: #f0fdf4;
+            border-left: 3px solid var(--accent);
+            padding: 10px 14px;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.9em;
+            color: var(--fg);
+            margin-bottom: 16px;
+        }
+        .footer {
+            margin-top: 32px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 0.9em;
+        }
+        .footer a { color: var(--link); }
+        code {
+            background: var(--row-alt);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-family: 'SF Mono', Menlo, Consolas, monospace;
+            font-size: 0.9em;
+        }
+        .delete-btn {
+            background: transparent;
+            color: var(--danger);
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin: 0;
+        }
+        .delete-btn:hover { background: #fee2e2; }
+        .examples-list {
+            font-size: 0.88em;
+            color: var(--muted);
+            margin: 4px 0 0;
+            padding-left: 16px;
+        }
+        .why-block {
+            background: #fffbeb;
+            border-left: 3px solid #ca8a04;
+            padding: 12px 16px;
+            border-radius: 0 6px 6px 0;
+            margin-bottom: 20px;
+            font-size: 0.92em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Claim-Verify Ledger Starter</h1>
+        <p class="lede">
+            Log Claude Code claim divergences in three columns. After 30 days, the top 5 rows by cost tell you
+            which workflows to re-architect or migrate. The structural assessment your individual operator data
+            can produce — that the vendor's aggregate apparently cannot in time.
+        </p>
+
+        <div class="why-block">
+            <strong>Why this exists:</strong> Anthropic's April 23 postmortem stated that user reports "were challenging to distinguish from normal variation in user feedback at first" for six weeks of the regression window. The vendor's aggregate signal was coarse. Individual operator signal is sharp. This ledger captures the sharp signal that the aggregate cannot extract in time. <a href="https://gist.github.com/yurukusa/59cfc161b251d095d83db615a5178a54" target="_blank" rel="noopener">Read the full reasoning (free, ~2,700 words)</a>.
+        </div>
+
+        <div class="privacy-note">
+            <strong>Privacy:</strong> Everything stays in your browser's localStorage. Nothing is transmitted. Closing the tab or clearing storage erases the ledger. Use CSV Export below to back up.
+        </div>
+
+        <div class="panel">
+            <h2 style="margin-top:0">Add a divergence</h2>
+            <div class="form-grid">
+                <div>
+                    <label>1. Verbatim claim
+                        <span class="hint">(paste exact text — do not summarize)</span>
+                    </label>
+                    <textarea id="claim" placeholder="e.g., Terminal notification sent. Mobile push requested."></textarea>
+                    <ul class="examples-list">
+                        <li>Tool/command response text</li>
+                        <li>Completion language ("succeeded", "verified", "saved", "sent")</li>
+                        <li>Status assertion ("operating in worktree")</li>
+                    </ul>
+                </div>
+                <div>
+                    <label>2. Verification outcome
+                        <span class="hint">(what you checked, what you saw)</span>
+                    </label>
+                    <textarea id="verify" placeholder="e.g., Checked macOS notifications and iOS Claude app — no banner appeared on either device. Repeated 10+ times. The claim was false."></textarea>
+                    <ul class="examples-list">
+                        <li>Direct verification step taken</li>
+                        <li>Actual observed outcome</li>
+                        <li>"Could not verify" is also a valid outcome</li>
+                    </ul>
+                </div>
+                <div>
+                    <label>3. Cost if claim was false
+                        <span class="hint">(USD, or labor time in minutes)</span>
+                    </label>
+                    <input type="text" id="cost" placeholder="e.g., $12 credit consumed, or 45 min lost">
+                    <label style="margin-top:10px">Tool / surface <span class="hint">(optional)</span></label>
+                    <input type="text" id="surface" placeholder="e.g., PushNotification, /ultrareview, Edit on worktree">
+                    <label style="margin-top:10px">Cost numeric value <span class="hint">(for sorting; USD or arbitrary units)</span></label>
+                    <input type="number" id="costnum" placeholder="e.g., 12 or 45" step="any" min="0">
+                </div>
+            </div>
+            <div style="margin-top:14px">
+                <button onclick="addEntry()">Add to ledger</button>
+                <button class="secondary" onclick="loadExample()">Load example</button>
+            </div>
+        </div>
+
+        <div id="summary"></div>
+
+        <div class="panel" id="ledger-panel">
+            <h2 style="margin-top:0; display:flex; justify-content:space-between; align-items:center;">
+                <span>Your ledger</span>
+                <span style="font-weight:400; font-size:0.85em; color: var(--muted);"><span id="entry-count">0</span> entries</span>
+            </h2>
+            <div id="ledger"></div>
+            <div style="margin-top:14px">
+                <button class="secondary" onclick="exportCSV()">Export CSV</button>
+                <button class="secondary" onclick="exportMarkdown()">Export Markdown</button>
+                <button class="secondary" onclick="sortByCost()">Sort by cost (top first)</button>
+                <button class="secondary" onclick="sortByDate()">Sort by date (newest first)</button>
+                <button class="danger" onclick="clearAll()">Clear all entries</button>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>
+                <strong>30-day procedure:</strong> Add every claim divergence you observe. After 30 days, click
+                "Sort by cost (top first)". The top 5 rows are the workflows or surfaces where you have the strongest
+                case for re-architecture or migration. The bottom rows are individual events to apply tactical
+                defenses against; the top is the structural input.
+            </p>
+            <p>
+                Companion materials: <a href="https://gist.github.com/yurukusa/59cfc161b251d095d83db615a5178a54" target="_blank" rel="noopener">Signal-detection paradox essay</a> ｜ <a href="https://gist.github.com/yurukusa/6dd608049064ed66c54f1a545a7b47a8" target="_blank" rel="noopener">Claim-Verify Handbook preview</a> ｜ <a href="https://yurukusa.gumroad.com/l/claim-verify-handbook" target="_blank" rel="noopener">Full handbook (ships 2026-05-22, USD 19)</a>
+            </p>
+            <p>
+                Pure client-side, no analytics, no transmission. Tool by
+                <a href="https://yurukusa.github.io/" target="_blank" rel="noopener">yurukusa</a>.
+            </p>
+        </div>
+    </div>
+
+    <script>
+const STORAGE_KEY = 'claim-verify-ledger-v1';
+
+function loadLedger() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch { return []; }
+}
+function saveLedger(ledger) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(ledger)); } catch (e) {
+        alert('Could not save to localStorage. Check browser permissions or storage quota.');
+    }
+}
+
+function addEntry() {
+    const claim = document.getElementById('claim').value.trim();
+    const verify = document.getElementById('verify').value.trim();
+    const cost = document.getElementById('cost').value.trim();
+    const costnum = parseFloat(document.getElementById('costnum').value) || 0;
+    const surface = document.getElementById('surface').value.trim();
+
+    if (!claim || !verify) {
+        alert('Both "Verbatim claim" and "Verification outcome" are required.');
+        return;
+    }
+    const ledger = loadLedger();
+    ledger.push({
+        id: Date.now() + Math.random(),
+        timestamp: new Date().toISOString(),
+        claim, verify, cost, costnum, surface
+    });
+    saveLedger(ledger);
+    document.getElementById('claim').value = '';
+    document.getElementById('verify').value = '';
+    document.getElementById('cost').value = '';
+    document.getElementById('costnum').value = '';
+    document.getElementById('surface').value = '';
+    render();
+}
+
+function loadExample() {
+    document.getElementById('claim').value = 'Terminal notification sent. Mobile push requested.';
+    document.getElementById('verify').value = 'Checked macOS notification center and iOS Claude app. Banner not present on either. Repeated 10+ times after /remote-control pairing. The claim was false.';
+    document.getElementById('cost').value = 'Missed vendor reply, ~20 min recovery';
+    document.getElementById('costnum').value = '20';
+    document.getElementById('surface').value = 'PushNotification (Issue #59623)';
+}
+
+function deleteEntry(id) {
+    let ledger = loadLedger();
+    ledger = ledger.filter(e => e.id !== id);
+    saveLedger(ledger);
+    render();
+}
+
+function clearAll() {
+    if (!confirm('Delete all ledger entries? This cannot be undone.')) return;
+    saveLedger([]);
+    render();
+}
+
+let currentSort = 'date_desc';
+
+function sortByCost() {
+    currentSort = 'cost_desc';
+    render();
+}
+function sortByDate() {
+    currentSort = 'date_desc';
+    render();
+}
+
+function render() {
+    const ledger = loadLedger();
+    const sorted = [...ledger].sort((a, b) => {
+        if (currentSort === 'cost_desc') return (b.costnum || 0) - (a.costnum || 0);
+        return new Date(b.timestamp) - new Date(a.timestamp);
+    });
+
+    document.getElementById('entry-count').textContent = ledger.length;
+
+    const summaryEl = document.getElementById('summary');
+    if (ledger.length > 0) {
+        const totalCost = ledger.reduce((s, e) => s + (e.costnum || 0), 0);
+        const surfaces = new Set(ledger.map(e => e.surface).filter(Boolean));
+        const oldestTs = Math.min(...ledger.map(e => new Date(e.timestamp).getTime()));
+        const daysActive = Math.max(1, Math.ceil((Date.now() - oldestTs) / 86400000));
+        summaryEl.innerHTML = `
+            <div class="summary">
+                <div class="summary-cell">
+                    <div class="value">${ledger.length}</div>
+                    <div class="label">Entries</div>
+                </div>
+                <div class="summary-cell">
+                    <div class="value">${totalCost.toFixed(0)}</div>
+                    <div class="label">Total cost units</div>
+                </div>
+                <div class="summary-cell">
+                    <div class="value">${surfaces.size}</div>
+                    <div class="label">Distinct surfaces</div>
+                </div>
+                <div class="summary-cell">
+                    <div class="value">${daysActive}</div>
+                    <div class="label">Days active</div>
+                </div>
+            </div>`;
+    } else {
+        summaryEl.innerHTML = '';
+    }
+
+    const ledgerEl = document.getElementById('ledger');
+    if (sorted.length === 0) {
+        ledgerEl.innerHTML = `
+            <div class="empty-state">
+                No entries yet. Add your first divergence above. After 30 days, click "Sort by cost (top first)"
+                to surface the structural assessment from your individual data.
+            </div>`;
+        return;
+    }
+    const rows = sorted.map(e => `
+        <tr>
+            <td class="col-claim">${escapeHtml(e.claim)}</td>
+            <td class="col-verify">${escapeHtml(e.verify)}</td>
+            <td class="col-cost">${e.cost ? escapeHtml(e.cost) : '—'}${e.costnum ? ' <small style="color:var(--muted)">(' + e.costnum + ')</small>' : ''}</td>
+            <td class="col-meta">${e.surface ? escapeHtml(e.surface) + '<br>' : ''}<small>${new Date(e.timestamp).toLocaleDateString()}</small></td>
+            <td class="col-actions"><button class="delete-btn" onclick="deleteEntry(${e.id})" title="Delete entry">✕</button></td>
+        </tr>`).join('');
+    ledgerEl.innerHTML = `
+        <div style="overflow-x:auto">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="col-claim">Verbatim claim</th>
+                        <th class="col-verify">Verification outcome</th>
+                        <th class="col-cost">Cost if false</th>
+                        <th class="col-meta">Surface / date</th>
+                        <th class="col-actions"></th>
+                    </tr>
+                </thead>
+                <tbody>${rows}</tbody>
+            </table>
+        </div>`;
+}
+
+function exportCSV() {
+    const ledger = loadLedger();
+    if (ledger.length === 0) { alert('No entries to export.'); return; }
+    const header = 'timestamp,claim,verify,cost,costnum,surface\n';
+    const rows = ledger.map(e =>
+        [e.timestamp, e.claim, e.verify, e.cost, e.costnum, e.surface || ''].map(csvEscape).join(',')
+    ).join('\n');
+    download('claim-verify-ledger.csv', header + rows, 'text/csv');
+}
+
+function exportMarkdown() {
+    const ledger = loadLedger();
+    if (ledger.length === 0) { alert('No entries to export.'); return; }
+    let md = `# Claim-Verify Ledger\n\nExported: ${new Date().toISOString()}\nEntries: ${ledger.length}\n\n`;
+    md += '| Date | Surface | Verbatim claim | Verification outcome | Cost |\n|---|---|---|---|---|\n';
+    md += ledger.map(e => `| ${e.timestamp.slice(0,10)} | ${mdEscape(e.surface || '')} | ${mdEscape(e.claim)} | ${mdEscape(e.verify)} | ${mdEscape(e.cost || '')} |`).join('\n');
+    download('claim-verify-ledger.md', md, 'text/markdown');
+}
+
+function csvEscape(s) {
+    if (s == null) return '';
+    s = String(s);
+    if (s.includes(',') || s.includes('"') || s.includes('\n')) {
+        return '"' + s.replace(/"/g, '""') + '"';
+    }
+    return s;
+}
+function mdEscape(s) {
+    return String(s || '').replace(/\|/g, '\\|').replace(/\n/g, ' ');
+}
+function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[c]));
+}
+function download(filename, text, mime) {
+    const blob = new Blob([text], { type: mime });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+render();
+    </script>
+</body>
+</html>
