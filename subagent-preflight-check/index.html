@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subagent Pre-Flight Check: paste your .claude/agents/ definition, see which of 36 documented failure modes your setup is exposed to | yurukusa</title>
+    <meta name="description" content="Free static analysis tool. Paste your Claude Code subagent YAML frontmatter and optional .mcp.json. See which of the 36 documented failure modes (subagent boundary collapse, MCP fabrication, plugin lifecycle, etc.) your setup is exposed to before you dispatch.">
+    <link rel="canonical" href="https://yurukusa.github.io/subagent-preflight-check/">
+
+    <meta property="og:title" content="Subagent Pre-Flight Check: see which subagent failure modes your setup is exposed to">
+    <meta property="og:description" content="Paste your subagent YAML + .mcp.json. Get a static analysis report against 36 documented failure modes.">
+    <meta property="og:url" content="https://yurukusa.github.io/subagent-preflight-check/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="yurukusa">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@yurukusa_dev">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Subagent Pre-Flight Check",
+      "description": "Paste your Claude Code subagent definition. Get a static analysis report against 36 documented failure modes from the May 2026 anthropics/claude-code issue tracker survey.",
+      "url": "https://yurukusa.github.io/subagent-preflight-check/",
+      "applicationCategory": "DeveloperTools",
+      "operatingSystem": "Any",
+      "browserRequirements": "Requires JavaScript",
+      "isAccessibleForFree": true,
+      "inLanguage": "en",
+      "creator": { "@type": "Person", "name": "yurukusa", "url": "https://yurukusa.github.io/" },
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+    }
+    </script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #080810;
+            --surface: #10101c;
+            --surface2: #16162a;
+            --border: #1e1e38;
+            --text: #ddddf0;
+            --text-dim: #9090b0;
+            --accent: #f0883e;
+            --accent-soft: rgba(240, 136, 62, 0.15);
+            --green: #56d364;
+            --red: #f85149;
+            --yellow: #d29922;
+            --blue: #58a6ff;
+        }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+        .container { max-width: 920px; margin: 0 auto; }
+        header { margin-bottom: 2rem; }
+        h1 { font-size: 1.6rem; margin-bottom: 0.5rem; color: var(--accent); }
+        h2 { font-size: 1.2rem; margin: 1.5rem 0 0.7rem; color: var(--text); border-bottom: 1px solid var(--border); padding-bottom: 0.3rem; }
+        .subtitle { color: var(--text-dim); font-size: 0.95rem; margin-bottom: 1rem; }
+        .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.3rem; margin-bottom: 1.3rem; }
+        label { display: block; font-size: 0.92rem; color: var(--text-dim); margin-bottom: 0.4rem; font-weight: 600; }
+        textarea, input[type="text"] {
+            width: 100%; background: var(--bg); color: var(--text); border: 1px solid var(--border);
+            border-radius: 6px; padding: 0.7rem; font-family: "SF Mono", Monaco, Consolas, monospace;
+            font-size: 0.88rem; resize: vertical; line-height: 1.5;
+        }
+        textarea { min-height: 160px; }
+        .radio-group { display: flex; gap: 1.5rem; margin: 0.5rem 0; }
+        .radio-group label { display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 400; color: var(--text); cursor: pointer; }
+        input[type="radio"], input[type="checkbox"] { cursor: pointer; }
+        button {
+            background: var(--accent); color: var(--bg); border: none; padding: 0.8rem 1.5rem;
+            border-radius: 6px; font-size: 1rem; font-weight: 600; cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        button:hover { opacity: 0.85; }
+        button:disabled { opacity: 0.4; cursor: not-allowed; }
+        .result { margin-top: 1.5rem; }
+        .finding {
+            background: var(--surface2); border-left: 4px solid var(--yellow); padding: 1rem 1.2rem;
+            border-radius: 0 6px 6px 0; margin-bottom: 0.8rem;
+        }
+        .finding.high { border-left-color: var(--red); }
+        .finding.medium { border-left-color: var(--yellow); }
+        .finding.low { border-left-color: var(--blue); }
+        .finding .severity {
+            display: inline-block; padding: 0.1rem 0.5rem; border-radius: 3px;
+            font-size: 0.75rem; font-weight: 600; margin-right: 0.5rem; text-transform: uppercase;
+        }
+        .finding.high .severity { background: rgba(248, 81, 73, 0.2); color: var(--red); }
+        .finding.medium .severity { background: rgba(210, 153, 34, 0.2); color: var(--yellow); }
+        .finding.low .severity { background: rgba(88, 166, 255, 0.2); color: var(--blue); }
+        .finding h3 { font-size: 1rem; margin-bottom: 0.5rem; color: var(--text); }
+        .finding .issue-ref { font-size: 0.85rem; color: var(--text-dim); margin-bottom: 0.5rem; }
+        .finding .issue-ref a { color: var(--accent); text-decoration: none; }
+        .finding .issue-ref a:hover { text-decoration: underline; }
+        .finding .defense { font-size: 0.9rem; color: var(--text-dim); margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px dashed var(--border); }
+        .finding code { background: var(--bg); padding: 0.1rem 0.3rem; border-radius: 3px; font-size: 0.85em; font-family: "SF Mono", monospace; color: var(--accent); }
+        .clean { background: rgba(86, 211, 100, 0.1); border-left-color: var(--green); padding: 1rem 1.2rem; }
+        .summary { background: var(--accent-soft); padding: 1rem 1.2rem; border-radius: 6px; margin-bottom: 1rem; font-weight: 600; }
+        .ctas { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+        .ctas a {
+            display: inline-block; background: var(--surface2); color: var(--text); padding: 0.6rem 1rem;
+            border-radius: 6px; text-decoration: none; margin: 0.3rem 0.3rem 0.3rem 0;
+            border: 1px solid var(--border); font-size: 0.92rem;
+        }
+        .ctas a:hover { background: var(--bg); border-color: var(--accent); }
+        .meta { color: var(--text-dim); font-size: 0.85rem; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+        details { background: var(--surface2); border-radius: 6px; padding: 0.8rem 1rem; margin: 0.5rem 0; }
+        summary { cursor: pointer; color: var(--text-dim); font-size: 0.88rem; font-weight: 600; }
+        details[open] summary { margin-bottom: 0.7rem; }
+        details code { font-size: 0.82rem; }
+        details pre { background: var(--bg); padding: 0.6rem; border-radius: 4px; overflow-x: auto; font-size: 0.82rem; margin: 0.4rem 0; }
+        .examples { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.4rem; }
+        .examples button {
+            background: var(--surface2); color: var(--text-dim); padding: 0.3rem 0.7rem;
+            font-size: 0.82rem; font-weight: 400; border: 1px solid var(--border);
+        }
+        .examples button:hover { color: var(--accent); border-color: var(--accent); }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>Subagent Pre-Flight Check</h1>
+        <p class="subtitle">Paste your Claude Code subagent definition and (optionally) your <code>.mcp.json</code>. The tool runs a static analysis against 36 documented failure modes from a seven-day systematic survey of the <code>anthropics/claude-code</code> issue tracker (2026-05-09 → 2026-05-16). Detection is fully client-side; nothing is sent anywhere.</p>
+    </header>
+
+    <div class="panel">
+        <label for="agentDef">1. Paste the YAML frontmatter from your <code>.claude/agents/&lt;name&gt;.md</code> (required)</label>
+        <textarea id="agentDef" placeholder="---&#10;name: code-reviewer&#10;description: Reviews code for security issues&#10;model: opus&#10;tools:&#10;  - Read&#10;  - Grep&#10;  - Bash&#10;  - mcp__padc-validator__validate_python_syntax&#10;isolation: worktree&#10;---"></textarea>
+        <div class="examples">
+            <button type="button" onclick="loadExample('mcp-trap')">Example: MCP trap setup</button>
+            <button type="button" onclick="loadExample('worktree-trap')">Example: worktree-isolation trap</button>
+            <button type="button" onclick="loadExample('background-trap')">Example: background+typo trap</button>
+            <button type="button" onclick="loadExample('clean')">Example: clean setup</button>
+        </div>
+    </div>
+
+    <div class="panel">
+        <label for="mcpJson">2. Paste your <code>.mcp.json</code> (optional, project-scoped)</label>
+        <textarea id="mcpJson" placeholder='{&#10;  "mcpServers": {&#10;    "padc-validator": {&#10;      "command": "uv",&#10;      "args": ["run", "--directory", "/path/to/server", "server.py"]&#10;    }&#10;  }&#10;}'></textarea>
+    </div>
+
+    <div class="panel">
+        <label>3. How are you dispatching this subagent?</label>
+        <div class="radio-group">
+            <label><input type="radio" name="dispatch" value="foreground" checked> Foreground (in main session)</label>
+            <label><input type="radio" name="dispatch" value="background"> Background (<code>run_in_background: true</code>)</label>
+            <label><input type="radio" name="dispatch" value="cowork"> Cowork (separate session)</label>
+        </div>
+    </div>
+
+    <div class="panel">
+        <label>4. Platform (optional, narrows OS-specific findings)</label>
+        <div class="radio-group">
+            <label><input type="radio" name="platform" value="any" checked> Any</label>
+            <label><input type="radio" name="platform" value="macos"> macOS</label>
+            <label><input type="radio" name="platform" value="windows"> Windows</label>
+            <label><input type="radio" name="platform" value="linux"> Linux</label>
+        </div>
+    </div>
+
+    <button onclick="analyze()" id="analyzeBtn">Analyze →</button>
+
+    <div id="result" class="result" style="display:none;"></div>
+
+    <div class="ctas" id="ctas" style="display:none;">
+        <h2>Resources</h2>
+        <a href="https://gist.github.com/yurukusa/f9099ecced6f26a38b3c01ee376982f9?utm_source=yurukusa-io&utm_medium=preflight-tool&utm_campaign=subagent-preview-en">Subagent &amp; Plugin Reliability Handbook (EN preview, 3,100 words)</a>
+        <a href="https://gist.github.com/yurukusa/1e6f47765e98e4053cb0c0ac687189af?utm_source=yurukusa-io&utm_medium=preflight-tool&utm_campaign=subagent-preview-jp">副の作業者の沈黙の失敗の事例集 (JP preview, 9,200 字)</a>
+        <a href="https://gist.github.com/yurukusa/e4268c88d24bb8c8f0962bc4750a48ec?utm_source=yurukusa-io&utm_medium=preflight-tool&utm_campaign=13898-deep-dive">Deep dive on issue #13898 (2,857 words)</a>
+        <a href="https://yurukusa.gumroad.com/l/claim-verify-handbook?utm_source=yurukusa-io&utm_medium=preflight-tool&utm_campaign=claim-verify-handbook">Claim-Verify Handbook (5/22 launch, $19)</a>
+    </div>
+
+    <div class="meta">
+        <p>Source: 36-case systematic survey 2026-05-09 → 2026-05-16, <code>anthropics/claude-code</code> issue tracker. All cited issues are public; click through to verify.</p>
+        <p style="margin-top:0.4rem;">No data leaves your browser. Static analysis only. Tool published 2026-05-16.</p>
+    </div>
+</div>
+
+<script>
+const EXAMPLES = {
+    'mcp-trap': `---
+name: test-validator
+model: haiku
+description: Validates Python syntax via local MCP
+tools:
+  - mcp__padc-validator__validate_python_syntax
+---`,
+    'worktree-trap': `---
+name: parallel-builder
+description: Builds features in isolated worktrees
+model: sonnet
+isolation: worktree
+run_in_background: true
+---`,
+    'background-trap': `---
+name: team_lead
+description: Coordinates other agents
+model: opus
+---`,
+    'clean': `---
+name: code-reviewer
+description: Reviews code for security issues
+tools:
+  - Read
+  - Grep
+  - Bash
+---`
+};
+
+function loadExample(kind) {
+    const ex = EXAMPLES[kind];
+    document.getElementById('agentDef').value = ex;
+    if (kind === 'mcp-trap') {
+        document.getElementById('mcpJson').value = `{
+  "mcpServers": {
+    "padc-validator": {
+      "command": "uv",
+      "args": ["run", "--directory", "/path/to/server", "server.py"]
+    }
+  }
+}`;
+    } else {
+        document.getElementById('mcpJson').value = '';
+    }
+    if (kind === 'worktree-trap') {
+        document.querySelector('input[name="dispatch"][value="background"]').checked = true;
+        document.querySelector('input[name="platform"][value="macos"]').checked = true;
+    } else if (kind === 'background-trap') {
+        document.querySelector('input[name="dispatch"][value="background"]').checked = true;
+    } else {
+        document.querySelector('input[name="dispatch"][value="foreground"]').checked = true;
+        document.querySelector('input[name="platform"][value="any"]').checked = true;
+    }
+}
+
+function parseAgentDef(text) {
+    const result = { raw: text, name: null, model: null, tools: [], isolation: null, run_in_background: false, has_mcp_tools: false, frontmatter_only: false };
+    const m = text.match(/---([\s\S]*?)---/);
+    const yaml = m ? m[1] : text;
+    const lines = yaml.split('\n');
+    let inTools = false;
+    for (const line of lines) {
+        const t = line.trim();
+        if (!t) continue;
+        if (/^name:\s*/.test(t)) { result.name = t.replace(/^name:\s*/, '').replace(/[\"']/g, '').trim(); inTools = false; }
+        else if (/^model:\s*/.test(t)) { result.model = t.replace(/^model:\s*/, '').replace(/[\"']/g, '').trim(); inTools = false; }
+        else if (/^isolation:\s*/.test(t)) { result.isolation = t.replace(/^isolation:\s*/, '').replace(/[\"']/g, '').trim(); inTools = false; }
+        else if (/^run_in_background:\s*/.test(t)) { result.run_in_background = /true/i.test(t); inTools = false; }
+        else if (/^tools:\s*$/.test(t) || /^tools:\s*\[/.test(t)) {
+            inTools = true;
+            if (/\[/.test(t)) {
+                const arr = t.match(/\[(.*)\]/);
+                if (arr) result.tools = arr[1].split(',').map(x => x.trim().replace(/[\"']/g, ''));
+                inTools = false;
+            }
+        }
+        else if (inTools && /^[-*]\s+/.test(t)) {
+            result.tools.push(t.replace(/^[-*]\s+/, '').trim());
+        } else if (inTools && t && !/^\s/.test(line)) {
+            inTools = false;
+        }
+    }
+    result.has_mcp_tools = result.tools.some(t => /^mcp__/.test(t));
+    result.tools_field_omitted = !text.match(/tools:\s*[\[\n]/);
+    return result;
+}
+
+function parseMcpJson(text) {
+    const result = { servers: [], has_npx_bare: false, has_marketplace: false, valid: false };
+    if (!text.trim()) return result;
+    try {
+        const obj = JSON.parse(text);
+        const servers = obj.mcpServers || {};
+        for (const [name, conf] of Object.entries(servers)) {
+            result.servers.push({ name, command: conf.command, args: conf.args || [] });
+            if (conf.command === 'npx' && (!conf.args || conf.args.length === 0 || !/^[/.]/.test(conf.args[0] || ''))) {
+                result.has_npx_bare = true;
+            }
+            if (/nimble|wix|serena|marketplace/i.test(name)) result.has_marketplace = true;
+        }
+        result.valid = true;
+    } catch (e) {
+        result.error = e.message;
+    }
+    return result;
+}
+
+function analyze() {
+    const agent = parseAgentDef(document.getElementById('agentDef').value);
+    const mcp = parseMcpJson(document.getElementById('mcpJson').value);
+    const dispatch = document.querySelector('input[name="dispatch"]:checked').value;
+    const platform = document.querySelector('input[name="platform"]:checked').value;
+    const findings = [];
+
+    if (!agent.name) {
+        findings.push({
+            severity: 'high',
+            title: 'Subagent definition appears empty or unparseable',
+            issue: null,
+            body: 'No <code>name:</code> field detected. The tool needs at least the YAML frontmatter of your <code>.claude/agents/&lt;name&gt;.md</code> to analyze.',
+            defense: 'Paste the section between <code>---</code> markers at the top of your agent definition file.'
+        });
+    } else {
+        // Check 1: Custom agent + project-scoped MCP (#13898)
+        if (mcp.valid && mcp.servers.length > 0) {
+            findings.push({
+                severity: 'high',
+                title: 'Custom subagent + project-scoped MCP server (the #13898 fabrication trap)',
+                issue: 13898,
+                body: `Your custom subagent <code>${agent.name}</code> is set up to use project-scoped MCP tools from your <code>.mcp.json</code> (servers: ${mcp.servers.map(s => '<code>'+s.name+'</code>').join(', ')}). Issue #13898 (5 months open) documents that custom subagents in <code>.claude/agents/</code> cannot call MCP tools from project-level <code>.mcp.json</code> — instead they fabricate plausible-looking results without ever invoking the MCP server. The fabricated results have correct schema and plausible content but are factually wrong.`,
+                defense: 'Three options: (a) route MCP-dependent tasks through the built-in <code>general-purpose</code> subagent instead of a custom one; (b) move the MCP server to global config (<code>~/.claude/mcp.json</code>); or (c) perform MCP calls in the parent session and pass results to the subagent as text. None are clean — pick by which constraint you can give up.'
+            });
+        } else if (agent.has_mcp_tools && !mcp.valid) {
+            findings.push({
+                severity: 'medium',
+                title: 'Custom subagent references MCP tools but no <code>.mcp.json</code> provided to this tool',
+                issue: 13898,
+                body: `Your subagent's <code>tools:</code> field lists MCP tools (${agent.tools.filter(t => /^mcp__/.test(t)).map(t => '<code>'+t+'</code>').join(', ')}). If those MCP servers are defined in a project-scoped <code>.mcp.json</code>, you are likely exposed to issue #13898. Paste your <code>.mcp.json</code> above to confirm.`,
+                defense: 'Verify whether the MCP servers powering these tools are project-scoped (<code>.mcp.json</code> at your project root) or global (<code>~/.claude/mcp.json</code>). Only project-scoped triggers #13898.'
+            });
+        }
+
+        // Check 2: isolation: worktree
+        if (/worktree/i.test(agent.isolation || '')) {
+            const sev = (platform === 'macos') ? 'high' : 'medium';
+            findings.push({
+                severity: sev,
+                title: 'isolation: worktree is advisory, not enforced (#59019)',
+                issue: 59019,
+                body: `Your subagent uses <code>isolation: worktree</code>. Issue #59019 documents that on macOS Darwin 25.3.0, parallel subagents dispatched with this flag can have their file writes leak into the parent checkout's working tree. The subagent reports completion in the isolated worktree, but <code>git status</code> in the parent shows untracked files matching what the subagent claimed to have committed elsewhere. The tool-result envelope contains no <code>cwd</code> or <code>worktree_path</code> field to verify against.`,
+                defense: 'Before dispatch: <code>git stash --include-untracked</code> or <code>git commit -am "checkpoint"</code> on the parent. After every isolated-subagent return: <code>git status</code> on the parent. Until a vendor fix ships, treat <code>isolation: "worktree"</code> as advisory.'
+            });
+        }
+
+        // Check 3: model: parameter set
+        if (agent.model) {
+            findings.push({
+                severity: 'medium',
+                title: `model: ${agent.model} can be silently overridden by env var (#57718)`,
+                issue: 57718,
+                body: `Your subagent specifies <code>model: ${agent.model}</code>. Issue #57718 documents that the environment variable <code>CLAUDE_CODE_SUBAGENT_MODEL</code> silently overrides this setting at dispatch time. The tool-result envelope and transcript contain no signal indicating which model actually ran.`,
+                defense: 'Before dispatch: <code>echo $CLAUDE_CODE_SUBAGENT_MODEL</code>. If it is set and you want the agent definition to take precedence, unset it: <code>unset CLAUDE_CODE_SUBAGENT_MODEL</code>. If you must keep the env var, do not also set <code>model:</code> in the agent definition — manage model choice in one place.'
+            });
+        }
+
+        // Check 4: tools: field omitted
+        if (agent.tools_field_omitted) {
+            findings.push({
+                severity: 'low',
+                title: '<code>tools:</code> field omitted — agent will inherit all tools (related to #57942)',
+                issue: 57942,
+                body: `Your subagent omits the <code>tools:</code> field. The documented behavior is "inherits all tools from the main thread." In practice this exposes you to two related risks: (a) the agent gets every CLAUDE.md / skill-catalog injection of the parent (related to #57942), inflating context; (b) it inherits the parent's prompt cache (#57751), which can leak plan-mode state across the subagent boundary.`,
+                defense: 'If your agent needs a specific subset, list it explicitly in <code>tools:</code>. If you need broad tool access, accept the context-inflation tradeoff and audit by running <code>/usage --json</code> before and after subagent dispatch to detect cache bleed.'
+            });
+        }
+
+        // Check 5: Underscore in name (SendMessage typo risk #57728)
+        if (agent.name && /_/.test(agent.name)) {
+            findings.push({
+                severity: 'medium',
+                title: 'Agent name contains underscore — SendMessage typo risk (#57728)',
+                issue: 57728,
+                body: `Your agent is named <code>${agent.name}</code> with an underscore. Issue #57728 documents that <code>SendMessage</code> to a non-existent recipient returns <code>success: true</code> silently. If other agents in your workflow are named with hyphens (e.g., <code>${agent.name.replace(/_/g, '-')}</code>), a single naming-convention mismatch will silently drop messages.`,
+                defense: 'Establish ONE convention across your workflow — kebab-case <em>or</em> snake_case, not both. Document it in <code>CLAUDE.md</code>. Always enumerate registered agents with <code>Agent --list</code> before dispatch instead of having the parent agent compose the recipient name from prose context.'
+            });
+        }
+
+        // Check 6: Background dispatch
+        if (dispatch === 'background') {
+            findings.push({
+                severity: 'medium',
+                title: 'Background dispatch — agents may not load (#58729)',
+                issue: 58729,
+                body: `You marked this as a background dispatch. Issue #58729 documents that background sessions do not load user agents from <code>~/.claude/agents/</code> into the Agent tool registry. The session can start, run, and return — but the registry it queries is the empty default, not your customized agent set. The failure mode is silent: dispatch attempts return without an obvious "agent not found" error.`,
+                defense: 'Verify by running <code>/agents</code> at the start of any background session before dispatching custom agents. If your customized agents are missing, dispatch from the foreground until #58729 is fixed.'
+            });
+
+            if (/worktree/i.test(agent.isolation || '')) {
+                findings.push({
+                    severity: 'high',
+                    title: 'Background + worktree-isolation combination is the #59019 hot path',
+                    issue: 59019,
+                    body: 'The combination of <code>run_in_background: true</code> and <code>isolation: worktree</code> is precisely the configuration in the #59019 reproduction. The asynchronous nature of background dispatch makes the parent-checkout leak harder to catch in time.',
+                    defense: 'For this combination, the snapshot-and-audit discipline (#59019 defense above) is mandatory, not optional.'
+                });
+            }
+        }
+
+        // Check 7: Cowork dispatch
+        if (dispatch === 'cowork') {
+            findings.push({
+                severity: 'medium',
+                title: 'Cowork dispatch — multiple related failure modes (#57730, #59139, #58274, #58687)',
+                issue: 57730,
+                body: 'Cowork dispatch is associated with several documented failure modes including renderer JS loop hang after force-quit during agent task (#57730), MCP tool-result envelope crashes (#59139), all-subagent-failure on third-party providers (#58274), and MCP timeouts despite progress notifications (#58687). The Cowork surface adds an extra session boundary where state, environment, and tool registry can diverge.',
+                defense: 'For each Cowork session, verify the agent registry, MCP server connections, and CLAUDE.md inheritance before starting a long-running task. Treat Cowork as a separate environment, not an extension of your local session.'
+            });
+        }
+
+        // Check 8: Windows + bare npx
+        if (mcp.valid && mcp.has_npx_bare && platform === 'windows') {
+            findings.push({
+                severity: 'high',
+                title: 'Windows + bare <code>npx</code> in MCP config — spawn ENOENT (#58510)',
+                issue: 58510,
+                body: 'On Windows, MCP servers using a bare <code>npx</code> command fail with <code>spawn ENOENT</code>. Issue #58510 documents that the LSP-side fix from #17312 did not cover the MCP spawn path. The MCP server appears in <code>claude mcp list</code> but the server process never starts.',
+                defense: 'Use <code>npx.cmd</code> instead of <code>npx</code> on Windows, or specify the full path to your Node binary. Verify with <code>claude mcp list</code> showing the server in "running" state, not just "configured".'
+            });
+        }
+
+        // Check 9: Marketplace plugin reference
+        if (mcp.valid && mcp.has_marketplace) {
+            findings.push({
+                severity: 'medium',
+                title: 'Marketplace plugin MCP server reference — lifecycle bugs (#58806, #59325)',
+                issue: 58806,
+                body: `Your <code>.mcp.json</code> appears to reference a marketplace plugin (${mcp.servers.filter(s => /nimble|wix|serena|marketplace/i.test(s.name)).map(s => '<code>'+s.name+'</code>').join(', ')}). Issue #58806 documents that disabled marketplace plugins still spawn MCP servers and open browser tabs without user consent — the <code>enabledPlugins[name]: false</code> setting is silently ignored.`,
+                defense: 'After disabling a marketplace plugin, verify with <code>ps -ef | grep mcp</code> (or Process Explorer on Windows) that no MCP server processes are still running. If they are, terminate them manually until #58806 is fixed.'
+            });
+        }
+
+        // Check 10: Windows + general MCP usage
+        if (platform === 'windows' && mcp.valid && mcp.servers.length > 0) {
+            findings.push({
+                severity: 'low',
+                title: 'Windows MCP servers may not terminate on session exit (#58918)',
+                issue: 58918,
+                body: 'Issue #58918 documents that on Windows, MCP server child processes are not terminated when the Claude Code session exits. Processes accumulate over multiple sessions, eventually exhausting system resources.',
+                defense: 'Periodically check for orphaned MCP server processes (Process Explorer or <code>tasklist /v | findstr mcp</code>) and kill them manually. Restart Claude Code after extended use to ensure clean state.'
+            });
+        }
+    }
+
+    // Render
+    const result = document.getElementById('result');
+    const ctas = document.getElementById('ctas');
+    if (findings.length === 0) {
+        result.innerHTML = `<div class="clean">
+            <span class="severity" style="background:rgba(86,211,100,0.2);color:var(--green)">CLEAN</span>
+            <h3>No documented failure modes detected for this configuration.</h3>
+            <p style="margin-top:0.5rem;color:var(--text-dim);">The static analysis did not match this setup against any of the 36 cases in the 2026-05-09 → 2026-05-16 survey. This does not mean the configuration is bug-free — runtime failure modes (timing, cache, dispatch races) cannot be detected statically. See the resources below for the full case set.</p>
+        </div>`;
+    } else {
+        const highCount = findings.filter(f => f.severity === 'high').length;
+        const medCount = findings.filter(f => f.severity === 'medium').length;
+        const lowCount = findings.filter(f => f.severity === 'low').length;
+        let html = `<div class="summary">Found ${findings.length} potential exposure${findings.length>1?'s':''}: ${highCount} high, ${medCount} medium, ${lowCount} low. Each finding references a documented GitHub issue and includes an operator-side defense.</div>`;
+        for (const f of findings) {
+            html += `<div class="finding ${f.severity}">
+                <h3><span class="severity">${f.severity}</span>${f.title}</h3>
+                ${f.issue ? `<p class="issue-ref">Issue: <a href="https://github.com/anthropics/claude-code/issues/${f.issue}" target="_blank" rel="noopener">#${f.issue}</a></p>` : ''}
+                <p>${f.body}</p>
+                <p class="defense"><strong>Defense:</strong> ${f.defense}</p>
+            </div>`;
+        }
+        result.innerHTML = html;
+    }
+    result.style.display = 'block';
+    ctas.style.display = 'block';
+    result.scrollIntoView({behavior: 'smooth', block: 'start'});
+}
+</script>
+</body>
+</html>
