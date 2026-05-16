@@ -677,7 +677,7 @@
                         <span class="tag tag-genre">Forensic Case Study</span>
                     </div>
                     <h3>Claim-Verify Handbook</h3>
-                    <p class="card-desc">One operator lost $80–$135 in API spend and several hours of working time, six of seven sessions returning zero usable output (issue #57485). This book organizes 104 forensic cases (15 body + 89 appendix D) of the same claim-vs-reality divergence pattern from `anthropics/claude-code`, with a 3-stage framework + 14 user defenses + 5 detection tools (all 5 implemented, 165+ tests passing). ~63,000 words / ~74 pages. Edition 1 launches 2026-05-22, same day as Migration Playbook Edition 2. Free preview Gist linked here. Industry validation includes Anthropic's own admission of 93% approval fatigue (March 25 blog), three CVEs (CVE-2026-33068, CVE-2025-54795, CVE-2026-39861), and the strongest quantitative signal: Anthropic accidentally pushed claude-code v2.1.88 to npm on 2026-03-31 with the full internal source map, and industry coverage (VentureBeat / ruh.ai / mediacopilot.ai) transcribed an internal benchmark line stating that the Capybara model variant at v8 has a 29-30% false claims rate (regressed from 16.7% at v4) — Anthropic's own measurement says approximately one in three tool-use claims of "succeeded" or "verified" is internally classifiable as false.</p>
+                    <p class="card-desc">One operator lost $80–$135 in API spend and several hours of working time, six of seven sessions returning zero usable output (issue #57485). This book organizes 115 forensic cases (15 body + 100 appendix D) of the same claim-vs-reality divergence pattern from `anthropics/claude-code`, with a 3-stage framework + 14 user defenses + 5 detection tools (all 5 implemented, 165+ tests passing). ~113,000 characters / ~81 pages. Edition 1 launches 2026-05-22, same day as Migration Playbook Edition 2. Free preview Gist linked here. Industry validation includes Anthropic's own admission of 93% approval fatigue (March 25 blog), three CVEs (CVE-2026-33068, CVE-2025-54795, CVE-2026-39861), and the strongest quantitative signal: Anthropic accidentally pushed claude-code v2.1.88 to npm on 2026-03-31 with the full internal source map, and industry coverage (VentureBeat / ruh.ai / mediacopilot.ai) transcribed an internal benchmark line stating that the Capybara model variant at v8 has a 29-30% false claims rate (regressed from 16.7% at v4) — Anthropic's own measurement says approximately one in three tool-use claims of "succeeded" or "verified" is internally classifiable as false.</p>
                     <span class="card-arrow">↗</span>
                 </a>
 
@@ -703,18 +703,62 @@
                     <span class="card-arrow">↗</span>
                 </a>
 
-                <a href="https://gist.github.com/yurukusa/9a56ebd0fe75398f5b0b4d3ef791de5c?utm_source=yurukusa-io&utm_medium=card&utm_campaign=five-voices-synthesis" class="card" target="_blank" rel="noopener">
+                <a href="https://gist.github.com/yurukusa/57f3279d68d22985d8ad9efea6c75c26?utm_source=yurukusa-io&amp;utm_medium=card&amp;utm_campaign=anthropic-may-13-14-smb-claim-verify" class="card" target="_blank" rel="noopener">
+                    <div class="card-tags">
+                        <span class="tag tag-new">2026-05-16</span>
+                        <span class="tag tag-paid">Free</span>
+                        <span class="tag tag-genre">Industry Analysis</span>
+                    </div>
+                    <h3>When Claude's "Success" Claims Touch Payroll</h3>
+                    <p class="card-desc">~2,883-word analysis reading the May 13-14 Anthropic announcements (Claude for Small Business + Agent Skills open-standard tour) against the 115 documented claim-vs-reality cases. Four developer-facing failures captured today (worktree isolation collapse #59628, PushNotification false success #59623, /ultrareview crash with credit consumed #59621, skill auto-trigger before override #59607) mapped to the small-business workflows the May 13 product targets — invoice notifications, tax reviews, multi-client data isolation, compliance overrides. Five operator-side verification checks derived from the handbook's defense set. Reading: small businesses considering Claude integration should design a verification protocol from day one because the failure pattern documented in developer-facing Claude Code is the same pattern at small-business financial stakes.</p>
+                    <span class="card-arrow">↗</span>
+                </a>
+
+                <a href="https://gist.github.com/yurukusa/9a56ebd0fe75398f5b0b4d3ef791de5c?utm_source=yurukusa-io&amp;utm_medium=card&amp;utm_campaign=five-voices-synthesis" class="card" target="_blank" rel="noopener">
                     <div class="card-tags">
                         <span class="tag tag-new">2026-05-16</span>
                         <span class="tag tag-paid">Free</span>
                         <span class="tag tag-genre">Industry Synthesis</span>
                     </div>
-                    <h3>Five Independent Voices on Claude Code's May 2026 Reliability Crisis</h3>
-                    <p class="card-desc">~3,081-word synthesis of the five independent paths that converged on the same structural conclusion in March-May 2026: (1) Anthropic's leaked npm v2.1.88 internal classifier flagging 29-30% of tool-call claims as false, regressed from 16.7% in v4; (2) Pawel Brodzinski's HN-front-page piece on LLM-generated content failing source verification; (3) Anthony Maio + Stella Laurenzo's quantitative analysis of 6,852 sessions (read-edit ratio collapsing 6.6→2.0, edits-without-reads rising 6.2%→33.7%, daily cached Bedrock costs surging $12→$1,504); (4) Alexander Zanfir's six-month cache-billing timeline showing bugs that "all fail in the same direction"; (5) Alex Dunlop's record of operator-observed problems Anthropic confirmed weeks later. None coordinated. All five citing public sources with verbatim quotes. The convergence is the data point.</p>
+                    <h3>Six Independent Voices on Claude Code's May 2026 Reliability Crisis</h3>
+                    <p class="card-desc">~3,845-word synthesis of six independent paths that converged on the same structural conclusion in March-May 2026: (1) Anthropic's leaked npm v2.1.88 internal classifier flagging 29-30% of tool-call claims as false, regressed from 16.7% in v4; (2) Pawel Brodzinski's HN-front-page piece on LLM-generated content failing source verification; (3) Anthony Maio + Stella Laurenzo's quantitative analysis of 6,852 sessions (read-edit ratio collapsing 6.6→2.0, edits-without-reads rising 6.2%→33.7%, daily cached Bedrock costs surging $12→$1,504); (4) Alexander Zanfir's six-month cache-billing timeline showing bugs that "all fail in the same direction"; (5) Alex Dunlop's record of operator-observed problems Anthropic confirmed weeks later; (6) Anthropic's own April 23 postmortem confirming three compounding bugs over six weeks plus the structural admission that the issue was indistinguishable from "normal variation in user feedback at first." Five external critics plus the vendor itself, none coordinated, citing public sources with verbatim quotes. The convergence is the data point.</p>
                     <span class="card-arrow">↗</span>
                 </a>
 
-                <a href="https://yurukusa.github.io/subagent-preflight-check/?utm_source=yurukusa-io&utm_medium=card&utm_campaign=subagent-preflight-check" class="card">
+                <a href="https://yurukusa.github.io/claim-verify-ledger-starter/?utm_source=yurukusa-io&amp;utm_medium=card&amp;utm_campaign=claim-verify-ledger-starter" class="card">
+                    <div class="card-tags">
+                        <span class="tag tag-new">2026-05-16</span>
+                        <span class="tag tag-free">Free</span>
+                        <span class="tag tag-genre">Operator Discipline Tool</span>
+                    </div>
+                    <h3>Claim-Verify Ledger Starter</h3>
+                    <p class="card-desc">Browser-only ledger for logging Claude Code claim divergences in three columns (verbatim claim / verification outcome / cost if claim was false). Everything stays in localStorage; CSV and Markdown export available. Derived from Anthropic's April 23 postmortem admission that "user reports were challenging to distinguish from normal variation in user feedback at first" — operator-side individual signal is sharper than vendor-side aggregate signal, but only if it gets recorded. After 30 days, sort by cost: the top 5 rows identify the workflows or surfaces to re-architect or migrate. The structural assessment your individual data can produce.</p>
+                    <span class="card-arrow">↗</span>
+                </a>
+
+                <a href="https://gist.github.com/yurukusa/59cfc161b251d095d83db615a5178a54?utm_source=yurukusa-io&amp;utm_medium=card&amp;utm_campaign=signal-detection-paradox" class="card" target="_blank" rel="noopener">
+                    <div class="card-tags">
+                        <span class="tag tag-new">2026-05-16</span>
+                        <span class="tag tag-paid">Free</span>
+                        <span class="tag tag-genre">Structural Analysis</span>
+                    </div>
+                    <h3>When the Vendor Could Not Distinguish</h3>
+                    <p class="card-desc">~2,677-word reading of Anthropic's April 23 postmortem as a signal-detection problem at the operator layer. The vendor admitted that user reports of the six-week regression "were challenging to distinguish from normal variation in user feedback at first" — meaning the aggregate signal-detection apparatus was structurally coarse. The essay extracts the asymmetry (operator-side individual signal is sharp; vendor-side aggregate signal is coarse) and proposes that the Claim-Verify Handbook's 14 defenses operate at the tactical layer while an individual longitudinal ledger operates at the structural layer. Companion to the Ledger Starter tool. Identifies why the handbook framing should shift from "verify each claim" to "verify each claim AND maintain a ledger of which claims were false."</p>
+                    <span class="card-arrow">↗</span>
+                </a>
+
+                <a href="https://yurukusa.github.io/hook-reliability-checker/?utm_source=yurukusa-io&amp;utm_medium=card&amp;utm_campaign=hook-reliability-checker" class="card">
+                    <div class="card-tags">
+                        <span class="tag tag-new">2026-05-16</span>
+                        <span class="tag tag-free">Free</span>
+                        <span class="tag tag-genre">Static Analysis Tool</span>
+                    </div>
+                    <h3>Claude Code Hook Reliability Checker</h3>
+                    <p class="card-desc">Paste your <code>settings.json</code> hooks block. The tool runs 14 static checks against documented silent-failure modes from the May 2026 <code>anthropics/claude-code</code> issue tracker — relative paths that resolve against the wrong working directory, tilde expansion that fails in execve contexts, malformed regex matchers that silently never fire, SessionStart hooks with complex shell pipelines (#59619), missing <code>"type": "command"</code>, overlapping matchers with undefined execution order, Windows backslash escapes interpreted as JSON, environment variables out of shell scope, and more. Four example presets reproduce common silent-failure shapes. Each finding includes severity, source issue reference, and a concrete fix. Pure client-side analysis; nothing transmitted.</p>
+                    <span class="card-arrow">↗</span>
+                </a>
+
+                <a href="https://yurukusa.github.io/subagent-preflight-check/?utm_source=yurukusa-io&amp;utm_medium=card&amp;utm_campaign=subagent-preflight-check" class="card">
                     <div class="card-tags">
                         <span class="tag tag-new">2026-05-16</span>
                         <span class="tag tag-free">Free</span>

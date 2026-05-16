@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Code Hook Reliability Checker: paste your settings.json, see which silent-failure modes your hook configuration is exposed to | yurukusa</title>
+    <meta name="description" content="Free static analysis tool. Paste your Claude Code settings.json hooks configuration. See which of the 14 documented silent-failure modes from the 2026 anthropics/claude-code issue tracker your setup is exposed to before the hook silently fails to fire.">
+    <link rel="canonical" href="https://yurukusa.github.io/hook-reliability-checker/">
+
+    <meta property="og:title" content="Claude Code Hook Reliability Checker: see which hook silent-failure modes your config is exposed to">
+    <meta property="og:description" content="Paste your settings.json hooks block. Get a static analysis report against 14 documented silent-failure modes.">
+    <meta property="og:url" content="https://yurukusa.github.io/hook-reliability-checker/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="yurukusa">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@yurukusa_dev">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Claude Code Hook Reliability Checker",
+      "description": "Paste your Claude Code settings.json hooks configuration. Get a static analysis report against 14 documented silent-failure modes from the May 2026 anthropics/claude-code issue tracker survey.",
+      "url": "https://yurukusa.github.io/hook-reliability-checker/",
+      "applicationCategory": "DeveloperTools",
+      "operatingSystem": "Any",
+      "browserRequirements": "Requires JavaScript",
+      "isAccessibleForFree": true,
+      "inLanguage": "en",
+      "author": {
+        "@type": "Person",
+        "name": "yurukusa"
+      }
+    }
+    </script>
+
+    <style>
+        :root {
+            --bg: #0f1115;
+            --panel: #181b22;
+            --border: #2a2f3a;
+            --fg: #e8eaed;
+            --muted: #9aa0a6;
+            --accent: #4ecdc4;
+            --danger: #ff6b6b;
+            --warn: #ffd166;
+            --ok: #51cf66;
+            --link: #74c0fc;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            line-height: 1.55;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 32px 24px 80px;
+        }
+        h1 {
+            font-size: 1.85em;
+            margin: 0 0 8px;
+            color: var(--accent);
+        }
+        h2 {
+            font-size: 1.25em;
+            margin: 28px 0 12px;
+        }
+        .lede {
+            color: var(--muted);
+            font-size: 0.95em;
+            margin: 0 0 24px;
+        }
+        .panel {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        textarea {
+            width: 100%;
+            min-height: 280px;
+            background: #0a0c11;
+            color: var(--fg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 14px;
+            font-family: "SF Mono", Menlo, Consolas, monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            resize: vertical;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        button {
+            background: var(--accent);
+            color: #0a0c11;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-right: 8px;
+            margin-top: 12px;
+        }
+        button:hover { opacity: 0.9; }
+        button.secondary {
+            background: transparent;
+            color: var(--fg);
+            border: 1px solid var(--border);
+        }
+        .examples {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 12px 0;
+        }
+        .example-btn {
+            background: transparent;
+            color: var(--link);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 6px 12px;
+            font-size: 13px;
+            cursor: pointer;
+            margin: 0;
+        }
+        .example-btn:hover {
+            background: var(--border);
+        }
+        .result {
+            margin-top: 16px;
+        }
+        .finding {
+            border-left: 3px solid var(--border);
+            padding: 10px 14px;
+            margin-bottom: 10px;
+            background: #0a0c11;
+            border-radius: 0 4px 4px 0;
+        }
+        .finding.high { border-left-color: var(--danger); }
+        .finding.medium { border-left-color: var(--warn); }
+        .finding.low { border-left-color: var(--link); }
+        .finding.info { border-left-color: var(--ok); }
+        .finding-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .severity {
+            display: inline-block;
+            font-size: 0.75em;
+            padding: 2px 8px;
+            border-radius: 3px;
+            margin-right: 8px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .severity.high { background: var(--danger); color: white; }
+        .severity.medium { background: var(--warn); color: #0a0c11; }
+        .severity.low { background: var(--link); color: #0a0c11; }
+        .severity.info { background: var(--ok); color: #0a0c11; }
+        .finding-detail {
+            font-size: 0.9em;
+            color: var(--muted);
+            margin-top: 6px;
+        }
+        .finding-fix {
+            font-size: 0.9em;
+            margin-top: 6px;
+            padding-top: 6px;
+            border-top: 1px solid var(--border);
+        }
+        .finding-ref {
+            font-size: 0.8em;
+            color: var(--muted);
+            margin-top: 6px;
+        }
+        .finding-ref a {
+            color: var(--link);
+            text-decoration: none;
+        }
+        .finding-ref a:hover {
+            text-decoration: underline;
+        }
+        code {
+            background: #0a0c11;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: "SF Mono", Menlo, Consolas, monospace;
+            font-size: 0.9em;
+        }
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .summary-cell {
+            background: #0a0c11;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 12px;
+            text-align: center;
+        }
+        .summary-cell .count {
+            font-size: 1.6em;
+            font-weight: 700;
+        }
+        .summary-cell.high .count { color: var(--danger); }
+        .summary-cell.medium .count { color: var(--warn); }
+        .summary-cell.low .count { color: var(--link); }
+        .summary-cell.info .count { color: var(--ok); }
+        .summary-cell .label {
+            font-size: 0.8em;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .footer {
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 0.9em;
+        }
+        .footer a { color: var(--link); }
+        .privacy-note {
+            margin-top: 12px;
+            color: var(--muted);
+            font-size: 0.85em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Claude Code Hook Reliability Checker</h1>
+        <p class="lede">
+            Paste your <code>settings.json</code> hooks configuration below. The checker runs 14 static checks
+            against documented silent-failure modes from the May 2026 <code>anthropics/claude-code</code>
+            issue-tracker survey and tells you which failure modes your hook setup is exposed to —
+            before the hook silently fails to fire and the operator never notices.
+        </p>
+
+        <p class="privacy-note">
+            All analysis runs in your browser. Nothing is sent over the network. The textarea below
+            never leaves this page.
+        </p>
+
+        <div class="panel">
+            <h2 style="margin-top:0">Examples</h2>
+            <p style="margin:0 0 8px; color: var(--muted); font-size: 0.9em;">
+                Try one of these to see the checker in action, then paste your own config.
+            </p>
+            <div class="examples">
+                <button class="example-btn" onclick="loadExample('relative_path')">Relative hook path (#59513 shape)</button>
+                <button class="example-btn" onclick="loadExample('bad_matcher')">Invalid regex matcher</button>
+                <button class="example-btn" onclick="loadExample('session_start_complex')">Complex SessionStart hook (#59619)</button>
+                <button class="example-btn" onclick="loadExample('healthy')">Healthy config</button>
+            </div>
+        </div>
+
+        <div class="panel">
+            <h2 style="margin-top:0">Your <code>settings.json</code></h2>
+            <textarea id="input" placeholder='{&#10;  "hooks": {&#10;    "PreToolUse": [&#10;      {&#10;        "matcher": "Bash",&#10;        "hooks": [{ "type": "command", "command": "~/.claude/hooks/my-hook.sh" }]&#10;      }&#10;    ]&#10;  }&#10;}'></textarea>
+            <button onclick="runCheck()">Check Hook Reliability</button>
+            <button class="secondary" onclick="document.getElementById('input').value = ''; document.getElementById('result').innerHTML = '';">Clear</button>
+        </div>
+
+        <div id="result" class="result"></div>
+
+        <div class="footer">
+            <p>
+                The 14 checks are derived from the May 2026 <code>anthropics/claude-code</code> issue-tracker survey
+                (111 cases of claim-vs-reality divergence documented in the
+                <a href="https://gist.github.com/yurukusa/6dd608049064ed66c54f1a545a7b47a8" target="_blank" rel="noopener">Claim-Verify Handbook preview</a>;
+                full handbook ships 2026-05-22 at USD 19 on
+                <a href="https://yurukusa.gumroad.com/l/claim-verify-handbook" target="_blank" rel="noopener">Gumroad</a>).
+                The cc-safe-setup hook library at
+                <a href="https://github.com/yurukusa/cc-safe-setup" target="_blank" rel="noopener">github.com/yurukusa/cc-safe-setup</a>
+                has 743+ working hooks under the MIT license — use it as a corpus of working examples.
+            </p>
+            <p>
+                Pure client-side, no analytics, no transmission. Tool by
+                <a href="https://yurukusa.github.io/" target="_blank" rel="noopener">yurukusa</a>.
+            </p>
+        </div>
+    </div>
+
+    <script>
+const EXAMPLES = {
+    relative_path: {
+        hooks: {
+            PreToolUse: [
+                {
+                    matcher: "Bash",
+                    hooks: [{ type: "command", command: "./my-hook.sh" }]
+                }
+            ]
+        }
+    },
+    bad_matcher: {
+        hooks: {
+            PreToolUse: [
+                {
+                    matcher: "Edit|Write[",
+                    hooks: [{ type: "command", command: "~/.claude/hooks/my-hook.sh" }]
+                }
+            ]
+        }
+    },
+    session_start_complex: {
+        hooks: {
+            SessionStart: [
+                {
+                    hooks: [{ type: "command", command: "bash -c 'cd $HOME && source .bashrc && ./complex-setup.sh && tput sgr0 && echo ready'" }]
+                }
+            ]
+        }
+    },
+    healthy: {
+        hooks: {
+            PreToolUse: [
+                {
+                    matcher: "Edit|Write|NotebookEdit",
+                    hooks: [{ type: "command", command: "/home/me/.claude/hooks/path-traversal-guard.sh" }]
+                },
+                {
+                    matcher: "Bash",
+                    hooks: [{ type: "command", command: "/home/me/.claude/hooks/bash-allowlist.sh" }]
+                }
+            ],
+            PostToolUse: [
+                {
+                    matcher: "Edit|Write",
+                    hooks: [{ type: "command", command: "/home/me/.claude/hooks/audit-log.sh" }]
+                }
+            ]
+        }
+    }
+};
+
+function loadExample(name) {
+    document.getElementById('input').value = JSON.stringify(EXAMPLES[name], null, 2);
+    runCheck();
+}
+
+const CHECKS = [
+    // High severity: configuration that will produce silent failures
+    {
+        id: 'invalid_json',
+        check: (raw) => {
+            try { JSON.parse(raw); return null; } catch (e) {
+                return {
+                    severity: 'high',
+                    title: 'settings.json fails to parse as JSON',
+                    detail: 'Claude Code silently ignores malformed settings.json. The hooks block will not be loaded at all. Error: ' + e.message,
+                    fix: 'Validate with `jq . settings.json` or paste into jsonlint.com. Common causes: trailing commas, unescaped backslashes, comments (JSON does not allow comments).',
+                    ref: { text: 'Issue #57491 (settings.json validity)', url: 'https://github.com/anthropics/claude-code/issues/57491' }
+                };
+            }
+        },
+        rawOnly: true
+    },
+    {
+        id: 'no_hooks_block',
+        check: (config) => {
+            if (!config.hooks || (typeof config.hooks === 'object' && Object.keys(config.hooks).length === 0)) {
+                return {
+                    severity: 'info',
+                    title: 'No hooks configured',
+                    detail: 'The settings.json does not define any hooks. This may be intentional — but you lose the operator-side defenses against the 111 documented claim-vs-reality cases.',
+                    fix: 'See cc-safe-setup (743+ hooks under MIT) for working examples: github.com/yurukusa/cc-safe-setup',
+                    ref: null
+                };
+            }
+            return null;
+        }
+    },
+    {
+        id: 'relative_path',
+        check: (config) => {
+            const findings = [];
+            walkHooks(config, (event, matcher, hook) => {
+                if (hook.command && hook.command.match(/^\.{1,2}\//)) {
+                    findings.push({
+                        event, matcher, command: hook.command
+                    });
+                }
+            });
+            if (findings.length === 0) return null;
+            return {
+                severity: 'high',
+                title: `Relative path in ${findings.length} hook command${findings.length > 1 ? 's' : ''}`,
+                detail: 'Claude Code resolves hook commands against the current working directory at the time the hook fires, not against the settings.json location. When the working directory differs from your project root (worktrees, subdirectories, plugin contexts), relative paths silently fail to resolve. The hook does not fire, and there is no error.',
+                fix: 'Use absolute paths: `/home/USER/.claude/hooks/X.sh` or `$HOME/.claude/hooks/X.sh`. Avoid `./`, `../`, or bare command names. The cc-safe-setup README documents this convention.',
+                ref: { text: 'Pattern documented in cc-safe-setup README + issue tracker', url: 'https://github.com/yurukusa/cc-safe-setup#installing-hooks' },
+                examples: findings.slice(0, 3).map(f => `${f.event}/${f.matcher || '(no matcher)'}: ${f.command}`)
+            };
+        }
+    },
+    {
+        id: 'tilde_expansion',
+        check: (config) => {
+            const findings = [];
+            walkHooks(config, (event, matcher, hook) => {
+                if (hook.command && hook.command.startsWith('~/')) {
+                    findings.push({ event, matcher, command: hook.command });
+                }
+            });
+            if (findings.length === 0) return null;
+            return {
+                severity: 'medium',
+                title: `Tilde (~) in ${findings.length} hook command${findings.length > 1 ? 's' : ''}`,
+                detail: 'Tilde expansion depends on how the shell invokes the hook command. When Claude Code runs the command directly via execve (not through a shell), `~` is treated as a literal character. The hook fails with "no such file" silently.',
+                fix: 'Replace `~` with `$HOME` or the explicit absolute path. `$HOME/.claude/hooks/X.sh` is portable. If the command must use a shell, prefix with `bash -c`.',
+                ref: { text: 'Issue #57946 (Windows path resolution gap, analogous shape)', url: 'https://github.com/anthropics/claude-code/issues/57946' },
+                examples: findings.slice(0, 3).map(f => `${f.event}/${f.matcher || '(no matcher)'}: ${f.command}`)
+            };
+        }
+    },
+    {
+        id: 'invalid_matcher',
+        check: (config) => {
+            const findings = [];
+            walkHooks(config, (event, matcher, hook) => {
+                if (!matcher) return;
+                try { new RegExp(matcher); } catch (e) {
+                    findings.push({ event, matcher, error: e.message });
+                }
+            });
+            if (findings.length === 0) return null;
+            return {
+                severity: 'high',
+                title: `Invalid regex in ${findings.length} matcher${findings.length > 1 ? 's' : ''}`,
+                detail: 'Claude Code uses the matcher value as a regex against tool_name. When the regex is malformed (unclosed brackets, broken alternation), the hook silently never matches. No error, no warning.',
+                fix: 'Test your matcher in a regex playground. Common gotcha: literal `|` should be escaped only when alternation is not intended. Brackets and parens must be balanced.',
+                ref: { text: 'Documented in Claude Code hooks reference', url: 'https://docs.claude.com/en/docs/claude-code/hooks' },
+                examples: findings.slice(0, 3).map(f => `${f.event}/${f.matcher}: ${f.error}`)
+            };
+        }
+    },
+    {
+        id: 'session_start_complex',
+        check: (config) => {
+            const findings = [];
+            walkHooks(config, (event, matcher, hook) => {
+                if (event !== 'SessionStart') return;
+                if (!hook.command) return;
+                // Complex command heuristic: multiple shell metacharacters
+                const metas = (hook.command.match(/&&|\|\||\$\(|\;|\|/g) || []).length;
+                if (metas >= 2) {
+                    findings.push({ command: hook.command, metas });
+                }
+            });
+            if (findings.length === 0) return null;
+            return {
+                severity: 'medium',
+                title: 'SessionStart hook with complex shell command',
+                detail: 'Issue #59619 documented that complex shell pipelines in SessionStart hooks trigger Node.js DEP0190 deprecation warnings on every startup, polluting stderr and potentially being misread by downstream wrappers.',
+                fix: 'Move complex logic into a dedicated script file with a shebang, and have the hook invoke just the script path. Example: change `bash -c "cd X && Y && Z"` to `/home/USER/.claude/hooks/session-init.sh`.',
+                ref: { text: 'Issue #59619', url: 'https://github.com/anthropics/claude-code/issues/59619' },
+                examples: findings.slice(0, 2).map(f => f.command.slice(0, 80) + (f.command.length > 80 ? '...' : ''))
+            };
+        }
+    },
+    {
+        id: 'no_type_command',
+        check: (config) => {
+            const findings = [];
+            walkHooks(config, (event, matcher, hook) => {
+                if (!hook.type) {
+                    findings.push({ event, matcher, hook });
+                } else if (hook.type !== 'command') {
+                    findings.push({ event, matcher, type: hook.type });
+                }
+            });
+            if (findings.length === 0) return null;
+            return {
+                severity: 'medium',
+                title: `${findings.length} hook${findings.length > 1 ? 's' : ''} missing or non-"command" type`,
+                detail: 'Hooks require `"type": "command"` to be invoked as a shell command. Without an explicit type, Claude Code may silently skip the hook depending on version.',
+                fix: 'Add `"type": "command"` to each hook entry. The full shape is `{ "type": "command", "command": "/path/to/hook.sh" }`.',
+                ref: { text: 'Claude Code hooks reference', url: 'https://docs.claude.com/en/docs/claude-code/hooks' }
+            };
+        }
+    },
+    {
+        id: 'overlapping_matchers',
+        check: (config) => {
+            const eventToMatchers = {};
+            walkHooks(config, (event, matcher, hook) => {
+                if (!matcher) return;
+                eventToMatchers[event] = eventToMatchers[event] || [];
+                eventToMatchers[event].push(matcher);
+            });
+            const findings = [];
+            for (const event in eventToMatchers) {
+                const matchers = eventToMatchers[event];
+                for (let i = 0; i < matchers.length; i++) {
+                    for (let j = i + 1; j < matchers.length; j++) {
+                        if (matchersOverlap(matchers[i], matchers[j])) {
+                            findings.push({ event, a: matchers[i], b: matchers[j] });
+                        }
+                    }
+                }
+            }
+            if (findings.length === 0) return null;
+            return {
+                severity: 'low',
+                title: `${findings.length} overlapping matcher pair${findings.length > 1 ? 's' : ''}`,
+                detail: 'Multiple matchers in the same event fire when the tool name matches all of them. Order is not documented as guaranteed. If two hooks have conflicting effects (one blocks, one allows), the order matters and is implementation-defined.',
+                fix: 'Make matchers mutually exclusive, or consolidate logic into a single hook that handles the overlap explicitly.',
+                ref: null,
+                examples: findings.slice(0, 3).map(f => `${f.event}: "${f.a}" overlaps "${f.b}"`)
+            };
+        }
+    },
+    {
+        id: 'all_tools_matcher',
+        check: (config) => {
+            const findings = [];
+            walkHooks(config, (event, matcher, hook) => {
+                if (matcher === '*' || matcher === '.*' || matcher === '') {
+                    findings.push({ event, matcher: matcher || '(empty)' });
+                }
+            });
+            if (findings.length === 0) return null;
+            return {
+                severity: 'low',
+                title: `${findings.length} catch-all matcher${findings.length > 1 ? 's' : ''}`,
+                detail: 'A matcher of `*`, `.*`, or empty fires on every tool call. This is sometimes intentional (audit log, telemetry) but is a common source of slow startup, excessive noise, and accidental blocks. The hook fires far more often than the operator expects.',
+                fix: 'Be explicit about which tools the hook targets: `Edit|Write|NotebookEdit` for file modifications, `Bash` for shell. Use the catch-all only for genuinely tool-agnostic concerns (logging, etc.).',
+                ref: null,
+                examples: findings.map(f => `${f.event}: ${f.matcher}`)
+            };
+        }
+    },
+    {
+        id: 'pre_post_swap',
+        check: (config) => {
+            // Heuristic: a hook script with "audit" or "log" in PreToolUse, or "guard" or "block" in PostToolUse
+            const findings = [];
+            walkHooks(config, (event, matcher, hook) => {
+                if (!hook.command) return;
+                const cmd = hook.command.toLowerCase();
+                if (event === 'PreToolUse' && /audit|log|record/.test(cmd) && !/guard|block|enforce/.test(cmd)) {
+                    findings.push({ event, matcher, command: hook.command, hint: 'audit/log hook in PreToolUse fires before the action — postcondition not captured' });
+                }
+                if (event === 'PostToolUse' && /guard|block|deny|enforce/.test(cmd)) {
+                    findings.push({ event, matcher, command: hook.command, hint: 'guard/block hook in PostToolUse fires after the action — cannot prevent the action' });
+                }
+            });
+            if (findings.length === 0) return null;
+            return {
+                severity: 'medium',
+                title: `${findings.length} possible PreToolUse/PostToolUse swap`,
+                detail: 'Hook names containing "audit/log" in PreToolUse capture the intent but not the outcome. Hook names containing "guard/block" in PostToolUse cannot prevent the action — by the time PostToolUse fires, the action has already happened.',
+                fix: 'PreToolUse = block or modify; PostToolUse = audit, log, or react. Verify the hook name matches the lifecycle.',
+                ref: { text: 'Hook event reference', url: 'https://docs.claude.com/en/docs/claude-code/hooks' },
+                examples: findings.slice(0, 3).map(f => `${f.event}: ${f.hint}`)
+            };
+        }
+    },
+    {
+        id: 'windows_path_separator',
+        check: (config) => {
+            const findings = [];
+            walkHooks(config, (event, matcher, hook) => {
+                if (hook.command && hook.command.includes('\\') && !hook.command.startsWith('\\\\')) {
+                    findings.push({ event, matcher, command: hook.command });
+                }
+            });
+            if (findings.length === 0) return null;
+            return {
+                severity: 'medium',
+                title: `${findings.length} command${findings.length > 1 ? 's use' : ' uses'} backslash path separator`,
+                detail: 'Backslash path separators in hook commands are interpreted by JSON as escape characters. `C:\\path\\to\\hook.sh` will be parsed as `C:pathtohook.sh`. On Windows, use forward slashes or properly escape: `C:/path/to/hook.sh` or `C:\\\\path\\\\to\\\\hook.sh`.',
+                fix: 'Use forward slashes even on Windows (Git Bash, WSL, MSYS handle them correctly). Or double-escape backslashes in JSON.',
+                ref: { text: 'Issue #59622 (Windows hook path resolution)', url: 'https://github.com/anthropics/claude-code/issues/59622' },
+                examples: findings.slice(0, 3).map(f => `${f.event}/${f.matcher || '(none)'}: ${f.command}`)
+            };
+        }
+    },
+    {
+        id: 'env_var_in_command',
+        check: (config) => {
+            const findings = [];
+            walkHooks(config, (event, matcher, hook) => {
+                if (!hook.command) return;
+                // $VAR or ${VAR} but NOT $HOME (which is universally expanded)
+                const matches = hook.command.match(/\$\{?[A-Z_][A-Z_0-9]*\}?/g) || [];
+                const nonStandard = matches.filter(m => !/^\$\{?HOME\}?$/.test(m) && !/^\$\{?USER\}?$/.test(m));
+                if (nonStandard.length > 0) {
+                    findings.push({ event, matcher, vars: nonStandard });
+                }
+            });
+            if (findings.length === 0) return null;
+            return {
+                severity: 'low',
+                title: `${findings.length} hook${findings.length > 1 ? 's use' : ' uses'} environment variables beyond HOME/USER`,
+                detail: 'Hook commands are run by Claude Code\'s spawning of the shell. Custom environment variables defined in your shell rc files (`.bashrc`, `.zshrc`) may not be in scope when the hook fires. The hook silently uses an empty string or the variable name literal.',
+                fix: 'Export critical variables in the system environment (`/etc/environment` or systemd user env) or hardcode the value in the hook itself.',
+                ref: null,
+                examples: findings.slice(0, 3).map(f => `${f.event}/${f.matcher || '(none)'}: uses ${f.vars.join(', ')}`)
+            };
+        }
+    },
+    {
+        id: 'multiple_hooks_same_command',
+        check: (config) => {
+            const seen = {};
+            walkHooks(config, (event, matcher, hook) => {
+                if (!hook.command) return;
+                const key = hook.command;
+                seen[key] = (seen[key] || []);
+                seen[key].push(`${event}/${matcher || '(none)'}`);
+            });
+            const dupes = Object.entries(seen).filter(([, locs]) => locs.length > 1);
+            if (dupes.length === 0) return null;
+            return {
+                severity: 'low',
+                title: `${dupes.length} command${dupes.length > 1 ? 's appear' : ' appears'} in multiple matchers`,
+                detail: 'The same hook script registered against multiple event/matcher pairs will fire multiple times per matching tool call. This is sometimes intentional (audit) but is often a copy-paste artifact.',
+                fix: 'If unintentional, consolidate to a single registration with a broader matcher. If intentional, verify the script handles re-entrancy.',
+                ref: null,
+                examples: dupes.slice(0, 3).map(([cmd, locs]) => `${cmd.slice(0, 50)}: ${locs.join(', ')}`)
+            };
+        }
+    },
+    {
+        id: 'no_user_prompt_submit',
+        check: (config) => {
+            if (!config.hooks || !config.hooks.UserPromptSubmit) {
+                return {
+                    severity: 'info',
+                    title: 'No UserPromptSubmit hook configured',
+                    detail: 'UserPromptSubmit hooks fire when the user submits a prompt — they are the only opportunity to validate or modify the prompt before the model sees it. Without one, you cannot, for example, redact secrets in the prompt or enforce per-prompt context policy.',
+                    fix: 'Consider adding a UserPromptSubmit hook for prompt-level policy: secret scanning, focus enforcement, context injection. See cc-safe-setup\'s `userpromptsubmit-*` examples.',
+                    ref: { text: 'cc-safe-setup UserPromptSubmit examples', url: 'https://github.com/yurukusa/cc-safe-setup/tree/main/examples' }
+                };
+            }
+            return null;
+        }
+    }
+];
+
+function walkHooks(config, visitor) {
+    if (!config.hooks || typeof config.hooks !== 'object') return;
+    for (const event in config.hooks) {
+        const entries = config.hooks[event];
+        if (!Array.isArray(entries)) continue;
+        for (const entry of entries) {
+            if (!entry) continue;
+            const matcher = entry.matcher;
+            const hooks = entry.hooks;
+            if (!Array.isArray(hooks)) continue;
+            for (const hook of hooks) {
+                if (!hook || typeof hook !== 'object') continue;
+                visitor(event, matcher, hook);
+            }
+        }
+    }
+}
+
+function matchersOverlap(a, b) {
+    // Simple overlap detection: pipe-separated literal lists
+    const partsA = a.split('|').map(s => s.trim()).filter(Boolean);
+    const partsB = b.split('|').map(s => s.trim()).filter(Boolean);
+    if (partsA.some(p => /[\\^$.*+?()[\]{}]/.test(p))) return false;
+    if (partsB.some(p => /[\\^$.*+?()[\]{}]/.test(p))) return false;
+    return partsA.some(p => partsB.includes(p));
+}
+
+function runCheck() {
+    const raw = document.getElementById('input').value.trim();
+    const out = document.getElementById('result');
+    if (!raw) {
+        out.innerHTML = '<div class="panel"><p style="color:var(--muted)">Paste a settings.json above and click Check.</p></div>';
+        return;
+    }
+
+    const findings = [];
+
+    // Raw-first checks (e.g., JSON parsability)
+    let config = null;
+    for (const check of CHECKS.filter(c => c.rawOnly)) {
+        const f = check.check(raw);
+        if (f) findings.push(f);
+    }
+    try { config = JSON.parse(raw); } catch (e) {
+        renderResults(findings);
+        return;
+    }
+
+    for (const check of CHECKS.filter(c => !c.rawOnly)) {
+        try {
+            const f = check.check(config);
+            if (f) findings.push(f);
+        } catch (e) {
+            console.error('Check failed:', check.id, e);
+        }
+    }
+
+    renderResults(findings);
+}
+
+function renderResults(findings) {
+    const out = document.getElementById('result');
+    if (findings.length === 0) {
+        out.innerHTML = `
+            <div class="panel">
+                <h2 style="margin-top:0; color: var(--ok)">No issues found</h2>
+                <p style="margin:0; color: var(--muted)">
+                    The hook configuration passed all 14 static checks. This does not guarantee runtime behavior — the
+                    hook commands themselves still need to be tested end-to-end. But the common silent-failure shapes are not present.
+                </p>
+            </div>`;
+        return;
+    }
+
+    const counts = { high: 0, medium: 0, low: 0, info: 0 };
+    findings.forEach(f => counts[f.severity]++);
+
+    let html = `
+        <div class="panel">
+            <h2 style="margin-top:0">Results</h2>
+            <div class="summary">
+                <div class="summary-cell high"><div class="count">${counts.high}</div><div class="label">High</div></div>
+                <div class="summary-cell medium"><div class="count">${counts.medium}</div><div class="label">Medium</div></div>
+                <div class="summary-cell low"><div class="count">${counts.low}</div><div class="label">Low</div></div>
+                <div class="summary-cell info"><div class="count">${counts.info}</div><div class="label">Info</div></div>
+            </div>`;
+
+    const ordered = [...findings].sort((a, b) => {
+        const order = { high: 0, medium: 1, low: 2, info: 3 };
+        return order[a.severity] - order[b.severity];
+    });
+
+    for (const f of ordered) {
+        html += `
+            <div class="finding ${f.severity}">
+                <div class="finding-title">
+                    <span class="severity ${f.severity}">${f.severity}</span>
+                    ${escapeHtml(f.title)}
+                </div>
+                <div class="finding-detail">${escapeHtml(f.detail)}</div>
+                ${f.examples ? '<div class="finding-detail" style="margin-top:6px"><strong>Examples:</strong><br>' + f.examples.map(e => '<code>' + escapeHtml(e) + '</code>').join('<br>') + '</div>' : ''}
+                <div class="finding-fix"><strong>Fix:</strong> ${escapeHtml(f.fix)}</div>
+                ${f.ref ? `<div class="finding-ref">Reference: <a href="${escapeHtml(f.ref.url)}" target="_blank" rel="noopener">${escapeHtml(f.ref.text)}</a></div>` : ''}
+            </div>`;
+    }
+
+    html += '</div>';
+    out.innerHTML = html;
+}
+
+function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[c]));
+}
+    </script>
+</body>
+</html>
