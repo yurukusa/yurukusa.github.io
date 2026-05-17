@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claim-Verify Audit · Free 11-check diagnostic for Claude Code | yurukusa</title>
+    <meta name="description" content="Free MIT-licensed bash script. Read-only scan of your Claude Code configuration for 11 known May 2026 failure-mode patterns. Each finding cites the GitHub issue and the book chapter where the structural prevention is documented.">
+    <link rel="canonical" href="https://yurukusa.github.io/claim-verify-audit/">
+
+    <meta property="og:title" content="Claim-Verify Audit · Free 11-check diagnostic for Claude Code">
+    <meta property="og:description" content="Free MIT-licensed bash script. Scan your Claude Code setup for 11 known May 2026 failure patterns in under a second.">
+    <meta property="og:image" content="https://yurukusa.github.io/images/ogp.png">
+    <meta property="og:url" content="https://yurukusa.github.io/claim-verify-audit/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="yurukusa">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@yurukusa_dev">
+    <meta name="twitter:title" content="Claim-Verify Audit · Free 11-check diagnostic for Claude Code">
+    <meta name="twitter:description" content="Read-only. MIT. Runs in under a second.">
+    <meta name="twitter:image" content="https://yurukusa.github.io/images/ogp.png">
+
+    <style>
+        :root {
+            --fg: #1a1a1a;
+            --muted: #555;
+            --bg: #fafafa;
+            --card: #fff;
+            --border: #e0e0e0;
+            --accent: #c97b3c;
+            --code-bg: #f4f1ec;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Hiragino Sans", sans-serif;
+            line-height: 1.7;
+            color: var(--fg);
+            background: var(--bg);
+            margin: 0;
+            padding: 0;
+        }
+        .container { max-width: 760px; margin: 0 auto; padding: 2rem 1.25rem; }
+        header { border-bottom: 2px solid var(--border); padding-bottom: 1.5rem; margin-bottom: 2rem; }
+        h1 { font-size: 1.75rem; margin: 0 0 0.5rem 0; line-height: 1.3; }
+        .subtitle { color: var(--muted); font-size: 1rem; margin: 0; }
+        .tagline { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; margin: 1.5rem 0; }
+        .tagline strong { color: var(--accent); }
+        h2 { font-size: 1.25rem; margin: 2rem 0 0.75rem 0; }
+        h3 { font-size: 1.05rem; margin: 1.25rem 0 0.5rem 0; color: var(--muted); }
+        pre, code { font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, monospace; }
+        code { background: var(--code-bg); padding: 0.1rem 0.35rem; border-radius: 3px; font-size: 0.9em; }
+        pre { background: var(--code-bg); padding: 1rem; border-radius: 6px; overflow-x: auto; font-size: 0.85em; line-height: 1.5; }
+        pre code { background: transparent; padding: 0; }
+        .checks { list-style: none; padding-left: 0; }
+        .checks li { padding: 0.5rem 0; border-bottom: 1px solid var(--border); }
+        .checks li:last-child { border-bottom: none; }
+        .check-id { font-weight: 600; color: var(--accent); margin-right: 0.5rem; }
+        .check-ref { color: var(--muted); font-size: 0.85em; }
+        .cta { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 1.25rem; margin: 1.5rem 0; }
+        .cta-title { font-weight: 600; margin: 0 0 0.5rem 0; }
+        .cta a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent); }
+        .cta a:hover { border-bottom-width: 2px; }
+        .meta { color: var(--muted); font-size: 0.85em; margin-top: 0.5rem; }
+        footer { border-top: 1px solid var(--border); margin-top: 3rem; padding-top: 1.5rem; color: var(--muted); font-size: 0.85em; }
+        a { color: var(--accent); }
+        .lang-switch { float: right; font-size: 0.85em; }
+        @media (max-width: 600px) {
+            .container { padding: 1rem; }
+            h1 { font-size: 1.45rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>Claim-Verify Audit</h1>
+        <p class="subtitle">A free, read-only, 11-check diagnostic for Claude Code. MIT licensed. Runs in under a second.</p>
+    </header>
+
+    <div class="tagline">
+        <strong>What it does:</strong> scans your local Claude Code configuration for 11 known May 2026 failure-mode patterns where tools or agents claim success while the system state diverges. Each finding cites the source GitHub issue and the book chapter where the structural prevention is documented.
+    </div>
+
+    <h2>One-liner</h2>
+    <pre><code>curl -fsSL https://gist.githubusercontent.com/yurukusa/e2fb2b2dadab456c5396704a485b789c/raw | bash</code></pre>
+
+    <p>Read the script first if you prefer (recommended). The full source is at <a href="https://gist.github.com/yurukusa/e2fb2b2dadab456c5396704a485b789c" target="_blank" rel="noopener">the Gist</a>. The script never writes, never sends network requests, never reads outside <code>~/.claude/</code>, <code>~/.cache/claude-cli-nodejs/</code>, the platform-specific Windows config dirs, and the directory you run it from.</p>
+
+    <h2>What it checks (May 17, 2026)</h2>
+    <ul class="checks">
+        <li><span class="check-id">Check 1.</span> Settings file presence and JSON validity <span class="check-ref">(issue #57491 family)</span></li>
+        <li><span class="check-id">Check 2.</span> Windows 8.3 short-name allow-rule bypass <span class="check-ref">(issue #58614)</span></li>
+        <li><span class="check-id">Check 3.</span> Skill bloat — per-session token tax <span class="check-ref">(Reddit 1tbbove)</span></li>
+        <li><span class="check-id">Check 4.</span> Session backup state <span class="check-ref">(issue #58608)</span></li>
+        <li><span class="check-id">Check 5.</span> Sub-agent <code>.env</code> inheritance <span class="check-ref">(issue #57068)</span></li>
+        <li><span class="check-id">Check 6.</span> Auto-compact configuration drift <span class="check-ref">(issues #57490, #58373)</span></li>
+        <li><span class="check-id">Check 7.</span> <code>bypassPermissions</code> remote override <span class="check-ref">(issue #57810)</span></li>
+        <li><span class="check-id">Check 8.</span> Cache references to deleted session storage <span class="check-ref">(issue #58608 forensic trail)</span></li>
+        <li><span class="check-id">Check 9.</span> <code>voice:pushToTalk</code> multi-key silent collapse <span class="check-ref">(issue #59896, v2.1.141 boundary)</span></li>
+        <li><span class="check-id">Check 10.</span> Stale TaskCreate accumulation across sessions <span class="check-ref">(issue #59900)</span></li>
+        <li><span class="check-id">Check 11.</span> Custom <code>.claude/agents/</code> files unresolvable as subagents <span class="check-ref">(issue #59881)</span></li>
+    </ul>
+
+    <p class="meta">Checks 9, 10, 11 were added 2026-05-17 to cover the v2.1.141–143 release wave. The script is versioned by gist commit hash; pin a specific version if you want a reproducible audit run.</p>
+
+    <h2>Output</h2>
+    <p>The script writes a colored text report to stdout. Each finding has a severity (HIGH / MEDIUM / LOW / INFO), a one-line title, a detail paragraph (the source issue and what's structurally going on), and a fix paragraph (what to do now plus the book chapter for structural prevention).</p>
+
+    <pre><code>=== Check 10: stale task accumulation ===
+
+[MEDIUM]  10 task files >30 days old still flagged 'in_progress'
+          Issue #59900: the task primitive has no aging, no session scoping...
+          Fix: Bulk-update old in_progress tasks to 'completed' or 'deleted'...</code></pre>
+
+    <p>For CI integration, pass <code>--json</code>:</p>
+
+    <pre><code>bash claim-verify-audit.sh --json</code></pre>
+
+    <p>Exit code 1 if any HIGH-severity finding, 0 otherwise.</p>
+
+    <h2>What it does NOT do</h2>
+    <p>The script does not modify any file, run any Claude Code tool call, send any network request, or read any file outside the directories listed at the top. All checks are local and read-only. Bash strict mode. No eval of config content. All reads use grep and jq.</p>
+
+    <h2>Why the checks are what they are</h2>
+    <p>Each check targets a structural failure pattern that has been observed in public GitHub issues against <code>anthropics/claude-code</code>. The pattern is the unit of analysis, not the specific bug: even after Anthropic fixes a specific issue, the underlying structural pattern (silent regression, trust-boundary collapse, docs-vs-implementation mismatch) tends to recur in adjacent subsystems on the next release wave.</p>
+
+    <p>The script's coverage corresponds to the seven failure-mode layers documented in the Claim-Verify Handbook (May 22, 2026). It does not claim to detect every possible bug; it claims to detect specific configurations and state patterns that map to documented failure-mode layers.</p>
+
+    <div class="cta">
+        <p class="cta-title">Structural prevention reference</p>
+        <p>The audit script catches specific patterns. For the structural framework — why these patterns recur, how to design defenses that survive release waves, and the 14 prevention defenses mapped per case — see the <a href="https://yurukusa.gumroad.com/l/claim-verify-handbook?utm_source=audit-tool-page" target="_blank" rel="noopener">Claim-Verify Handbook</a> (ships May 22, 2026, USD 19, 125+ cases across 81 pages).</p>
+        <p>Free preview Gists (no signup): <a href="https://gist.github.com/yurukusa/6dd608049064ed66c54f1a545a7b47a8" target="_blank" rel="noopener">日本語</a> · <a href="https://gist.github.com/yurukusa/5242a540c43769df76a448269e2f182b" target="_blank" rel="noopener">English</a></p>
+    </div>
+
+    <h2>Runtime prevention (hooks)</h2>
+    <p>The audit is a one-shot diagnostic. For runtime prevention of the same patterns (block destructive operations, detect silent regressions before they fire, catch hook contract violations at the moment they happen), see <a href="https://github.com/yurukusa/cc-safe-setup" target="_blank" rel="noopener">cc-safe-setup</a> — an MIT-licensed collection of 730+ PreToolUse and PostToolUse hooks.</p>
+
+    <h2>Patches and feedback</h2>
+    <p>The script is intentionally small (one bash file, no dependencies beyond <code>jq</code> and <code>grep</code>). To add a check or fix a false positive, open an issue or PR on the <a href="https://gist.github.com/yurukusa/e2fb2b2dadab456c5396704a485b789c" target="_blank" rel="noopener">Gist</a>. Each check should reference a public GitHub issue and identify the failure-mode layer it targets.</p>
+
+    <footer>
+        Last updated: 2026-05-17. License: MIT. Author: yurukusa (<a href="https://x.com/yurukusa_dev" target="_blank" rel="noopener">@yurukusa_dev</a>).
+        <br>
+        See also: <a href="https://yurukusa.github.io/operations-pain-map/">Operations Pain Map</a> · <a href="https://yurukusa.github.io/migration-decision-check/">Migration Decision Check</a> · <a href="https://yurukusa.github.io/">Home</a>
+    </footer>
+</div>
+</body>
+</html>
