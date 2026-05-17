@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claim-Verify Audit · Claude Codeの主張と実態の乖離の11件の確認の道具 (無料) | yurukusa</title>
+    <meta name="description" content="無料のMIT利用許可のbashの脚本。Claude Codeの設定を読み取り専用で走査し、2026年5月の起票の場で観察された11件の失敗の様式の検出。各検出に起票の番号と本書の章の参照を併記。約1秒で実行。">
+    <link rel="canonical" href="https://yurukusa.github.io/claim-verify-audit-ja/">
+    <link rel="alternate" hreflang="en" href="https://yurukusa.github.io/claim-verify-audit/">
+    <link rel="alternate" hreflang="ja" href="https://yurukusa.github.io/claim-verify-audit-ja/">
+
+    <meta property="og:title" content="Claim-Verify Audit · Claude Codeの主張と実態の乖離の11件の確認の道具 (無料)">
+    <meta property="og:description" content="無料のMIT利用許可。Claude Codeの設定を読み取り専用で走査し、2026年5月の起票の場で観察された11件の失敗の様式の検出。約1秒で実行。">
+    <meta property="og:image" content="https://yurukusa.github.io/images/ogp.png">
+    <meta property="og:url" content="https://yurukusa.github.io/claim-verify-audit-ja/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="yurukusa">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@yurukusa_dev">
+    <meta name="twitter:title" content="Claim-Verify Audit · Claude Codeの11件の確認の道具 (無料)">
+    <meta name="twitter:description" content="読み取り専用。MIT利用許可。約1秒で実行。">
+    <meta name="twitter:image" content="https://yurukusa.github.io/images/ogp.png">
+
+    <style>
+        :root {
+            --fg: #1a1a1a;
+            --muted: #555;
+            --bg: #fafafa;
+            --card: #fff;
+            --border: #e0e0e0;
+            --accent: #c97b3c;
+            --code-bg: #f4f1ec;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Hiragino Sans", "Yu Gothic", sans-serif;
+            line-height: 1.8;
+            color: var(--fg);
+            background: var(--bg);
+            margin: 0;
+            padding: 0;
+        }
+        .container { max-width: 760px; margin: 0 auto; padding: 2rem 1.25rem; }
+        header { border-bottom: 2px solid var(--border); padding-bottom: 1.5rem; margin-bottom: 2rem; }
+        h1 { font-size: 1.6rem; margin: 0 0 0.5rem 0; line-height: 1.4; }
+        .subtitle { color: var(--muted); font-size: 1rem; margin: 0; }
+        .tagline { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; margin: 1.5rem 0; }
+        .tagline strong { color: var(--accent); }
+        h2 { font-size: 1.2rem; margin: 2rem 0 0.75rem 0; }
+        h3 { font-size: 1.05rem; margin: 1.25rem 0 0.5rem 0; color: var(--muted); }
+        pre, code { font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, monospace; }
+        code { background: var(--code-bg); padding: 0.1rem 0.35rem; border-radius: 3px; font-size: 0.9em; }
+        pre { background: var(--code-bg); padding: 1rem; border-radius: 6px; overflow-x: auto; font-size: 0.85em; line-height: 1.5; }
+        pre code { background: transparent; padding: 0; }
+        .checks { list-style: none; padding-left: 0; }
+        .checks li { padding: 0.5rem 0; border-bottom: 1px solid var(--border); }
+        .checks li:last-child { border-bottom: none; }
+        .check-id { font-weight: 600; color: var(--accent); margin-right: 0.5rem; }
+        .check-ref { color: var(--muted); font-size: 0.85em; }
+        .cta { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 1.25rem; margin: 1.5rem 0; }
+        .cta-title { font-weight: 600; margin: 0 0 0.5rem 0; }
+        .cta a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent); }
+        .cta a:hover { border-bottom-width: 2px; }
+        .meta { color: var(--muted); font-size: 0.85em; margin-top: 0.5rem; }
+        footer { border-top: 1px solid var(--border); margin-top: 3rem; padding-top: 1.5rem; color: var(--muted); font-size: 0.85em; }
+        a { color: var(--accent); }
+        .lang-switch { float: right; font-size: 0.85em; }
+        @media (max-width: 600px) {
+            .container { padding: 1rem; }
+            h1 { font-size: 1.35rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <span class="lang-switch"><a href="https://yurukusa.github.io/claim-verify-audit/">English</a></span>
+        <h1>Claim-Verify Audit · Claude Codeの主張と実態の乖離の11件の確認の道具(無料)</h1>
+        <p class="subtitle">読み取り専用、MIT利用許可、約1秒で実行。各検出に起票の番号と本書の章の参照を併記。</p>
+    </header>
+
+    <div class="tagline">
+        <strong>道具の中身:</strong>あなたの場のClaude Codeの設定を読み取り専用で走査し、2026年5月の起票の場で観察された11件の失敗の様式の検出を実行する。各検出は出典の起票の番号と本書の章の参照を併記し、即座の修正の手順と、構造の予防の手順の参照の経路を提供する。
+    </div>
+
+    <h2>1行で実行</h2>
+    <pre><code>curl -fsSL https://gist.githubusercontent.com/yurukusa/e2fb2b2dadab456c5396704a485b789c/raw | bash</code></pre>
+
+    <p>実行の前に本文を確認したい段は、<a href="https://gist.github.com/yurukusa/e2fb2b2dadab456c5396704a485b789c" target="_blank" rel="noopener">道具の本文の頁</a>を読む。本道具は書き込みを一切行わない、外部の通信を一切送信しない、 <code>~/.claude/</code>と <code>~/.cache/claude-cli-nodejs/</code>とWindowsの設定の場とあなたが実行する場所の外のファイルを一切読まない。</p>
+
+    <h2>11件の確認の整理(2026年5月17日の段)</h2>
+    <ul class="checks">
+        <li><span class="check-id">確認1.</span>設定のファイルの存在と妥当性 <span class="check-ref">(起票#57491の系統)</span></li>
+        <li><span class="check-id">確認2.</span>Windowsの8.3の短い名前の許可の規則の素通り <span class="check-ref">(起票#58614)</span></li>
+        <li><span class="check-id">確認3.</span>技能の品ぞろえの沈黙の経費 <span class="check-ref">(Reddit 1tbboveの系統)</span></li>
+        <li><span class="check-id">確認4.</span>セッションの保存の状態 <span class="check-ref">(起票#58608)</span></li>
+        <li><span class="check-id">確認5.</span>子の作業者の<code>.env</code>の継承 <span class="check-ref">(起票#57068)</span></li>
+        <li><span class="check-id">確認6.</span>自動の文脈の圧縮の設定の乖離 <span class="check-ref">(起票#57490、#58373)</span></li>
+        <li><span class="check-id">確認7.</span><code>bypassPermissions</code>の遠隔の素通り <span class="check-ref">(起票#57810)</span></li>
+        <li><span class="check-id">確認8.</span>キャッシュの中の削除済のセッションの保管の場所の参照 <span class="check-ref">(起票#58608の証拠の経路)</span></li>
+        <li><span class="check-id">確認9.</span>声の押し戻しの鍵の複数の対応の沈黙の単一化 <span class="check-ref">(起票#59896、v2.1.141の境界)</span></li>
+        <li><span class="check-id">確認10.</span>作業の一覧の越境の蓄積 <span class="check-ref">(起票#59900)</span></li>
+        <li><span class="check-id">確認11.</span>独自の作業者の<code>.claude/agents/</code>の解決の不在 <span class="check-ref">(起票#59881)</span></li>
+    </ul>
+
+    <p class="meta">確認の9と10と11は、 2026-05-17にv2.1.141からv2.1.143の出荷の波の中の事例の追加で新規に追加された。 道具の版はGistのコミットの段で固定可能で、 再現の段の必要な場で版の固定の経路を選べる。</p>
+
+    <h2>出力の様式</h2>
+    <p>道具は文字の段の報告を標準の出力に書き込む。各検出は重要性(HIGHかMEDIUMかLOWかINFO)と、 一行の題と、 構造の説明の段(出典の起票と何が構造的に起きているか)と、 修正の段(今すぐ何をするかと本書の章の参照)の整理。</p>
+
+    <pre><code>=== Check 10: stale task accumulation ===
+
+[MEDIUM]  10 task files >30 days old still flagged 'in_progress'
+          Issue #59900: the task primitive has no aging, no session scoping...
+          Fix: Bulk-update old in_progress tasks to 'completed' or 'deleted'...</code></pre>
+
+    <p>持続の段の取り込みの段は、 <code>--json</code>の旗で機械が読める出力の段を取得可能。</p>
+
+    <pre><code>bash claim-verify-audit.sh --json</code></pre>
+
+    <p>終了の段の値は、 HIGHの段の検出が1件でも出れば1、 それ以外は0で、 持続の段の取り込みの段の判定の経路に対応。</p>
+
+    <h2>道具が行わない事の整理</h2>
+    <p>道具は一切の書き込みを実行しない。 一切のClaude Codeの道具の呼び出しを実行しない。 一切の外部の通信を送信しない。 上記の場所の外のファイルを一切読まない。 全件の確認は局所で読み取り専用。 bashの厳格の段の動作。 設定の中身のevalは一切実行しない。 全件の読み取りはgrepとjqの段。</p>
+
+    <h2>確認の中身の選定の理由</h2>
+    <p>各確認は、 利用者の集まりの場(anthropics/claude-codeの起票の場)で観察された構造の失敗の様式の事例の段を直接の根拠とする。 単発の不具合の修正ではなく、 構造の様式の検出の道具で、 公式の側が特定の起票を修正した後も、 同じ構造の様式は別の系統で再発する事の継続の観察の結果。</p>
+
+    <p>道具の被覆の段は、 2026年5月22日発売の事例集の7層の失敗の様式の枠組みに対応する。 全件の不具合を検出する道具ではなく、 特定の設定と状態の様式の段の検出が、 説明された7層の失敗の様式の枠組みに分類できる事の道具。</p>
+
+    <div class="cta">
+        <p class="cta-title">構造の予防の参照</p>
+        <p>道具の段は特定の様式を検出する。 構造の枠組みの段(なぜこれらの様式が再発するか、 出荷の波の段を生き残る防衛の設計の段、 各事例の段の14件の予防の手順)は、<a href="https://yurukusa.gumroad.com/l/claim-verify-handbook?utm_source=audit-tool-page-ja" target="_blank" rel="noopener">事例集の段の Claim-Verify Handbook</a>で扱う(2026年5月22日発売、 19米ドル、 125件以上の事例の段、 81頁の規模)。</p>
+        <p>無料の試し読みの段の Gist (登録の不要):<a href="https://gist.github.com/yurukusa/6dd608049064ed66c54f1a545a7b47a8" target="_blank" rel="noopener">日本語の段</a> ·<a href="https://gist.github.com/yurukusa/5242a540c43769df76a448269e2f182b" target="_blank" rel="noopener">英語の段</a></p>
+    </div>
+
+    <h2>実行の段の予防(仕掛けの段)</h2>
+    <p>道具の段は一度の段の検出。 実行の段の予防の段(取り返し不能の操作の阻止の段、 沈黙の退行の検出の段、 仕掛けの規約の違反の段の発火の段の捕捉の段)は、<a href="https://github.com/yurukusa/cc-safe-setup" target="_blank" rel="noopener">cc-safe-setup</a>を参照。 MIT利用許可の段の730件以上のPreToolUseとPostToolUseの仕掛けの集まり。</p>
+
+    <h2>修正の提案と反応の経路</h2>
+    <p>道具の段は意図的に小さい段(一件のbashの脚本、 jqとgrep以外の依存の段は無し)。 確認の追加の段や偽の判定の修正の段は、<a href="https://gist.github.com/yurukusa/e2fb2b2dadab456c5396704a485b789c" target="_blank" rel="noopener">Gistの段</a>の起票か修正の段で。 各確認の段は公開の起票の参照と、 段の対象の失敗の様式の層の特定の段が必要。</p>
+
+    <footer>
+        最終の更新: 2026-05-17。 利用許可: MIT。 著者: yurukusa(<a href="https://x.com/yurukusa_dev" target="_blank" rel="noopener">@yurukusa_dev</a>)。
+        <br>
+        関連の頁:<a href="https://yurukusa.github.io/operations-pain-map-ja/">運用の痛みの場の地図</a> ·<a href="https://yurukusa.github.io/claude-code-alternatives-ja/">Claude Codeの代替の比較</a> ·<a href="https://yurukusa.github.io/">入口</a>
+    </footer>
+</div>
+</body>
+</html>
