@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLAUDE.md Recognition Check · paste your CLAUDE.md, see which recognition-without-arrest patterns it is exposed to | yurukusa</title>
+    <meta name="description" content="Free static analysis. Paste your project CLAUDE.md content. The tool flags rule patterns that are known from public GitHub issues to be reachable-but-non-gating — the recognition-without-arrest failure family. Each finding cites the source issue and the operator-side defense that works.">
+    <link rel="canonical" href="https://yurukusa.github.io/claude-md-recognition-checker/">
+    <meta property="og:title" content="CLAUDE.md Recognition Check · 8 patterns where stronger rules fail">
+    <meta property="og:description" content="Paste your CLAUDE.md. Get a static analysis against 8 documented patterns where stronger written rules fail structurally.">
+    <meta property="og:url" content="https://yurukusa.github.io/claude-md-recognition-checker/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="yurukusa">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@yurukusa_dev">
+    <meta name="twitter:title" content="CLAUDE.md Recognition Check · 8 patterns where stronger rules fail">
+    <meta name="twitter:description" content="Paste your CLAUDE.md. See which recognition-without-arrest patterns your rules are structurally exposed to.">
+    <style>
+        :root { --fg: #1a1a1a; --muted: #555; --bg: #fafafa; --card: #fff; --border: #e0e0e0; --accent: #c97b3c; --high: #c14545; --medium: #c97b3c; --low: #6b9655; --info: #5a7796; --code-bg: #f4f1ec; }
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Hiragino Sans", sans-serif; line-height: 1.65; color: var(--fg); background: var(--bg); margin: 0; padding: 0; }
+        .container { max-width: 880px; margin: 0 auto; padding: 2rem 1.25rem; }
+        header { border-bottom: 2px solid var(--border); padding-bottom: 1.5rem; margin-bottom: 2rem; }
+        h1 { font-size: 1.75rem; margin: 0 0 0.5rem 0; line-height: 1.3; }
+        .subtitle { color: var(--muted); font-size: 1rem; margin: 0; }
+        .tagline { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; margin: 1.5rem 0; }
+        .tagline strong { color: var(--accent); }
+        h2 { font-size: 1.25rem; margin: 2rem 0 0.75rem 0; }
+        code { background: var(--code-bg); padding: 0.1rem 0.35rem; border-radius: 3px; font-size: 0.9em; font-family: ui-monospace, Menlo, monospace; }
+        textarea { width: 100%; min-height: 280px; font-family: ui-monospace, Menlo, monospace; font-size: 0.9em; line-height: 1.5; padding: 0.75rem; border: 1px solid var(--border); border-radius: 6px; background: var(--card); color: var(--fg); resize: vertical; }
+        textarea:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+        .btn-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 0.75rem 0; }
+        button { font-family: inherit; font-size: 0.95em; padding: 0.55rem 1.1rem; border: 1px solid var(--border); background: var(--card); color: var(--fg); border-radius: 6px; cursor: pointer; }
+        button:hover { background: var(--code-bg); border-color: var(--accent); }
+        button.primary { background: var(--accent); color: var(--card); font-weight: 600; }
+        .findings { margin-top: 1.5rem; }
+        .finding { background: var(--card); border: 1px solid var(--border); border-left: 4px solid var(--info); border-radius: 4px; padding: 0.9rem 1.1rem; margin: 0.6rem 0; }
+        .finding.high { border-left-color: var(--high); }
+        .finding.medium { border-left-color: var(--medium); }
+        .finding.low { border-left-color: var(--low); }
+        .finding-header { display: flex; align-items: baseline; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 0.4rem; }
+        .severity { display: inline-block; padding: 0.1rem 0.55rem; border-radius: 3px; font-size: 0.75em; font-weight: 600; color: var(--card); }
+        .severity.high { background: var(--high); }
+        .severity.medium { background: var(--medium); }
+        .severity.low { background: var(--low); }
+        .severity.info { background: var(--info); }
+        .finding-title { font-weight: 600; }
+        .finding-detail { color: var(--muted); font-size: 0.92em; margin: 0.3rem 0; }
+        .finding-defense { background: var(--code-bg); padding: 0.55rem 0.75rem; border-radius: 4px; font-size: 0.9em; margin-top: 0.4rem; }
+        .finding-defense strong { color: var(--accent); }
+        .finding-issue { font-size: 0.82em; color: var(--muted); }
+        .summary { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; margin: 1rem 0; }
+        .summary-stat { display: inline-block; margin-right: 1rem; font-size: 0.9em; }
+        .cta { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 1.25rem; margin: 1.5rem 0; }
+        .cta a { color: var(--accent); }
+        footer { border-top: 1px solid var(--border); margin-top: 3rem; padding-top: 1.5rem; color: var(--muted); font-size: 0.85em; }
+        a { color: var(--accent); }
+        .presets { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 0.5rem 0 1rem 0; }
+        .preset { font-size: 0.82em; padding: 0.3rem 0.7rem; background: var(--card); border: 1px solid var(--border); border-radius: 4px; cursor: pointer; color: var(--muted); }
+        .preset:hover { color: var(--accent); border-color: var(--accent); }
+        @media (max-width: 600px) { .container { padding: 1rem; } h1 { font-size: 1.45rem; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>CLAUDE.md Recognition Check</h1>
+        <p class="subtitle">A static analysis of your project CLAUDE.md against 8 patterns that are documented to be reachable-but-non-gating in the public GitHub issue tracker.</p>
+    </header>
+    <div class="tagline">
+        <strong>The thesis.</strong> "Write a stronger CLAUDE.md" is the mainstream remedy for Claude Code behaviour problems. Across 11+ public GitHub issues filed against <code>anthropics/claude-code</code> in 2026-04 to 2026-05, the operators who wrote the strongest possible rules — imperative, specific, in active context — saw the rules violated anyway. The failure mode is not weak rules; it is rules that the model can read, cite, and articulate while shipping the rule-violating action in the same response. This tool flags rule shapes whose <em>strongest written form</em> is documented to not gate.
+    </div>
+    <h2>Paste your CLAUDE.md</h2>
+    <div class="presets">
+        <span class="preset" data-preset="empty">Empty</span>
+        <span class="preset" data-preset="path-exact">Path-exact preset</span>
+        <span class="preset" data-preset="no-fabricate">Anti-fabrication preset</span>
+        <span class="preset" data-preset="scope-creep">Scope-creep preset</span>
+        <span class="preset" data-preset="real">Realistic CLAUDE.md preset</span>
+    </div>
+    <textarea id="claude-md-input" spellcheck="false" placeholder="Paste the contents of your project CLAUDE.md (or ~/.claude/CLAUDE.md) here. The tool does not store or transmit it — analysis runs entirely in your browser."></textarea>
+    <div class="btn-row">
+        <button class="primary" id="analyze-btn">Analyze</button>
+        <button id="clear-btn">Clear</button>
+        <button id="copy-report-btn" disabled>Copy report</button>
+    </div>
+    <div class="findings" id="findings"></div>
+    <h2>What the tool checks</h2>
+    <p>Each check looks for a rule shape that is documented to be in the recognition-without-arrest failure family. The check firing does not mean your rule is wrong; it means the rule strongest form is documented to not gate the action it tries to gate. The defense column is what actually works.</p>
+    <ul style="font-size: 0.9em;">
+        <li><strong>Path-exact directives</strong> — gated only at the model discretion. See <a href="https://github.com/anthropics/claude-code/issues/60068" target="_blank" rel="noopener">#60068</a>.</li>
+        <li><strong>Anti-fabrication rules</strong> — emitted-as-correct claims ship anyway. See <a href="https://github.com/anthropics/claude-code/issues/56906" target="_blank" rel="noopener">#56906</a>.</li>
+        <li><strong>Scope-creep prohibitions</strong> — additional files created anyway. See <a href="https://github.com/anthropics/claude-code/issues/60068" target="_blank" rel="noopener">#60068</a>.</li>
+        <li><strong>STANDING RULE / NEVER / 絶対 markers</strong> — loaded into context, violated mid-session. See <a href="https://github.com/anthropics/claude-code/issues/59944" target="_blank" rel="noopener">#59944</a>.</li>
+        <li><strong>Ask one clarifying question</strong> — questions skipped under ambiguity. See <a href="https://github.com/anthropics/claude-code/issues/60068" target="_blank" rel="noopener">#60068</a>.</li>
+        <li><strong>Vendor-patch prohibitions</strong> — proposals violating the rule shipped despite memory in context. See <a href="https://github.com/anthropics/claude-code/issues/60226" target="_blank" rel="noopener">#60226</a>.</li>
+        <li><strong>Verify-before-claim directives</strong> — "fix is deployed" claims ship without verification. See <a href="https://github.com/anthropics/claude-code/issues/60210" target="_blank" rel="noopener">#60210</a>.</li>
+        <li><strong>Anti-completion-claim directives</strong> — "completed" emitted without verification tool calls. See <a href="https://github.com/anthropics/claude-code/issues/60177" target="_blank" rel="noopener">#60177</a>.</li>
+    </ul>
+    <h2>What the tool does <em>not</em> claim</h2>
+    <p>Your rules might still help in some cases. The tool does not say your rules are useless; it says these specific rule shapes have documented failure modes where the strongest-possible-articulation does not gate. The right response to a finding is to add a runtime-side defense, not to remove the rule.</p>
+    <div class="cta">
+        <p style="font-weight: 600; margin: 0 0 0.5rem 0;">The defenses that work</p>
+        <p>The runtime-side hooks in <a href="https://github.com/yurukusa/cc-safe-setup" target="_blank" rel="noopener">cc-safe-setup</a> (730+ MIT-licensed PreToolUse and PostToolUse hooks) include several that address this failure family directly: rhetorical-verification-prompt-detector (input side), completion-claim-without-verification-detector (output side), denyread-fallback.sh (#58636), and the SessionStart standing-rule surfacer (#59944).</p>
+    </div>
+    <div class="cta">
+        <p style="font-weight: 600; margin: 0 0 0.5rem 0;">The structural reference</p>
+        <p>The constellation map of 11 documented cases: <a href="https://yurukusa.github.io/recognition-without-arrest/?utm_source=claude-md-checker" target="_blank" rel="noopener">Recognition Without Arrest</a>. The book that organizes 130 cases into a 3-stage diagnostic framework: <a href="https://yurukusa.gumroad.com/l/claim-verify-handbook?utm_source=claude-md-checker" target="_blank" rel="noopener">Claim-Verify Handbook</a> (ships 2026-05-22).</p>
+    </div>
+    <h2>Privacy</h2>
+    <p>Your pasted text never leaves your browser. All checks are local pattern matches against the input. There is no network request, no analytics call, no cookie. The page is a static HTML and JS file on GitHub Pages.</p>
+    <footer>
+        Maintained by <a href="https://github.com/yurukusa" target="_blank" rel="noopener">yurukusa</a>. Built 2026-05-19. CC BY 4.0. The list of checks grows as new structural patterns are documented.
+    </footer>
+</div>
+<script>
+'use strict';
+const CHECKS = [
+    {
+        id: 'path-exact',
+        title: 'Path-exact directive shape',
+        severity: 'medium',
+        issue: '#60068',
+        issueUrl: 'https://github.com/anthropics/claude-code/issues/60068',
+        pattern: /\b(exact path|specified path|provided path|that path|path you (?:gave|asked|specified)|write (?:it|that) to|exactly (?:the|this) (?:path|location|file|directory))\b/i,
+        patternJa: /(指定(?:された)?(?:の)?(?:パス|経路|場所|ファイル|ディレクトリ)|そのままの(?:パス|経路))/,
+        detail: 'A path-exact directive was documented to be silently violated in #60068. The model prepended a directory prefix despite the rule.',
+        defense: 'Add a PreToolUse hook for Write or Edit that compares the tool target path to the last user message extracted path. Refuse on mismatch. Heuristic but closes the specific shape.',
+    },
+    {
+        id: 'no-fabricate',
+        title: 'Anti-fabrication directive',
+        severity: 'medium',
+        issue: '#56906',
+        issueUrl: 'https://github.com/anthropics/claude-code/issues/56906',
+        pattern: /\b(never fabricate|do not fabricate|never (?:invent|make up)|when (?:you|behaviour) cannot be explained|ask for evidence first|require evidence|cite (?:a |an )?source)\b/i,
+        patternJa: /(捏造(?:しない|するな|を避け)|推測で(?:埋め|答え)(?:るな|ない))/,
+        detail: 'A rule like never fabricate, say I do not know was documented to fire-anyway in #56906 — the model produced "correct behaviour actually" without citing any spec or design source.',
+        defense: 'Operator-policy: treat any "this is correct behaviour" assertion from the model as provisional unless the model cites a specific external source. Without a citation, the assertion is recognition-without-arrest by default.',
+    },
+    {
+        id: 'scope-creep',
+        title: 'Scope-creep prohibition',
+        severity: 'medium',
+        issue: '#60068',
+        issueUrl: 'https://github.com/anthropics/claude-code/issues/60068',
+        pattern: /\b(scope creep|do exactly what was asked|nothing more|only what (?:is |was )?asked|never (?:create|add) (?:new |additional )?files|strictly necessary)\b/i,
+        patternJa: /(言われた(?:こと)?(?:を|だけ|の通り)|それ以上(?:を|は)?(?:行わない|しない|やらない)|過剰な(?:作業|変更)|余分な(?:ファイル|変更))/,
+        detail: 'Scope-creep prohibitions were documented to be cited-then-violated in #60068. The model created additional files despite the rule.',
+        defense: 'Track per-session file creations and warn the operator when files appear that were not explicitly requested in any user message. PostToolUse hook on Write or Edit that compares created paths against extracted user-requested paths.',
+    },
+    {
+        id: 'standing-rule',
+        title: 'STANDING RULE / NEVER / 絶対 markers in active rules',
+        severity: 'high',
+        issue: '#59944',
+        issueUrl: 'https://github.com/anthropics/claude-code/issues/59944',
+        pattern: /\b(STANDING RULE|standing rule|MUST NOT|must not|NEVER do|never do|MUST ALWAYS|must always|ALWAYS do|always do|third strike|strict rule)\b/,
+        patternJa: /(絶対(?:に)?(?:しない|するな|やらない|やるな|禁止)|必ず(?:行え|やれ|実行)|してはいけない|やってはいけない|やるな|決して|三回目|常に)/,
+        detail: 'Imperative markers (STANDING RULE, NEVER, MUST, 絶対, 必ず) are documented to be read-but-not-weighted in #59944 (5-hour session, 8 fixes without the required loop). The rule is in working context, the model can quote it back, the rule does not gate the action.',
+        defense: 'Install a SessionStart hook that scans memory files for these markers and re-injects them as system-reminder blocks at the start of every turn. Surface the rule where the model attends to system-reminders rather than relying on context recall.',
+    },
+    {
+        id: 'clarifying-question',
+        title: 'Ask one clarifying question directive',
+        severity: 'low',
+        issue: '#60068',
+        issueUrl: 'https://github.com/anthropics/claude-code/issues/60068',
+        pattern: /\b(ask one clarifying question|clarifying question(?:s)? before|when (?:in |you are )doubt(?:,|;)? ask|ask before (?:acting|proceeding))\b/i,
+        patternJa: /(不明な(?:時|場合)は(?:必ず|まず)?(?:質問|確認)|曖昧な(?:時|場合)は(?:質問|聞いて)|行動の前に(?:一つの|まず)(?:質問|確認))/,
+        detail: 'Ask one clarifying question directives are documented to be skipped under perceived ambiguity in #60068. The model makes an assumption and proceeds rather than asking the one question.',
+        defense: 'Combine the directive with explicit allowlists in CLAUDE.md (the following operations require asking first). For high-stakes operations, install runtime-side confirmation hooks rather than relying on the model to recognise ambiguity.',
+    },
+    {
+        id: 'vendor-patch',
+        title: 'Vendor-patch / fragile-modification prohibition',
+        severity: 'medium',
+        issue: '#60226',
+        issueUrl: 'https://github.com/anthropics/claude-code/issues/60226',
+        pattern: /\b(no (?:brittle |fragile )?vendor (?:patch|modification)|never (?:patch|modify) (?:vendored|external|npm) (?:code|package)|avoid (?:brittle|fragile) (?:patches|modifications))\b/i,
+        patternJa: /(外部の(?:修正|改変)を避け|壊れやすい(?:修正|改変)|脆い(?:修正|改変))/,
+        detail: 'No brittle vendor patches rule is documented to be cited-then-violated in #60226 Instance 3 — the model proposed a vendor-patch fix despite the memory rule being readable in active context.',
+        defense: 'Add a PreToolUse hook for Edit or Write operations targeting node_modules/ or vendored directories that requires explicit confirmation. The hook does not depend on the model arresting the proposal.',
+    },
+    {
+        id: 'verify-before-claim',
+        title: 'Verify-before-claim directive',
+        severity: 'high',
+        issue: '#60210',
+        issueUrl: 'https://github.com/anthropics/claude-code/issues/60210',
+        pattern: /\b(verify before (?:saying|claiming|reporting)|never (?:say|claim|report) (?:fixed|done|deployed) without|confirm (?:fix|deployment) (?:against|via) (?:live|production))\b/i,
+        patternJa: /(検証(?:してから|の前に|して)?(?:報告|宣言)|確認(?:してから|の前に|して)?(?:報告|宣言)|未確認の(?:状態|まま)で(?:完了|修正)(?:しない|するな|を宣言しない))/,
+        detail: 'Verify-before-claim directives are documented to be ignored across sessions in #60210 — "fix is deployed" claims shipped without verification despite the operator (non-developer) explicitly relying on the verification.',
+        defense: 'For verification-grade claims, install a Stop hook that checks the recent tool history for actual verification calls (curl with HTTP 200 check, test suite passing output, deployment confirmation API call). If no verification appears before a "deployed" or "fixed" claim, warn before the response is considered complete.',
+    },
+    {
+        id: 'anti-completion-claim',
+        title: 'Anti-completion-claim directive',
+        severity: 'medium',
+        issue: '#60177',
+        issueUrl: 'https://github.com/anthropics/claude-code/issues/60177',
+        pattern: /\b(test before (?:saying|claiming) (?:done|complete)|completion claim(?:s)? require)\b/i,
+        patternJa: /(完了(?:と言わない|を宣言しない|の主張)|終わったと(?:言わない|宣言しない)|未試験の(?:状態|まま)で(?:完了|準備完了)(?:しない|を宣言しない))/,
+        detail: 'Anti-completion-claim directives are documented to be ignored in #60177 — fix(...) commit messages produced 51 times across 12 days with the underlying feature still untested in production.',
+        defense: 'PostToolUse hook on Stop that scans the last assistant response for completion signals (done, fixed, ready to test, 完了, 修正完了) and cross-references the recent tool call history for verification tools (pytest, npm test, curl, etc). Emit a warning when completion claims appear without verification.',
+    },
+];
+const PRESETS = {
+    empty: '',
+    'path-exact': '# Project rules\n\n## File paths\n\nWhen the user provides an exact path, write the file to exactly that path. Never modify, prefix, or rewrite a user-supplied file path.\n\nDo not invent path prefixes based on assumptions about project layout.',
+    'no-fabricate': '# Anti-fabrication\n\nNever fabricate an explanation.\n\nWhen behaviour cannot be explained with certainty, say I do not know and ask for evidence first.\n\nDo not assert "this is correct behaviour" without citing a spec line, design doc paragraph, or intentional test.',
+    'scope-creep': '# Scope discipline\n\nDo exactly what was asked. Nothing more.\n\nScope Creep Is Prohibited. The following are never acceptable without explicit user request:\n- Creating new files beyond what is strictly necessary\n- Adding tests not requested\n- Refactoring code not in the scope of the change',
+    real: '# Project rules\n\n## Standing rules\n\nSTANDING RULE: every problem/feature must run the full verification loop before being declared done. This is the third strike — past two incidents resulted in production breakage.\n\nMUST NOT skip verification when the task is "mechanical" or "trivial".\n\n## Anti-fabrication\n\nNever fabricate an explanation. When behaviour cannot be explained with certainty, say "I do not know" and ask for evidence first.\n\nDo not modify vendored npm packages without explicit approval (no brittle vendor patches).\n\n## File paths\n\nWhen the user provides an exact path, write the file to exactly that path. Do exactly what was asked. Nothing more.\n\nIf the request is ambiguous, ask one clarifying question before acting. Do not make an assumption and proceed "just in case".\n\n## Completion claims\n\nNever claim a feature is done, deployed, or fixed without running the verification loop. Verify against the live system, not just curl.',
+};
+function runChecks(text) {
+    if (!text || !text.trim()) return [];
+    const findings = [];
+    for (const check of CHECKS) {
+        const enMatch = check.pattern && check.pattern.test(text);
+        const jaMatch = check.patternJa && check.patternJa.test(text);
+        if (enMatch || jaMatch) {
+            findings.push({ ...check, matchedLanguage: enMatch ? (jaMatch ? 'en+ja' : 'en') : 'ja' });
+        }
+    }
+    return findings;
+}
+function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+}
+function renderFindings(findings) {
+    const container = document.getElementById('findings');
+    container.innerHTML = '';
+    const copyBtn = document.getElementById('copy-report-btn');
+    if (findings.length === 0) {
+        container.innerHTML = '<div class="summary"><strong>No matched patterns.</strong> Your CLAUDE.md does not contain the 8 documented rule shapes that are known to be reachable-but-non-gating. This does not mean your rules will be honoured — it means the specific shapes documented in the issue tracker are not present.</div>';
+        copyBtn.disabled = true;
+        return;
+    }
+    const sev = { high: 0, medium: 0, low: 0, info: 0 };
+    findings.forEach(f => sev[f.severity]++);
+    const summary = document.createElement('div');
+    summary.className = 'summary';
+    summary.innerHTML = '<strong>' + findings.length + ' pattern' + (findings.length === 1 ? '' : 's') + ' matched.</strong>' +
+        ' <span class="summary-stat"><strong>High:</strong> ' + sev.high + '</span>' +
+        ' <span class="summary-stat"><strong>Medium:</strong> ' + sev.medium + '</span>' +
+        ' <span class="summary-stat"><strong>Low:</strong> ' + sev.low + '</span>' +
+        '<p style="margin: 0.5rem 0 0 0; font-size: 0.9em; color: var(--muted);">Each match indicates that your rule has a documented shape known to be recognition-without-arrest in the public issue tracker. The defense column lists what works in addition to the rule.</p>';
+    container.appendChild(summary);
+    for (const finding of findings) {
+        const el = document.createElement('div');
+        el.className = 'finding ' + finding.severity;
+        el.innerHTML = '<div class="finding-header">' +
+            '<span class="severity ' + finding.severity + '">' + finding.severity.toUpperCase() + '</span>' +
+            '<span class="finding-title">' + escapeHtml(finding.title) + '</span>' +
+            '<span class="finding-issue">Source: <a href="' + finding.issueUrl + '" target="_blank" rel="noopener">' + escapeHtml(finding.issue) + '</a> · matched ' + finding.matchedLanguage.toUpperCase() + '</span>' +
+            '</div>' +
+            '<div class="finding-detail">' + escapeHtml(finding.detail) + '</div>' +
+            '<div class="finding-defense"><strong>Defense that works:</strong> ' + escapeHtml(finding.defense) + '</div>';
+        container.appendChild(el);
+    }
+    copyBtn.disabled = false;
+}
+function buildReport(findings, inputText) {
+    const lines = [];
+    lines.push('=== CLAUDE.md Recognition Check report ===');
+    lines.push('Source: https://yurukusa.github.io/claude-md-recognition-checker/');
+    lines.push('Date: ' + new Date().toISOString());
+    lines.push('');
+    lines.push('Input: ' + inputText.length + ' characters');
+    lines.push('Findings: ' + findings.length);
+    lines.push('');
+    if (findings.length === 0) {
+        lines.push('No matched patterns.');
+    } else {
+        for (const f of findings) {
+            lines.push('[' + f.severity.toUpperCase() + '] ' + f.title);
+            lines.push('  Source: ' + f.issue + ' (' + f.issueUrl + ')');
+            lines.push('  Detail: ' + f.detail);
+            lines.push('  Defense: ' + f.defense);
+            lines.push('');
+        }
+    }
+    return lines.join('\n');
+}
+document.addEventListener('DOMContentLoaded', () => {
+    const input = document.getElementById('claude-md-input');
+    const analyzeBtn = document.getElementById('analyze-btn');
+    const clearBtn = document.getElementById('clear-btn');
+    const copyBtn = document.getElementById('copy-report-btn');
+    let lastFindings = [];
+    analyzeBtn.addEventListener('click', () => {
+        lastFindings = runChecks(input.value);
+        renderFindings(lastFindings);
+    });
+    clearBtn.addEventListener('click', () => {
+        input.value = '';
+        document.getElementById('findings').innerHTML = '';
+        copyBtn.disabled = true;
+    });
+    copyBtn.addEventListener('click', async () => {
+        const report = buildReport(lastFindings, input.value);
+        try {
+            await navigator.clipboard.writeText(report);
+            const orig = copyBtn.textContent;
+            copyBtn.textContent = 'Copied!';
+            setTimeout(() => { copyBtn.textContent = orig; }, 1500);
+        } catch (e) {
+            alert('Clipboard copy failed.\n\n' + report);
+        }
+    });
+    document.querySelectorAll('.preset').forEach(el => {
+        el.addEventListener('click', () => {
+            const name = el.getAttribute('data-preset');
+            input.value = PRESETS[name] || '';
+            input.scrollTop = 0;
+        });
+    });
+});
+</script>
+</body>
+</html>
