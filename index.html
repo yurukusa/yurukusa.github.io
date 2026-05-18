@@ -697,7 +697,7 @@
                         <span class="tag tag-genre">Forensic Case Study</span>
                     </div>
                     <h3>Claim-Verify Handbook</h3>
-                    <p class="card-desc">One operator lost $80–$135 in API spend and several hours of working time, six of seven sessions returning zero usable output (issue #57485). This book organizes 104 forensic cases (15 body + 89 appendix D) of the same claim-vs-reality divergence pattern from `anthropics/claude-code`, with a 3-stage framework + 14 user defenses + 5 detection tools (all 5 implemented, 165+ tests passing). ~63,000 words / ~74 pages. Edition 1 launches 2026-05-22, same day as Migration Playbook Edition 2. Free preview Gist linked here. Industry validation includes Anthropic's own admission of 93% approval fatigue (March 25 blog), three CVEs (CVE-2026-33068, CVE-2025-54795, CVE-2026-39861), and the strongest quantitative signal: Anthropic accidentally pushed claude-code v2.1.88 to npm on 2026-03-31 with the full internal source map, and industry coverage (VentureBeat / ruh.ai / mediacopilot.ai) transcribed an internal benchmark line stating that the Capybara model variant at v8 has a 29-30% false claims rate (regressed from 16.7% at v4) — Anthropic's own measurement says approximately one in three tool-use claims of "succeeded" or "verified" is internally classifiable as false.</p>
+                    <p class="card-desc">One operator lost $80–$135 in API spend and several hours of working time, six of seven sessions returning zero usable output (issue #57485). This book organizes 130 forensic cases (15 body + 115 appendix D) of the same claim-vs-reality divergence pattern from `anthropics/claude-code`, with a 3-stage framework + 14 user defenses + 5 detection tools (all 5 implemented, 165+ tests passing). ~113,000 chars / ~89 pages. Edition 1 launches 2026-05-22, same day as Migration Playbook Edition 2. Free preview Gist linked here. Industry validation includes Anthropic's own admission of 93% approval fatigue (March 25 blog), three CVEs (CVE-2026-33068, CVE-2025-54795, CVE-2026-39861), and the strongest quantitative signal: Anthropic accidentally pushed claude-code v2.1.88 to npm on 2026-03-31 with the full internal source map, and industry coverage (VentureBeat / ruh.ai / mediacopilot.ai) transcribed an internal benchmark line stating that the Capybara model variant at v8 has a 29-30% false claims rate (regressed from 16.7% at v4) — Anthropic's own measurement says approximately one in three tool-use claims of "succeeded" or "verified" is internally classifiable as false.</p>
                     <span class="card-arrow">↗</span>
                 </a>
 
@@ -742,6 +742,28 @@
                     </div>
                     <h3>Six Silent Failures in a 6-Hour Window (v2.1.143)</h3>
                     <p class="card-desc">~1,978-word technical analysis of six issues filed against `anthropics/claude-code` in a 6-hour window on 2026-05-17 evening, all sharing the same structural shape: a documented contract (auto-memory binding, SKILL.md description registration, `permissions.allow` rule, `CLAUDE.md` rule, OTel telemetry schema, `--resume`+`-p` interaction) silently violated, with the violation invisible to the operator without independent verification. Includes Case 1's "third strike" memory-rule violation across an entire 5-hour session (#59944), Case 2's cumulative-threshold SKILL.md description drop at 153 skills (#59921), and Case 4's verbatim self-confession from Claude Code itself (#59938). Defense framework keyed per case. The cluster's rate is now 57× the April baseline (21 cases in one day). No product link in the body — pure analysis, operator-facing.</p>
+                    <span class="card-arrow">↗</span>
+                </a>
+
+                <a href="https://gist.github.com/yurukusa/a37d5fe0d78f5a6a1dc79c4cd7232b51?utm_source=yurukusa-io&utm_medium=card&utm_campaign=two-hn-frontpage-converge-20260518" class="card" target="_blank" rel="noopener">
+                    <div class="card-tags">
+                        <span class="tag tag-new">2026-05-18</span>
+                        <span class="tag tag-free">Free</span>
+                        <span class="tag tag-genre">Industry Analysis</span>
+                    </div>
+                    <h3>Two HN Front-Page Signals Converge on the Book's Thesis</h3>
+                    <p class="card-desc">~1,906-word independent analysis of two HN front-page items posted within hours of each other on 2026-05-18 dawn (combined ~545 points, ~446 comments) that converge — without coordination — on the same structural conclusion the Claim-Verify Handbook (shipping 2026-05-22) documents across 130 cases. Signal 1: a 302-point thread pushing back against AI-tool acceleration claims as the industry-wide structural pathology — now at 487 points / 347 comments at 2026-05-18 10:00 JST (+185 points / +112 comments in 7 hours, +61%, still on the front page). Signal 2: a 243-point thread on the breakdown of the monthly-subscription economics. Both independently arrive at the framing that the gap between vendor claims and operational reality is not incidental, but systemic. Plus the discovery (continued tracking of the 5/15 HN piece) that Anthropic's own February 2026 C-compiler experiment — 16 parallel Claude agents, 2,000 sessions, ~$20K spent, output slower than GCC at -O0, with "new features and fixes frequently broke existing functionality" stated directly — is now the strongest self-evidence signal from the vendor side itself. Independent verification across four axes: leak (March 2026), Brodzinski (May 16), HN twin signals (May 18 dawn, signal 1 still growing at +61%/7h), Anthropic self-evidence (Feb 2026 / re-surfaced May 18). Pure analysis, single product reference at the end.</p>
+                    <span class="card-arrow">↗</span>
+                </a>
+
+                <a href="https://gist.github.com/yurukusa/be16031bf4154706f0e732292ec310e0?utm_source=yurukusa-io&utm_medium=card&utm_campaign=zerostack-path-b-comparison-20260518" class="card" target="_blank" rel="noopener">
+                    <div class="card-tags">
+                        <span class="tag tag-new">2026-05-18</span>
+                        <span class="tag tag-free">Free</span>
+                        <span class="tag tag-genre">Path B Comparison</span>
+                    </div>
+                    <h3>Zerostack: What the 521-point HN Signal Means for the Path B Landscape</h3>
+                    <p class="card-desc">~2,083-word independent analysis of Zerostack — a 1.0 Rust-built coding agent with an ~8 MB resident set size that surfaced on the HN front page on 2026-05-17 and reached 521 points / 287 comments in under 24 hours. The piece reads Zerostack against the six-axis grid the Migration Playbook Edition 1 uses for Path B (Switch Platforms): cost at three burn rates, context management automation, hook ecosystem parity, MCP server support, multi-model fallback, and CLI-vs-IDE coupling. Cross-referenced against the five existing platforms (Cursor, Cline, Codex CLI, Aider, OpenCode). Includes the fit-by-subscriber-shape decision — memory-constrained parallel sessions, hook-dependent workflows, multi-vendor flexibility, long-session context exhaustion — and three open questions the v1.0.0 release does not yet close. The takeaway: the model-agnostic minimalist-resource-profile quadrant now has two entries (OpenCode + Zerostack) rather than one, changing the Path B decision in that quadrant from a default to a fit-by-axis choice. Pure analysis, single product reference at the end.</p>
                     <span class="card-arrow">↗</span>
                 </a>
 
@@ -829,7 +851,7 @@
                         <span class="tag tag-genre">Forensic Case Study</span>
                     </div>
                     <h3>Claim-Verify Handbook</h3>
-                    <p class="card-desc">99 forensic cases (15 body + 84 appendix D) where Claude Code claimed "verified / completed / set" while reality silently diverged. 3-stage framework + 14 user defenses + 5 detection tool sketches. ~63,000 words / 71 pages. Edition 1 launches 2026-05-22, same day as Migration Playbook Edition 2. Free preview Gist linked here (~16,000 words: full table of contents + representative chapter).</p>
+                    <p class="card-desc">130 forensic cases (15 body + 115 appendix D) where Claude Code claimed "verified / completed / set" while reality silently diverged. 3-stage framework + 14 user defenses + 5 detection tool sketches. ~113,000 chars / 89 pages. Edition 1 launches 2026-05-22, same day as Migration Playbook Edition 2. Free preview Gist linked here (~16,000 words: full table of contents + representative chapter).</p>
                     <span class="card-arrow">↗</span>
                 </a>
 
@@ -840,7 +862,7 @@
                         <span class="tag tag-genre">Forensic Case Study</span>
                     </div>
                     <h3>Claim-Verify Handbook</h3>
-                    <p class="card-desc">32 forensic cases where Claude Code claimed "verified / completed / set" while reality silently diverged. 3-stage framework + 14 user defenses + 5 detection tool sketches. ~32,500 words / 45 pages. Edition 1 launches 2026-05-22, same day as Migration Playbook Edition 2. Free preview Gist linked here (~16,000 words: full table of contents + representative chapter).</p>
+                    <p class="card-desc">130 forensic cases (15 body + 115 appendix D) where Claude Code claimed "verified / completed / set" while reality silently diverged. 3-stage framework + 14 user defenses + 5 detection tool sketches. ~113,000 chars / 89 pages. Edition 1 launches 2026-05-22, same day as Migration Playbook Edition 2. Free preview Gist linked here (~16,000 words: full table of contents + representative chapter).</p>
                     <span class="card-arrow">↗</span>
                 </a>
 
