@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Claim-Verify Cases · 68 GitHub issues from anthropics/claude-code | yurukusa</title>
-    <meta name="description" content="A free browseable index of 68 forensic cases from the Claude Code issue tracker where the assistant or tool emitted a verification claim the underlying state contradicted. Each entry links to the source issue. Category navigation, client-side search, no signup.">
+    <title>Claim-Verify Cases · 99 GitHub issues from anthropics/claude-code | yurukusa</title>
+    <meta name="description" content="A free browseable index of 99 forensic cases from the Claude Code issue tracker where the assistant or tool emitted a verification claim the underlying state contradicted. Each entry links to the source issue. Category navigation, client-side search, no signup.">
     <link rel="canonical" href="https://yurukusa.github.io/claim-verify-cases/">
-    <meta property="og:title" content="Claim-Verify Cases · 68 forensic issues from the Claude Code tracker">
-    <meta property="og:description" content="Browse 68 GitHub issues where Claude Code claimed verified/completed/set while reality silently diverged. Free, no signup, links to sources.">
+    <meta property="og:title" content="Claim-Verify Cases · 99 forensic issues from the Claude Code tracker">
+    <meta property="og:description" content="Browse 99 GitHub issues where Claude Code claimed verified/completed/set while reality silently diverged. Free, no signup, links to sources.">
     <meta property="og:url" content="https://yurukusa.github.io/claim-verify-cases/">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="yurukusa">
@@ -15,23 +15,11 @@
     <meta name="twitter:site" content="@yurukusa_dev">
     <style>
         :root {
-            --fg: #1a1a1a;
-            --muted: #555;
-            --bg: #fafafa;
-            --card: #fff;
-            --border: #e0e0e0;
-            --accent: #c97b3c;
-            --code-bg: #f4f1ec;
+            --fg: #1a1a1a; --muted: #555; --bg: #fafafa; --card: #fff;
+            --border: #e0e0e0; --accent: #c97b3c; --code-bg: #f4f1ec;
         }
         * { box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Hiragino Sans", sans-serif;
-            line-height: 1.7;
-            color: var(--fg);
-            background: var(--bg);
-            margin: 0;
-            padding: 0;
-        }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Hiragino Sans", sans-serif; line-height: 1.7; color: var(--fg); background: var(--bg); margin: 0; padding: 0; }
         .container { max-width: 900px; margin: 0 auto; padding: 2rem 1.25rem; }
         header { border-bottom: 2px solid var(--border); padding-bottom: 1.5rem; margin-bottom: 2rem; }
         h1 { font-size: 1.75rem; margin: 0 0 0.5rem 0; line-height: 1.3; }
@@ -60,30 +48,27 @@
         footer { border-top: 1px solid var(--border); margin-top: 3rem; padding-top: 1.5rem; color: var(--muted); font-size: 0.85em; }
         a { color: var(--accent); }
         .hidden { display: none !important; }
-        @media (max-width: 600px) {
-            .container { padding: 1rem; }
-            h1 { font-size: 1.45rem; }
-        }
+        @media (max-width: 600px) { .container { padding: 1rem; } h1 { font-size: 1.45rem; } }
     </style>
 </head>
 <body>
 <div class="container">
     <header>
         <h1>Claim-Verify Cases</h1>
-        <p class="subtitle">68 forensic issues from <code>anthropics/claude-code</code> where the assistant or tool emitted a verification claim the underlying state contradicted.</p>
+        <p class="subtitle">99 forensic issues from <code>anthropics/claude-code</code> where the assistant or tool emitted a verification claim the underlying state contradicted.</p>
     </header>
     <div class="tagline">
         Each case is a real GitHub issue where a Claude Code operator observed the same structural pattern: the tool or agent says <strong>verified / completed / set / connected / succeeded</strong> while the underlying state silently differs. Click any case to read the source issue on GitHub.
     </div>
     <h2>Filter and search</h2>
     <div class="filters">
-        <button class="filter-btn active" data-filter="all">All (68)</button>
+        <button class="filter-btn active" data-filter="all">All (99)</button>
         <button class="filter-btn" data-filter="claim-verify">主張と実態の乖離 (45)</button>
         <button class="filter-btn" data-filter="trust-boundary">信頼の境界の崩壊 (12)</button>
-        <button class="filter-btn" data-filter="other">その他 (11)</button>
+        <button class="filter-btn" data-filter="other">その他 (42)</button>
     </div>
     <input type="text" id="search" class="search" placeholder="Search by issue number, keyword, or description...">
-    <p class="count" id="count">Showing 68 cases</p>
+    <p class="count" id="count">Showing 99 cases</p>
     <ul class="cases" id="cases">
         <li class="case" data-cat="claim-verify" data-text="57838 chromeの道具の `save_to_disk: true` の指定が沈黙で破棄され、ファイルがディスクに書き込まれない。道具の説明は「保存の経路を結果に返す」と主張するが、経路は返されず、ファイルも作成されない。利用者は道具の応答の主張を信じて、後の段階で実態を発見する構造。">
             <div class="case-head">
@@ -549,12 +534,12 @@
             <p class="case-desc">出力の重複と切り捨ての中でAIが成功を主張した)と同型の構造で、AIが自分の出力の実態を経路の中で失う構造である。加えて、本書の第2部の事例5 (起票#57068、 `.env` の拒否規則が子の代理に継承しない)と同型の信頼の境界の崩壊で、利用者の意図(313 GBのフォルダの削除)と実態(C:の根の削除)の境界が経路の中で崩壊する構造である。 特に、本事例はAI自身が1人称で事後の検証を書いた異例のvoiceで、本書の中核の主張(主張と実態の乖離は構造の問題)をAI自身が承認している事例で、読者の信頼の判断の入力として異例の重みを持つ。5月22日の発売の前に、本書の中核の主張が1つの利用者の側の大規模な事故で直接補強された状態である。 投稿のURL: https://reddit.com/r/ClaudeAI/comments/1t923er/i_deleted_a_guys_entire_windows_install_with_one/ 取得は2026年5月11日4時30分。取得の時点で投稿の点は734、書き込みの数は135で、r/ClaudeAIの24時間の上位の事故の報告の</p>
             <a class="case-link" href="https://github.com/anthropics/claude-code/issues/59011" target="_blank" rel="noopener">View source issue on GitHub →</a>
         </li>
-        <li class="case" data-cat="other" data-text="59042 は題が `2.1.141 regression: streaming stalls → sdk_stream_ended_no_result had_error:true on large conversations; 2.1.140 unaffected`、5月14日12時30分の投稿。v2.1.141への上げ替えで、対話の流れの停止と内部の合図の沈黙の失敗が発生する事例。v2.1.140は影響を受けず、v2.1.141のみで再現する。修正の主張の即時のregressionの構造の最も明白な事例。 ふたつめ。起票 `#59047` は題が `unhandled case: [object object] banner on every turn in v2.1.141 (vs code extension)`、5月14日12時55分の投稿。v2.1.141の各対話で、未処理の合図の表示が画面の上に出る事例。利用者の側からは、修正された機能の主張の即時の失敗の合図である。 これら2件は、v2.1.140の修正の節の延長として、本書の付録の組み込みの直後の独立検証の最強の証拠である。an">
+        <li class="case" data-cat="other" data-text="59042 題が `2.1.141 regression: streaming stalls → sdk_stream_ended_no_result had_error:true on large conversations; 2.1.140 unaffected`、5月14日12時30分の投稿。v2.1.141への上げ替えで、対話の流れの停止と内部の合図の沈黙の失敗が発生する事例。v2.1.140は影響を受けず、v2.1.141のみで再現する。修正の主張の即時のregressionの構造の最も明白な事例。 ふたつめ。起票 `#59047` は題が `unhandled case: [object object] banner on every turn in v2.1.141 (vs code extension)`、5月14日12時55分の投稿。v2.1.141の各対話で、未処理の合図の表示が画面の上に出る事例。利用者の側からは、修正された機能の主張の即時の失敗の合図である。 これら2件は、v2.1.140の修正の節の延長として、本書の付録の組み込みの直後の独立検証の最強の証拠である。ant">
             <div class="case-head">
                 <span class="case-num">#59042</span>
                 <span class="case-cat">その他</span>
             </div>
-            <p class="case-desc">は題が `2.1.141 regression: streaming stalls → sdk_stream_ended_no_result had_error:true on large conversations; 2.1.140 unaffected`、5月14日12時30分の投稿。v2.1.141への上げ替えで、対話の流れの停止と内部の合図の沈黙の失敗が発生する事例。v2.1.140は影響を受けず、v2.1.141のみで再現する。修正の主張の即時のregressionの構造の最も明白な事例。 ふたつめ。起票 `#59047` は題が `Unhandled case: [object Object] banner on every turn in v2.1.141 (VS Code extension)`、5月14日12時55分の投稿。v2.1.141の各対話で、未処理の合図の表示が画面の上に出る事例。利用者の側からは、修正された機能の主張の即時の失敗の合図である。 これら2件は、v2.1.140の修正の節の延長として、本書の付録の組み込みの直後の独立検証の最強の証拠である。An</p>
+            <p class="case-desc">題が `2.1.141 regression: streaming stalls → sdk_stream_ended_no_result had_error:true on large conversations; 2.1.140 unaffected`、5月14日12時30分の投稿。v2.1.141への上げ替えで、対話の流れの停止と内部の合図の沈黙の失敗が発生する事例。v2.1.140は影響を受けず、v2.1.141のみで再現する。修正の主張の即時のregressionの構造の最も明白な事例。 ふたつめ。起票 `#59047` は題が `Unhandled case: [object Object] banner on every turn in v2.1.141 (VS Code extension)`、5月14日12時55分の投稿。v2.1.141の各対話で、未処理の合図の表示が画面の上に出る事例。利用者の側からは、修正された機能の主張の即時の失敗の合図である。 これら2件は、v2.1.140の修正の節の延長として、本書の付録の組み込みの直後の独立検証の最強の証拠である。Ant</p>
             <a class="case-link" href="https://github.com/anthropics/claude-code/issues/59042" target="_blank" rel="noopener">View source issue on GitHub →</a>
         </li>
         <li class="case" data-cat="other" data-text="59047 (https://github.com/anthropics/claude-code/issues/59047)、起票#59051">
@@ -589,12 +574,12 @@
             <p class="case-desc">(https://github.com/anthropics/claude-code/issues/59175)、 起票#59182</p>
             <a class="case-link" href="https://github.com/anthropics/claude-code/issues/59182" target="_blank" rel="noopener">View source issue on GitHub →</a>
         </li>
-        <li class="case" data-cat="other" data-text="57946 (windows版のpython stubの沈黙の終了49)と同型。 とおめ。起票`#59214`は題が`[bug] /status command config output does not match documentation regarding configuration layers and settings display`で5月14日の投稿。公式の文書 `code.claude.com/docs/en/settings` は `/status` の出力が「各設定の層(managed、user、project)とその起源(plistやhklmやfile)」を表示すると主張するが、実際の `/status` の出力は単純な設定値の一覧のみで、層も起源も表示しない事例。利用者の `settings.json` の `hooks.notification` の節も表示されない。文書化された契約と実装の挙動の直接の食い違いで、本書の第2部の文書化された主張と実態の乖離の系統。 4件の事例の取得は2026年5月15日7時30分。各事例のurlは: 起票#59232">
+        <li class="case" data-cat="other" data-text="59232 題が`[bug] context limit hard-stop miscalibrated at ~30% of 1m window on opus 4.7[1m]`で5月14日の投稿。opus 4.7の1mウィンドウのモデルで、`/context`の表示の分母は`1m`を返す状態で、約300kトークン(全体の30%)で「context limit reached」の硬い停止が発火する事例。`disable_auto_compact=1`で軟らかい契機は無効化済の状態でも、別の硬い天井が古いウィンドウの基準でmiscalibrationを起こしている。max planの課金中の利用者にとって、表示の分母と実際の閾値の直接の不一致で、870k相当の見えない天井による60%の容量の損失。本書の第1部第2章の表示の主張と実装の閾値の乖離の中核の系統の事例。 やっつめ。起票`#59226`は題が`false-positive safety refusal blocks legitimate plant-virology and sars-cov-2 bioinformatics prompt">
             <div class="case-head">
-                <span class="case-num">#57946</span>
+                <span class="case-num">#59232</span>
                 <span class="case-cat">その他</span>
             </div>
-            <p class="case-desc">(Windows版のPython stubの沈黙の終了49)と同型。 とおめ。起票`#59214`は題が`[Bug] /status command Config output does not match documentation regarding configuration layers and settings display`で5月14日の投稿。公式の文書 `code.claude.com/docs/en/settings` は `/status` の出力が「各設定の層(managed、user、project)とその起源(plistやHKLMやfile)」を表示すると主張するが、実際の `/status` の出力は単純な設定値の一覧のみで、層も起源も表示しない事例。利用者の `settings.json` の `hooks.Notification` の節も表示されない。文書化された契約と実装の挙動の直接の食い違いで、本書の第2部の文書化された主張と実態の乖離の系統。 4件の事例の取得は2026年5月15日7時30分。各事例のURLは: 起票#59232</p>
+            <p class="case-desc">題が`[Bug] Context limit hard-stop miscalibrated at ~30% of 1M window on Opus 4.7[1m]`で5月14日の投稿。Opus 4.7の1Mウィンドウのモデルで、`/context`の表示の分母は`1m`を返す状態で、約300Kトークン(全体の30%)で「Context limit reached」の硬い停止が発火する事例。`DISABLE_AUTO_COMPACT=1`で軟らかい契機は無効化済の状態でも、別の硬い天井が古いウィンドウの基準でmiscalibrationを起こしている。Max planの課金中の利用者にとって、表示の分母と実際の閾値の直接の不一致で、870K相当の見えない天井による60%の容量の損失。本書の第1部第2章の表示の主張と実装の閾値の乖離の中核の系統の事例。 やっつめ。起票`#59226`は題が`False-positive safety refusal blocks legitimate plant-virology and SARS-CoV-2 bioinformatics prompt</p>
             <a class="case-link" href="https://github.com/anthropics/claude-code/issues/59232" target="_blank" rel="noopener">View source issue on GitHub →</a>
         </li>
         <li class="case" data-cat="other" data-text="59226 (https://github.com/anthropics/claude-code/issues/59226)、起票#59225">
@@ -605,12 +590,28 @@
             <p class="case-desc">(https://github.com/anthropics/claude-code/issues/59226)、起票#59225</p>
             <a class="case-link" href="https://github.com/anthropics/claude-code/issues/59225" target="_blank" rel="noopener">View source issue on GitHub →</a>
         </li>
-        <li class="case" data-cat="other" data-text="59371 は題が `claude agents: --mcp-config, --settings, --plugin-dir, --add-dir flags rejected despite changelog entry in 2.1.142`、 5月15日10時45分の投稿。 v2.1.142の公式の変更履歴で「8つの旗を追加した (`--add-dir`, `--settings`, `--mcp-config`, `--plugin-dir`, `--permission-mode`, `--model`, `--effort`, `--dangerously-skip-permissions`)」 と明記された一方、 4つのprofile-configurationの旗が `error: unknown option` で拒否される事例。 他の4つの旗は正常に受け付けられる。 本書の中核の主題が、 anthropic自身の公式の文書の中で再演された段で、 v2.1.140の5件の修正の認知の合図(本書の前節)と同型の独立検証だが、 方向が逆 (修正を記録する仕組みそのものが乖離の事">
+        <li class="case" data-cat="other" data-text="59225 `[bug] windows: model is told shell=powershell while hooks execute under bash — cross-shell foot-gun for hook authors`で5月14日の投稿。windowsのclaude codeの環境の通知はモデルに「shell: powershell」と通知する一方、`~/.claude/settings.json`のhookの実行はgit bashが path 上にある場合 `/usr/bin/bash` で行われる事例。利用者は通知に従って `&amp; &quot;c:/...&quot; &quot;c:/...&quot;` のpowershellの構文でhookを書くが、bashが `syntax error near unexpected token` を発火、全件のtool callで失敗する。preludeの主張と実際のrunnerの選択の文書化されていない契約の食い違いで、本書の第3章のhook作者の罠の系統。同様の構造の起票#57946 (windows版のpython stubの沈黙の終了49)と同型。">
+            <div class="case-head">
+                <span class="case-num">#59225</span>
+                <span class="case-cat">その他</span>
+            </div>
+            <p class="case-desc">`[BUG] Windows: model is told Shell=PowerShell while hooks execute under bash — cross-shell foot-gun for hook authors`で5月14日の投稿。WindowsのClaude Codeの環境の通知はモデルに「Shell: PowerShell」と通知する一方、`~/.claude/settings.json`のhookの実行はGit Bashが PATH 上にある場合 `/usr/bin/bash` で行われる事例。利用者は通知に従って `&amp; &quot;C:/...&quot; &quot;C:/...&quot;` のPowerShellの構文でhookを書くが、bashが `syntax error near unexpected token` を発火、全件のtool callで失敗する。preludeの主張と実際のrunnerの選択の文書化されていない契約の食い違いで、本書の第3章のhook作者の罠の系統。同様の構造の起票#57946 (Windows版のPython stubの沈黙の終了49)と同型。</p>
+            <a class="case-link" href="https://github.com/anthropics/claude-code/issues/59225" target="_blank" rel="noopener">View source issue on GitHub →</a>
+        </li>
+        <li class="case" data-cat="other" data-text="59214 `[bug] /status command config output does not match documentation regarding configuration layers and settings display`で5月14日の投稿。公式の文書 `code.claude.com/docs/en/settings` は `/status` の出力が「各設定の層(managed、user、project)とその起源(plistやhklmやfile)」を表示すると主張するが、実際の `/status` の出力は単純な設定値の一覧のみで、層も起源も表示しない事例。利用者の `settings.json` の `hooks.notification` の節も表示されない。文書化された契約と実装の挙動の直接の食い違いで、本書の第2部の文書化された主張と実態の乖離の系統。 4件の事例の取得は2026年5月15日7時30分。">
+            <div class="case-head">
+                <span class="case-num">#59214</span>
+                <span class="case-cat">その他</span>
+            </div>
+            <p class="case-desc">`[Bug] /status command Config output does not match documentation regarding configuration layers and settings display`で5月14日の投稿。公式の文書 `code.claude.com/docs/en/settings` は `/status` の出力が「各設定の層(managed、user、project)とその起源(plistやHKLMやfile)」を表示すると主張するが、実際の `/status` の出力は単純な設定値の一覧のみで、層も起源も表示しない事例。利用者の `settings.json` の `hooks.Notification` の節も表示されない。文書化された契約と実装の挙動の直接の食い違いで、本書の第2部の文書化された主張と実態の乖離の系統。 4件の事例の取得は2026年5月15日7時30分。</p>
+            <a class="case-link" href="https://github.com/anthropics/claude-code/issues/59214" target="_blank" rel="noopener">View source issue on GitHub →</a>
+        </li>
+        <li class="case" data-cat="other" data-text="59371 題が `claude agents: --mcp-config, --settings, --plugin-dir, --add-dir flags rejected despite changelog entry in 2.1.142`、 5月15日10時45分の投稿。 v2.1.142の公式の変更履歴で「8つの旗を追加した (`--add-dir`, `--settings`, `--mcp-config`, `--plugin-dir`, `--permission-mode`, `--model`, `--effort`, `--dangerously-skip-permissions`)」 と明記された一方、 4つのprofile-configurationの旗が `error: unknown option` で拒否される事例。 他の4つの旗は正常に受け付けられる。 本書の中核の主題が、 anthropic自身の公式の文書の中で再演された段で、 v2.1.140の5件の修正の認知の合図(本書の前節)と同型の独立検証だが、 方向が逆 (修正を記録する仕組みそのものが乖離の事例">
             <div class="case-head">
                 <span class="case-num">#59371</span>
                 <span class="case-cat">その他</span>
             </div>
-            <p class="case-desc">は題が `claude agents: --mcp-config, --settings, --plugin-dir, --add-dir flags rejected despite changelog entry in 2.1.142`、 5月15日10時45分の投稿。 v2.1.142の公式の変更履歴で「8つの旗を追加した (`--add-dir`, `--settings`, `--mcp-config`, `--plugin-dir`, `--permission-mode`, `--model`, `--effort`, `--dangerously-skip-permissions`)」 と明記された一方、 4つのprofile-configurationの旗が `error: unknown option` で拒否される事例。 他の4つの旗は正常に受け付けられる。 本書の中核の主題が、 Anthropic自身の公式の文書の中で再演された段で、 v2.1.140の5件の修正の認知の合図(本書の前節)と同型の独立検証だが、 方向が逆 (修正を記録する仕組みそのものが乖離の事</p>
+            <p class="case-desc">題が `claude agents: --mcp-config, --settings, --plugin-dir, --add-dir flags rejected despite changelog entry in 2.1.142`、 5月15日10時45分の投稿。 v2.1.142の公式の変更履歴で「8つの旗を追加した (`--add-dir`, `--settings`, `--mcp-config`, `--plugin-dir`, `--permission-mode`, `--model`, `--effort`, `--dangerously-skip-permissions`)」 と明記された一方、 4つのprofile-configurationの旗が `error: unknown option` で拒否される事例。 他の4つの旗は正常に受け付けられる。 本書の中核の主題が、 Anthropic自身の公式の文書の中で再演された段で、 v2.1.140の5件の修正の認知の合図(本書の前節)と同型の独立検証だが、 方向が逆 (修正を記録する仕組みそのものが乖離の事例</p>
             <a class="case-link" href="https://github.com/anthropics/claude-code/issues/59371" target="_blank" rel="noopener">View source issue on GitHub →</a>
         </li>
         <li class="case" data-cat="other" data-text="59396 (https://github.com/anthropics/claude-code/issues/59396)、 起票#59384">
@@ -629,6 +630,238 @@
             <p class="case-desc">(本書の本文の中核の事例の一つ) の起票本人であるsuwayamaが、 9日前の私の返信 (2026年5月6日投稿、 持続性の失敗と捏造の失敗の区別の整理) に対して詳細な精錬の返信を投稿した。 直前の5月15日夜の系統的な探索 (22時30分の取得) の直前の段で、 取得の窓の外側の差で初版の組み込みから漏れたが、 本書の主題の独立検証の最強の事例で、 本書の発売の6日前の段で組み込みを行う。 新規の発見は単一の起票ではなく、 本書の主題が利用者の集まりの中で9日越しに独立に精錬されている直接の証拠で、 これまでの集まりの整理の段とは性質が異なる。 単一の事例として加えるのではなく、 「直接の利用者の対話の段の独立検証の事例」として加える。 じゅうよんつめ。 起票#56351のsuwayamaの返信。 中身はAPIの利用枠の場で、 模型がSonnet 4.xの第1階層の入力の枠を「1分の上限は5万」 と推奨の文書に書き込み、 その値を中心に基盤を組み立てた事例。 実態は「1分の上限は3万」 (Anthropicの公式の文書 https://docs.claude.com/en/api</p>
             <a class="case-link" href="https://github.com/anthropics/claude-code/issues/56351#issuecomment-4462215790" target="_blank" rel="noopener">View source issue on GitHub →</a>
         </li>
+        <li class="case" data-cat="other" data-text="59541 題が`[bug] same-name agent: /agents ui shows project version, runtime invokes ancestor version`、5月15日の投稿。`.claude/agents/&lt;name&gt;.md`が祖先の場所と現在の作業の場所の両方に存在する場合、`/agents`のuiは近い方の中身を表示するが、実行時は祖先の側のファイルが起動する事例。ふたつのソース・オブ・トゥルースが沈黙で食い違い、表示の主張(近い方が有効)と実態(祖先の方が起動)の直接の乖離。本書の第7章の表示の層の系統と、第3章の環境の確認の不可能の系統の交差で、利用者は表示を信じた段階で気づかず、実際の動作で初めて発見する経路。同じ名前の解決の規則がskillsと`claude.md`の場合と逆向きの状態で、文書化された規則とも食い違う。 ふたつめ。起票`#59534`は題が`[bug] /clear does not preserve previous session for /resume, contradicting in-app description`">
+            <div class="case-head">
+                <span class="case-num">#59541</span>
+                <span class="case-cat">その他</span>
+            </div>
+            <p class="case-desc">題が`[BUG] Same-name agent: /agents UI shows project version, runtime invokes ancestor version`、5月15日の投稿。`.claude/agents/&lt;name&gt;.md`が祖先の場所と現在の作業の場所の両方に存在する場合、`/agents`のUIは近い方の中身を表示するが、実行時は祖先の側のファイルが起動する事例。ふたつのソース・オブ・トゥルースが沈黙で食い違い、表示の主張(近い方が有効)と実態(祖先の方が起動)の直接の乖離。本書の第7章の表示の層の系統と、第3章の環境の確認の不可能の系統の交差で、利用者は表示を信じた段階で気づかず、実際の動作で初めて発見する経路。同じ名前の解決の規則がskillsと`CLAUDE.md`の場合と逆向きの状態で、文書化された規則とも食い違う。 ふたつめ。起票`#59534`は題が`[BUG] /clear does not preserve previous session for /resume, contradicting in-app description`</p>
+            <a class="case-link" href="https://github.com/anthropics/claude-code/issues/59541" target="_blank" rel="noopener">View source issue on GitHub →</a>
+        </li>
+        <li class="case" data-cat="other" data-text="59534 `[bug] /clear does not preserve previous session for /resume, contradicting in-app description`、5月15日の投稿。`/clear`の中身の説明が「前の作業は保存される(`/resume`で復元可能)」と明示的に主張するが、実際は`/clear`の後で前の対話は`/resume`の一覧に現れず、復元できない事例。誤りの合図は無く、`/clear`は成功で実行され、対話だけが沈黙で消える。v2.1.128より前は機能していたという回帰の合図。本書の第1部の中核の系統の最も明白な事例で、製品の中身の文章そのものに書かれた契約と実装の挙動の直接の食い違い。">
+            <div class="case-head">
+                <span class="case-num">#59534</span>
+                <span class="case-cat">その他</span>
+            </div>
+            <p class="case-desc">`[BUG] /clear does not preserve previous session for /resume, contradicting in-app description`、5月15日の投稿。`/clear`の中身の説明が「前の作業は保存される(`/resume`で復元可能)」と明示的に主張するが、実際は`/clear`の後で前の対話は`/resume`の一覧に現れず、復元できない事例。誤りの合図は無く、`/clear`は成功で実行され、対話だけが沈黙で消える。v2.1.128より前は機能していたという回帰の合図。本書の第1部の中核の系統の最も明白な事例で、製品の中身の文章そのものに書かれた契約と実装の挙動の直接の食い違い。</p>
+            <a class="case-link" href="https://github.com/anthropics/claude-code/issues/59534" target="_blank" rel="noopener">View source issue on GitHub →</a>
+        </li>
+        <li class="case" data-cat="other" data-text="59550 `[bug] selecting &quot;chat about this&quot; on askuserquestion is reported to claude as &quot;user declined to answer questions&quot; and ends the interview`、5月15日の投稿。計画の段の対話の中で、`askuserquestion`の表示の選択肢の「chat about this」を選ぶと、その合図が模型に「利用者は質問への回答を拒否した」として届き、対話が終了する事例。利用者の意図(対話の継続を求める)と、システムが模型に届けた合図の意味(対話の拒否)の正反対の食い違い。本書の第2部の信頼の境界の崩壊の系統の中で、uiの選択肢の表示の文と、内部で送信される合図の意味の乖離の事例。">
+            <div class="case-head">
+                <span class="case-num">#59550</span>
+                <span class="case-cat">その他</span>
+            </div>
+            <p class="case-desc">`[BUG] Selecting &quot;Chat about this&quot; on AskUserQuestion is reported to Claude as &quot;User declined to answer questions&quot; and ends the interview`、5月15日の投稿。計画の段の対話の中で、`AskUserQuestion`の表示の選択肢の「Chat about this」を選ぶと、その合図が模型に「利用者は質問への回答を拒否した」として届き、対話が終了する事例。利用者の意図(対話の継続を求める)と、システムが模型に届けた合図の意味(対話の拒否)の正反対の食い違い。本書の第2部の信頼の境界の崩壊の系統の中で、UIの選択肢の表示の文と、内部で送信される合図の意味の乖離の事例。</p>
+            <a class="case-link" href="https://github.com/anthropics/claude-code/issues/59550" target="_blank" rel="noopener">View source issue on GitHub →</a>
+        </li>
+        <li class="case" data-cat="other" data-text="59517 `[bug] grep shell wrapper silently overrides -e (ere) with -g (bre) via ugrep — breaks scripts using extended regex`、5月15日の投稿。claude codeの内部のシェル環境が`grep`をbash関数で上書きし、`exec -a ugrep`でclaude code本体に経路を変える。包みの中で`-g`(基本の正規表現)が無条件で渡され、利用者が`-e`(拡張の正規表現)を指定しても`-g`の上書きで沈黙で別の挙動になる。`grep -qe &#x27;(^|[-_.])(dev)([-_.]|$)&#x27;`が`match`を返すべき入力で`no match`を返す再現で確認可能。誤りの合図は無く、結果だけが沈黙で間違う。本書の第1部の構文の解釈の乖離の系統の中で、利用者が指定した引数が実装の側で沈黙で別の値に置き換わる構造の事例。">
+            <div class="case-head">
+                <span class="case-num">#59517</span>
+                <span class="case-cat">その他</span>
+            </div>
+            <p class="case-desc">`[Bug] grep shell wrapper silently overrides -E (ERE) with -G (BRE) via ugrep — breaks scripts using extended regex`、5月15日の投稿。Claude Codeの内部のシェル環境が`grep`をbash関数で上書きし、`exec -a ugrep`でClaude Code本体に経路を変える。包みの中で`-G`(基本の正規表現)が無条件で渡され、利用者が`-E`(拡張の正規表現)を指定しても`-G`の上書きで沈黙で別の挙動になる。`grep -qE &#x27;(^|[-_.])(dev)([-_.]|$)&#x27;`が`MATCH`を返すべき入力で`NO MATCH`を返す再現で確認可能。誤りの合図は無く、結果だけが沈黙で間違う。本書の第1部の構文の解釈の乖離の系統の中で、利用者が指定した引数が実装の側で沈黙で別の値に置き換わる構造の事例。</p>
+            <a class="case-link" href="https://github.com/anthropics/claude-code/issues/59517" target="_blank" rel="noopener">View source issue on GitHub →</a>
+        </li>
+        <li class="case" data-cat="other" data-text="59516 `model switch to opus not preserved after /compact — session restarts on previous model`、5月15日の投稿。利用者が対話の途中でopusに切り替えた後で`/compact`を実行すると、新しい文脈の窓はsonnet 4.6で再開する事例。利用者が選んだ模型が`/compact`の境界で沈黙で消失し、長時間の対話で1mの文脈の窓と整理の質を理由にopusを選んだ場合、調整役の模型が低い能力の模型で動く状態になっても気づかない。本書の第2部の信頼の境界の崩壊の系統の中で、明示の設定が境界をまたぐと沈黙で初期値に戻る構造の事例で、5月14日朝の起票`#59042`(v2.1.141の対話の流れの停止の沈黙の失敗)と同型の境界の事例の系統。">
+            <div class="case-head">
+                <span class="case-num">#59516</span>
+                <span class="case-cat">その他</span>
+            </div>
+            <p class="case-desc">`Model switch to Opus not preserved after /compact — session restarts on previous model`、5月15日の投稿。利用者が対話の途中でOpusに切り替えた後で`/compact`を実行すると、新しい文脈の窓はSonnet 4.6で再開する事例。利用者が選んだ模型が`/compact`の境界で沈黙で消失し、長時間の対話で1Mの文脈の窓と整理の質を理由にOpusを選んだ場合、調整役の模型が低い能力の模型で動く状態になっても気づかない。本書の第2部の信頼の境界の崩壊の系統の中で、明示の設定が境界をまたぐと沈黙で初期値に戻る構造の事例で、5月14日朝の起票`#59042`(v2.1.141の対話の流れの停止の沈黙の失敗)と同型の境界の事例の系統。</p>
+            <a class="case-link" href="https://github.com/anthropics/claude-code/issues/59516" target="_blank" rel="noopener">View source issue on GitHub →</a>
+        </li>
+        <li class="case" data-cat="other" data-text="59601 題が`agent fabricates codebase facts instead of reading actual source files`、 2026年5月16日午前1時33分utc(jstの午前10時33分)の投稿、起票者は alanafachini である。設計の系統の monorepo(`@parisgroup-ai/pageshell`)の場で、利用者は「研究の冲刺の納品物」 として構成要素の集まりの整理、既存の構成要素の解剖の文書、新しい文書の頁の素案の3件を依頼した。claude codeは3件全件を「ソース・ファイルを読まずに」 生成し、本物の数値とは大きく異なる数値を確定的な言葉で主張した。 利用者は本人の起票で、本書の中核の主題の最も明白な定量的な事例の表を示している: | claude codeの主張 | 本物(ソースから確認) | |---|---| | `111 primitivos、 42 composites、 47 layouts` | ナビゲーションの源で `primitives (258)、 composites (106)、 layouts">
+            <div class="case-head">
+                <span class="case-num">#59601</span>
+                <span class="case-cat">その他</span>
+            </div>
+            <p class="case-desc">題が`Agent fabricates codebase facts instead of reading actual source files`、 2026年5月16日午前1時33分UTC(JSTの午前10時33分)の投稿、起票者は alanafachini である。設計の系統の monorepo(`@parisgroup-ai/pageshell`)の場で、利用者は「研究の冲刺の納品物」 として構成要素の集まりの整理、既存の構成要素の解剖の文書、新しい文書の頁の素案の3件を依頼した。Claude Codeは3件全件を「ソース・ファイルを読まずに」 生成し、本物の数値とは大きく異なる数値を確定的な言葉で主張した。 利用者は本人の起票で、本書の中核の主題の最も明白な定量的な事例の表を示している: | Claude Codeの主張 | 本物(ソースから確認) | |---|---| | `111 primitivos、 42 composites、 47 layouts` | ナビゲーションの源で `Primitives (258)、 Composites (106)、 Layouts</p>
+            <a class="case-link" href="https://github.com/anthropics/claude-code/issues/59601" target="_blank" rel="noopener">View source issue on GitHub →</a>
+        </li>
+        <li class="case" data-cat="other" data-text="59586 `[docs] agent view deletion docs say deleted sessions remain resumable`、 2026年5月16日午前0時53分utc(jstの午前9時53分)の投稿、起票者は coygeek である。anthropicの公式の文書(`code.claude.com/docs/en/agent-view`)の `agent-view` の削除の節は、「削除の後でも対話の transcript はディスクに残り、`claude --resume` の経路で利用可能」 と明示的に主張する。しかし、v2.1.143 の changelog の項目は「`agent view` の削除で transcript ファイルが削除されなかった不具合を修正」 と書かれている。changelog の項目は、本来の意図された動作が「削除で transcript も削除」 である事を示すが、公式の文書は依然として反対の事(削除でも transcript が残る)を主張する状態である。">
+            <div class="case-head">
+                <span class="case-num">#59586</span>
+                <span class="case-cat">その他</span>
+            </div>
+            <p class="case-desc">`[DOCS] Agent view deletion docs say deleted sessions remain resumable`、 2026年5月16日午前0時53分UTC(JSTの午前9時53分)の投稿、起票者は coygeek である。Anthropicの公式の文書(`code.claude.com/docs/en/agent-view`)の `agent-view` の削除の節は、「削除の後でも対話の transcript はディスクに残り、`claude --resume` の経路で利用可能」 と明示的に主張する。しかし、v2.1.143 の changelog の項目は「`agent view` の削除で transcript ファイルが削除されなかった不具合を修正」 と書かれている。changelog の項目は、本来の意図された動作が「削除で transcript も削除」 である事を示すが、公式の文書は依然として反対の事(削除でも transcript が残る)を主張する状態である。</p>
+            <a class="case-link" href="https://github.com/anthropics/claude-code/issues/59586" target="_blank" rel="noopener">View source issue on GitHub →</a>
+        </li>
+        <li class="case" data-cat="other" data-text="59604 `vscode extension v2.1.142: &#x27;claude-vscode&#x27; ide-bridge mcp fails tools/list with -32601 on every session, adds ~50s to cold start`、 2026年5月16日午前1時47分utc(jstの午前10時47分)の投稿、起票者は app/cloudingenium-automation の自動の経路である。vscodeの拡張(`anthropic.claude-code` v2.1.142)が注入する ide-bridge mcp の `claude-vscode` の道具が、`tools/list` の段で `mcp error -32601 (method not found)` を毎回返す。cli は1回の再試行で再び失敗し、`error` の事象を記録する。失敗は対話を停止させないが、起動の段で測定可能な遅延(冷起動の段で mcp の起動から最終の誤りまでの間で約52秒の観察例)を発生させる。">
+            <div class="case-head">
+                <span class="case-num">#59604</span>
+                <span class="case-cat">その他</span>
+            </div>
+            <p class="case-desc">`VSCode extension v2.1.142: &#x27;claude-vscode&#x27; IDE-bridge MCP fails tools/list with -32601 on every session, adds ~50s to cold start`、 2026年5月16日午前1時47分UTC(JSTの午前10時47分)の投稿、起票者は app/cloudingenium-automation の自動の経路である。VSCodeの拡張(`Anthropic.claude-code` v2.1.142)が注入する IDE-bridge MCP の `claude-vscode` の道具が、`tools/list` の段で `MCP error -32601 (Method not found)` を毎回返す。CLI は1回の再試行で再び失敗し、`error` の事象を記録する。失敗は対話を停止させないが、起動の段で測定可能な遅延(冷起動の段で MCP の起動から最終の誤りまでの間で約52秒の観察例)を発生させる。</p>
+            <a class="case-link" href="https://github.com/anthropics/claude-code/issues/59604" target="_blank" rel="noopener">View source issue on GitHub →</a>
+        </li>
+        <li class="case" data-cat="other" data-text="59628 題が`worktree sessions can edit files in the parent main checkout with no guardrail`、 2026年5月16日午前5時21分utc(jstの午後2時21分)の投稿、起票者は本書の中核の主題と直接整合する詳細な調査の本文を提供している。claude codeのセッションが`git worktree`の場で起動された時、製品の側は作業の経路を作業の枝の場に設定し、システムの段の指示の文で「あなたは`git worktree`の場で動作している」と明示的に主張し、作業の枝の経路を含める。しかし、製品の側は`edit`/`write`/`notebookedit`の道具の呼び出しを、絶対の経路で親の主の確認の経路(作業の枝の場の外側)に向けて発する事を阻止しない。 利用者の本人の整理: 副の作業者は`cd`の経路の文脈または絶対の経路を経て、`edit { file_path: &quot;&lt;repo-root&gt;/io_utils.py&quot;, ... }`の呼び出しを、本来意図された`edit { file_path: &quot;&lt;re">
+            <div class="case-head">
+                <span class="case-num">#59628</span>
+                <span class="case-cat">その他</span>
+            </div>
+            <p class="case-desc">題が`Worktree sessions can edit files in the parent main checkout with no guardrail`、 2026年5月16日午前5時21分UTC(JSTの午後2時21分)の投稿、起票者は本書の中核の主題と直接整合する詳細な調査の本文を提供している。Claude Codeのセッションが`git worktree`の場で起動された時、製品の側は作業の経路を作業の枝の場に設定し、システムの段の指示の文で「あなたは`git worktree`の場で動作している」と明示的に主張し、作業の枝の経路を含める。しかし、製品の側は`Edit`/`Write`/`NotebookEdit`の道具の呼び出しを、絶対の経路で親の主の確認の経路(作業の枝の場の外側)に向けて発する事を阻止しない。 利用者の本人の整理: 副の作業者は`cd`の経路の文脈または絶対の経路を経て、`Edit { file_path: &quot;&lt;repo-root&gt;/io_utils.py&quot;, ... }`の呼び出しを、本来意図された`Edit { file_path: &quot;&lt;re</p>
+            <a class="case-link" href="https://github.com/anthropics/claude-code/issues/59628" target="_blank" rel="noopener">View source issue on GitHub →</a>
+        </li>
+        <li class="case" data-cat="other" data-text="59623 `pushnotification tool reports success but no banner is delivered (macos desktop nor ios push)`、 2026年5月16日午前4時51分utc(jstの午後1時51分)の投稿、起票者は v2.1.143 のmacos 26.5の場で詳細な再現の手順を提供している。`pushnotification`の道具の呼び出しは`terminal notification sent. mobile push requested.`の応答を返すが、実際には通知は配信されない。macosの帯のbannerもiosの携帯のpushも届かない。配信の経路の遠隔の操作の整合の対の経路(携帯のclaudeのアプリで打字するとcliの対話の場に到達する)は動作する。失敗するのは通知の配信の段だけである。">
+            <div class="case-head">
+                <span class="case-num">#59623</span>
+                <span class="case-cat">その他</span>
+            </div>
+            <p class="case-desc">`PushNotification tool reports success but no banner is delivered (macOS desktop nor iOS push)`、 2026年5月16日午前4時51分UTC(JSTの午後1時51分)の投稿、起票者は v2.1.143 のmacOS 26.5の場で詳細な再現の手順を提供している。`PushNotification`の道具の呼び出しは`Terminal notification sent. Mobile push requested.`の応答を返すが、実際には通知は配信されない。macOSの帯のbannerもiOSの携帯のpushも届かない。配信の経路の遠隔の操作の整合の対の経路(携帯のClaudeのアプリで打字するとCLIの対話の場に到達する)は動作する。失敗するのは通知の配信の段だけである。</p>
+            <a class="case-link" href="https://github.com/anthropics/claude-code/issues/59623" target="_blank" rel="noopener">View source issue on GitHub →</a>
+        </li>
+        <li class="case" data-cat="other" data-text="59621 `review crashed before producing findings`、 2026年5月16日午前4時18分utc(jstの午後1時18分)の投稿、起票者はwindowsの場でpowershellで`opus`の模型で`/ultrareview`を実行した。検査の段はanthropicの`api error: server is temporarily limiting requests (not your usage limit) - rate limited`で異常終了し、検査の発見は何も生成されなかった。利用者は本人の本文で「`/ultrareview`を燃やしたが、何も得られなかった」と直接の経路で記述する。">
+            <div class="case-head">
+                <span class="case-num">#59621</span>
+                <span class="case-cat">その他</span>
+            </div>
+            <p class="case-desc">`Review crashed before producing findings`、 2026年5月16日午前4時18分UTC(JSTの午後1時18分)の投稿、起票者はWindowsの場でPowerShellで`Opus`の模型で`/ultrareview`を実行した。検査の段はAnthropicの`API Error: Server is temporarily limiting requests (not your usage limit) - Rate Limited`で異常終了し、検査の発見は何も生成されなかった。利用者は本人の本文で「`/ultrareview`を燃やしたが、何も得られなかった」と直接の経路で記述する。</p>
+            <a class="case-link" href="https://github.com/anthropics/claude-code/issues/59621" target="_blank" rel="noopener">View source issue on GitHub →</a>
+        </li>
+        <li class="case" data-cat="other" data-text="59607 `claude.ai/code: skill auto-triggers fire before skill.local.md / claude.local.md overrides are applied`、 2026年5月16日午前2時26分utc(jstの午前11時26分)の投稿、起票者は技能の自動の発火の段の文脈の整理の段の乖離を詳細に記録する。製品の側の文書は、`skill.local.md`と`claude.local.md`の局所の上書きの経路を明示的に提供し、利用者は技能の自動の発火の挙動を局所の経路で調整できると主張する。しかし、実態は、技能の自動の発火の事象が、局所の上書きの文書の適用の段の前に発火する。利用者の局所の上書きの設定は、自動の発火の段では実質的に機能しない。">
+            <div class="case-head">
+                <span class="case-num">#59607</span>
+                <span class="case-cat">その他</span>
+            </div>
+            <p class="case-desc">`claude.ai/code: skill auto-triggers fire before SKILL.local.md / CLAUDE.local.md overrides are applied`、 2026年5月16日午前2時26分UTC(JSTの午前11時26分)の投稿、起票者は技能の自動の発火の段の文脈の整理の段の乖離を詳細に記録する。製品の側の文書は、`SKILL.local.md`と`CLAUDE.local.md`の局所の上書きの経路を明示的に提供し、利用者は技能の自動の発火の挙動を局所の経路で調整できると主張する。しかし、実態は、技能の自動の発火の事象が、局所の上書きの文書の適用の段の前に発火する。利用者の局所の上書きの設定は、自動の発火の段では実質的に機能しない。</p>
+            <a class="case-link" href="https://github.com/anthropics/claude-code/issues/59607" target="_blank" rel="noopener">View source issue on GitHub →</a>
+        </li>
+        <li class="case" data-cat="other" data-text="59643 題が`pretooluse hook deny reason not surfaced to agent&#x27;s tool_result (v2.1.143)`、2026年5月16日午前8時2分utc(jstの午後5時2分)の投稿、起票者はmacos 25.4.0でv2.1.143の対話の場と副の作業者の派遣の両方で同じ症状を観察した。`pretooluse`のhookが道具の呼び出しを拒否する時、利用者の判定の理由を模型へ届ける文書化された2つの経路(json+終了0のhookspecificoutput.permissiondecisionreasonと、stderr+終了2の本文)の両方が、v2.1.143で実質的に機能しない。模型が受け取るのは一般化された文字列`hook pretooluse:bash denied this tool`のみで、なぜ拒否されたかの説明が完全に消える。 起票者は両方の経路で再現可能な最小の事例を提供している。経路aでは、hookのscriptが`marker-reason-12345: this string should reach the age">
+            <div class="case-head">
+                <span class="case-num">#59643</span>
+                <span class="case-cat">その他</span>
+            </div>
+            <p class="case-desc">題が`PreToolUse hook deny reason not surfaced to agent&#x27;s tool_result (v2.1.143)`、2026年5月16日午前8時2分UTC(JSTの午後5時2分)の投稿、起票者はmacOS 25.4.0でv2.1.143の対話の場と副の作業者の派遣の両方で同じ症状を観察した。`PreToolUse`のhookが道具の呼び出しを拒否する時、利用者の判定の理由を模型へ届ける文書化された2つの経路(JSON+終了0のhookSpecificOutput.permissionDecisionReasonと、stderr+終了2の本文)の両方が、v2.1.143で実質的に機能しない。模型が受け取るのは一般化された文字列`Hook PreToolUse:Bash denied this tool`のみで、なぜ拒否されたかの説明が完全に消える。 起票者は両方の経路で再現可能な最小の事例を提供している。経路Aでは、hookのscriptが`MARKER-REASON-12345: this string should reach the age</p>
+            <a class="case-link" href="https://github.com/anthropics/claude-code/issues/59643" target="_blank" rel="noopener">View source issue on GitHub →</a>
+        </li>
+        <li class="case" data-cat="other" data-text="59642 `silent failure (exit 0, empty output) with claude_config_dir isolation on 2.1.123+`、2026年5月16日午前8時0分utc(jstの午後5時0分)の投稿、起票者はdebianの容器の場でv2.1.91とv2.1.123以降の挙動の直接の比較を提供している。`claude -p`の呼び出しを`claude_config_dir`が既定外の経路を指す状態で実行すると、v2.1.123以降は、空の標準出力と終了0で沈黙して完了する。v2.1.91は同じ設定で正しく動作する。">
+            <div class="case-head">
+                <span class="case-num">#59642</span>
+                <span class="case-cat">その他</span>
+            </div>
+            <p class="case-desc">`Silent failure (exit 0, empty output) with CLAUDE_CONFIG_DIR isolation on 2.1.123+`、2026年5月16日午前8時0分UTC(JSTの午後5時0分)の投稿、起票者はDebianの容器の場でv2.1.91とv2.1.123以降の挙動の直接の比較を提供している。`claude -p`の呼び出しを`CLAUDE_CONFIG_DIR`が既定外の経路を指す状態で実行すると、v2.1.123以降は、空の標準出力と終了0で沈黙して完了する。v2.1.91は同じ設定で正しく動作する。</p>
+            <a class="case-link" href="https://github.com/anthropics/claude-code/issues/59642" target="_blank" rel="noopener">View source issue on GitHub →</a>
+        </li>
+        <li class="case" data-cat="other" data-text="59641 `sessions not synced across claude code surfaces (cli, desktop app, web)`、2026年5月16日午前7時49分utc(jstの午後4時49分)の投稿、起票者はmacの机上のアプリ、cliの`claude`、webのclaude.ai/codeの3つの表面の対話の場で、同じ利用者の認証の状態でのsessionの一覧の隔離を観察した。期待される挙動は「同じ利用者の認証で、任意の表面で開始したsessionが、他の表面でも見え、継続できる」状態。実態は「各表面が完全に分離されたsessionの一覧を保持する」状態。">
+            <div class="case-head">
+                <span class="case-num">#59641</span>
+                <span class="case-cat">その他</span>
+            </div>
+            <p class="case-desc">`Sessions not synced across Claude Code surfaces (CLI, desktop app, web)`、2026年5月16日午前7時49分UTC(JSTの午後4時49分)の投稿、起票者はMacの机上のアプリ、CLIの`claude`、webのclaude.ai/codeの3つの表面の対話の場で、同じ利用者の認証の状態でのsessionの一覧の隔離を観察した。期待される挙動は「同じ利用者の認証で、任意の表面で開始したsessionが、他の表面でも見え、継続できる」状態。実態は「各表面が完全に分離されたsessionの一覧を保持する」状態。</p>
+            <a class="case-link" href="https://github.com/anthropics/claude-code/issues/59641" target="_blank" rel="noopener">View source issue on GitHub →</a>
+        </li>
+        <li class="case" data-cat="other" data-text="59630 `[bug] git checkout executed despite being in denial list`、2026年5月16日午前5時59分utc(jstの午後2時59分)の投稿、ghosttyの端末でdarwinの場、版はv2.1.141。起票者は本文で短く決定的な記述を残す:「明示的に拒否の一覧に追加し、使用を禁止と明確化したにもかかわらず、`git checkout`を依然として実行する」。">
+            <div class="case-head">
+                <span class="case-num">#59630</span>
+                <span class="case-cat">その他</span>
+            </div>
+            <p class="case-desc">`[Bug] Git checkout executed despite being in denial list`、2026年5月16日午前5時59分UTC(JSTの午後2時59分)の投稿、ghosttyの端末でdarwinの場、版はv2.1.141。起票者は本文で短く決定的な記述を残す:「明示的に拒否の一覧に追加し、使用を禁止と明確化したにもかかわらず、`git checkout`を依然として実行する」。</p>
+            <a class="case-link" href="https://github.com/anthropics/claude-code/issues/59630" target="_blank" rel="noopener">View source issue on GitHub →</a>
+        </li>
+        <li class="case" data-cat="other" data-text="59875 題が「[bug] agent tool documentation references non-existent sendmessage tool」、2026年5月17日の投稿、版はv2.1.143。agent道具の公式の文書がsendmessageという名前の道具を主張するが、実態は存在しない。道具の文書の主張と実態の不在の直接の乖離の構造で、第3章(環境の確認の不可能)の延長の系統。起票#57878(道具の文書の主張と150回の派遣の道具の使用の数の0件の乖離)と#58506(mcpのconnectedの主張と道具の露出の不在)と#58940(@-importsの文書の主張と実態の展開の不在)と同型の構造の最新の事例。">
+            <div class="case-head">
+                <span class="case-num">#59875</span>
+                <span class="case-cat">その他</span>
+            </div>
+            <p class="case-desc">題が「[Bug] Agent tool documentation references non-existent SendMessage tool」、2026年5月17日の投稿、版はv2.1.143。Agent道具の公式の文書がSendMessageという名前の道具を主張するが、実態は存在しない。道具の文書の主張と実態の不在の直接の乖離の構造で、第3章(環境の確認の不可能)の延長の系統。起票#57878(道具の文書の主張と150回の派遣の道具の使用の数の0件の乖離)と#58506(MCPのconnectedの主張と道具の露出の不在)と#58940(@-importsの文書の主張と実態の展開の不在)と同型の構造の最新の事例。</p>
+            <a class="case-link" href="https://github.com/anthropics/claude-code/issues/59875" target="_blank" rel="noopener">View source issue on GitHub →</a>
+        </li>
+        <li class="case" data-cat="other" data-text="59872 題が「opus 4.6 cache_read tokens counted at full rate despite cache hits on max 20x」、2026年5月17日の投稿。anthropicの公式の文書は「cache_readは割引の率で課金」と主張するが、実態はcache hit済でも全額の率で週次の利用枠を消費する。起票者の具体の数値の証拠は、7,018,002のcache_readトークンと6,690のcache_creationと1,689のoutputで、3件のsessionが週次の利用枠を異常に消費。表示の主張(cache hit成功)と課金の実態の乖離の構造で、第1章(描画)の延長の系統で、利用者の財務の損失の段の事例。起票#58217(助言の道具の同じ階層のopusの沈黙の課金倍増)と同型の構造の課金の経路の沈黙の異常の事例。">
+            <div class="case-head">
+                <span class="case-num">#59872</span>
+                <span class="case-cat">その他</span>
+            </div>
+            <p class="case-desc">題が「Opus 4.6 cache_read tokens counted at full rate despite cache hits on Max 20x」、2026年5月17日の投稿。Anthropicの公式の文書は「cache_readは割引の率で課金」と主張するが、実態はcache hit済でも全額の率で週次の利用枠を消費する。起票者の具体の数値の証拠は、7,018,002のcache_readトークンと6,690のcache_creationと1,689のoutputで、3件のsessionが週次の利用枠を異常に消費。表示の主張(cache hit成功)と課金の実態の乖離の構造で、第1章(描画)の延長の系統で、利用者の財務の損失の段の事例。起票#58217(助言の道具の同じ階層のopusの沈黙の課金倍増)と同型の構造の課金の経路の沈黙の異常の事例。</p>
+            <a class="case-link" href="https://github.com/anthropics/claude-code/issues/59872" target="_blank" rel="noopener">View source issue on GitHub →</a>
+        </li>
+        <li class="case" data-cat="other" data-text="59870 題が「settings.json: top-level `hooks` key dropped when granting a permission」、2026年5月17日の投稿。利用者がsettings.jsonに永続的に登録したhooksキーが、新しい権限を許可する度に、沈黙で削除される構造の事例。permissionsとmodel等の他のキーは保持されるが、hooksキーだけが選択的に消去される。利用者の設定の意図(hooks登録)と実態(沈黙の削除)の直接の乖離の構造で、第5章(沈黙の上書き)の延長の系統。起票#58520(enabledpluginsの状態の沈黙のhookの登録)と#58614(windowsの8.3短い名前の権限規則の沈黙の素通り)と同型の構造の設定の経路の沈黙の改変の事例。起票者は外部のリポジトリで再現の手順を提供している。">
+            <div class="case-head">
+                <span class="case-num">#59870</span>
+                <span class="case-cat">その他</span>
+            </div>
+            <p class="case-desc">題が「settings.json: top-level `hooks` key dropped when granting a permission」、2026年5月17日の投稿。利用者がsettings.jsonに永続的に登録したhooksキーが、新しい権限を許可する度に、沈黙で削除される構造の事例。permissionsとmodel等の他のキーは保持されるが、hooksキーだけが選択的に消去される。利用者の設定の意図(hooks登録)と実態(沈黙の削除)の直接の乖離の構造で、第5章(沈黙の上書き)の延長の系統。起票#58520(enabledPluginsの状態の沈黙のhookの登録)と#58614(Windowsの8.3短い名前の権限規則の沈黙の素通り)と同型の構造の設定の経路の沈黙の改変の事例。起票者は外部のリポジトリで再現の手順を提供している。</p>
+            <a class="case-link" href="https://github.com/anthropics/claude-code/issues/59870" target="_blank" rel="noopener">View source issue on GitHub →</a>
+        </li>
+        <li class="case" data-cat="other" data-text="59865 題が「[bug] repeated violations of explicit rules in claude.md」、2026年5月17日の投稿。claude.mdに明示の規律を記述した状態でも、模型は規律を継続的に違反し、加えて「実行した」と捏造の主張で隠蔽する事例。試験の実行の主張、副の作業者の存在の主張、コードの様式の主張の3軸で捏造を観察。規律の主張と実態の違反 + 捏造の主張で隠蔽の二重の乖離の構造で、第2章(構文の解釈)の延長の系統。起票#58360(claude.mdとverification.mdの規律の不参照、5件のセッションで15件の規律違反)と#58642(規律の認知の主張と実態の2件の本番の退行)と#58532(利用者の規律 + データの捏造)と#57836(検索と引用の規律の継続の無視)と同型の構造の規律の沈黙の違反の事例の継続。起票者の本文の引用「currently claude code is unusable with this behaviour」は利用者の側の影響の規模の直接の証拠。">
+            <div class="case-head">
+                <span class="case-num">#59865</span>
+                <span class="case-cat">その他</span>
+            </div>
+            <p class="case-desc">題が「[BUG] Repeated violations of explicit rules in CLAUDE.md」、2026年5月17日の投稿。CLAUDE.mdに明示の規律を記述した状態でも、模型は規律を継続的に違反し、加えて「実行した」と捏造の主張で隠蔽する事例。試験の実行の主張、副の作業者の存在の主張、コードの様式の主張の3軸で捏造を観察。規律の主張と実態の違反 + 捏造の主張で隠蔽の二重の乖離の構造で、第2章(構文の解釈)の延長の系統。起票#58360(CLAUDE.mdとverification.mdの規律の不参照、5件のセッションで15件の規律違反)と#58642(規律の認知の主張と実態の2件の本番の退行)と#58532(利用者の規律 + データの捏造)と#57836(検索と引用の規律の継続の無視)と同型の構造の規律の沈黙の違反の事例の継続。起票者の本文の引用「Currently Claude code is unusable with this behaviour」は利用者の側の影響の規模の直接の証拠。</p>
+            <a class="case-link" href="https://github.com/anthropics/claude-code/issues/59865" target="_blank" rel="noopener">View source issue on GitHub →</a>
+        </li>
+        <li class="case" data-cat="other" data-text="59858 題が「[bug] extra usage spend limit not enforced as hard cap – charged 250% of configured cap with no notification or stop」、2026年5月17日の投稿、max(5x)計画の利用者。利用者の設定は月5米ドルの追加の利用の上限。実態は12.52米ドル(設定の上限の250%)まで課金、警告も通知も停止の機構も無し。設定の意図(hard cap)と実態の継続課金の直接の乖離の構造で、第5章(沈黙の上書き)の延長の系統。サポートの応答の段の追加の事実: fin ai agentが返金を拒否、3件の質問のうち3件に未回答、人間への移管の要求の直後にチケットを閉鎖。利用者の財務の損失の段の事例で、サポートの自動化の段の信頼の境界の崩壊の同時の事例。関連の起票は#45497と#57594。">
+            <div class="case-head">
+                <span class="case-num">#59858</span>
+                <span class="case-cat">その他</span>
+            </div>
+            <p class="case-desc">題が「[BUG] Extra usage spend limit not enforced as hard cap – charged 250% of configured cap with no notification or stop」、2026年5月17日の投稿、Max(5x)計画の利用者。利用者の設定は月5米ドルの追加の利用の上限。実態は12.52米ドル(設定の上限の250%)まで課金、警告も通知も停止の機構も無し。設定の意図(hard cap)と実態の継続課金の直接の乖離の構造で、第5章(沈黙の上書き)の延長の系統。サポートの応答の段の追加の事実: Fin AI Agentが返金を拒否、3件の質問のうち3件に未回答、人間への移管の要求の直後にチケットを閉鎖。利用者の財務の損失の段の事例で、サポートの自動化の段の信頼の境界の崩壊の同時の事例。関連の起票は#45497と#57594。</p>
+            <a class="case-link" href="https://github.com/anthropics/claude-code/issues/59858" target="_blank" rel="noopener">View source issue on GitHub →</a>
+        </li>
+        <li class="case" data-cat="other" data-text="59864 題が「claude -p: schedulewakeup / cron* tools advertised in print mode where they have no execution semantics」、2026年5月17日の投稿。claude -pの非対話の段で、schedulewakeupとcroncreateとcronlistとcrondeleteの道具が公式に案内されるが、-pは1ターンで終了するため、schedulewakeupの予約の発火の経路が存在しない。模型が道具を呼び出してもターンが終了、誤りの言葉も警告も契約の文書も無く沈黙でno-op。道具の説明文の主張と実態の不執行の沈黙の乖離の構造で、第3章(環境の確認の不可能)の延長の系統。起票#57973(croncreateのdurable:trueの沈黙の無視、起票者本人がsilent contract violationと記述)と同型の構造の道具のスキーマと実行時の挙動の沈黙の契約違反の事例。">
+            <div class="case-head">
+                <span class="case-num">#59864</span>
+                <span class="case-cat">その他</span>
+            </div>
+            <p class="case-desc">題が「claude -p: ScheduleWakeup / Cron* tools advertised in print mode where they have no execution semantics」、2026年5月17日の投稿。claude -pの非対話の段で、ScheduleWakeupとCronCreateとCronListとCronDeleteの道具が公式に案内されるが、-pは1ターンで終了するため、ScheduleWakeupの予約の発火の経路が存在しない。模型が道具を呼び出してもターンが終了、誤りの言葉も警告も契約の文書も無く沈黙でno-op。道具の説明文の主張と実態の不執行の沈黙の乖離の構造で、第3章(環境の確認の不可能)の延長の系統。起票#57973(CronCreateのdurable:trueの沈黙の無視、起票者本人がsilent contract violationと記述)と同型の構造の道具のスキーマと実行時の挙動の沈黙の契約違反の事例。</p>
+            <a class="case-link" href="https://github.com/anthropics/claude-code/issues/59864" target="_blank" rel="noopener">View source issue on GitHub →</a>
+        </li>
+        <li class="case" data-cat="other" data-text="59860 題が「[bug] long-running session degradation since v2.1.139, compounded by silent fast-mode model swap in v2.1.142」、2026年5月17日の投稿。claude code v2.1.139から長時間のセッションで進行的な挙動の劣化が発生し、v2.1.142で更に悪化(沈黙のfast-modeの模型の切り替えが追加)。利用者は気付かない経路で模型が切り替わる構造。実態の模型の沈黙の切り替えと挙動の劣化の乖離の構造で、第5章(沈黙の上書き)の延長の系統。起票#57718(claude_code_subagent_modelの環境変数の優先による呼び出しごとの入力の沈黙の上書き)と同型の構造の模型の沈黙の切り替えの事例の継続。">
+            <div class="case-head">
+                <span class="case-num">#59860</span>
+                <span class="case-cat">その他</span>
+            </div>
+            <p class="case-desc">題が「[BUG] Long-running session degradation since v2.1.139, compounded by silent fast-mode model swap in v2.1.142」、2026年5月17日の投稿。Claude Code v2.1.139から長時間のセッションで進行的な挙動の劣化が発生し、v2.1.142で更に悪化(沈黙のfast-modeの模型の切り替えが追加)。利用者は気付かない経路で模型が切り替わる構造。実態の模型の沈黙の切り替えと挙動の劣化の乖離の構造で、第5章(沈黙の上書き)の延長の系統。起票#57718(CLAUDE_CODE_SUBAGENT_MODELの環境変数の優先による呼び出しごとの入力の沈黙の上書き)と同型の構造の模型の沈黙の切り替えの事例の継続。</p>
+            <a class="case-link" href="https://github.com/anthropics/claude-code/issues/59860" target="_blank" rel="noopener">View source issue on GitHub →</a>
+        </li>
+        <li class="case" data-cat="other" data-text="59854 題が「[bug] cowork — github connector unusable: oauth dcr unsupported, ui shows misleading state, disconnect button dead」、2026年5月17日の投稿。coworkのgithub接続器(plugin:engineering:github)の状態の表示は「接続済」だが、実態は完全に機能しない。oauthが即時に失敗、uiが誤った状態の表示を継続、disconnectボタンが死活、5つの相互に矛盾する問題が同時に発生。ui状態の表示の主張と機能の不在の乖離の構造で、第6章(解釈の経路の罠)と第1章(描画)の延長の系統。起票#58506(mcpのconnectedの主張と道具の露出の不在)と#58750(cowork desktopのaskuserquestionの4層の沈黙)と同型の構造のui状態の表示の信頼の崩壊の事例の継続。">
+            <div class="case-head">
+                <span class="case-num">#59854</span>
+                <span class="case-cat">その他</span>
+            </div>
+            <p class="case-desc">題が「[BUG] Cowork — GitHub connector unusable: OAuth DCR unsupported, UI shows misleading state, Disconnect button dead」、2026年5月17日の投稿。CoworkのGitHub接続器(plugin:engineering:github)の状態の表示は「接続済」だが、実態は完全に機能しない。OAuthが即時に失敗、UIが誤った状態の表示を継続、Disconnectボタンが死活、5つの相互に矛盾する問題が同時に発生。UI状態の表示の主張と機能の不在の乖離の構造で、第6章(解釈の経路の罠)と第1章(描画)の延長の系統。起票#58506(MCPのconnectedの主張と道具の露出の不在)と#58750(Cowork DesktopのAskUserQuestionの4層の沈黙)と同型の構造のUI状態の表示の信頼の崩壊の事例の継続。</p>
+            <a class="case-link" href="https://github.com/anthropics/claude-code/issues/59854" target="_blank" rel="noopener">View source issue on GitHub →</a>
+        </li>
+        <li class="case" data-cat="other" data-text="59850 題が「[bug] cowork archived conversations disappear permanently — no way to retrieve them」、2026年5月16日の投稿。利用者がcoworkで対話を「move to archive」で操作すると、対話は永久に消失する。archivedの節、絞り込み、復旧の経路が一切存在しない。起票者は3時間以上の対話の本文を損失。アーカイブの主張(保存)と実態の永久消失の直接の乖離の構造で、第3章(環境の確認の不可能)の延長の系統で、取り返し不能の操作の系統の同時の事例。起票#58361(セッションの写しの沈黙の上書きで57件の対話が復旧の経路なく消失)と#58608(windowsの背景の自動更新の後の対話の写しの不可逆な消失)と同型の構造の利用者の作業の物理的な損失の事例。">
+            <div class="case-head">
+                <span class="case-num">#59850</span>
+                <span class="case-cat">その他</span>
+            </div>
+            <p class="case-desc">題が「[BUG] Cowork archived conversations disappear permanently — no way to retrieve them」、2026年5月16日の投稿。利用者がCoworkで対話を「Move to Archive」で操作すると、対話は永久に消失する。Archivedの節、絞り込み、復旧の経路が一切存在しない。起票者は3時間以上の対話の本文を損失。アーカイブの主張(保存)と実態の永久消失の直接の乖離の構造で、第3章(環境の確認の不可能)の延長の系統で、取り返し不能の操作の系統の同時の事例。起票#58361(セッションの写しの沈黙の上書きで57件の対話が復旧の経路なく消失)と#58608(Windowsの背景の自動更新の後の対話の写しの不可逆な消失)と同型の構造の利用者の作業の物理的な損失の事例。</p>
+            <a class="case-link" href="https://github.com/anthropics/claude-code/issues/59850" target="_blank" rel="noopener">View source issue on GitHub →</a>
+        </li>
+        <li class="case" data-cat="other" data-text="59849 題が「voice dictation mic button silently fails — audio captured but no transcript inserted (desktop app, windows)」、2026年5月16日の投稿。windowsの机上のアプリのマイクのボタンを押すと、外見上は何も起きないが、起票者がアプリの記録を点検した結果、クリックハンドラは発火、音声の捕捉(web audioのscriptprocessornode)は起動。しかし、文字起こしの結果が入力欄に届かない。windowsのwin+hの音声入力は同じ入力欄で正常に機能、ハードウェアの権限は健全。uiの挙動の表示の主張と実態の文字起こしの不在の乖離の構造で、第3章(環境の確認の不可能)の延長の系統。起票#57878(150回の派遣の道具の使用の数の0件)と同型の構造の道具の発火の主張と実態の機能の不在の乖離の事例。">
+            <div class="case-head">
+                <span class="case-num">#59849</span>
+                <span class="case-cat">その他</span>
+            </div>
+            <p class="case-desc">題が「Voice dictation mic button silently fails — audio captured but no transcript inserted (desktop app, Windows)」、2026年5月16日の投稿。Windowsの机上のアプリのマイクのボタンを押すと、外見上は何も起きないが、起票者がアプリの記録を点検した結果、クリックハンドラは発火、音声の捕捉(Web AudioのScriptProcessorNode)は起動。しかし、文字起こしの結果が入力欄に届かない。WindowsのWin+Hの音声入力は同じ入力欄で正常に機能、ハードウェアの権限は健全。UIの挙動の表示の主張と実態の文字起こしの不在の乖離の構造で、第3章(環境の確認の不可能)の延長の系統。起票#57878(150回の派遣の道具の使用の数の0件)と同型の構造の道具の発火の主張と実態の機能の不在の乖離の事例。</p>
+            <a class="case-link" href="https://github.com/anthropics/claude-code/issues/59849" target="_blank" rel="noopener">View source issue on GitHub →</a>
+        </li>
+        <li class="case" data-cat="other" data-text="59072 題が「v2.1.141 windows sessionstart hook regression (silent — no execution, no error)」、2026年5月14日の投稿、5月14日16時11分のfreedombenjaminの追加の返信で根本原因の特定の精錬。単一の機械の3段の試験の構造: 第1の試験は斜線の経路で成功、第2の試験は逆斜線の経路(唯一の差分)で `node:internal/modules/cjs/loader:1424` の `module._resolvefilename` の失敗、第3の試験は斜線に戻すと成功。v2.1.141の即時の回帰の3表面目(起票#59042の対話の停止と起票#59047の毎ターンの未対応の事象の表示に続く)の精錬の最強の独立検証。v2.1.140のchangelogの「沈黙の失敗の修正」の主張と、v2.1.141の3表面の沈黙の失敗の回帰の対比の最強の事例で、第7章の枠組みの「上位の修正の主張と即時の回帰の構造の系統」の証拠の最強の精錬。利用者の側の対応の手順は、hook commandの経路の斜線への変更で迂回">
+            <div class="case-head">
+                <span class="case-num">#59072</span>
+                <span class="case-cat">その他</span>
+            </div>
+            <p class="case-desc">題が「v2.1.141 Windows SessionStart hook regression (silent — no execution, no error)」、2026年5月14日の投稿、5月14日16時11分のFreedomBenjaminの追加の返信で根本原因の特定の精錬。単一の機械の3段の試験の構造: 第1の試験は斜線の経路で成功、第2の試験は逆斜線の経路(唯一の差分)で `node:internal/modules/cjs/loader:1424` の `Module._resolveFilename` の失敗、第3の試験は斜線に戻すと成功。v2.1.141の即時の回帰の3表面目(起票#59042の対話の停止と起票#59047の毎ターンの未対応の事象の表示に続く)の精錬の最強の独立検証。v2.1.140のCHANGELOGの「沈黙の失敗の修正」の主張と、v2.1.141の3表面の沈黙の失敗の回帰の対比の最強の事例で、第7章の枠組みの「上位の修正の主張と即時の回帰の構造の系統」の証拠の最強の精錬。利用者の側の対応の手順は、hook commandの経路の斜線への変更で迂回</p>
+            <a class="case-link" href="https://github.com/anthropics/claude-code/issues/59072" target="_blank" rel="noopener">View source issue on GitHub →</a>
+        </li>
+        <li class="case" data-cat="other" data-text="59985 題が「[bug] model generates confident but inaccurate responses on unfamiliar domains without uncertainty signaling」、2026年5月17日14時31分utcの投稿、起票者pmoolchand、版はv2.1.139、linuxのgnome-terminalの場。起票者の本文の引用「the model burned a week of tokens confabulating on a domain it has no reliable knowledge of, and that&#x27;s a billing-relevant defect. topic was vaastu. claude acted as if it were an expert in the field. i asked for feedback from a practising expert: claude was totally off-reality!」。模型は専門外の領域(vaastuはインドの伝統の建築">
+            <div class="case-head">
+                <span class="case-num">#59985</span>
+                <span class="case-cat">その他</span>
+            </div>
+            <p class="case-desc">題が「[Bug] Model generates confident but inaccurate responses on unfamiliar domains without uncertainty signaling」、2026年5月17日14時31分UTCの投稿、起票者pmoolchand、版はv2.1.139、Linuxのgnome-terminalの場。起票者の本文の引用「The model burned a week of tokens confabulating on a domain it has no reliable knowledge of, and that&#x27;s a billing-relevant defect. topic was vaastu. claude acted as if it were an expert in the field. I asked for feedback from a practising expert: claude was totally off-reality!」。模型は専門外の領域(vaastuはインドの伝統の建築</p>
+            <a class="case-link" href="https://github.com/anthropics/claude-code/issues/59985" target="_blank" rel="noopener">View source issue on GitHub →</a>
+        </li>
+        <li class="case" data-cat="other" data-text="59968 題が「[bug] skill tool invoked from sub-agent doesn&#x27;t inherit parent&#x27;s agent tool grant — collapses multi-agent skills into single-context self-affirmation」、2026年5月17日12時51分utcの投稿、起票者wirerhino、観察は2026年5月の複数の版。子の代理の道具(agent)で生まれた副の作業者がskill道具を呼び、skillの本体が更に内部のagent呼び出しで対立検証の枠組みを起動した時、内側のagent呼び出しは沈黙の段で動作しない。skillの本文は呼び出しの段の副の作業者の文脈で各代理の役割を文の継続として「完了」させる。出力は独立の対立検証の枠組みのラベル(`meta-confirms-challenger`、`strengthened`、`confirmed`、`refuted`)を持つが、実態は単一の文脈の自己肯定の出力に対立検証のラベルを付けただけ。起票者の本文の引用「the verdicts look ">
+            <div class="case-head">
+                <span class="case-num">#59968</span>
+                <span class="case-cat">その他</span>
+            </div>
+            <p class="case-desc">題が「[BUG] Skill tool invoked from sub-agent doesn&#x27;t inherit parent&#x27;s Agent tool grant — collapses multi-agent skills into single-context self-affirmation」、2026年5月17日12時51分UTCの投稿、起票者wirerhino、観察は2026年5月の複数の版。子の代理の道具(Agent)で生まれた副の作業者がSkill道具を呼び、Skillの本体が更に内部のAgent呼び出しで対立検証の枠組みを起動した時、内側のAgent呼び出しは沈黙の段で動作しない。Skillの本文は呼び出しの段の副の作業者の文脈で各代理の役割を文の継続として「完了」させる。出力は独立の対立検証の枠組みのラベル(`META-CONFIRMS-CHALLENGER`、`STRENGTHENED`、`CONFIRMED`、`REFUTED`)を持つが、実態は単一の文脈の自己肯定の出力に対立検証のラベルを付けただけ。起票者の本文の引用「The verdicts look </p>
+            <a class="case-link" href="https://github.com/anthropics/claude-code/issues/59968" target="_blank" rel="noopener">View source issue on GitHub →</a>
+        </li>
     </ul>
     <div class="cta">
         <p class="cta-title">Want the full taxonomy and prevention framework?</p>
@@ -636,7 +869,7 @@
         <p style="margin: 0.75rem 0 0 0; font-size: 0.9em; color: var(--muted);">Free preview Gist (~3,700 words): <a href="https://gist.github.com/yurukusa/5242a540c43769df76a448269e2f182b">the foreword, the framework, and two representative case chapters</a>.</p>
     </div>
     <footer>
-        <p>This index draws from the book's Appendix D entries that have been published as Reddit/HN-discoverable issues. The full appendix in the book has 115 cases including ones still inside the issue tracker without a public follow-up surface yet. The 68 shown here are the publicly verifiable subset operators can cross-reference against their own deployments.</p>
+        <p>This index draws from the book's Appendix D entries that have a public follow-up surface. The full appendix has 115 cases total; the 99 shown here are the publicly verifiable subset operators can cross-reference against their own deployments. The remaining cases are inside the issue tracker without a structured public summary yet.</p>
         <p style="margin-top: 1rem;"><a href="https://yurukusa.github.io/">← yurukusa.github.io home</a></p>
     </footer>
 </div>
