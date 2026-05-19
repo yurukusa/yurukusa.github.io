@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CC Bug Check · 5-question self-diagnostic for 5 Claude Code 2.1.143 issues | yurukusa</title>
+    <meta name="description" content="Free 5-question self-diagnostic for 5 newly-discovered Claude Code issues (2026-05-18 to 2026-05-19): find/grep nested agent on 2.1.143, CLAUDE.md silent violation, TaskCreate conflict, session-start protocol skip, fabricated commands in security context.">
+    <link rel="canonical" href="https://yurukusa.github.io/cc-bug-check/">
+
+    <meta property="og:title" content="CC Bug Check · 5-question self-diagnostic for Claude Code 2.1.143 issues">
+    <meta property="og:description" content="5 questions, runs in your browser, no install. Tells you which of 5 newly-reported May 2026 issues you may be hitting.">
+    <meta property="og:url" content="https://yurukusa.github.io/cc-bug-check/">
+    <meta property="og:type" content="website">
+
+    <style>
+        :root {
+            --fg: #1a1a1a;
+            --muted: #555;
+            --bg: #fafafa;
+            --card: #fff;
+            --border: #e0e0e0;
+            --accent: #c97b3c;
+            --hit: #b9430a;
+            --safe: #2e7d32;
+            --code-bg: #f4f1ec;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Hiragino Sans", sans-serif;
+            line-height: 1.65;
+            color: var(--fg);
+            background: var(--bg);
+            margin: 0;
+            padding: 0;
+        }
+        .container { max-width: 760px; margin: 0 auto; padding: 2rem 1.25rem; }
+        header { border-bottom: 2px solid var(--border); padding-bottom: 1.5rem; margin-bottom: 2rem; }
+        h1 { font-size: 1.75rem; margin: 0 0 0.5rem 0; line-height: 1.3; }
+        .subtitle { color: var(--muted); font-size: 1rem; margin: 0; }
+        h2 { font-size: 1.25rem; margin: 2rem 0 0.75rem 0; }
+        h3 { font-size: 1.05rem; margin: 1.25rem 0 0.5rem 0; }
+        pre, code { font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+        code { background: var(--code-bg); padding: 0.1rem 0.35rem; border-radius: 3px; font-size: 0.9em; }
+        pre { background: var(--code-bg); padding: 0.75rem; border-radius: 6px; overflow-x: auto; font-size: 0.85em; line-height: 1.5; }
+        pre code { background: transparent; padding: 0; }
+        .q {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1.25rem;
+            margin: 1rem 0;
+        }
+        .q-title { font-weight: 600; margin: 0 0 0.5rem 0; font-size: 1.05rem; }
+        .q-detail { color: var(--muted); font-size: 0.9em; margin: 0.25rem 0 0.75rem 0; }
+        .q-options { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .q-options label {
+            display: inline-flex;
+            align-items: center;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 0.4rem 0.85rem;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.15s;
+        }
+        .q-options label:hover { background: var(--code-bg); }
+        .q-options input { margin-right: 0.4rem; }
+        button.run {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.85rem 1.5rem;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin: 1rem 0;
+            font-weight: 600;
+        }
+        button.run:hover { background: var(--hit); }
+        .result {
+            margin: 2rem 0;
+            display: none;
+        }
+        .result.show { display: block; }
+        .verdict {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
+            border-radius: 6px;
+            padding: 1.25rem;
+            margin: 0.75rem 0;
+        }
+        .verdict.hit { border-left-color: var(--hit); }
+        .verdict.safe { border-left-color: var(--safe); }
+        .verdict-id { font-weight: 600; color: var(--accent); font-size: 0.9em; }
+        .verdict-id.hit { color: var(--hit); }
+        .verdict-id.safe { color: var(--safe); }
+        .verdict-title { font-weight: 600; margin: 0.25rem 0 0.5rem 0; }
+        .verdict-fix { background: var(--code-bg); padding: 0.75rem; border-radius: 4px; margin-top: 0.75rem; font-size: 0.9em; }
+        .verdict-fix-title { font-weight: 600; margin: 0 0 0.5rem 0; font-size: 0.85em; color: var(--muted); }
+        .cta {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1.25rem;
+            margin: 2rem 0;
+        }
+        .cta-title { font-weight: 600; margin: 0 0 0.5rem 0; }
+        .cta a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent); }
+        .cta a:hover { border-bottom-width: 2px; }
+        .meta { color: var(--muted); font-size: 0.85em; margin-top: 0.5rem; }
+        footer { border-top: 1px solid var(--border); margin-top: 3rem; padding-top: 1.5rem; color: var(--muted); font-size: 0.85em; }
+        a { color: var(--accent); }
+        @media (max-width: 600px) {
+            .container { padding: 1rem; }
+            h1 { font-size: 1.45rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>CC Bug Check</h1>
+        <p class="subtitle">A 5-question self-diagnostic for 5 newly-reported Claude Code issues (May 2026).</p>
+    </header>
+
+    <p>Five distinct issues were reported against <code>anthropics/claude-code</code> in the 48 hours before May 19, 2026. Answer 5 questions to see which ones you may be hitting and what to do about each.</p>
+
+    <p class="meta">Runs entirely in your browser. Nothing is sent anywhere. No tracking on this page beyond the standard GitHub Pages access log.</p>
+
+    <h2>The 5 questions</h2>
+
+    <div class="q">
+        <p class="q-title">1. Are you on Claude Code 2.1.143 (or later in the 2.1.x line)?</p>
+        <p class="q-detail">Check with <code>claude --version</code> in your shell. The find/grep nested-agent bug (issue #60325) was first reproduced on 2.1.143.</p>
+        <div class="q-options">
+            <label><input type="radio" name="q1" value="yes"> Yes</label>
+            <label><input type="radio" name="q1" value="no"> No / earlier</label>
+            <label><input type="radio" name="q1" value="unknown"> Don't know</label>
+        </div>
+    </div>
+
+    <div class="q">
+        <p class="q-title">2. Do you have a <code>~/.claude/CLAUDE.md</code> (or per-project <code>CLAUDE.md</code>) with explicit "don't do X" rules?</p>
+        <p class="q-detail">Examples: "No filler acknowledgments," "Never run <code>rm -rf</code>," "Don't push to main without confirmation." If the model has ever violated one of these mid-session despite the rule being loaded, you're hitting #60339.</p>
+        <div class="q-options">
+            <label><input type="radio" name="q2" value="yes"> Yes, and I've seen violations</label>
+            <label><input type="radio" name="q2" value="rule_only"> Yes, but no violations observed</label>
+            <label><input type="radio" name="q2" value="no"> No CLAUDE.md rules</label>
+        </div>
+    </div>
+
+    <div class="q">
+        <p class="q-title">3. Does your <code>CLAUDE.md</code> prohibit using <code>TaskCreate</code> / <code>TaskList</code> (because you use a separate task system)?</p>
+        <p class="q-detail">The harness injects a "consider TaskCreate" system reminder periodically. If your CLAUDE.md says don't use it, you're hitting #60323 — the reminder fires regardless of your opt-out.</p>
+        <div class="q-options">
+            <label><input type="radio" name="q3" value="yes"> Yes</label>
+            <label><input type="radio" name="q3" value="no"> No</label>
+        </div>
+    </div>
+
+    <div class="q">
+        <p class="q-title">4. Does your <code>CLAUDE.md</code> define a mandatory session-start protocol (e.g. "at session start, create file X, read directory Y")?</p>
+        <p class="q-detail">If the protocol is sometimes silently skipped without any error or warning, you're hitting #60337. Common shape: the model proceeds with the task as if the protocol completed.</p>
+        <div class="q-options">
+            <label><input type="radio" name="q4" value="yes_skipped"> Yes, and it gets silently skipped</label>
+            <label><input type="radio" name="q4" value="yes_works"> Yes, but it runs reliably</label>
+            <label><input type="radio" name="q4" value="no"> No such protocol</label>
+        </div>
+    </div>
+
+    <div class="q">
+        <p class="q-title">5. Do you use Claude Code for security work (CVE repros, exploit drafting, pen-testing) where command accuracy is critical?</p>
+        <p class="q-detail">If the model has ever fabricated a generic command name (e.g. <code>./exploit</code>) instead of the actual command established in the session (e.g. <code>./chage_pwn root</code>), you're hitting #60340. Especially dangerous for repro hand-off documentation.</p>
+        <div class="q-options">
+            <label><input type="radio" name="q5" value="yes_fabricated"> Yes, and I've seen fabrication</label>
+            <label><input type="radio" name="q5" value="yes_clean"> Yes, but no fabrications observed</label>
+            <label><input type="radio" name="q5" value="no"> No security work</label>
+        </div>
+    </div>
+
+    <button class="run" onclick="diagnose()">Diagnose</button>
+
+    <div id="result" class="result"></div>
+
+    <div class="cta">
+        <p class="cta-title">If you want the longer version</p>
+        <p>This 5-question check covers the 5 issues filed May 18–19, 2026. The book it's drawn from — <a href="https://yurukusa.gumroad.com/l/claim-verify-handbook">Claude Code Claim-Verify Handbook</a> — covers 130 cases from the GitHub issue tracker, 14 defensive procedures, and 5 automated audit tools. Launches May 22, 2026. $19. ~89 pages PDF.</p>
+        <p>Free preview Gist (full first chapter, ~16,000 chars): <a href="https://gist.github.com/yurukusa/6dd608049064ed66c54f1a545a7b47a8">here</a>.</p>
+        <p>Open-source hook collection used in the book: <a href="https://github.com/yurukusa/cc-safe-setup">cc-safe-setup</a> (745+ hooks, 30,000+ installs).</p>
+    </div>
+
+    <h2>References</h2>
+    <ul>
+        <li><a href="https://github.com/anthropics/claude-code/issues/60325">#60325</a> — find/grep shadow functions launch a nested agent on 2.1.143 (ARGV0 dispatch broken). Independent technical write-up: <a href="https://gist.github.com/yurukusa/2ea1fb22ba55968d5fd9afbb624a99ad">Gist</a>.</li>
+        <li><a href="https://github.com/anthropics/claude-code/issues/60339">#60339</a> — model fails to consistently apply explicit instructions from CLAUDE.md within a single session. Independent structural analysis: <a href="https://gist.github.com/yurukusa/2dc4aa09ce358b27427ac2c5a5b48cb5">Gist</a>.</li>
+        <li><a href="https://github.com/anthropics/claude-code/issues/60340">#60340</a> — model fabricated a command in technical repro steps instead of using known session context.</li>
+        <li><a href="https://github.com/anthropics/claude-code/issues/60323">#60323</a> — TaskCreate reminder fires despite explicit "Do NOT use TaskCreate" directive in CLAUDE.md.</li>
+        <li><a href="https://github.com/anthropics/claude-code/issues/60337">#60337</a> — CLAUDE.md loading protocol silently skipped at session start.</li>
+    </ul>
+
+    <footer>
+        <p>by <a href="https://yurukusa.github.io/">yurukusa</a>. Independent technical analysis. No affiliation with Anthropic.</p>
+        <p class="meta">This page is static HTML/JS. View source if you want to verify nothing is sent off the page.</p>
+    </footer>
+</div>
+
+<script>
+const BUGS = {
+    "60325": {
+        title: "find/grep shadow functions launch a nested agent (2.1.143)",
+        hitWhen: (a) => a.q1 === "yes",
+        weakWhen: (a) => a.q1 === "unknown",
+        fix: `<strong>Quick fix</strong>: prefix calls with <code>command</code> (e.g. <code>command find . -name '*.md'</code> / <code>command grep -r 'TODO' src/</code>). For grep-like work, switch to <code>rg</code> (ripgrep) — unaffected by the shadow. Full write-up with all four workarounds: <a href="https://gist.github.com/yurukusa/2ea1fb22ba55968d5fd9afbb624a99ad">Gist</a>.`
+    },
+    "60339": {
+        title: "CLAUDE.md rules silently violated mid-session",
+        hitWhen: (a) => a.q2 === "yes",
+        weakWhen: (a) => a.q2 === "rule_only",
+        fix: `<strong>Quick fix</strong>: for any operationally important rule, move enforcement out of CLAUDE.md and into a deterministic check layer. <code>PreToolUse</code> hooks are the lowest-cost path. Full write-up with all four enforcement paths: <a href="https://gist.github.com/yurukusa/2dc4aa09ce358b27427ac2c5a5b48cb5">Gist</a>.`
+    },
+    "60323": {
+        title: "TaskCreate reminder fires despite CLAUDE.md opt-out",
+        hitWhen: (a) => a.q3 === "yes",
+        fix: `<strong>Quick fix</strong>: no clean opt-out exists yet — the reminder is not user-configurable. The pragmatic workaround is to ignore it silently (do not respond to it in your output) and rely on your alternative task system as configured. Track upstream: <a href="https://github.com/anthropics/claude-code/issues/60323">#60323</a> for the proposed <code>disableTaskCreateReminder</code> setting.`
+    },
+    "60337": {
+        title: "CLAUDE.md loading protocol silently skipped at session start",
+        hitWhen: (a) => a.q4 === "yes_skipped",
+        fix: `<strong>Quick fix</strong>: do not rely on the model to self-execute session-start protocols. Move them to a <code>SessionStart</code> hook (deterministic, runs every session) or wrap the protocol in a tool the model has to call explicitly. The model's intermittent skipping is the same recognition-without-arrest pattern as #60339.`
+    },
+    "60340": {
+        title: "Model fabricated a command in security repro steps",
+        hitWhen: (a) => a.q5 === "yes_fabricated",
+        weakWhen: (a) => a.q5 === "yes_clean",
+        fix: `<strong>Quick fix</strong>: when drafting hand-off documentation (repro steps, runbooks, postmortems), verify every command against the actual session log before sharing. Especially critical for CVE / exploit work. For automated guard: a <code>PostToolUse</code> hook on <code>Write</code>/<code>Edit</code> that checks emitted command names against the session's Bash history is the structural mitigation.`
+    }
+};
+
+function diagnose() {
+    const answers = {};
+    for (let i = 1; i <= 5; i++) {
+        const checked = document.querySelector(`input[name="q${i}"]:checked`);
+        answers[`q${i}`] = checked ? checked.value : null;
+    }
+
+    if (Object.values(answers).some(v => v === null)) {
+        alert("Please answer all 5 questions before diagnosing.");
+        return;
+    }
+
+    const result = document.getElementById("result");
+    let html = `<h2>Your diagnostic</h2>`;
+    let hitCount = 0;
+    let weakCount = 0;
+
+    for (const [id, bug] of Object.entries(BUGS)) {
+        if (bug.hitWhen(answers)) {
+            hitCount++;
+            html += `<div class="verdict hit">
+                <p><span class="verdict-id hit">#${id} — likely affected</span></p>
+                <p class="verdict-title">${bug.title}</p>
+                <div class="verdict-fix"><p class="verdict-fix-title">What to do</p>${bug.fix}</div>
+            </div>`;
+        } else if (bug.weakWhen && bug.weakWhen(answers)) {
+            weakCount++;
+            html += `<div class="verdict">
+                <p><span class="verdict-id">#${id} — at risk (uncertain)</span></p>
+                <p class="verdict-title">${bug.title}</p>
+                <div class="verdict-fix"><p class="verdict-fix-title">Worth checking</p>${bug.fix}</div>
+            </div>`;
+        } else {
+            html += `<div class="verdict safe">
+                <p><span class="verdict-id safe">#${id} — not hit (based on your answers)</span></p>
+                <p class="verdict-title">${bug.title}</p>
+            </div>`;
+        }
+    }
+
+    html += `<p class="meta">Summary: ${hitCount} likely hit · ${weakCount} at risk · ${5 - hitCount - weakCount} not hit.</p>`;
+
+    if (hitCount > 0) {
+        html += `<p class="meta">For each hit, the structural pattern underneath is documented in the Claim-Verify Handbook (link below). The mitigation work is doable today; the structural understanding helps prevent the next instance.</p>`;
+    } else {
+        html += `<p class="meta">Based on your answers, you're not hitting any of the 5 newly-reported issues. The structural patterns (recognition without arrest, claim-verify gap) still apply broadly — see the references below if you want the longer treatment.</p>`;
+    }
+
+    result.innerHTML = html;
+    result.classList.add("show");
+    result.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+</script>
+</body>
+</html>
