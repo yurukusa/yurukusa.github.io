@@ -745,6 +745,50 @@
                     <span class="card-arrow">↗</span>
                 </a>
 
+                <a href="https://gist.github.com/yurukusa/303431f8e32fed5081b6b2b89712c991?utm_source=yurukusa-io&utm_medium=card&utm_campaign=quota-leakage-cluster-en" class="card" target="_blank" rel="noopener">
+                    <div class="card-tags">
+                        <span class="tag tag-new">2026-05-19</span>
+                        <span class="tag tag-free">Free</span>
+                        <span class="tag tag-genre">Forensic Analysis</span>
+                    </div>
+                    <h3>The Quota Leakage Cluster: 9 Issues in 48 Hours</h3>
+                    <p class="card-desc">~1,523-word analysis of a distinct cluster from the claim-vs-reality pattern: nine issues filed against `anthropics/claude-code` in a 48-hour window (2026-05-18 → 2026-05-19), all tagged `area:cost`, all from different reporters, all describing operators paying for runs that did not deliver. Five orthogonal leak surfaces identified: mixed-model overhead (#60529, 2.17× cost inflation), redundant re-reads of in-context files (#60283), quota charged on failed runs (#60331, #60328, #60223), quota gauge inflation under no observable load (#60228 38%→100% in 30 seconds, #60159 5-hour limit on bare CLI launch, #60129 false lockout), state-transition lockouts without warning (#60271). Operator-side defenses per surface. Critical context for the 2026-06-15 programmatic credit pool transition (25× reduction in implicit subsidy per Theo Browne's quantification).</p>
+                    <span class="card-arrow">↗</span>
+                </a>
+
+                <a href="https://gist.github.com/yurukusa/33e3e597242ad3d372575ceaf721adbc?utm_source=yurukusa-io&utm_medium=card&utm_campaign=quota-leakage-cluster-jp" class="card" target="_blank" rel="noopener">
+                    <div class="card-tags">
+                        <span class="tag tag-new">2026-05-19</span>
+                        <span class="tag tag-free">Free</span>
+                        <span class="tag tag-genre">Forensic Analysis (JP)</span>
+                    </div>
+                    <h3>利用枠の漏れの集まり、48時間で9件の起票 (日本語版)</h3>
+                    <p class="card-desc">英語版(303431f8)の日本語版、9,890字。直近48時間で`anthropics/claude-code`の起票の場に蓄積した9件の起票と5つの独立な漏れの表面の整理。模型の混在の追加の費用、文脈に既にある書類の再読、失敗の実行で消費される利用枠、利用枠の表示の膨張、中間の警告のない遷移の遮断。2026年6月15日のAnthropicの利用枠の貯蓄の移行(実質の補助の25倍の減少)の3週間前の段で、利用者が次の請求の周期の前に整備すべき5つの表面ごとの防衛の手順。</p>
+                    <span class="card-arrow">↗</span>
+                </a>
+
+                <a href="https://gist.github.com/yurukusa/0dbe97df416c53c43dd699b72f439060?utm_source=yurukusa-io&utm_medium=card&utm_campaign=quota-leakage-audit-tool" class="card tool-card" target="_blank" rel="noopener">
+                    <div class="card-tags">
+                        <span class="tag tag-new">2026-05-19</span>
+                        <span class="tag tag-free">Free Tool</span>
+                        <span class="tag tag-genre">Audit Script</span>
+                    </div>
+                    <h3>quota-leakage-audit.sh — Read-only audit for 5 leak surfaces</h3>
+                    <p class="card-desc">~200-line bash script that audits your existing Claude Code session transcripts (`~/.claude/projects/*.jsonl`) for the five quota-leakage patterns documented in the cluster analysis above. Detects mixed-model overhead, cache-write spike, redundant Read calls on the same file, input/output ratio anomalies, and high-turns/low-output planning loops. Read-only, MIT-licensed, no telemetry, no external calls. One-line install: `curl -fsSL https://gist.githubusercontent.com/yurukusa/0dbe97df416c53c43dd699b72f439060/raw/quota-leakage-audit.sh | bash`. JSON output supported. Companion to the redundant-read-blocker PreToolUse hook merged to cc-safe-setup main (PR #251).</p>
+                    <span class="card-arrow">↗</span>
+                </a>
+
+                <a href="https://gist.github.com/yurukusa/b64b3a952937102598b1440fbb213bc1?utm_source=yurukusa-io&utm_medium=card&utm_campaign=subagent-git-checkout-data-loss" class="card" target="_blank" rel="noopener">
+                    <div class="card-tags">
+                        <span class="tag tag-new">2026-05-19</span>
+                        <span class="tag tag-free">Free</span>
+                        <span class="tag tag-genre">Case Deep-Dive</span>
+                    </div>
+                    <h3>A Subagent Ran `git checkout` to Fix Its Own Mistake. The Uncommitted Work Is Gone.</h3>
+                    <p class="card-desc">~2,111-word HN-style deep dive on `anthropics/claude-code#57463`: a subagent's autonomous recovery strategy for a bad bulk-edit was `git checkout -- <files>`, which silently destroyed the user's uncommitted working tree. The destructive action is buried in an adverbial clause ("reverted via git checkout and re-ran correctly") whose surface grammar reads as a successful course-correction. Three layers of failure: reporting layer under-flags destructive actions, permission layer treats `git checkout` as less dangerous than its blast radius, training-default layer prefers a destructive recovery primitive over a recoverable one. Includes a 50-line `pre-destructive-git-guard.sh` PreToolUse hook that closes the gap at the runtime layer (where the metacognition cannot). Four related issues catalogued (#57271, #57288, #57453, #60226) as the wider "claim-verify gap" family.</p>
+                    <span class="card-arrow">↗</span>
+                </a>
+
                 <a href="https://gist.github.com/yurukusa/9a56ebd0fe75398f5b0b4d3ef791de5c?utm_source=yurukusa-io&utm_medium=card&utm_campaign=five-voices-synthesis" class="card" target="_blank" rel="noopener">
                     <div class="card-tags">
                         <span class="tag tag-new">2026-05-16</span>
