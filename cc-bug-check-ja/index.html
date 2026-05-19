@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CC Bug Check (日本語)・5月18-19日に報告された5件のClaude Codeの不具合の自己診断 | yurukusa</title>
+    <meta name="description" content="2026年5月18日から19日にanthropics/claude-codeに報告された5件の不具合(2.1.143のfind/grepの入れ子の作業者の起動、CLAUDE.mdの規則の沈黙の違反、TaskCreateの矛盾、セッションの開始の手順の沈黙の省略、安全の文脈の作話)の自己診断の道具。5つの質問で、自分が遭遇している不具合と対処の経路が分かる。">
+    <link rel="canonical" href="https://yurukusa.github.io/cc-bug-check-ja/">
+
+    <meta property="og:title" content="CC Bug Check (日本語)・5月18-19日の5件の不具合の自己診断">
+    <meta property="og:description" content="5つの質問、ブラウザの中で実行、設置の不要。直近の5件の不具合のどれに遭遇しているかが分かる。">
+    <meta property="og:url" content="https://yurukusa.github.io/cc-bug-check-ja/">
+    <meta property="og:type" content="website">
+
+    <style>
+        :root {
+            --fg: #1a1a1a;
+            --muted: #555;
+            --bg: #fafafa;
+            --card: #fff;
+            --border: #e0e0e0;
+            --accent: #c97b3c;
+            --hit: #b9430a;
+            --safe: #2e7d32;
+            --code-bg: #f4f1ec;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Hiragino Sans", sans-serif;
+            line-height: 1.7;
+            color: var(--fg);
+            background: var(--bg);
+            margin: 0;
+            padding: 0;
+        }
+        .container { max-width: 760px; margin: 0 auto; padding: 2rem 1.25rem; }
+        header { border-bottom: 2px solid var(--border); padding-bottom: 1.5rem; margin-bottom: 2rem; }
+        h1 { font-size: 1.75rem; margin: 0 0 0.5rem 0; line-height: 1.3; }
+        .subtitle { color: var(--muted); font-size: 1rem; margin: 0; }
+        .lang-switch { float: right; font-size: 0.85em; }
+        h2 { font-size: 1.25rem; margin: 2rem 0 0.75rem 0; }
+        h3 { font-size: 1.05rem; margin: 1.25rem 0 0.5rem 0; }
+        pre, code { font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+        code { background: var(--code-bg); padding: 0.1rem 0.35rem; border-radius: 3px; font-size: 0.9em; }
+        pre { background: var(--code-bg); padding: 0.75rem; border-radius: 6px; overflow-x: auto; font-size: 0.85em; line-height: 1.5; }
+        pre code { background: transparent; padding: 0; }
+        .q {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1.25rem;
+            margin: 1rem 0;
+        }
+        .q-title { font-weight: 600; margin: 0 0 0.5rem 0; font-size: 1.05rem; }
+        .q-detail { color: var(--muted); font-size: 0.9em; margin: 0.25rem 0 0.75rem 0; }
+        .q-options { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .q-options label {
+            display: inline-flex;
+            align-items: center;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 0.4rem 0.85rem;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.15s;
+        }
+        .q-options label:hover { background: var(--code-bg); }
+        .q-options input { margin-right: 0.4rem; }
+        button.run {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.85rem 1.5rem;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin: 1rem 0;
+            font-weight: 600;
+        }
+        button.run:hover { background: var(--hit); }
+        .result { margin: 2rem 0; display: none; }
+        .result.show { display: block; }
+        .verdict {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
+            border-radius: 6px;
+            padding: 1.25rem;
+            margin: 0.75rem 0;
+        }
+        .verdict.hit { border-left-color: var(--hit); }
+        .verdict.safe { border-left-color: var(--safe); }
+        .verdict-id { font-weight: 600; color: var(--accent); font-size: 0.9em; }
+        .verdict-id.hit { color: var(--hit); }
+        .verdict-id.safe { color: var(--safe); }
+        .verdict-title { font-weight: 600; margin: 0.25rem 0 0.5rem 0; }
+        .verdict-fix { background: var(--code-bg); padding: 0.75rem; border-radius: 4px; margin-top: 0.75rem; font-size: 0.9em; }
+        .verdict-fix-title { font-weight: 600; margin: 0 0 0.5rem 0; font-size: 0.85em; color: var(--muted); }
+        .cta {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1.25rem;
+            margin: 2rem 0;
+        }
+        .cta-title { font-weight: 600; margin: 0 0 0.5rem 0; }
+        .cta a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent); }
+        .cta a:hover { border-bottom-width: 2px; }
+        .meta { color: var(--muted); font-size: 0.85em; margin-top: 0.5rem; }
+        footer { border-top: 1px solid var(--border); margin-top: 3rem; padding-top: 1.5rem; color: var(--muted); font-size: 0.85em; }
+        a { color: var(--accent); }
+        @media (max-width: 600px) {
+            .container { padding: 1rem; }
+            h1 { font-size: 1.45rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <span class="lang-switch"><a href="https://yurukusa.github.io/cc-bug-check/">EN</a> · <strong>日本語</strong></span>
+        <h1>CC Bug Check (日本語)</h1>
+        <p class="subtitle">2026年5月18日と19日に報告された5件のClaude Codeの不具合の自己診断。5つの質問で、自分の運用が遭遇している不具合と対処の経路が分かる。</p>
+    </header>
+
+    <p>2026年5月19日の朝までの48時間で、<code>anthropics/claude-code</code>の起票の場に5件の異なる不具合が報告された。5つの質問に答えると、自分の運用がどの不具合に遭遇している可能性があるかと、それぞれの対処の経路が分かる。</p>
+
+    <p class="meta">この頁はブラウザの中で全件を実行し、何もネットワークに送信しない。ページの読み込みの段の標準のGitHub Pagesの記録の他に、追跡の道具は無い。</p>
+
+    <h2>5つの質問</h2>
+
+    <div class="q">
+        <p class="q-title">1. あなたのClaude Codeの版は2.1.143以降ですか?</p>
+        <p class="q-detail"><code>claude --version</code>で確認できる。findとgrepの入れ子の作業者の起動の不具合 (起票#60325) は2.1.143で初めて再現された。</p>
+        <div class="q-options">
+            <label><input type="radio" name="q1" value="yes"> はい</label>
+            <label><input type="radio" name="q1" value="no"> いいえ / それ以前</label>
+            <label><input type="radio" name="q1" value="unknown"> 分からない</label>
+        </div>
+    </div>
+
+    <div class="q">
+        <p class="q-title">2. <code>~/.claude/CLAUDE.md</code> またはプロジェクトの<code>CLAUDE.md</code>に「Xはしない」という明示の規則を書いていますか?</p>
+        <p class="q-detail">例: 「填し言葉(『あなたは正しい』 等)を出すな」 「<code>rm -rf</code>は絶対に使うな」 「確認なしにmainへpushするな」。 規則が文脈に読み込まれている状態で、模型がセッションの中で規則を違反した経験がある場合、起票#60339の事例に該当する。</p>
+        <div class="q-options">
+            <label><input type="radio" name="q2" value="yes"> はい、違反を観察した</label>
+            <label><input type="radio" name="q2" value="rule_only"> 規則はあるが違反は未観察</label>
+            <label><input type="radio" name="q2" value="no"> 規則は書いていない</label>
+        </div>
+    </div>
+
+    <div class="q">
+        <p class="q-title">3. CLAUDE.mdで<code>TaskCreate</code> / <code>TaskList</code>の使用を明示で禁じていますか?</p>
+        <p class="q-detail">別の作業の追跡の仕組みを使っているために、 CLAUDE.mdで「Do NOT use TaskCreate」 のような明示の禁止を書いている場合に該当。 仕組みの側が定期的に「TaskCreateの使用を考慮しろ」 の促しを差し込み、 CLAUDE.mdの opt-out を素通りする経路の起票#60323に遭遇する。</p>
+        <div class="q-options">
+            <label><input type="radio" name="q3" value="yes"> はい</label>
+            <label><input type="radio" name="q3" value="no"> いいえ</label>
+        </div>
+    </div>
+
+    <div class="q">
+        <p class="q-title">4. CLAUDE.mdに「セッションの開始の段で必ずXを実行する」 のような手順を書いていますか?</p>
+        <p class="q-detail">例: 「セッションの開始の段で特定のファイルを作成」 「文脈の読み込みを実行」。 規則が読み込まれた状態で、 手順が沈黙で省略される(エラーも警告もなし)経験がある場合、 起票#60337に該当する。 模型は手順が完了したかのように作業の段を進める。</p>
+        <div class="q-options">
+            <label><input type="radio" name="q4" value="yes_skipped"> はい、沈黙で省略される事がある</label>
+            <label><input type="radio" name="q4" value="yes_works"> はい、確実に動作している</label>
+            <label><input type="radio" name="q4" value="no"> そのような手順は書いていない</label>
+        </div>
+    </div>
+
+    <div class="q">
+        <p class="q-title">5. Claude Codeを安全の検証の作業(CVE再現、 exploitの起草、 侵入試験)で使っていますか?</p>
+        <p class="q-detail">命令の正確性が決定的に重要な作業。 模型がセッションの中で確立した正しい命令 (例: <code>./chage_pwn root</code>) を参照せず、 別の蓋然性の高い命令 (例: <code>./exploit</code>) を本文に出力した経験がある場合、 起票#60340に該当する。 再現の手順の引き渡しの文書に特に危険。</p>
+        <div class="q-options">
+            <label><input type="radio" name="q5" value="yes_fabricated"> はい、作話を観察した</label>
+            <label><input type="radio" name="q5" value="yes_clean"> はい、作話は未観察</label>
+            <label><input type="radio" name="q5" value="no"> 安全の検証の作業はしていない</label>
+        </div>
+    </div>
+
+    <button class="run" onclick="diagnose()">診断する</button>
+
+    <div id="result" class="result"></div>
+
+    <div class="cta">
+        <p class="cta-title">長い整理が必要な場合</p>
+        <p>この5問の診断は、2026年5月18-19日に報告された5件の不具合を対象にする。 出典の本である<a href="https://yurukusa.gumroad.com/l/claim-verify-handbook">Claude Code Claim-Verify Handbook</a>では、 GitHubの起票の場の130件の事例、 14件の防衛の手順、 5件の自動の点検の道具を整理する。 2026年5月22日発売、 19米ドル、 約89頁のPDF。</p>
+        <p>試し読みの公開済のGist (本文の章1の全件、 約16,000字): <a href="https://gist.github.com/yurukusa/6dd608049064ed66c54f1a545a7b47a8">こちら</a>。</p>
+        <p>本書が引用する公開済のhookの集まり: <a href="https://github.com/yurukusa/cc-safe-setup">cc-safe-setup</a> (745件以上のhook、 30,000件以上のインストール)。</p>
+    </div>
+
+    <h2>出典</h2>
+    <ul>
+        <li><a href="https://github.com/anthropics/claude-code/issues/60325">#60325</a> — findとgrepの覆いの関数が2.1.143で入れ子の作業者を起動 (ARGV0 dispatchの不在)。 独立な英語の技術解説: <a href="https://gist.github.com/yurukusa/2ea1fb22ba55968d5fd9afbb624a99ad">Gist</a>。</li>
+        <li><a href="https://github.com/anthropics/claude-code/issues/60339">#60339</a> — 模型が明示の規則の段の即時の再違反 (CLAUDE.mdの読み込み済の規則の段)。 独立な英語の構造の系統の解説: <a href="https://gist.github.com/yurukusa/2dc4aa09ce358b27427ac2c5a5b48cb5">Gist</a>。</li>
+        <li><a href="https://github.com/anthropics/claude-code/issues/60340">#60340</a> — 模型がセッションの中で確立した命令を参照せず、 作話の命令を本文に出力。</li>
+        <li><a href="https://github.com/anthropics/claude-code/issues/60323">#60323</a> — TaskCreateの促しがCLAUDE.mdの明示の禁止に対して継続的に発火。</li>
+        <li><a href="https://github.com/anthropics/claude-code/issues/60337">#60337</a> — CLAUDE.mdの開始の手順の沈黙の省略。</li>
+    </ul>
+
+    <footer>
+        <p><a href="https://yurukusa.github.io/">yurukusa</a>による。独立な技術解説。Anthropicとの所属の関係は無い。</p>
+        <p class="meta">この頁は static の HTML と JS のみ。 何も外部に送信しない事は、 ブラウザの開発者の道具で source を表示すれば確認できる。</p>
+    </footer>
+</div>
+
+<script>
+const BUGS = {
+    "60325": {
+        title: "findとgrepの覆いの関数が入れ子の作業者を起動 (2.1.143)",
+        hitWhen: (a) => a.q1 === "yes",
+        weakWhen: (a) => a.q1 === "unknown",
+        fix: `<strong>対処の経路</strong>: 道具の呼び出しを<code>command</code>で前置する (例: <code>command find . -name '*.md'</code> / <code>command grep -r 'TODO' src/</code>)。 grepの作業は<code>rg</code> (ripgrep) への切り替えで覆いの関数を回避できる。 4件の対処の経路の全件の整理: <a href="https://gist.github.com/yurukusa/2ea1fb22ba55968d5fd9afbb624a99ad">英語のGist</a>。`
+    },
+    "60339": {
+        title: "CLAUDE.mdの規則の沈黙の違反",
+        hitWhen: (a) => a.q2 === "yes",
+        weakWhen: (a) => a.q2 === "rule_only",
+        fix: `<strong>対処の経路</strong>: 重要な規則は CLAUDE.md の段ではなく、 仕組みの側の決定的な強制の経路(hook)に移動する。 <code>PreToolUse</code>のhookが最も低コストの経路。 4件の強制の経路の全件の整理: <a href="https://gist.github.com/yurukusa/2dc4aa09ce358b27427ac2c5a5b48cb5">英語のGist</a>。`
+    },
+    "60323": {
+        title: "TaskCreateの促しがCLAUDE.mdのopt-outを素通り",
+        hitWhen: (a) => a.q3 === "yes",
+        fix: `<strong>対処の経路</strong>: 清潔な opt-out の経路は現在は無い。 促しは利用者の設定の経路で抑制不可能。 当面の経路は、 促しを応答の中で無視 (反応せず、 別の作業に進める) し、 既存の別の作業の追跡の仕組みに依存する。 上流の段の追跡: <a href="https://github.com/anthropics/claude-code/issues/60323">#60323</a> で <code>disableTaskCreateReminder</code> の設定の追加が提案されている。`
+    },
+    "60337": {
+        title: "CLAUDE.mdの開始の手順の沈黙の省略",
+        hitWhen: (a) => a.q4 === "yes_skipped",
+        fix: `<strong>対処の経路</strong>: 模型の自己の実行に依存しない。 開始の手順は<code>SessionStart</code>のhook (決定的、 毎回のセッションで発火) に移動する、 または、 模型が明示的に呼び出す必要がある道具の段で包む。 模型の沈黙の省略は#60339と同じ「認識はあるが止まらない」 の系統の事例。`
+    },
+    "60340": {
+        title: "安全の検証の段の作話の命令",
+        hitWhen: (a) => a.q5 === "yes_fabricated",
+        weakWhen: (a) => a.q5 === "yes_clean",
+        fix: `<strong>対処の経路</strong>: 引き渡しの文書 (再現の手順、 運用の指示書、 事故の整理) の起草の段で、 全件の命令をセッションの実際の記録に対して照合する手順を組み込む。 CVEとexploitの作業の段で特に決定的。 自動の予防の段で、 <code>PostToolUse</code>のhookで<code>Write</code>と<code>Edit</code>の段の出力の命令を、 セッションのBashの記録の段に対して照合する経路が構造の対処。`
+    }
+};
+
+function diagnose() {
+    const answers = {};
+    for (let i = 1; i <= 5; i++) {
+        const checked = document.querySelector(`input[name="q${i}"]:checked`);
+        answers[`q${i}`] = checked ? checked.value : null;
+    }
+
+    if (Object.values(answers).some(v => v === null)) {
+        alert("5つの質問の全件に答えてから診断してください。");
+        return;
+    }
+
+    const result = document.getElementById("result");
+    let html = `<h2>診断の結果</h2>`;
+    let hitCount = 0;
+    let weakCount = 0;
+
+    for (const [id, bug] of Object.entries(BUGS)) {
+        if (bug.hitWhen(answers)) {
+            hitCount++;
+            html += `<div class="verdict hit">
+                <p><span class="verdict-id hit">#${id} — 該当の可能性が高い</span></p>
+                <p class="verdict-title">${bug.title}</p>
+                <div class="verdict-fix"><p class="verdict-fix-title">対処</p>${bug.fix}</div>
+            </div>`;
+        } else if (bug.weakWhen && bug.weakWhen(answers)) {
+            weakCount++;
+            html += `<div class="verdict">
+                <p><span class="verdict-id">#${id} — リスクあり (確認推奨)</span></p>
+                <p class="verdict-title">${bug.title}</p>
+                <div class="verdict-fix"><p class="verdict-fix-title">確認の価値あり</p>${bug.fix}</div>
+            </div>`;
+        } else {
+            html += `<div class="verdict safe">
+                <p><span class="verdict-id safe">#${id} — 該当しない (回答に基づく)</span></p>
+                <p class="verdict-title">${bug.title}</p>
+            </div>`;
+        }
+    }
+
+    html += `<p class="meta">概要: ${hitCount}件が該当の可能性が高い · ${weakCount}件がリスクあり · ${5 - hitCount - weakCount}件は該当しない。</p>`;
+
+    if (hitCount > 0) {
+        html += `<p class="meta">各該当の事例の構造の系統は、 Claim-Verify Handbook で整理する。 当面の対処は今日できる、 構造の系統の理解は次の事例の予防に直結する。</p>`;
+    } else {
+        html += `<p class="meta">回答に基づくと、 5件の新規の事例には該当しない。 構造の系統 (認識はあるが止まらない、 主張と実態の乖離) は他の場面でも観察されるため、 長い整理が必要な場合は出典の本を参照。</p>`;
+    }
+
+    result.innerHTML = html;
+    result.classList.add("show");
+    result.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+</script>
+</body>
+</html>
