@@ -723,6 +723,28 @@
                     <span class="card-arrow">↗</span>
                 </a>
 
+                <a href="https://gist.github.com/yurukusa/2dc4aa09ce358b27427ac2c5a5b48cb5?utm_source=yurukusa-io&utm_medium=card&utm_campaign=claude-md-rules-violated-60339" class="card" target="_blank" rel="noopener">
+                    <div class="card-tags">
+                        <span class="tag tag-new">2026-05-19</span>
+                        <span class="tag tag-free">Free</span>
+                        <span class="tag tag-genre">Structural Analysis</span>
+                    </div>
+                    <h3>Your CLAUDE.md Rules Are in Context. The Model Still Violates Them. Here's Why.</h3>
+                    <p class="card-desc">~1,686-word structural analysis of Issue #60339 (and the broader pattern across `anthropic/claude-code` reports): the model recognizes a `CLAUDE.md` rule, can recite it verbatim, and still violates it on the very next response — even immediately after the user corrects it. Token-level loading is not the problem; the missing piece is the bridge from "rule is recognized" to "rule stops the next action." Three reasons unpacked: pattern matching beats instruction following under conversational pressure; no post-generation verification gate; the harness doesn't intercept. Four enforcement paths that move the check out of the model and into the harness, in implementation-cost order: hook-level intercepts (`PreToolUse` / `PostToolUse` with cc-safe-setup's 745+ examples), pre-action structured declarations, wrapping side-effect tools (the `agentport` / `leash` pattern), and user message channel injection. Diagnostic test for operators: pick a rule, classify it as cosmetic or operationally important, run a one-session repro, and move it to a deterministic check layer if it fails. Pure structural analysis, no version dependency, applicable to any rule on any surface (`CLAUDE.md`, `settings.json`, `memory`, sub-agent prompts).</p>
+                    <span class="card-arrow">↗</span>
+                </a>
+
+                <a href="https://gist.github.com/yurukusa/2ea1fb22ba55968d5fd9afbb624a99ad?utm_source=yurukusa-io&utm_medium=card&utm_campaign=find-grep-nested-agent-60325" class="card" target="_blank" rel="noopener">
+                    <div class="card-tags">
+                        <span class="tag tag-new">2026-05-19</span>
+                        <span class="tag tag-free">Free</span>
+                        <span class="tag tag-genre">Forensic Analysis</span>
+                    </div>
+                    <h3>Claude Code 2.1.143: find and grep Silently Launch a Nested Agent Instead of Running</h3>
+                    <p class="card-desc">~1,228-word technical write-up of Issue #60325 on Claude Code 2.1.143 (macOS, zsh confirmed; Linux likely affected): the shell-snapshot-injected `find` and `grep` shadow functions silently launch a nested Claude agent instead of dispatching to the embedded `bfs` / `ugrep` applets. Your `find` and `grep` calls inside the Bash tool may return agent text instead of file results, with no error raised. Root cause: the `ARGV0=bfs` / `ARGV0=ugrep` dispatch is broken in the 2.1.143 native binary, and the guard clause only falls back when the binary is missing — not when dispatch fails. Direct reproduction shown. Four workarounds in implementation-cost order: prefix calls with `command find` / `command grep`, switch grep work to `rg` (ripgrep), `unset -f find grep` at session start, or use cc-safe-setup's argv0-dispatch-guard hook. Especially dangerous for unattended workflows where corrupted `find`/`grep` output feeds destructive operations downstream. The 2.1.143 changelog's wrapper fix doesn't cover this case.</p>
+                    <span class="card-arrow">↗</span>
+                </a>
+
                 <a href="https://gist.github.com/yurukusa/03a908c6b3e33b66d3362a93073b7e4e?utm_source=yurukusa-io&utm_medium=card&utm_campaign=issue-tracker-methodology-20260517" class="card" target="_blank" rel="noopener">
                     <div class="card-tags">
                         <span class="tag tag-new">2026-05-17</span>
