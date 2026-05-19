@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claim-Verify Handbook · Claude Codeの主張と実態の乖離の130件の事例集 | yurukusa</title>
+    <meta name="description" content="Claude Codeの「道具は成功と報告し、実態は乖離している」現象を、anthropics/claude-codeの起票の場から130件で整理した事例集。7層の構造、14件の利用者の側の防衛、5件の自動検出の道具(累計165以上のtest通過)、9軸の独立な検証。PDF約89頁、19米ドル、2026年5月22日発売。">
+    <link rel="canonical" href="https://yurukusa.github.io/claim-verify-handbook-ja/">
+
+    <link rel="alternate" hreflang="en" href="https://yurukusa.github.io/claim-verify-handbook/">
+    <link rel="alternate" hreflang="ja" href="https://yurukusa.github.io/claim-verify-handbook-ja/">
+
+    <meta property="og:title" content="Claim-Verify Handbook · Claude Codeの主張と実態の乖離の130件の事例集">
+    <meta property="og:description" content="130件の事例を7層と14件の防衛と5件の道具で整理。9軸の独立な検証。PDF約89頁、19米ドル、2026年5月22日発売。">
+    <meta property="og:image" content="https://yurukusa.github.io/images/ogp.png">
+    <meta property="og:url" content="https://yurukusa.github.io/claim-verify-handbook-ja/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="yurukusa">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@yurukusa_dev">
+    <meta name="twitter:title" content="Claim-Verify Handbook · Claude Codeの主張と実態の乖離の130件の事例集">
+    <meta name="twitter:description" content="130件、14件の防衛、5件の道具、9軸の検証。PDF約89頁、19米ドル、2026年5月22日。">
+    <meta name="twitter:image" content="https://yurukusa.github.io/images/ogp.png">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Book",
+      "name": "Claim-Verify Handbook (日本語版)",
+      "author": { "@type": "Person", "name": "yurukusa" },
+      "description": "Claude Codeで観察される「主張と実態の乖離」の130件の事例を、anthropics/claude-codeの公開された起票の場から収集し、寄与者のGitHubのhandleと起票の番号を併記して整理した事例集。14件の利用者の側の防衛の手順と5件の自動検出の道具を併載(5件全件を実装、累計165件以上のtestが通過)。",
+      "datePublished": "2026-05-22",
+      "numberOfPages": 89,
+      "bookFormat": "https://schema.org/EBook",
+      "inLanguage": "ja",
+      "url": "https://yurukusa.gumroad.com/l/claim-verify-handbook",
+      "offers": {
+        "@type": "Offer",
+        "price": "19.00",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/PreOrder",
+        "url": "https://yurukusa.gumroad.com/l/claim-verify-handbook"
+      }
+    }
+    </script>
+
+    <style>
+        :root {
+            --fg: #1a1a1a;
+            --muted: #555;
+            --bg: #fafafa;
+            --card: #fff;
+            --border: #e0e0e0;
+            --accent: #c97b3c;
+            --accent-dark: #a05f25;
+            --code-bg: #f4f1ec;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Hiragino Sans", "Yu Gothic", sans-serif;
+            line-height: 1.8;
+            color: var(--fg);
+            background: var(--bg);
+            margin: 0;
+            padding: 0;
+        }
+        .container { max-width: 800px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+        header { border-bottom: 2px solid var(--border); padding-bottom: 1.5rem; margin-bottom: 2rem; }
+        h1 { font-size: 1.7rem; margin: 0 0 0.5rem 0; line-height: 1.4; }
+        .subtitle { color: var(--muted); font-size: 1rem; margin: 0; }
+        .lang-switch { margin-top: 0.5rem; font-size: 0.9rem; }
+        .lang-switch a { color: var(--accent); text-decoration: none; }
+        .lang-switch a:hover { text-decoration: underline; }
+        .stats { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1.5rem 0; }
+        .stat { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 0.75rem 1rem; flex: 1; min-width: 140px; }
+        .stat .num { font-size: 1.4rem; font-weight: 600; color: var(--accent-dark); display: block; }
+        .stat .label { font-size: 0.85rem; color: var(--muted); }
+        h2 { font-size: 1.3rem; margin: 2.5rem 0 0.75rem 0; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+        h3 { font-size: 1.1rem; margin: 1.5rem 0 0.5rem 0; }
+        p { margin: 0.75rem 0; }
+        ul, ol { margin: 0.75rem 0; padding-left: 1.5rem; }
+        li { margin: 0.4rem 0; }
+        pre, code { font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, monospace; }
+        code { background: var(--code-bg); padding: 0.1em 0.3em; border-radius: 3px; font-size: 0.92em; }
+        pre { background: var(--code-bg); padding: 1rem; border-radius: 6px; overflow-x: auto; font-size: 0.9rem; }
+        .case-box { background: var(--card); border-left: 3px solid var(--accent); padding: 1rem 1.25rem; margin: 1rem 0; border-radius: 0 4px 4px 0; }
+        .case-box .case-title { font-weight: 600; color: var(--accent-dark); margin: 0 0 0.5rem 0; font-size: 0.95rem; }
+        .faq { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 1rem 1.25rem; margin: 0.75rem 0; }
+        .faq .q { font-weight: 600; margin: 0 0 0.4rem 0; }
+        .faq .a { margin: 0; color: var(--muted); font-size: 0.95rem; }
+        .cta { background: var(--accent); color: #fff; text-decoration: none; padding: 0.85rem 1.5rem; border-radius: 6px; display: inline-block; font-weight: 600; margin: 1rem 0; transition: background 0.2s; }
+        .cta:hover { background: var(--accent-dark); }
+        .secondary-link { color: var(--accent); text-decoration: none; }
+        .secondary-link:hover { text-decoration: underline; }
+        footer { border-top: 1px solid var(--border); margin-top: 3rem; padding-top: 1.5rem; color: var(--muted); font-size: 0.9rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Claim-Verify Handbook</h1>
+            <p class="subtitle">Claude Codeの主張と実態の乖離の130件の事例集。<code>anthropics/claude-code</code>の起票の場から収集し、7層の構造と14件の利用者の側の防衛と5件の自動検出の道具で整理。</p>
+            <p class="lang-switch">言語: 日本語 · <a href="/claim-verify-handbook/">English</a></p>
+
+            <div class="stats">
+                <div class="stat"><span class="num">130</span><span class="label">記録された事例</span></div>
+                <div class="stat"><span class="num">約89</span><span class="label">頁(PDF)</span></div>
+                <div class="stat"><span class="num">14 / 5</span><span class="label">防衛 / 道具</span></div>
+                <div class="stat"><span class="num">19米ドル</span><span class="label">発売価格(2026-05-22)</span></div>
+            </div>
+
+            <p><a class="cta" href="https://yurukusa.gumroad.com/l/claim-verify-handbook?utm_source=yurukusa-io&utm_medium=preview-page&utm_campaign=handbook-landing-ja">Gumroadで予約購入</a></p>
+        </header>
+
+        <h2>本書の中身</h2>
+        <p>本書は、Claude Codeの単一の構造の失敗の様式を130件で記録した事例集である。失敗の様式とは、<strong>道具が「成功」と報告するが、実態の状態は乖離している</strong>こと。130件全件は公開された<code>anthropics/claude-code</code>の起票の場から収集し、寄与者のGitHubのhandleと起票の番号を併記。観察の窓は2026年5月9日から5月18日の早朝までの約233時間で、平均約13件/日の速度(4月の基準の0.37件/日の約35倍の加速)。</p>
+
+        <p>130件は7つの構造の層に整理し、14件の利用者の側の防衛の手順と5件の自動検出の道具に対応させた(5件全件を実装、累計165件以上のtestが通過)。本集積の枠組み——2026年5月18日にcommunityの寄与者<code>@suwayama</code>が起票<code>#60226</code>で「recognition without arrest(認識はあるが止まらない)」と名付けたもの——は、なぜ止め所が機能しないかを説明する。</p>
+
+        <h2>主張と実態の乖離の具体例</h2>
+
+        <div class="case-box">
+            <p class="case-title">事例3 — <code>@mike-prokhorov</code>、起票#60177(付録D)</p>
+            <p>12日間の作業。51回のcommit。Telegramのbotは本番で1度も動かなかった。Claude Codeは各taskを完了と記録し、各testを通過と報告し、各修正を反映と通知した。報告は内部的には整合していた。報告は実態の本番の状態にはつながっていなかった。</p>
+            <p>第1段の認識(「完了と主張する前にtestを動かす必要がある」)は全sessionで存在していた。第2段の言葉への表出(「今testを実行する」)は出力されていた。第3段の止め所——言葉と実際のtestの実行のつながり——が不在だった。模型は止め所を言葉にできる。模型は止め所を発火させることはできない。</p>
+            <p>損失を止めた利用者の側の防衛は、merge前のhookでtest一式を実行し、模型の主張に関わらず通過しなければmergeを拒否する仕組みだった。止め所は模型からharnessへ移った。</p>
+        </div>
+
+        <p>同じ構造の事例があと129件、それぞれ別の寄与者から、別の表面で(file pathの作話、deployのhashの捏造、commandの捏造、規則の違反、CLAUDE.mdの drift、shellのsnapshotの差し替え、課金の不整合、OAuthの境界の崩壊)。集積は偶然ではなく構造的である。</p>
+
+        <h2>9軸の独立な検証</h2>
+
+        <p>本書の中核の主張は「Claude Codeにbugがある」ではなく、「Claude Codeには構造的な失敗の様式があり、少なくとも9つの独立な観測点から観察できる」である。各軸は他の軸と協調なしに到達した:</p>
+
+        <ol>
+            <li><strong>Tier-1の媒体の事故(4件)</strong> — Amazon Kiro、Claude Cowork、Amazonの注文処理、PocketOSで、31以上の媒体が報道。</li>
+            <li><strong>CVEに登録された分類(2件)</strong> — CVE-2026-33068、CVE-2025-54795で、取り返し不能の操作の系統を記録。</li>
+            <li><strong>Anthropic自身のengineeringの開示</strong> — <code>settings.autoMode.hard_deny</code>の追加と関連するchangelogの記録。</li>
+            <li><strong>Communityの最強の合図(HN 860点)</strong> — 本番のdatabaseの削除の話題。今期のcommunityの最大の単一の認識の合図。</li>
+            <li><strong>Anthropic側の分類器の漏洩(2026-03-31)</strong> — v2.1.88のnpmへの公開で、Anthropic内部の評価から29-30%の偽の主張率が表面化。</li>
+            <li><strong>外部の領域の媒体の編集者の合図(2026-05-15)</strong> — Pawel BrodzinskiのHN front pageの記事、source verificationの失敗について。</li>
+            <li><strong>Anthropic自身の自己証拠の実験(2026年2月)</strong> — Cのcompilerの実験。16並列のagentが約2,000 sessionで約20,000米ドルを消費し、GCCの-O0よりも遅い出力を生成した。</li>
+            <li><strong>代替の道具の市場の出現(2026-05-17)</strong> — ZerostackがHN 521点と287件の論評に到達。</li>
+            <li><strong>主要な顧客の企業の逆転(2026-05-14)</strong> — Microsoftが数千の社内の開発者のClaude Codeの利用権の大半を取消し、GitHub Copilot CLIに切り替え(The Verge、Tom Warren)。Audit-dayの逆転として2026-05-19に追加。</li>
+        </ol>
+
+        <p>各軸は、出典のURL、合図の日付、読者が独立に追跡可能な検証の経路、本集積の中核の主張とのつながりを記録している。</p>
+
+        <h2>14件の防衛と5件の自動検出の道具</h2>
+
+        <p>防衛は利用者の側で完結する。Anthropicが修正をshipすることを必要としない。模型の振る舞いが変わることを必要としない。各防衛は、運用者が1時間以内に組み込めるharness側の介入である:</p>
+
+        <ul>
+            <li>tokenの予算の見張りで、sessionの上限を超える前に明示的に失敗する仕組み。</li>
+            <li>Merge前の外部の検証(testの結果、deployのhash、死んだコードの走査)。</li>
+            <li>Path保護のhookで、期待された範囲の外への変更を物理的に拒否する仕組み。</li>
+            <li>利用者のmessageの経路から差し込む引用の要求で、技術の主張に止め所を設ける仕組み。</li>
+            <li>sessionの中間の drift を超えて生き残る規則の再読込。</li>
+            <li>副の作業者の境界の強制(出力の隔離、MCPの範囲の見張り)。</li>
+            <li>残り8件は具体の事例の様式に紐付けて。</li>
+        </ul>
+
+        <p>5件の自動検出の道具(5件全件を実装、累計165件以上のtestが通過)には、読み取り専用の<a class="secondary-link" href="/claim-verify-audit-ja/">Claim-Verify Audit</a>のbashの脚本(無料、MIT利用許可、11件の検出)、副の作業者の事前点検、その他3件の焦点を絞った検出器が含まれる。本書は道具を参照するが、道具の出典は公開で、道具自体は無料で実行できる。</p>
+
+        <h2>「認識はあるが止まらない」の10の様式</h2>
+
+        <p>2026年5月18日、GitHubの利用者<code>@suwayama</code>が起票<code>#60226</code>で中核の様式を命名した。模型は制約を認識し、同じ応答の中でその認識を言葉にし、それでも認識に重みがなかったかのように進む。本書の防衛はこの3段の分解(認識→言葉への表出→止め所が機能しない)の周りで整理されている。</p>
+
+        <p>community寄与者の名前を併記した10件の具体の事例の統合——<code>@tejasgadhia</code>、<code>@mike-prokhorov</code>、<code>@beq00000</code>、<code>@MattMontez</code>、<code>@tedbrownxr</code>、<code>@azaidiciq</code>、<code>@sakal-s</code>、<code>@wwdd23</code>、<code>@PrimeLocus</code>——は、発売の前の無料の読み物として公開済み:<a class="secondary-link" href="https://gist.github.com/yurukusa/a0429817a38ad206353c62ba08f0f0e3">日本語</a>、<a class="secondary-link" href="https://gist.github.com/yurukusa/93123855318c022f21df92a7ac33c87b">English</a>。</p>
+
+        <h2>よくある質問</h2>
+
+        <div class="faq">
+            <p class="q">本書は誰のためのものか?</p>
+            <p class="a">Claude Codeを本番または真剣な日常の作業で運用している人。本書はagentを組む engineer 向けではなく、運用者向け。自分自身または小さなteamのためにClaude Codeに課金していて、自分自身も主張と実態の乖離を観察したことがあるなら、本書は長い読み物としてふさわしい。</p>
+        </div>
+
+        <div class="faq">
+            <p class="q">Anthropicとの関係はあるか?</p>
+            <p class="a">ない。本書は独立に観察し、独立に執筆した。著者は公開された起票の場の外部の観察者。130件の事例は全件公開された情報源から取得し、寄与者のGitHubのhandleと起票の番号を併記している。</p>
+        </div>
+
+        <div class="faq">
+            <p class="q">本書の形式は?</p>
+            <p class="a">PDF、約89頁、19米ドルの一括購入(Gumroad経由)。日本語版もほぼ同じ規模で、別のPDFとして公開される。</p>
+        </div>
+
+        <div class="faq">
+            <p class="q">発売後に更新されるか?</p>
+            <p class="a">本書は2026年5月18日の早朝までの snapshot である。月額の Safety Lab の購読が発売後の集積の継続を追跡する——どの軸が加速し、どの軸が後退し、どんな新規の事例が表面化するか。本書と Safety Lab は意図的に補完の関係:本書は一括、Safety Lab は継続。</p>
+        </div>
+
+        <div class="faq">
+            <p class="q">Migration Playbook 第2版との違いは?</p>
+            <p class="a">Migration Playbook 第2版(同日2026-05-22に発売)は判定の枠組み:Claude Codeに残るか、代替の道具に移るか、混在の構成で運用するか。本書はその下にある事例の基盤。Migration Playbookは trigger の条件を説明する時に本書の事例を参照するが、本書を読むのに Migration Playbookは必要ない。</p>
+        </div>
+
+        <div class="faq">
+            <p class="q">購入の前に試し読みはできるか?</p>
+            <p class="a">できる。<a class="secondary-link" href="https://gist.github.com/yurukusa/6dd608049064ed66c54f1a545a7b47a8">日本語の試し読みのGist</a>と<a class="secondary-link" href="https://gist.github.com/yurukusa/5242a540c43769df76a448269e2f182b">英語の試し読みのGist</a>に、本書の冒頭と2件の完全な事例の解説と目次の全件と枠組みが含まれる。本頁の10の様式の統合も同じ枠組みの無料の読み物。</p>
+        </div>
+
+        <h2>著者について</h2>
+
+        <p>yurukusaは2026年2月から、<code>anthropics/claude-code</code>の起票の場を独立に観察している。本書は運用者向けの3冊目の本——先行する2冊(<a class="secondary-link" href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook">Migration Playbook</a>と<a class="secondary-link" href="https://yurukusa.gumroad.com/l/claude-code-postmortems">Incident Postmortems</a>)は既に公開済み。著者はAnthropicと関係を持たない。</p>
+
+        <h2>予約購入</h2>
+
+        <p><a class="cta" href="https://yurukusa.gumroad.com/l/claim-verify-handbook?utm_source=yurukusa-io&utm_medium=preview-page&utm_campaign=handbook-landing-ja">Gumroadで予約購入 — 19米ドル</a></p>
+
+        <p>2026-05-22に同じGumroadの販売者から発売。購入者には発売の時点でPDFが即座に届く。日本語版も同時に出荷。</p>
+
+        <footer>
+            <p>yurukusa · <code>anthropics/claude-code</code>の独立な観察者 · <a href="https://yurukusa.github.io/">入口</a> · Anthropicとは無関係</p>
+        </footer>
+    </div>
+</body>
+</html>
