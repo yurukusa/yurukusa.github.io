@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Headless Claude Code Billing Pre-flight — A Reference for `claude -p` Automation Operators</title>
+<meta name="description" content="A canonical pre-cliff reference for operators running claude -p automation (bot pools, CI, scheduled jobs). The model cannot tell you which credit bucket your invocations charge — this page tells you how to verify in 15 minutes.">
+<link rel="canonical" href="https://yurukusa.github.io/headless-claude-p-cliff/">
+
+<meta property="og:title" content="Headless Claude Code Billing Pre-flight — A Reference for `claude -p` Automation Operators">
+<meta property="og:description" content="The model gives confident-but-wrong answers about how claude -p invocations bill. The €84.68 case (#61704) shows what happens when automation depends on those answers. This is the pre-flight protocol for verifying routing before scaling.">
+<meta property="og:url" content="https://yurukusa.github.io/headless-claude-p-cliff/">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@yurukusa_dev">
+
+<style>
+  :root {
+    --bg: #0a0a14; --surface: #16162a; --border: #2a2a44;
+    --text: #e0e0f0; --dim: #8888aa; --accent: #5b8fff;
+    --green: #4ade80; --orange: #fb923c; --red: #f87171; --paid: #f0c040;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, "Hiragino Sans", "Yu Gothic", "Segoe UI", sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; min-height: 100vh; }
+  .container { max-width: 880px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+
+  .hero { text-align: center; padding: 2rem 0 3rem; border-bottom: 1px solid var(--border); margin-bottom: 3rem; }
+  .label { display: inline-block; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); background: rgba(91,143,255,0.15); border: 1px solid var(--accent); border-radius: 99px; padding: 0.3rem 1rem; margin-bottom: 1.2rem; }
+  h1 { font-size: clamp(1.7rem, 4.5vw, 2.4rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 1rem; }
+  .hero p { color: var(--dim); max-width: 640px; margin: 0 auto; font-size: 1.05rem; }
+  .urgency { background: rgba(248,113,113,0.1); border: 1px solid var(--red); border-radius: 8px; padding: 1rem 1.5rem; margin: 2rem auto 0; max-width: 640px; font-size: 0.95rem; }
+  .urgency strong { color: var(--red); }
+
+  h2 { font-size: 1.4rem; font-weight: 700; margin: 3rem 0 1rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); letter-spacing: -0.01em; }
+  h3 { font-size: 1.1rem; font-weight: 600; margin: 2rem 0 0.8rem; color: var(--accent); }
+  h4 { font-size: 1rem; font-weight: 600; margin: 1.5rem 0 0.5rem; color: var(--text); }
+  p { margin-bottom: 1rem; }
+  ol, ul { padding-left: 1.6rem; margin-bottom: 1rem; }
+  li { margin-bottom: 0.4rem; }
+  strong { color: #fff; }
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.15s; }
+  a:hover { border-bottom-color: var(--accent); }
+  code { background: rgba(255,255,255,0.08); padding: 0.1rem 0.4rem; border-radius: 3px; font-size: 0.9em; font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+  pre { background: #0d0d1f; border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem; overflow-x: auto; margin: 1rem 0 1.5rem; font-size: 0.85rem; line-height: 1.5; }
+  pre code { background: none; padding: 0; font-size: inherit; }
+
+  .toc { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; margin-bottom: 3rem; }
+  .toc h2 { font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim); margin: 0 0 0.8rem; padding: 0; border: none; font-weight: 600; }
+  .toc ol { padding-left: 1.5rem; margin: 0; }
+  .toc li { margin-bottom: 0.35rem; }
+  .toc a { color: var(--text); border: none; }
+  .toc a:hover { color: var(--accent); }
+
+  .callout { background: rgba(91,143,255,0.07); border-left: 3px solid var(--accent); padding: 1rem 1.2rem; margin: 1.5rem 0; border-radius: 0 6px 6px 0; }
+  .callout.warn { background: rgba(251,146,60,0.07); border-left-color: var(--orange); }
+  .callout.warn strong { color: var(--orange); }
+  .callout.danger { background: rgba(248,113,113,0.07); border-left-color: var(--red); }
+  .callout.danger strong { color: var(--red); }
+  .callout p:last-child { margin-bottom: 0; }
+
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; font-size: 0.92rem; }
+  th, td { padding: 0.6rem 0.8rem; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+  th { color: var(--dim); font-weight: 600; font-size: 0.85rem; letter-spacing: 0.02em; }
+
+  .step { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem 1.4rem; margin-bottom: 1rem; }
+  .step .step-num { display: inline-block; background: var(--accent); color: var(--bg); font-weight: 700; padding: 0.15rem 0.6rem; border-radius: 4px; font-size: 0.8rem; margin-right: 0.6rem; vertical-align: middle; }
+  .step h4 { display: inline; margin: 0; color: var(--text); }
+
+  .related-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem; margin-bottom: 0.8rem; text-decoration: none; color: var(--text); display: block; border-left: 3px solid transparent; transition: border-color 0.15s; }
+  .related-card:hover { border-left-color: var(--accent); border-bottom-color: var(--border); }
+  .related-card h4 { margin: 0 0 0.3rem; color: var(--accent); }
+  .related-card p { color: var(--dim); font-size: 0.9rem; margin: 0; }
+
+  .disclosure { background: var(--surface); border: 1px dashed var(--border); border-radius: 8px; padding: 1rem 1.4rem; margin: 2.5rem 0 1rem; font-size: 0.88rem; color: var(--dim); }
+  .disclosure strong { color: var(--text); }
+
+  .footer { color: var(--dim); font-size: 0.85rem; margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); text-align: center; }
+  .footer a { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="hero">
+  <div class="label">Published 2026-05-24 · Cliff 2026-06-15</div>
+  <h1>Headless Claude Code Billing Pre-flight</h1>
+  <p>A reference for operators running <code>claude -p</code> automation — bot pools, CI/CD pipelines, scheduled jobs, autonomous loops — before the June 15 Agent SDK credit reclassification activates.</p>
+  <div class="urgency">
+    <strong id="days-remaining">…</strong> until the reclassification activates. The model cannot tell you which credit bucket your <code>-p</code> invocations charge against. This page tells you how to verify in 15 minutes.
+  </div>
+</div>
+
+<div class="toc">
+  <h2>On this page</h2>
+  <ol>
+    <li><a href="#why-this-page-exists">Why this page exists (the €84.68 case)</a></li>
+    <li><a href="#what-changes">What changes on June 15</a></li>
+    <li><a href="#why-the-model-gets-it-wrong">Why the model gets billing claims wrong</a></li>
+    <li><a href="#the-protocol">The 5-step pre-flight protocol</a></li>
+    <li><a href="#reference-script">Reference script (copy-paste, MIT-licensed)</a></li>
+    <li><a href="#wrapper-integration">Wrapper integration (block automation if pre-flight is stale)</a></li>
+    <li><a href="#by-pattern">Integration by automation pattern</a></li>
+    <li><a href="#post-cliff">Post-cliff verification (June 16 onward)</a></li>
+    <li><a href="#checklist">Verification checklist before scaling</a></li>
+    <li><a href="#related">Related references</a></li>
+  </ol>
+</div>
+
+<h2 id="why-this-page-exists">1 · Why this page exists</h2>
+
+<p>On 2026-05-23, <a href="https://github.com/anthropics/claude-code/issues/61704">issue #61704</a> documented a €84.68 unexpected charge. The user asked Claude Code across ~10 separate sessions whether <code>claude -p</code> invocations bill against subscription quota or account balance, received confident affirmations that it was subscription-only, built a 122-session bot pool on that assumption, and discovered the actual routing only when the charge landed against the account balance.</p>
+
+<p>The case is the canonical worked instance for a structural failure mode this page is built to pre-empt: <strong>the model cannot read Anthropic's billing backend at inference time</strong>, so any claim it makes about which cost bucket <code>-p</code> sessions fall into is training-derived speculation, presented with the same confident framing as any other model output. There is no in-session verification step that compares the claim against the actual routing logic.</p>
+
+<p>This page is for operators in one of these categories:</p>
+
+<ul>
+  <li><strong>Bot-pool operators</strong> — running many concurrent <code>claude -p</code> invocations (the jimpreuss-class case).</li>
+  <li><strong>CI/CD integrators</strong> — invoking <code>claude -p</code> from GitHub Actions, GitLab CI, Jenkins, or similar.</li>
+  <li><strong>Scheduled-job operators</strong> — running <code>claude -p</code> from cron, systemd timers, or similar.</li>
+  <li><strong>Autonomous-loop operators</strong> — running <code>claude -p</code> in a self-driving loop without per-invocation human review.</li>
+</ul>
+
+<p>If you fit one of these categories and have not personally verified the routing against the billing dashboard within the last 30 days, you are exposed to the same failure mode as #61704. The protocol below closes that exposure in 15 minutes of operator time.</p>
+
+<h2 id="what-changes">2 · What changes on June 15</h2>
+
+<p>Anthropic is splitting the Agent SDK billing path starting 2026-06-15. The exact shape, summarized:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Pre-cliff (today)</th>
+      <th>Post-cliff (2026-06-15+)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Subscription Max Plan users running <code>claude -p</code> drew from the same pool as interactive sessions.</td>
+      <td>Agent SDK path (including <code>claude -p</code>) draws from a separate monthly dollar credit, sized by plan tier.</td>
+    </tr>
+    <tr>
+      <td>API-key users billed at standard API rates per invocation.</td>
+      <td>API-key users continue at standard API rates (no change).</td>
+    </tr>
+    <tr>
+      <td>Mixed-auth scenarios (OAuth → Max Plan; API key → balance) often opaque from the model's perspective.</td>
+      <td>Same opacity, plus the new monthly-credit ceiling for the SDK path on subscription accounts.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The official Anthropic reference for the change is <a href="https://support.claude.com/en/articles/15036540-use-the-claude-agent-sdk-with-your-claude-plan">support article 15036540</a>.</p>
+
+<p><strong>Why the cliff matters specifically for automation operators:</strong> the credit ceiling on the new SDK path is finite. An automation pattern that consumed unlimited subscription quota pre-cliff may exhaust the new monthly credit, and then either bill at API rates (if extra-usage is enabled) or stop (if it is not). The €84.68-class failure mode after June 15 has a higher ceiling because the extra-usage rates apply once the SDK credit is exhausted, and the model's pre-cliff training data does not reflect the new routing.</p>
+
+<h2 id="why-the-model-gets-it-wrong">3 · Why the model gets billing claims wrong</h2>
+
+<p>This is not a bug in any specific Claude model version. It is a structural failure mode in production AI coding agents — what the cluster catalog at <a href="https://github.com/anthropics/claude-code/issues/60226">#60226</a> calls <em>recognition-without-arrest</em>: the model articulates a rule it would otherwise apply ("I cannot verify Anthropic's internal billing routing from here") and then proceeds to articulate a confident claim about that exact unverifiable topic.</p>
+
+<p>The mechanism, in three lines:</p>
+
+<ol>
+  <li><strong>The claim derives from training corpus statistics.</strong> Forum posts, docs, blog entries that the training corpus saw all describe pre-2026-06-15 billing. The model interpolates a "most plausible answer" from that distribution.</li>
+  <li><strong>The actual behavior derives from Anthropic's billing backend.</strong> The backend's routing logic lives outside the model's runtime. The model has no inference-time mechanism to read it.</li>
+  <li><strong>The verification step would have to compare claim vs actual.</strong> That comparison does not exist in the model's runtime. The claim therefore lands with no integrity check on accuracy.</li>
+</ol>
+
+<p>This is the same shape that surfaces at other axes in the cluster: <code>PreToolUse-Bash</code> (scope-claim from operator prompt vs argv from harness), dispatch-end (dispatch-claim from assistant narrative vs actual <code>Agent</code>/<code>Task</code> call), <code>PostToolUse-Edit/Write</code> (write-success-claim from in-memory cache vs disk state). The billing axis is row N+1 in the catalog. The structural mechanism is identical; the substrate (training-derived claim vs backend routing) is the new axis.</p>
+
+<div class="callout warn">
+  <p><strong>The 2026-06-15 reclassification multiplies this failure mode by ~10×.</strong> Most existing forum/doc/blog content the model was trained on describes pre-2026-06-15 billing. After June 15, any model claim about <code>-p</code> billing will be derived from training data that is wrong-by-construction for the new routing. Operators asking the model "how is <code>claude -p</code> billed?" after June 15 will receive answers presented with the same confident framing — but with even larger error.</p>
+</div>
+
+<h2 id="the-protocol">4 · The 5-step pre-flight protocol</h2>
+
+<p>Total operator time: ~15 minutes (8 of which is the mandatory pause for the dashboard to update).</p>
+
+<div class="step">
+  <span class="step-num">1</span><h4>Baseline the dashboard</h4>
+  <p>Before any test invocation, capture the baseline state of both relevant balances at the same wall-clock instant:</p>
+  <ul>
+    <li><strong>Max Plan / subscription quota usage:</strong> <a href="https://claude.ai/settings/usage">claude.ai/settings/usage</a></li>
+    <li><strong>API account balance:</strong> <a href="https://console.anthropic.com/settings/billing">console.anthropic.com/settings/billing</a></li>
+  </ul>
+  <p>Note both numbers (or screenshots) with a timestamp. If your account doesn't use one of the two (e.g., Max Plan only, no API balance), record <code>n/a</code> for that field. The point is a <code>before</code> reading for both surfaces, so you can read the delta on each independently after the test invocation.</p>
+</div>
+
+<div class="step">
+  <span class="step-num">2</span><h4>Run one isolated test invocation</h4>
+  <p>From the same shell environment your automation will use (same OAuth or <code>ANTHROPIC_API_KEY</code> auth path, same CWD, same env vars):</p>
+  <pre><code>claude -p "Respond with exactly: ok" 2&gt;&amp;1 | tee /tmp/claude-billing-preflight-$(date +%Y%m%d-%H%M%S).log</code></pre>
+  <p>Record the exact timestamp. Token cost for a one-word response is roughly $0.01–$0.05 depending on input padding. The small magnitude is intentional: any non-zero charge against either bucket is unambiguously attributable to this test.</p>
+</div>
+
+<div class="step">
+  <span class="step-num">3</span><h4>Wait 8 minutes</h4>
+  <p>The billing dashboard does not update in real time. The lag is typically 3–6 minutes, occasionally longer. Wait 8 minutes minimum before reading the dashboard. Do not run a second test invocation during the wait — it will entangle the readings.</p>
+</div>
+
+<div class="step">
+  <span class="step-num">4</span><h4>Read both dashboards again, compute deltas</h4>
+  <p>After the pause, re-read both surfaces from step 1. Compute the delta on each:</p>
+  <ul>
+    <li><strong>Max Plan quota delta:</strong> units consumed since the baseline reading.</li>
+    <li><strong>API balance delta:</strong> dollars charged since the baseline reading.</li>
+  </ul>
+  <p>Exactly one of the deltas should be non-zero (modulo small measurement noise from other concurrent sessions, which is why this protocol assumes you can isolate the test from other automation during the 8-minute window). The non-zero delta identifies which bucket your test invocation charged. This is your ground truth — not the model's claims, not the docs, not your assumption.</p>
+</div>
+
+<div class="step">
+  <span class="step-num">5</span><h4>Record the verification</h4>
+  <p>Write a marker file recording the verified routing, the timestamp, and the auth path used. Re-run the protocol after any of these events:</p>
+  <ul>
+    <li>Auth path change (switching between OAuth and API key)</li>
+    <li>Account-level billing changes (upgrade/downgrade Max Plan, change API balance limits)</li>
+    <li>Anthropic-side billing model changes (next known: 2026-06-15)</li>
+    <li>30 days elapsed since last verification</li>
+  </ul>
+</div>
+
+<h2 id="reference-script">5 · Reference script (MIT-licensed)</h2>
+
+<p>Save this as <code>claude-print-billing-preflight.sh</code>, <code>chmod +x</code> it, and run once per environment per auth path. The script does <strong>not</strong> read the dashboard automatically — Anthropic does not expose a public balance-delta API to non-organization operators as of 2026-05-24. The operator reads the dashboard manually after the 8-minute pause and types the deltas into the script's prompts.</p>
+
+<pre><code>#!/usr/bin/env bash
+# claude-print-billing-preflight.sh
+# Verify which credit bucket `claude -p` invocations charge against,
+# before scaling automation.
+
+set -euo pipefail
+
+MARKER_DIR="${HOME}/.config/claude-billing-preflight"
+LOG_DIR="/tmp"
+TODAY=$(date +%Y-%m-%d)
+TIMESTAMP=$(date -Iseconds)
+TEST_LOG="${LOG_DIR}/claude-billing-preflight-$(date +%Y%m%d-%H%M%S).log"
+
+mkdir -p "${MARKER_DIR}"
+
+if ! command -v claude &gt;/dev/null 2&gt;&amp;1; then
+    echo "ERROR: claude command not found in PATH" &gt;&amp;2
+    exit 1
+fi
+
+echo "=== claude -p billing pre-flight ==="
+echo
+read -rp "Press ENTER to read baseline dashboards, or Ctrl-C to abort... " _
+
+echo "Baseline reading — open both URLs in a browser, record the numbers:"
+echo "  Max Plan / subscription quota:  https://claude.ai/settings/usage"
+echo "  API account balance:            https://console.anthropic.com/settings/billing"
+read -rp "Max Plan quota baseline (or 'n/a'): " MAX_PLAN_BASELINE
+read -rp "API balance baseline (or 'n/a'): " API_BALANCE_BASELINE
+
+echo "Running test invocation..."
+claude -p "Respond with exactly: ok" 2&gt;&amp;1 | tee "${TEST_LOG}" || {
+    echo "ERROR: claude -p invocation failed. See ${TEST_LOG}" &gt;&amp;2
+    exit 1
+}
+
+INVOCATION_TIME=$(date -Iseconds)
+
+if [[ "${1:-}" != "--skip-pause" ]]; then
+    echo "Pausing 8 minutes for dashboard to update..."
+    sleep 480
+fi
+
+echo "Re-read both dashboards and compute deltas from the baseline:"
+echo "  Max Plan / subscription quota:  https://claude.ai/settings/usage"
+echo "  API account balance:            https://console.anthropic.com/settings/billing"
+read -rp "Max Plan quota delta (or 'n/a' or 'zero'): " MAX_PLAN_DELTA
+read -rp "API balance delta (or 'n/a' or 'zero'): " API_BALANCE_DELTA
+
+echo "Which bucket showed the non-zero delta?"
+echo "  1) max_plan_quota"
+echo "  2) api_balance"
+echo "  3) both (unusual — please document)"
+echo "  4) neither (charge not yet reflected; re-run dashboard read in 5 minutes)"
+read -rp "Enter 1-4: " ROUTING_CHOICE
+
+case "${ROUTING_CHOICE}" in
+    1) ROUTING="max_plan_quota" ;;
+    2) ROUTING="api_balance" ;;
+    3) ROUTING="both_unusual" ;;
+    4) ROUTING="not_yet_reflected" ;;
+    *) ROUTING="unknown" ;;
+esac
+
+MARKER_FILE="${MARKER_DIR}/${TODAY}.json"
+cat &gt; "${MARKER_FILE}" &lt;&lt;EOF
+{
+  "verified_at": "${TIMESTAMP}",
+  "invocation_time": "${INVOCATION_TIME}",
+  "test_invocation_log": "${TEST_LOG}",
+  "max_plan_baseline": "${MAX_PLAN_BASELINE}",
+  "max_plan_delta": "${MAX_PLAN_DELTA}",
+  "api_balance_baseline": "${API_BALANCE_BASELINE}",
+  "api_balance_delta": "${API_BALANCE_DELTA}",
+  "routing_verified": "${ROUTING}",
+  "auth_path_hint": "$([ -n "${ANTHROPIC_API_KEY:-}" ] &amp;&amp; echo 'api_key_env' || echo 'oauth_or_other')",
+  "claude_version": "$(claude --version 2&gt;/dev/null || echo 'unknown')"
+}
+EOF
+
+echo "=== Marker written: ${MARKER_FILE} ==="
+cat "${MARKER_FILE}"
+</code></pre>
+
+<p>The same script is also published as a <a href="https://gist.github.com/yurukusa/f936ba845af7a004f966be452afa894a">standalone Gist</a> with the longer runbook.</p>
+
+<h2 id="wrapper-integration">6 · Wrapper integration</h2>
+
+<p>To block automated <code>claude -p</code> invocations unless a recent marker file exists, wrap them with this check:</p>
+
+<pre><code>#!/usr/bin/env bash
+# claude-p-wrapper.sh — block automated claude -p unless pre-flight is recent.
+
+MARKER_DIR="${HOME}/.config/claude-billing-preflight"
+MAX_AGE_DAYS=30
+
+LATEST_MARKER=$(find "${MARKER_DIR}" -name '*.json' -type f -printf '%T@ %p\n' 2&gt;/dev/null \
+    | sort -rn | head -1 | cut -d' ' -f2-)
+
+if [[ -z "${LATEST_MARKER}" ]]; then
+    echo "ERROR: No claude-billing-preflight marker found. Run preflight first:" &gt;&amp;2
+    echo "  ./claude-print-billing-preflight.sh" &gt;&amp;2
+    exit 1
+fi
+
+MARKER_AGE_SECONDS=$(( $(date +%s) - $(stat -c %Y "${LATEST_MARKER}") ))
+MAX_AGE_SECONDS=$(( MAX_AGE_DAYS * 86400 ))
+
+if (( MARKER_AGE_SECONDS &gt; MAX_AGE_SECONDS )); then
+    echo "ERROR: claude-billing-preflight marker is older than ${MAX_AGE_DAYS} days." &gt;&amp;2
+    echo "  Latest: ${LATEST_MARKER}" &gt;&amp;2
+    echo "  Re-run: ./claude-print-billing-preflight.sh" &gt;&amp;2
+    exit 1
+fi
+
+exec claude -p "$@"
+</code></pre>
+
+<p>Point your automation at <code>./claude-p-wrapper.sh</code> instead of <code>claude -p</code> directly. The wrapper will refuse to run until the operator has pre-flighted within the last 30 days. On 2026-06-16 (the day after the cliff lands), every marker file will be invalidated in practice — even ones within the 30-day window — because the routing changed underneath them. Re-run the protocol on June 16 for every environment that runs <code>-p</code> automation.</p>
+
+<h2 id="by-pattern">7 · Integration by automation pattern</h2>
+
+<h3>Bot pools (the #61704 jimpreuss-class case)</h3>
+
+<p>If you run a pool of N concurrent <code>claude -p</code> invocations:</p>
+
+<ol>
+  <li>Pre-flight once for the auth path the pool uses (typically OAuth via <code>spawn_bot.py</code> or similar).</li>
+  <li>Route the pool's invocations through <code>claude-p-wrapper.sh</code> rather than calling <code>claude -p</code> directly.</li>
+  <li>If the pool scales up after the marker is invalidated (auth change, 30 days, June 15), the wrapper will block until re-verification.</li>
+  <li>For pools that run continuously, schedule a daily summary that checks the marker age and emits a warning ≥7 days before expiry.</li>
+</ol>
+
+<h3>CI/CD (GitHub Actions, GitLab CI, Jenkins)</h3>
+
+<p>CI environments are ephemeral — the marker file does not persist between runs unless you cache it. Two patterns work:</p>
+
+<ul>
+  <li><strong>Cached marker</strong>: store the marker file in CI cache (GitHub Actions <code>cache</code> action, GitLab CI <code>cache</code> stanza). The first CI run after a cache miss re-runs pre-flight; subsequent runs reuse the cached marker until expiry.</li>
+  <li><strong>External marker check</strong>: store the marker in a secrets manager (AWS Secrets Manager, HashiCorp Vault, etc.) and fetch at CI start. This decouples marker age from CI runner lifecycle and is the recommended pattern for production automation.</li>
+</ul>
+
+<p>Note that CI runners often use a separate auth path (API key in a secrets manager) than local development (OAuth). Pre-flight the CI auth path separately from your local auth path.</p>
+
+<h3>Scheduled jobs (cron, systemd timers)</h3>
+
+<p>Scheduled jobs running unattended are the highest-risk pattern: the operator is not present when the billing surprise occurs. Use the wrapper pattern with a hard floor on marker age (e.g., 14 days instead of 30), and send the operator a Slack/email alert 7 days before marker expiry.</p>
+
+<h3>Autonomous loops</h3>
+
+<p>Self-driving loops (autonomous agent systems, looping <code>claude -p</code> calls without human review) carry the same exposure shape as bot pools but with no concurrent operator attention to catch the failure. Apply the wrapper pattern with the tightest marker-age policy (14 days), and additionally log every invocation's token count to a local audit log that can be correlated against the dashboard manually.</p>
+
+<h2 id="post-cliff">8 · Post-cliff verification (June 16 onward)</h2>
+
+<p>The 2026-06-15 reclassification means every operator running <code>-p</code> automation needs to re-run the pre-flight protocol on or after June 16. The model's pre-cliff training data will be wrong-by-construction for the new routing; the dashboard reading is the only verification step that survives the routing change.</p>
+
+<div class="callout warn">
+  <p><strong>Calendar reminder:</strong> re-run pre-flight on 2026-06-16 (one day after the reclassification lands, to allow Anthropic's docs and the dashboard to fully reflect the new routing). Add this to your team calendar now — don't rely on remembering it after June 15.</p>
+</div>
+
+<p>Specific post-cliff sanity checks to add to your verification:</p>
+
+<ol>
+  <li><strong>The new SDK credit ceiling.</strong> Read the per-plan credit ceiling from <a href="https://support.claude.com/en/articles/15036540-use-the-claude-agent-sdk-with-your-claude-plan">support article 15036540</a> and confirm the dashboard surfaces it.</li>
+  <li><strong>The extra-usage flag.</strong> Verify whether your account has extra-usage enabled. If yes, post-cliff invocations beyond the credit will bill at API rates; if no, they will stop. Both outcomes have implications for automation that runs unattended.</li>
+  <li><strong>The auth path's bucket.</strong> Re-run the protocol from step 4 above and confirm the delta lands in the SDK-credit bucket (new) rather than the subscription-quota bucket (pre-cliff).</li>
+</ol>
+
+<h2 id="checklist">9 · Verification checklist before scaling</h2>
+
+<p>Before committing N concurrent <code>claude -p</code> invocations to a billing assumption, confirm:</p>
+
+<ul>
+  <li>☐ I have personally verified the routing against the dashboard within the last 30 days (or 14 days if scheduled/autonomous).</li>
+  <li>☐ The verification used the same auth path the scaled automation will use.</li>
+  <li>☐ A marker file recording the verification exists at a stable path (not a temporary one).</li>
+  <li>☐ The automation runs through a wrapper that checks marker age.</li>
+  <li>☐ I have a Slack/email alert ≥7 days before marker expiry.</li>
+  <li>☐ I have not relied on any model claim about billing as the basis for the assumption.</li>
+  <li>☐ I have read <a href="https://support.claude.com/en/articles/15036540-use-the-claude-agent-sdk-with-your-claude-plan">support article 15036540</a> and understand the post-June-15 routing for my plan tier.</li>
+  <li>☐ June 16 is on my calendar with a "re-run pre-flight" task.</li>
+</ul>
+
+<p>If any line above is unchecked, the automation is exposed to the #61704 failure mode.</p>
+
+<h2 id="related">10 · Related references</h2>
+
+<a href="https://github.com/anthropics/claude-code/issues/61704" class="related-card">
+  <h4>Issue #61704 — the €84.68 case</h4>
+  <p>The canonical worked instance: ~10 confident-but-wrong model claims about <code>-p</code> billing → 122-session bot pool → €84.68 unexpected charge.</p>
+</a>
+
+<a href="https://github.com/anthropics/claude-code/issues/60226" class="related-card">
+  <h4>Issue #60226 — the cluster catalog anchor</h4>
+  <p>The recognition-without-arrest cluster catalog. Billing-axis surface is row N+1.</p>
+</a>
+
+<a href="https://gist.github.com/yurukusa/f936ba845af7a004f966be452afa894a" class="related-card">
+  <h4>Pre-flight billing verification Gist (MIT-licensed)</h4>
+  <p>Standalone runbook + reference scripts. Same protocol as this page, in single-file Gist form for sharing.</p>
+</a>
+
+<a href="https://yurukusa.github.io/june-15-cliff/" class="related-card">
+  <h4>June 15 Cliff Hub</h4>
+  <p>The broader landing page for the cliff: free guides, interactive tools (Path Finder, Cliff Calculator, Readiness Audit), deeper resources.</p>
+</a>
+
+<a href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook" class="related-card">
+  <h4>Claude Code Migration Playbook (Edition 2, $19)</h4>
+  <p>The paid playbook with the deeper chapter on the 2026-06-15 reclassification, the operator's posture decision matrix, and the migration paths.</p>
+</a>
+
+<a href="https://github.com/yurukusa/cc-safe-setup" class="related-card">
+  <h4>cc-safe-setup (MIT-licensed)</h4>
+  <p>The operator-side defense substrate. ~750 hooks covering the cluster's surfaces. Pre-flight wrapper can be installed as a <code>PreToolUse-Bash</code> hook matching <code>claude -p</code>.</p>
+</a>
+
+<div class="disclosure">
+  <strong>Disclosure:</strong> I sell the <a href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook">Migration Playbook</a> ($19, PDF). The reference protocol above is the operationally-deepened version of the Edition 2 chapter on the 2026-06-15 reclassification. The reference scripts on this page are MIT-licensed; the protocol description is in the public domain — copy, adapt, fork, redistribute freely. This page is independent of any Anthropic position and is not authoritative on Anthropic's billing internals — the dashboard reading is. If you find a factual error, please <a href="https://github.com/yurukusa/yurukusa.github.io/issues/new">open an issue</a>.
+</div>
+
+<div class="footer">
+  <p>Published 2026-05-24 · Maintained by <a href="https://github.com/yurukusa">@yurukusa</a> · <a href="https://yurukusa.github.io/">yurukusa.github.io</a></p>
+</div>
+
+</div>
+
+<script>
+  (function() {
+    const cliffDate = new Date('2026-06-15T00:00:00Z');
+    const now = new Date();
+    const msPerDay = 86400000;
+    const days = Math.ceil((cliffDate - now) / msPerDay);
+    const el = document.getElementById('days-remaining');
+    if (days > 1) el.textContent = days + ' days remaining';
+    else if (days === 1) el.textContent = '1 day remaining';
+    else if (days === 0) el.textContent = 'Today';
+    else el.textContent = Math.abs(days) + ' days ago (historical reference)';
+  })();
+</script>
+
+</body>
+</html>
