@@ -514,6 +514,92 @@
             </div>
         </div>
 
+        <!-- May 2026 Pattern Field Notes -->
+        <div class="card-section">
+            <div class="section-title">📌 May 2026 — Recognition Failure Pattern (Field Notes)</div>
+            <p style="color:var(--text-dim, #7878a0); margin-bottom: 1rem; font-size: 0.95rem;">Three free long-reads published 2026-05-20 around the same structural theme: <em>recognition-without-arrest</em> — the model knows the rule and ignores it anyway. Each reads independently; together they cross-cite.</p>
+            <div class="card-grid">
+
+                <a href="https://gist.github.com/yurukusa/d31de595bbb27b9a68095af3e6ad9345" class="card" target="_blank" rel="noopener">
+                    <div class="card-tags">
+                        <span class="tag tag-new">2026-05-20</span>
+                        <span class="tag tag-free">Free</span>
+                        <span class="tag tag-genre">English</span>
+                    </div>
+                    <h3>The Soft Upgrade Pattern in Claude Code</h3>
+                    <p class="card-desc">Four concrete cases from <code>v2.1.140-145</code> where release notes quietly moved a failure boundary. Same pattern lands on four different surfaces (<code>Read</code> tool, <code>Stop</code> hook, <code>Edit</code> gate, <code>SessionStart</code> notification) across three consecutive releases. Includes a single-verb scan you can run on next month's release notes. 1,839 words.</p>
+                    <span class="card-arrow">↗</span>
+                </a>
+
+                <a href="https://gist.github.com/yurukusa/1dae354f51d49d3ba6d5e1657b9d41ee" class="card" target="_blank" rel="noopener">
+                    <div class="card-tags">
+                        <span class="tag tag-new">2026-05-20</span>
+                        <span class="tag tag-free">無料</span>
+                        <span class="tag tag-genre">日本語</span>
+                    </div>
+                    <h3>Claude Code の soft upgrade の様式</h3>
+                    <p class="card-desc">英語版の対応版。 v2.1.140 から v2.1.145 の4件の事例 (PARTIAL view、 Stop hook の8回 block の上限、 head/tail が read-before-edit、 Skill-listing 通知の沈黙化) を4つの道具の境界 (Read / Stop / Edit / SessionStart) で系統的に整理。 月次の点検の3段の手順を提示。 7,344字。</p>
+                    <span class="card-arrow">↗</span>
+                </a>
+
+                <a href="https://gist.github.com/yurukusa/8edc7dd98b6d3e6a728fc9794c90610d" class="card" target="_blank" rel="noopener">
+                    <div class="card-tags">
+                        <span class="tag tag-new">2026-05-20</span>
+                        <span class="tag tag-free">Free</span>
+                        <span class="tag tag-genre">English</span>
+                    </div>
+                    <h3>Reading r/ClaudeAI on Opus 4.7</h3>
+                    <p class="card-desc">A field guide to <em>recognition-without-arrest</em>. Seven independent user reports from the May 19 thread "Opus 4.7 in projects is awfully dumb and 100% useless" (54 upvotes, 58 comments) mapped onto the structural framework from <a href="https://github.com/anthropics/claude-code/issues/60226">issue #60226</a>. Three free defenses (<code>same-correction-arrest</code> hook, <code>closure-word-verify-gate</code> hook, explicit 4.6 pin). 1,432 words.</p>
+                    <span class="card-arrow">↗</span>
+                </a>
+
+                <a href="https://gist.github.com/yurukusa/d54c59ead1b48d6c728ec84da34271e9" class="card" target="_blank" rel="noopener">
+                    <div class="card-tags">
+                        <span class="tag tag-new">2026-05-20</span>
+                        <span class="tag tag-free">Free</span>
+                        <span class="tag tag-genre">English</span>
+                    </div>
+                    <h3>Keeping Secrets Out of Claude Code Context</h3>
+                    <p class="card-desc">A 5-layer defense guide for <code>.env</code> / <code>.Renviron</code> / secrets, written from Stack Overflow question 79934348 and the <code>.claudeignore</code> feature requests (issues #4160, #1304). Each layer with what it catches and what it misses, including why <code>permissions.deny</code> alone is insufficient (per Anthropic's own admission in #4160). 1,746 words.</p>
+                    <span class="card-arrow">↗</span>
+                </a>
+
+                <a href="https://gist.github.com/yurukusa/d4cf5db2a26d9f831f41dc36ab2981f8" class="card" target="_blank" rel="noopener">
+                    <div class="card-tags">
+                        <span class="tag tag-new">2026-05-20</span>
+                        <span class="tag tag-free">無料</span>
+                        <span class="tag tag-genre">日本語</span>
+                    </div>
+                    <h3>Claude Code の文脈から秘密の鍵を遠ざける整備</h3>
+                    <p class="card-desc">英語版 (d54c59ea) の日本語の利用者の集まりへの再構成。 同じ5層 の防衛の整理 (<code>permissions.deny</code>、 作業の樹の外への移動、 <code>Bash</code> の許可の集合の制限、 鍵束、 hook の関門)、 各層で「捕捉する事象」 と「逃す事象」 の articulation。 9,414字。</p>
+                    <span class="card-arrow">↗</span>
+                </a>
+
+                <a href="https://htmlpreview.github.io/?https://gist.githubusercontent.com/yurukusa/cedd192f2ebbbff6509728a80538fcf0/raw/recognition-without-arrest-detector.html" class="card tool-card" target="_blank" rel="noopener">
+                    <div class="card-tags">
+                        <span class="tag tag-new">2026-05-20</span>
+                        <span class="tag tag-free">Free Tool</span>
+                        <span class="tag tag-genre">Interactive</span>
+                    </div>
+                    <h3>Recognition-Without-Arrest Detector</h3>
+                    <p class="card-desc">Paste a Claude Code conversation excerpt; the tool runs four pattern families (claim reversal, closure without verification, acknowledgment without compliance, variance signals) and outputs findings with severity and links to corresponding <code>cc-safe-setup</code> defenses. Single HTML, no network calls, no telemetry, no sign-in.</p>
+                    <span class="card-arrow">↗</span>
+                </a>
+
+                <a href="https://htmlpreview.github.io/?https://gist.githubusercontent.com/yurukusa/8d34719d97dab942c5dfff7c53b0e0f3/raw/cc-survival-kit-may-2026.html" class="card tool-card" target="_blank" rel="noopener">
+                    <div class="card-tags">
+                        <span class="tag tag-new">2026-05-20</span>
+                        <span class="tag tag-free">Free Index</span>
+                        <span class="tag tag-genre">EN+JP</span>
+                    </div>
+                    <h3>📌 Claude Code Survival Kit — May 2026 Edition</h3>
+                    <p class="card-desc">Single-page curated index of all free Gists and tools above, plus 14 more across 5 structural failure families (Recognition-Without-Arrest, Soft Upgrade, Secrets Safety, Auto Mode False Positives, June 15 Cliff). 21 cards, EN / JP tagged, sticky CTA to the 2026-05-22 books. Updated monthly. Bookmark this.</p>
+                    <span class="card-arrow">↗</span>
+                </a>
+
+            </div>
+        </div>
+
         <!-- Production Kit -->
         <div class="card-section">
             <div class="section-title">📦 Production Kit</div>
