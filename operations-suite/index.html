@@ -677,8 +677,26 @@
             </dl>
         </div>
 
+        <div class="section">
+            <div class="section-title">Companion books (newer, narrower)</div>
+            <div class="narrative">
+                <p>
+                    The three books above cover the durable operational layers: decide, cost, forensics. Two newer books cover narrower surfaces that emerged sharply in May 2026 and warranted their own treatment rather than being absorbed as chapters:
+                </p>
+                <p>
+                    <strong><a href="https://yurukusa.gumroad.com/l/claim-verify-handbook?utm_source=operations-suite-lp&utm_medium=companion-books&utm_campaign=cvh-curation" style="color:var(--accent);" target="_blank" rel="noopener">Claim-Verify Handbook</a></strong> ($19, live since 2026-05-22) catalogs 130 cases where Claude Code or its sub-agents claimed success while the underlying action failed silently (15 main + 115 appendix D, 233 hours of source corpus, ~32-fold acceleration over the 30-day baseline). 14 operator-side defense procedures, 5 detection tools (all implemented and tested, 165+ test cases passing). Anchored by Anthropic's own v2.1.144 release notes and Issue #60226's structural parent.
+                </p>
+                <p>
+                    <strong><a href="https://yurukusa.github.io/sub-agent-observability/?utm_source=operations-suite-lp&utm_medium=companion-books&utm_campaign=soh-reference" style="color:var(--accent);">Sub-Agent Observability Handbook</a></strong> (~$19, ships 2026-05-27) documents 4 distinct sub-patterns of sub-agent failure surfaced across 7 issues filed in a 72-hour window (#60987 / #61102 / #61107 / #61167 / #61315 / #61405 / #61547): dispatch fabrication, silent stall, missing observation/control, scope expansion. Each pattern has a worked operator-side defense hook in cc-safe-setup (PRs #282 / #283 / #286 / #298). The canonical reference page is free at the link.
+                </p>
+                <p>
+                    Both are sibling surfaces to the Operations Suite trinity rather than replacements for it. A reader who finishes Migration Playbook, Token Book, and Postmortems and wants the action-time verify-vs-claim layer reads CVH next; a reader who runs sub-agents in production reads the Sub-Agent Handbook.
+                </p>
+            </div>
+        </div>
+
         <div class="footer">
-            Three books for three layers, plus a monthly continuous feed · maintained by <a href="https://yurukusa.github.io/">yurukusa</a> · last updated 2026-05-05
+            Three books for three layers, plus two companion books for narrower May 2026 surfaces, plus a monthly continuous feed · maintained by <a href="https://yurukusa.github.io/">yurukusa</a> · last updated 2026-05-24
         </div>
     </div>
 </body>
