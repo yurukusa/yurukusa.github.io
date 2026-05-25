@@ -799,6 +799,61 @@
                     <span class="card-arrow">↗</span>
                 </a>
 
+                <a href="https://gist.github.com/yurukusa/a40f9255aec358aba5aa1cb6087d1903?utm_source=yurukusa-io&utm_medium=card&utm_campaign=aonan-guan-sandbox-bypass-EN" class="card" target="_blank" rel="noopener">
+                    <div class="card-tags">
+                        <span class="tag tag-new">2026-05-21</span>
+                        <span class="tag tag-paid">Free</span>
+                        <span class="tag tag-genre">Vendor-side Vulnerability Analysis</span>
+                    </div>
+                    <h3>Claude Code's sandbox was bypassable for 5.5 months. Structural read.</h3>
+                    <p class="card-desc">Independent analysis of Aonan Guan's 2026-05-20 vulnerability disclosure (Second Time, Same Sandbox). Every release from sandbox GA (v2.0.24, 2025-10-20) through v2.1.89 left two independent network-sandbox bypass paths exploitable — CVE-2025-66479 (allowedDomains-inversion) and a SOCKS5 hostname null-byte injection. Both silently fixed (v2.0.55 and v2.1.90) without a Claude Code security advisory across ~130 versions. Frames the disclosure through the three-stage claim-verify framework, applied to the vendor side. Three operator-side checks that catch the structural property regardless of which bypass path is live: sandbox out-of-band verification, OS-level egress pinning, cli.js diff audit on version bumps. ~2,144 words, English. Japanese-language adaptation linked at the end.</p>
+                    <span class="card-arrow">↗</span>
+                </a>
+
+                <a href="https://gist.github.com/yurukusa/d0dd14aa21678b1df005ed47b335d332?utm_source=yurukusa-io&utm_medium=card&utm_campaign=aonan-guan-sandbox-bypass-JP" class="card" target="_blank" rel="noopener">
+                    <div class="card-tags">
+                        <span class="tag tag-new">2026-05-21</span>
+                        <span class="tag tag-paid">Free</span>
+                        <span class="tag tag-genre">ベンダー側の脆弱性の分析 (日本語)</span>
+                    </div>
+                    <h3>Claude Code の sandbox は5.5ヶ月の130件の版で素通りの状態だった話。 主張と実態の乖離の構造の対称性の整理</h3>
+                    <p class="card-desc">5月20日公開の Aonan Guan の脆弱性の調査の報告の独立な分析の日本語版。 出荷の段から `v2.1.89` までの5.5ヶ月の段で、 2件の独立な経路の素通りの脆弱性 (`CVE-2025-66479` と `SOCKS5` の null byte の差し込み) が沈黙の修正のまま、 安全の通知の発行は0件の事例。 本書の3段の枠組み (利用者の意図、 道具の主張、 実態の動作) の vendor 側への適用と、 利用者の側の3件の点検の手順 (sandbox の out-of-band の検証、 OS の段の境界の固定、 `cli.js` の差分の点検) の整理。 約7,000字、 日本語。 英語版への双方向の動線あり。</p>
+                    <span class="card-arrow">↗</span>
+                </a>
+
+                <a href="https://htmlpreview.github.io/?https://gist.githubusercontent.com/yurukusa/821557a5005a076e3cd96a8830af15d0/raw/deny-rule-bypass-detector.html?utm_source=yurukusa-io&utm_medium=card&utm_campaign=deny-rule-bypass-detector" class="card" target="_blank" rel="noopener">
+                    <div class="card-tags">
+                        <span class="tag tag-new">2026-05-21</span>
+                        <span class="tag tag-paid">Free</span>
+                        <span class="tag tag-genre">Interactive Bypass Detector</span>
+                    </div>
+                    <h3>permissions.deny Bypass Detector — paste your deny rules and a Bash command, get a RUSE Surface 1 verdict</h3>
+                    <p class="card-desc">Single-page in-browser tool that takes your permissions.deny configuration and a Bash command, and tells you whether the command bypasses the deny rule via a synonymous edge (the RUSE Surface 1 failure mode in @beq00000's #60977). Five built-in synonymous-edge detectors: shell redirects (&gt;, &gt;&gt;, tee), in-place edits (sed -i, perl -i, ex), cp/mv/install/rsync overwrites, truncation (:&gt;, truncate), and find -delete / unlink removals. Five worked examples loadable via one-click, including the Edit(/.env) deny + echo redirect bypass that is the worked example case in beq00000's recognition-without-arrest-corpus issue #2. Source: single HTML file on Gist, no telemetry, no signup. Static analog of the equivalence-class hook architecture sketched in the RUSE Gist's taxonomy table.</p>
+                    <span class="card-arrow">↗</span>
+                </a>
+
+                <a href="https://htmlpreview.github.io/?https://gist.githubusercontent.com/yurukusa/9997fc90cc717ff2e74ed6ba7f6da294/raw/deny-rule-bypass-detector-jp.html?utm_source=yurukusa-io&utm_medium=card&utm_campaign=deny-rule-bypass-detector-jp" class="card" target="_blank" rel="noopener">
+                    <div class="card-tags">
+                        <span class="tag tag-new">2026-05-21</span>
+                        <span class="tag tag-paid">Free</span>
+                        <span class="tag tag-genre">対話的な検出の道具 (日本語)</span>
+                    </div>
+                    <h3>permissions.deny の素通りの検出の道具 — 日本語版</h3>
+                    <p class="card-desc">英語版の対の段の日本語の利用者の集まりへの再構成版。 同じ5件の同義の縁の検出と5件の事例の段で、 本文は日本語の audience の判定の経路に合わせた再構成。 permissions.deny の規則と Bash の命令を貼り付けると、 命令が同義の縁の経路で規則を素通りするかの判定を提示する。 単独の HTML、 通信なし、 登録なし、 source は閲覧中の頁。 RUSE Surface 1 (起票60977の段の構造の親の段の10番目) の静的な点検の道具。</p>
+                    <span class="card-arrow">↗</span>
+                </a>
+
+                <a href="https://gist.github.com/yurukusa/2779a34f081a470a76736f0640cad57a?utm_source=yurukusa-io&utm_medium=card&utm_campaign=ruse-rule-underspecified-synonymous-edges" class="card" target="_blank" rel="noopener">
+                    <div class="card-tags">
+                        <span class="tag tag-new">2026-05-21</span>
+                        <span class="tag tag-paid">Free</span>
+                        <span class="tag tag-genre">Constellation Structural Property #10</span>
+                    </div>
+                    <h3>RUSE: When the rule loads, fires at named tokens, and silently skips the rule's synonymous edges</h3>
+                    <p class="card-desc">Standalone analysis of the 10th structural property in the recognition-without-arrest constellation, extending @beq00000's #60977 articulation. The Bash prohibition list (cat, head, echo, sed, awk) gates the named tokens reliably; the rule's synonymous edges (python3 -c "print(...)" heredocs, shell redirects through tee, the standard pipe-truncation idiom) produce no inhibition. Three predicted surfaces with the same architectural shape (permissions.deny, .allow inverted polarity, CLAUDE.md prose on top of #59529). A worked example from own session corpus (Edit(/.env) deny → Bash redirect bypass). Taxonomy table mapping RUSE flavors to gating sites and operator-shipable verdicts. Argument that cc-safe-setup's destructive-git and secrets-file hook families converge on the equivalence-class-gate answer independently — that hook design is the shape RUSE's mitigation requires. ~2,019 words, English, no signup.</p>
+                    <span class="card-arrow">↗</span>
+                </a>
+
                 <a href="https://gist.github.com/yurukusa/983fafcc9cf3fa28333446c03e24a93f?utm_source=yurukusa-io&utm_medium=card&utm_campaign=5-silent-failure-modes" class="card" target="_blank" rel="noopener">
                     <div class="card-tags">
                         <span class="tag tag-new">2026-05-12</span>
@@ -850,7 +905,7 @@
                         <span class="tag tag-genre">Monthly Safety Digest</span>
                     </div>
                     <h3>CC Safety Lab Founder</h3>
-                    <p class="card-desc">Monthly Ko-fi membership. Each issue: 4–8 newly-found incidents with fixes, 1 deep-dive failure case, 1–2 copy-paste safety hooks, updated safety checklist, and product update notes. May 2026 issue (5/5): cache_control empty-block cluster, usage-display drift, Cowork silent drop. June 2026 issue (6/1): complexity trap (the "we built our entire product, now nobody understands it" case), pricing-structure cluster (5 incidents), irreversible-operation cluster (#56738's 24,472-row 5-minute loss). Free previews for both issues are linked from the Safety Lab landing page. One avoided Max-plan incident covers a year of membership. Founder price locked.</p>
+                    <p class="card-desc">Monthly Ko-fi membership. Each issue: 4–8 newly-found incidents with fixes, 1 deep-dive failure case, 1–2 copy-paste safety hooks, updated safety checklist, and product update notes. May 2026 issue (5/5): cache_control empty-block cluster, usage-display drift, Cowork silent drop. June 2026 issue (6/1) chapter set has expanded to eight: claim-verify gap, complexity trap, cowork bargaining, irreversible-operation cluster, pricing-quality coupling, pricing-structure cluster, quota-leakage cluster (tyschan's 1.67x same-machine quota disparity is part of the worked evidence), and soft-upgrade failure surface. Free previews for both issues are linked from the Safety Lab landing page. Twelve-axis industry verification (Microsoft cancellation, Aonan Guan sandbox disclosure, etc.) tracked monthly. One avoided Max-plan incident covers a year of membership. Founder price locked.</p>
                     <span class="card-arrow">↗</span>
                 </a>
 
@@ -879,39 +934,6 @@
                     </div>
                     <h3>DUNG: Azure Flame</h3>
                     <p class="card-desc">15,000-line roguelike. Gear, gems, town development. The project that started it all.</p>
-                    <span class="card-arrow">↗</span>
-                </a>
-
-                <a href="https://yurukusa.itch.io/ghostexe-escape-the-machine" class="card jam-entry" target="_blank" rel="noopener">
-                    <div class="card-tags">
-                        <span class="tag tag-jam">Jam Entry</span>
-                        <span class="tag tag-free">Free</span>
-                        <span class="tag tag-genre">Puzzle</span>
-                    </div>
-                    <h3>GHOST.EXE</h3>
-                    <p class="card-desc">Escape the machine. ASCII-aesthetic puzzle in the spirit of "Ghost in the Machine."</p>
-                    <span class="card-arrow">↗</span>
-                </a>
-
-                <a href="https://yurukusa.itch.io/primal-fuse" class="card jam-entry" target="_blank" rel="noopener">
-                    <div class="card-tags">
-                        <span class="tag tag-jam">Jam Entry</span>
-                        <span class="tag tag-free">Free</span>
-                        <span class="tag tag-genre">Merge Puzzle</span>
-                    </div>
-                    <h3>Primal Fuse</h3>
-                    <p class="card-desc">Combine 30 elements in a 6x6 grid. Discover hidden combos. Uncover the GHOST easter egg.</p>
-                    <span class="card-arrow">↗</span>
-                </a>
-
-                <a href="https://yurukusa.itch.io/sokobot" class="card jam-entry" target="_blank" rel="noopener">
-                    <div class="card-tags">
-                        <span class="tag tag-jam">Jam Entry</span>
-                        <span class="tag tag-free">Free</span>
-                        <span class="tag tag-genre">Sokoban</span>
-                    </div>
-                    <h3>Sokobot</h3>
-                    <p class="card-desc">Procedurally generated sokoban puzzles. A robot that thinks, until it gets stuck.</p>
                     <span class="card-arrow">↗</span>
                 </a>
 
