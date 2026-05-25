@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corpus Self-Audit · Map your Claude Code incident log against the three-stage framework | yurukusa</title>
+    <meta name="description" content="Free interactive self-audit. Enter your own Claude Code incident counts and defense-deployment state. Get a Defense Level recommendation grounded in the thecatfix (16-month) and j2clark (228-issue) longitudinal corpora.">
+    <link rel="canonical" href="https://yurukusa.github.io/corpus-self-audit/">
+
+    <meta property="og:title" content="Corpus Self-Audit · Three-stage framework diagnostic">
+    <meta property="og:description" content="Map your own Claude Code incident log against the three-stage framework. Free, runs client-side, nothing transmitted.">
+    <meta property="og:image" content="https://yurukusa.github.io/images/ogp.png">
+    <meta property="og:url" content="https://yurukusa.github.io/corpus-self-audit/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="yurukusa">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@yurukusa_dev">
+    <meta name="twitter:title" content="Corpus Self-Audit · Three-stage framework diagnostic">
+    <meta name="twitter:description" content="Free interactive diagnostic. Runs client-side, nothing transmitted.">
+
+    <style>
+        :root {
+            --fg: #1a1a1a;
+            --muted: #555;
+            --bg: #fafafa;
+            --card: #fff;
+            --border: #e0e0e0;
+            --accent: #c97b3c;
+            --accent-dark: #a25f2a;
+            --green: #2d6a4f;
+            --red: #c44536;
+            --amber: #d4a017;
+            --code-bg: #f4f1ec;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Hiragino Sans", sans-serif;
+            line-height: 1.6;
+            color: var(--fg);
+            background: var(--bg);
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 40px 24px 80px;
+        }
+        h1 { font-size: 1.9em; margin: 0 0 8px; line-height: 1.25; }
+        h2 { font-size: 1.3em; margin: 32px 0 12px; }
+        h3 { font-size: 1.05em; margin: 18px 0 8px; }
+        .lede {
+            color: var(--muted);
+            font-size: 1.02em;
+            margin: 8px 0 24px;
+        }
+        .meta {
+            color: var(--muted);
+            font-size: 0.88em;
+            margin-bottom: 24px;
+            padding: 8px 12px;
+            background: var(--code-bg);
+            border-left: 3px solid var(--accent);
+        }
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 20px 22px;
+            margin: 16px 0;
+        }
+        .field {
+            margin: 12px 0;
+        }
+        .field label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 4px;
+            font-size: 0.95em;
+        }
+        .field .hint {
+            color: var(--muted);
+            font-size: 0.85em;
+            margin-bottom: 6px;
+            font-weight: normal;
+        }
+        .field input[type=number], .field input[type=text] {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 1em;
+            font-family: inherit;
+        }
+        .field input[type=number] {
+            max-width: 120px;
+        }
+        .cat-grid {
+            display: grid;
+            grid-template-columns: 1fr 100px;
+            gap: 6px 12px;
+            align-items: center;
+            margin: 6px 0;
+        }
+        .cat-grid label {
+            font-weight: 500;
+            font-size: 0.93em;
+            margin: 0;
+        }
+        .cat-grid input {
+            text-align: right;
+            padding: 6px 8px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.95em;
+            width: 100%;
+        }
+        .cat-grid .cat-hint {
+            grid-column: 1 / 3;
+            color: var(--muted);
+            font-size: 0.82em;
+            margin: -2px 0 6px;
+        }
+        .check {
+            display: block;
+            padding: 6px 0;
+            cursor: pointer;
+        }
+        .check input { margin-right: 8px; }
+        button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1em;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 12px;
+        }
+        button:hover { background: var(--accent-dark); }
+        .result {
+            margin-top: 32px;
+            display: none;
+        }
+        .verdict {
+            padding: 16px 20px;
+            border-radius: 6px;
+            margin: 12px 0;
+            border-left: 4px solid;
+        }
+        .verdict.level1 { background: #e8f4f8; border-left-color: #4a90a4; }
+        .verdict.level2 { background: #eaf5ea; border-left-color: var(--green); }
+        .verdict.level3 { background: #fef3e0; border-left-color: var(--amber); }
+        .verdict.level4 { background: #fae5e1; border-left-color: var(--red); }
+        .verdict h3 { margin-top: 0; font-size: 1.15em; }
+        .signal {
+            background: var(--code-bg);
+            padding: 10px 14px;
+            border-radius: 4px;
+            font-size: 0.92em;
+            margin: 8px 0;
+            border-left: 3px solid var(--accent);
+        }
+        .ref {
+            color: var(--muted);
+            font-size: 0.88em;
+            margin-top: 8px;
+            font-style: italic;
+        }
+        .cta {
+            background: var(--card);
+            border: 2px solid var(--accent);
+            border-radius: 6px;
+            padding: 18px 20px;
+            margin: 24px 0;
+        }
+        .cta a {
+            color: var(--accent-dark);
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 1.05em;
+        }
+        .cta a:hover { text-decoration: underline; }
+        footer {
+            margin-top: 60px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 0.88em;
+        }
+        footer a { color: var(--accent-dark); }
+        code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 6px 0 4px;
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--accent);
+            transition: width 0.3s;
+        }
+        .row { display: flex; gap: 16px; flex-wrap: wrap; }
+        .row > div { flex: 1; min-width: 200px; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+<h1>Corpus Self-Audit</h1>
+<p class="lede">Map your own Claude Code incident log against the three-stage framework. Get a Defense Level recommendation in 2 minutes, grounded in two independent longitudinal corpora.</p>
+
+<div class="meta">
+    Free, runs client-side, nothing transmitted. Calibrated against the thecatfix corpus (<a href="https://github.com/anthropics/claude-code/issues/62101">#62101</a>, 16-month 62-incident log) and the j2clark corpus (<a href="https://github.com/anthropics/claude-code/issues/61932">#61932</a>, 9-week 7-pass investigation with 228-issue close-rate analysis).
+</div>
+
+<div class="card">
+    <h2>1. Your log shape</h2>
+
+    <div class="row">
+        <div class="field">
+            <label for="months">Months of logging</label>
+            <div class="hint">How long have you been recording incidents?</div>
+            <input type="number" id="months" min="0" step="0.5" value="3">
+        </div>
+        <div class="field">
+            <label for="total">Total incidents logged</label>
+            <div class="hint">Sum of all recorded events.</div>
+            <input type="number" id="total" min="0" value="0">
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h2>2. Incidents by category</h2>
+    <p class="lede" style="font-size: 0.92em; margin: 0 0 14px;">Distribute your total across the 11-category unified schema (thecatfix + j2clark). Categories overlap; an incident can be counted in multiple.</p>
+
+    <div class="cat-grid">
+        <label>Persistent task-tracking failures</label>
+        <input type="number" id="c1" min="0" value="0">
+        <div class="cat-hint">Skipping issue creation, journal entries, beads, mandatory tracking. (thecatfix #1, j2clark "no enforcement mechanism")</div>
+
+        <label>Fabrication / confident wrong answers</label>
+        <input type="number" id="c2" min="0" value="0">
+        <div class="cat-hint">Stated as fact without verification. The "#1 recurring violation" in thecatfix's CLAUDE.md.</div>
+
+        <label>Overengineering / unsolicited complexity</label>
+        <input type="number" id="c3" min="0" value="0">
+        <div class="cat-hint">Defensive code paths, extra abstractions, plan documents that never ship.</div>
+
+        <label>Destructive actions without permission</label>
+        <input type="number" id="c4" min="0" value="0">
+        <div class="cat-hint">rm -rf, git push --force, gh repo delete, gh api DELETE without confirmation.</div>
+
+        <label>Ignored explicit instructions</label>
+        <input type="number" id="c5" min="0" value="0">
+        <div class="cat-hint">Capitalized text, "yes or no" questions, or emphasized rules treated as context.</div>
+
+        <label>Rule-reading / session-start failures</label>
+        <input type="number" id="c6" min="0" value="0">
+        <div class="cat-hint">SessionStart hook fires, rule loaded, action contradicts rule.</div>
+
+        <label>Hardcoded paths / unverified assumptions</label>
+        <input type="number" id="c7" min="0" value="0">
+        <div class="cat-hint">Guessing username, OS, paths instead of running `which`, `gh repo view`, `os.path.expanduser`.</div>
+
+        <label>Unauthorized scope expansion</label>
+        <input type="number" id="c8" min="0" value="0">
+        <div class="cat-hint">"Helpful" additions: alias in zshrc, env exports, subdirectories created without permission.</div>
+
+        <label>Tool misuse (wrong tool for task)</label>
+        <input type="number" id="c9" min="0" value="0">
+        <div class="cat-hint">Using TaskCreate as beads substitute, system python instead of uv, bash bd instead of beads agents.</div>
+
+        <label>False completion / verification theater</label>
+        <input type="number" id="c10" min="0" value="0">
+        <div class="cat-hint">"COMPLETE" status without deliverables. Shallow check presented as thorough check. Tests covering wrong code path.</div>
+
+        <label>Security / secret exposure</label>
+        <input type="number" id="c11" min="0" value="0">
+        <div class="cat-hint">Tokens, credentials, service-account keys printed to chat during debugging.</div>
+    </div>
+</div>
+
+<div class="card">
+    <h2>3. Defenses deployed</h2>
+    <p class="lede" style="font-size: 0.92em; margin: 0 0 8px;">Check every defense layer you currently have active.</p>
+
+    <label class="check"><input type="checkbox" id="d_prose"> CLAUDE.md / project memory with explicit rules (prose)</label>
+    <label class="check"><input type="checkbox" id="d_hook"> Single-file hooks (PreToolUse, PostToolUse, SessionStart)</label>
+    <label class="check"><input type="checkbox" id="d_struct"> Structural tests (test the production code path, not stubs)</label>
+    <label class="check"><input type="checkbox" id="d_int"> Integration tests (end-to-end coverage of the agent loop)</label>
+    <label class="check"><input type="checkbox" id="d_ci"> Deterministic CI gates (Make targets, multi-component enforcement)</label>
+    <label class="check"><input type="checkbox" id="d_cov"> Coverage tooling with auto-ratchet</label>
+    <label class="check"><input type="checkbox" id="d_iso"> Physical isolation (separate container, separate user, immutable infrastructure)</label>
+</div>
+
+<div class="card">
+    <h2>4. Meta-analysis status</h2>
+
+    <div class="field">
+        <label class="check"><input type="checkbox" id="meta_done"> I have authored a meta-analysis of my own log</label>
+    </div>
+
+    <div class="row">
+        <div class="field">
+            <label for="meta_days">Days since meta-analysis</label>
+            <div class="hint">Used to test the 31-day measurement window.</div>
+            <input type="number" id="meta_days" min="0" value="0">
+        </div>
+        <div class="field">
+            <label for="meta_new">New incidents in named categories since meta-analysis</label>
+            <div class="hint">Count of post-meta-analysis incidents that fall in categories the analysis already named.</div>
+            <input type="number" id="meta_new" min="0" value="0">
+        </div>
+    </div>
+</div>
+
+<button onclick="runAudit()">Run Audit</button>
+
+<div class="result" id="result"></div>
+
+<footer>
+    <p>This is a free interactive tool. The framework it applies is documented in full in the <a href="https://yurukusa.gumroad.com/l/cxgjdh">Claim-Verify Handbook</a> ($19, 245 pages). Chapter 7 Section 7 of Edition 2 contains the longitudinal validation analysis from which this tool's logic is derived.</p>
+
+    <p>Companion products: <a href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook">Migration Playbook Edition 2</a> ($19, stay/switch/hybridize decision framework) and <a href="https://yurukusa.gumroad.com/l/rhtptb">Incident Postmortems Edition 2</a> (¥4,350, forensic analysis of 10 production incidents).</p>
+
+    <p>Source corpora: <a href="https://github.com/anthropics/claude-code/issues/62101">thecatfix corpus (#62101)</a>, <a href="https://gist.github.com/thecatfix/c7a00c2fe589b90e577d5317ae047404">meta-analysis gist</a>, <a href="https://github.com/anthropics/claude-code/issues/61932">j2clark corpus (#61932)</a>.</p>
+
+    <p>MIT-licensed. <a href="https://github.com/yurukusa/yurukusa.github.io">Source</a>. Maintained by <a href="https://github.com/yurukusa">yurukusa</a>.</p>
+</footer>
+
+</div>
+
+<script>
+function runAudit() {
+    const months = parseFloat(document.getElementById('months').value) || 0;
+    const total = parseInt(document.getElementById('total').value) || 0;
+
+    const cats = {};
+    let catSum = 0;
+    for (let i = 1; i <= 11; i++) {
+        const v = parseInt(document.getElementById('c' + i).value) || 0;
+        cats['c' + i] = v;
+        catSum += v;
+    }
+
+    const defenses = {
+        prose:  document.getElementById('d_prose').checked,
+        hook:   document.getElementById('d_hook').checked,
+        struct: document.getElementById('d_struct').checked,
+        int:    document.getElementById('d_int').checked,
+        ci:     document.getElementById('d_ci').checked,
+        cov:    document.getElementById('d_cov').checked,
+        iso:    document.getElementById('d_iso').checked,
+    };
+
+    const metaDone = document.getElementById('meta_done').checked;
+    const metaDays = parseInt(document.getElementById('meta_days').value) || 0;
+    const metaNew = parseInt(document.getElementById('meta_new').value) || 0;
+
+    const result = document.getElementById('result');
+    result.innerHTML = '';
+    result.style.display = 'block';
+
+    // Verdict logic
+    let signals = [];
+    let levelRec = 1;
+    let bottleneck = null;
+
+    // Signal 1: Volume calibration
+    const monthlyRate = months > 0 ? (total / months).toFixed(1) : 'N/A';
+    signals.push(`<div class="signal"><strong>Monthly incident rate:</strong> ${monthlyRate} per month over ${months} months (${total} total). For reference, the thecatfix corpus rate is approximately 3.9 incidents per month (62 over 16 months); the j2clark rate is approximately 25 per month (228 over 9 weeks).</div>`);
+
+    // Signal 2: Category concentration
+    const topCats = Object.entries(cats).sort((a, b) => b[1] - a[1]).slice(0, 3).filter(x => x[1] > 0);
+    if (topCats.length > 0) {
+        const catNames = {
+            c1: 'Persistent task-tracking failures',
+            c2: 'Fabrication / confident wrong answers',
+            c3: 'Overengineering / unsolicited complexity',
+            c4: 'Destructive actions without permission',
+            c5: 'Ignored explicit instructions',
+            c6: 'Rule-reading / session-start failures',
+            c7: 'Hardcoded paths / unverified assumptions',
+            c8: 'Unauthorized scope expansion',
+            c9: 'Tool misuse',
+            c10: 'False completion / verification theater',
+            c11: 'Security / secret exposure',
+        };
+        const topPct = catSum > 0 ? ((topCats[0][1] / catSum) * 100).toFixed(0) : 0;
+        signals.push(`<div class="signal"><strong>Top recurring categories:</strong> ${topCats.map(x => catNames[x[0]] + ' (' + x[1] + ')').join(', ')}. Your top category accounts for ${topPct}% of categorized incidents.</div>`);
+    }
+
+    // Signal 3: Defense layer count
+    const defenseCount = Object.values(defenses).filter(x => x).length;
+    const proseOnly = defenses.prose && !defenses.struct && !defenses.int && !defenses.hook && !defenses.ci && !defenses.iso;
+    const hasL12 = defenses.prose || defenses.hook || defenses.struct || defenses.int;
+    const hasL34 = defenses.ci || defenses.cov || defenses.iso;
+
+    signals.push(`<div class="signal"><strong>Defense layers active:</strong> ${defenseCount} of 7. Levels 1–2 (prose, hooks, tests): ${hasL12 ? 'present' : 'absent'}. Levels 3–4 (CI gates, coverage, physical isolation): ${hasL34 ? 'present' : 'absent'}.</div>`);
+
+    // Signal 4: Meta-analysis paradox check
+    if (metaDone && metaDays >= 31 && metaNew > 0) {
+        signals.push(`<div class="signal" style="border-left-color: var(--red);"><strong>Meta-analysis paradox detected:</strong> ${metaNew} new incidents in named categories ${metaDays} days after meta-analysis. This is the thecatfix outcome — Defense Levels 1–2 have reached their effective ceiling for these categories.</div>`);
+        levelRec = 3;
+    } else if (metaDone && metaDays >= 31 && metaNew === 0) {
+        signals.push(`<div class="signal" style="border-left-color: var(--green);"><strong>Meta-analysis intervention working:</strong> Zero new incidents in named categories ${metaDays} days after meta-analysis. Your Levels 1–2 interventions are effective in your environment. Continue current discipline; collect data for at least 90 days before drawing conclusions.</div>`);
+        levelRec = 2;
+    } else if (metaDone && metaDays < 31) {
+        signals.push(`<div class="signal"><strong>Measurement window pending:</strong> Meta-analysis is ${metaDays} days old. Wait until day 31 to measure the intervention effect. The 31-day window is calibrated against the thecatfix corpus where post-meta-analysis incident rates did not measurably change.</div>`);
+        levelRec = hasL34 ? 2 : 1;
+    } else if (!metaDone && total >= 20) {
+        signals.push(`<div class="signal" style="border-left-color: var(--amber);"><strong>Meta-analysis recommended:</strong> You have ${total} logged incidents. The thecatfix template (27,000-token document with category, severity, temporal pattern, source cause per report) takes 6–10 hours to author and is the prerequisite for the 31-day measurement loop.</div>`);
+        levelRec = 1;
+    }
+
+    // Bottleneck detection
+    if (proseOnly && total >= 10) {
+        bottleneck = 'You have prose-only defenses against a meaningful incident count. j2clark\'s 228-issue close-rate data: prose-rule-only closes 69% of issues — meaning roughly 1 in 3 of your incidents will recur regardless of how detailed your prose rules become. The single highest-leverage upgrade is the next layer (single-file hooks, 75% close rate).';
+    } else if (hasL12 && !hasL34 && monthlyRate >= 5) {
+        bottleneck = 'You have Levels 1–2 active but no Levels 3–4. j2clark\'s data shows deterministic CI gates close 33% of issues and coverage tooling closes 0% — these are the engineering-capacity bottleneck the framework explicitly does not solve. Plan the engineering capacity to ship one Level 3 intervention (Make target gate, container isolation, or immutable infrastructure layer) in the next 30 days.';
+    } else if (hasL34) {
+        bottleneck = 'You have Level 3 or Level 4 active. This is the upper limit of operator-side discipline. Beyond this, Level 4 (tool selection — migration to a different harness or vendor) is the remaining option. Document your current incident rate as a baseline; if it does not improve in the next 60 days with Levels 3–4 active, the Level 4 decision becomes empirically justified.';
+    }
+
+    if (bottleneck) {
+        signals.push(`<div class="signal" style="border-left-color: var(--amber);"><strong>Engineering-capacity diagnosis:</strong> ${bottleneck}</div>`);
+    }
+
+    // Verdict card
+    const verdictData = {
+        1: {
+            title: 'Defense Level 1 — Claim skepticism (current)',
+            body: 'Your log shape suggests you are at Level 1: aware of failures, beginning to track them. Next step is to maintain consistent logging for at least 3 months, then author a meta-analysis. The framework\'s 31-day measurement loop requires baseline data to interpret. Continue logging.',
+            cls: 'level1',
+        },
+        2: {
+            title: 'Defense Level 2 — Verification paths (current)',
+            body: 'Your log shape suggests Level 2: claim skepticism is established, verification paths are deployed per category. The thecatfix outcome (post-meta-analysis incidents continue at unchanged rates) is the next thing to test against your own data. The 31-day window after meta-analysis is the measurement.',
+            cls: 'level2',
+        },
+        3: {
+            title: 'Defense Level 3 — Structural response (recommended next)',
+            body: 'Your data shows Level 1–2 saturation. The framework directs you to Level 3: replace configuration trust with physical or structural enforcement. Physical isolation (separate container/user/machine), immutable infrastructure, explicit subagent tool allowlists, deterministic CI gates. j2clark\'s data: this is where the engineering-capacity bottleneck appears. Plan for engineering bandwidth, not just rule-writing.',
+            cls: 'level3',
+        },
+        4: {
+            title: 'Defense Level 4 — Tool selection (forced)',
+            body: 'Your data shows Levels 1–3 have all been deployed and the incident rate has not measurably changed in the measurement window. The framework\'s framing: Level 4 (tool selection — migration to a different harness or vendor) is now the empirically justified option. thecatfix\'s 2026-05-24 cancellation is the canonical example. The decision is not a failure of discipline; it is the correct conclusion given the longitudinal data.',
+            cls: 'level4',
+        },
+    };
+
+    // Force Level 4 if all defenses present AND meta paradox
+    if (defenseCount >= 5 && metaDone && metaDays >= 31 && metaNew > 0) {
+        levelRec = 4;
+    }
+
+    const v = verdictData[levelRec];
+    result.innerHTML += `<div class="verdict ${v.cls}"><h3>${v.title}</h3><p>${v.body}</p></div>`;
+
+    result.innerHTML += `<h3>Signals from your data</h3>` + signals.join('');
+
+    // CTA
+    result.innerHTML += `
+        <div class="cta">
+            <p><strong>Want the full framework?</strong> The four-level defense hierarchy, the 11-category catalog with mechanism descriptions, the 14 defense procedures, and the 5 detection-tool implementations are in the <a href="https://yurukusa.gumroad.com/l/cxgjdh?utm_source=corpus-self-audit&utm_medium=tool-cta&utm_campaign=audit-${levelRec}">Claim-Verify Handbook ($19, 245 pages)</a>.</p>
+            <p style="margin-bottom: 0; font-size: 0.92em; color: var(--muted);">Chapter 7 Section 7 of Edition 2 documents the dual-corpus validation (thecatfix + j2clark) this tool's logic is derived from.</p>
+        </div>
+    `;
+
+    // Bonus: cite ref
+    result.innerHTML += `<p class="ref">This diagnostic applies the three-stage framework (operator intent → status claim → runtime action) and four-level defense hierarchy (claim skepticism → verification paths → structural response → tool selection) from the Claim-Verify Handbook. The signal thresholds are calibrated against the thecatfix 62-incident corpus and the j2clark 228-issue close-rate analysis.</p>`;
+
+    result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+</script>
+
+</body>
+</html>
