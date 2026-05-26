@@ -1,13 +1,698 @@
 {
-  "generated_at": "2026-05-25T05:49:40.275161+00:00",
+  "generated_at": "2026-05-26T05:13:25.160682+00:00",
   "count": 50,
   "source": "github.com/anthropics/claude-code (open bug issues, sorted by created)",
   "items": [
     {
-      "number": 62146,
-      "title": "Recurring fetch() socket disconnects in Node SDK — n=81 corpus, cross-client cascade correlated with status.claude.com \"Elevated errors\" entry",
-      "created_at": "2026-05-25T05:24:11Z",
-      "updated_at": "2026-05-25T05:30:24Z",
+      "number": 62386,
+      "title": "[Bug] Claude agents interface: incomplete skill loading, copy functionality UX issues, and terminal responsiveness degradation",
+      "created_at": "2026-05-26T04:57:45Z",
+      "updated_at": "2026-05-26T04:59:00Z",
+      "labels": [
+        "bug",
+        "platform:macos",
+        "area:skills",
+        "area:ui",
+        "area:agent-view"
+      ],
+      "comments": 0,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62386",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 62385,
+      "title": "[BUG] Regression in v2.1.150: cannot select text outside current screen",
+      "created_at": "2026-05-26T04:52:16Z",
+      "updated_at": "2026-05-26T04:53:40Z",
+      "labels": [
+        "bug",
+        "has repro",
+        "platform:windows",
+        "area:tui",
+        "regression",
+        "platform:wsl"
+      ],
+      "comments": 0,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62385",
+      "has_repro": true,
+      "is_regression": true
+    },
+    {
+      "number": 62379,
+      "title": "[Bug] Anthropic API Error: text content blocks must be non-empty",
+      "created_at": "2026-05-26T04:17:56Z",
+      "updated_at": "2026-05-26T04:21:46Z",
+      "labels": [
+        "bug",
+        "duplicate",
+        "platform:macos",
+        "area:core"
+      ],
+      "comments": 1,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62379",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 62377,
+      "title": "The worst experience with a AI network, I'm not willing to pay $100 for it anymore.",
+      "created_at": "2026-05-26T04:05:20Z",
+      "updated_at": "2026-05-26T04:12:54Z",
+      "labels": [
+        "bug",
+        "area:model",
+        "area:mcp",
+        "model",
+        "api:anthropic"
+      ],
+      "comments": 3,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62377",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 62376,
+      "title": "Claude Code agent set Meta Ads budget 100x wrong — caused NT$11,168 (USD ~$350) financial loss",
+      "created_at": "2026-05-26T03:53:47Z",
+      "updated_at": "2026-05-26T04:10:40Z",
+      "labels": [
+        "bug",
+        "platform:macos",
+        "area:model",
+        "area:mcp"
+      ],
+      "comments": 2,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62376",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 62374,
+      "title": "[Bug] Environment variable expansion not working for $HOME in paths",
+      "created_at": "2026-05-26T03:50:28Z",
+      "updated_at": "2026-05-26T03:54:30Z",
+      "labels": [
+        "bug",
+        "platform:macos",
+        "area:cli"
+      ],
+      "comments": 1,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62374",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 62373,
+      "title": "[BUG] False positive safety filter block for Polish-language security audit question in own PHP CRM project (VSCode extension)",
+      "created_at": "2026-05-26T03:47:18Z",
+      "updated_at": "2026-05-26T03:57:13Z",
+      "labels": [
+        "bug",
+        "platform:windows",
+        "area:model",
+        "platform:vscode"
+      ],
+      "comments": 0,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62373",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 62372,
+      "title": "`bgIsolation` guard recovery path is broken: error tells agents to call `EnterWorktree`, which is a deferred tool",
+      "created_at": "2026-05-26T03:46:54Z",
+      "updated_at": "2026-05-26T04:14:46Z",
+      "labels": [
+        "bug",
+        "has repro",
+        "platform:windows",
+        "area:tools",
+        "area:agents"
+      ],
+      "comments": 2,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62372",
+      "has_repro": true,
+      "is_regression": false
+    },
+    {
+      "number": 62370,
+      "title": "[BUG]",
+      "created_at": "2026-05-26T03:42:06Z",
+      "updated_at": "2026-05-26T03:46:00Z",
+      "labels": [
+        "bug"
+      ],
+      "comments": 2,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62370",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 62368,
+      "title": "[BUG] ALT+TAB back to VS Code extension causes certain key presses (e.g., PrtSc, Henkan) to trigger menu bar focus",
+      "created_at": "2026-05-26T03:40:09Z",
+      "updated_at": "2026-05-26T04:14:48Z",
+      "labels": [
+        "bug",
+        "platform:windows",
+        "area:ide",
+        "platform:vscode"
+      ],
+      "comments": 1,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62368",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 62364,
+      "title": "Team in-process mode: process residue on disband + agents don't consume task_assignment",
+      "created_at": "2026-05-26T03:17:03Z",
+      "updated_at": "2026-05-26T04:10:47Z",
+      "labels": [
+        "bug",
+        "has repro",
+        "platform:windows",
+        "area:agents",
+        "area:cowork"
+      ],
+      "comments": 2,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62364",
+      "has_repro": true,
+      "is_regression": false
+    },
+    {
+      "number": 62363,
+      "title": "[Bug] Mac Desktop App Crashes Repeatedly During Session",
+      "created_at": "2026-05-26T03:15:53Z",
+      "updated_at": "2026-05-26T03:20:18Z",
+      "labels": [
+        "bug",
+        "platform:macos",
+        "area:desktop"
+      ],
+      "comments": 1,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62363",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 62361,
+      "title": "[BUG] Keychain credential partition_id silently resets to \"apple-tool:\" alone on ~5min cycle (macOS Tahoe 26.5, Claude Code 2.1.145)",
+      "created_at": "2026-05-26T03:04:33Z",
+      "updated_at": "2026-05-26T03:05:54Z",
+      "labels": [
+        "bug",
+        "has repro",
+        "platform:macos",
+        "area:auth"
+      ],
+      "comments": 0,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62361",
+      "has_repro": true,
+      "is_regression": false
+    },
+    {
+      "number": 62360,
+      "title": "[BUG] Text is randomly turning blue while using Claude Agents",
+      "created_at": "2026-05-26T03:02:04Z",
+      "updated_at": "2026-05-26T03:04:59Z",
+      "labels": [
+        "bug",
+        "platform:macos",
+        "area:tui",
+        "area:agents"
+      ],
+      "comments": 1,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62360",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 62358,
+      "title": "[Bug] Ultrareview synthesis step crashes after backend completes findings analysis",
+      "created_at": "2026-05-26T02:33:07Z",
+      "updated_at": "2026-05-26T02:37:25Z",
+      "labels": [
+        "bug",
+        "duplicate",
+        "platform:windows",
+        "area:cost",
+        "area:skills"
+      ],
+      "comments": 1,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62358",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 62357,
+      "title": "[BUG] Claude Desktop (MSIX) bundled bash leaks TEMP=/tmp into child JVMs, breaking Gradle and any Java Selector.open() on Windows",
+      "created_at": "2026-05-26T02:27:48Z",
+      "updated_at": "2026-05-26T02:28:48Z",
+      "labels": [
+        "bug",
+        "platform:windows",
+        "area:bash",
+        "area:desktop"
+      ],
+      "comments": 0,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62357",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 62356,
+      "title": "[BUG] Trust prompt and session reload triggered repeatedly when invoking 'claude' with uppercase casing (CLAUDE) on macOS",
+      "created_at": "2026-05-26T02:19:29Z",
+      "updated_at": "2026-05-26T02:21:35Z",
+      "labels": [
+        "bug",
+        "has repro",
+        "platform:macos",
+        "area:permissions"
+      ],
+      "comments": 0,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62356",
+      "has_repro": true,
+      "is_regression": false
+    },
+    {
+      "number": 62355,
+      "title": "[Bug] Claude Code generating fabricated data in responses",
+      "created_at": "2026-05-26T02:13:55Z",
+      "updated_at": "2026-05-26T02:15:13Z",
+      "labels": [
+        "bug",
+        "platform:macos",
+        "area:model"
+      ],
+      "comments": 0,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62355",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 62354,
+      "title": "[Bug] Claude OAuth Session Expires Prematurely After Few Turns",
+      "created_at": "2026-05-26T02:13:06Z",
+      "updated_at": "2026-05-26T02:14:13Z",
+      "labels": [
+        "bug",
+        "platform:linux",
+        "area:auth",
+        "platform:vscode"
+      ],
+      "comments": 0,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62354",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 62353,
+      "title": "[BUG] --resume normalizes model ID, breaking custom API endpoints that require the original model name",
+      "created_at": "2026-05-26T02:06:25Z",
+      "updated_at": "2026-05-26T02:07:37Z",
+      "labels": [
+        "bug",
+        "has repro",
+        "api:bedrock",
+        "area:core",
+        "regression"
+      ],
+      "comments": 0,
+      "reactions": 1,
+      "url": "https://github.com/anthropics/claude-code/issues/62353",
+      "has_repro": true,
+      "is_regression": true
+    },
+    {
+      "number": 62352,
+      "title": "VSCode extension: /goal preview text fills the chat panel and pushes assistant responses out of view until user types",
+      "created_at": "2026-05-26T02:03:36Z",
+      "updated_at": "2026-05-26T02:04:55Z",
+      "labels": [
+        "bug",
+        "platform:linux",
+        "area:ide",
+        "platform:vscode",
+        "area:ui"
+      ],
+      "comments": 0,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62352",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 62350,
+      "title": "[BUG] /copy in `claude agents` (FleetView) silently fails — toast shows success but OS clipboard is not updated (tmux + VS Code Remote SSH)",
+      "created_at": "2026-05-26T01:58:39Z",
+      "updated_at": "2026-05-26T01:59:43Z",
+      "labels": [
+        "bug",
+        "has repro",
+        "platform:linux",
+        "area:tui",
+        "area:agent-view"
+      ],
+      "comments": 0,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62350",
+      "has_repro": true,
+      "is_regression": false
+    },
+    {
+      "number": 62348,
+      "title": "[BUG] Claude Code `-EncodedCommand` PowerShell Execution Blocked by EDR/AV — No Opt-Out Available",
+      "created_at": "2026-05-26T01:48:46Z",
+      "updated_at": "2026-05-26T01:49:47Z",
+      "labels": [
+        "bug",
+        "platform:windows",
+        "area:security",
+        "area:bash"
+      ],
+      "comments": 0,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62348",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 62347,
+      "title": "[Bug Report] Unable to process request",
+      "created_at": "2026-05-26T01:46:40Z",
+      "updated_at": "2026-05-26T01:47:43Z",
+      "labels": [
+        "bug",
+        "platform:macos",
+        "needs-info"
+      ],
+      "comments": 0,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62347",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 62345,
+      "title": "[BUG] /goal stop hook \"Prompt is too long\" in long-conversation sessions even with 1M-context model enabled",
+      "created_at": "2026-05-26T01:18:30Z",
+      "updated_at": "2026-05-26T01:20:04Z",
+      "labels": [
+        "bug",
+        "has repro",
+        "platform:macos",
+        "area:hooks"
+      ],
+      "comments": 0,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62345",
+      "has_repro": true,
+      "is_regression": false
+    },
+    {
+      "number": 62344,
+      "title": "[Bug] Malformed tool calls in long sessions due to in-context few-shot poisoning",
+      "created_at": "2026-05-26T01:10:00Z",
+      "updated_at": "2026-05-26T01:13:54Z",
+      "labels": [
+        "bug",
+        "duplicate",
+        "platform:macos",
+        "area:model",
+        "area:core"
+      ],
+      "comments": 1,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62344",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 62343,
+      "title": "[Bug] Claude Code (Opus) repeatedly violated locked memory rules, caused WABA suspension, DNS email outage, and partner relationship damage — business-critical multi-incident report",
+      "created_at": "2026-05-26T01:08:37Z",
+      "updated_at": "2026-05-26T03:38:45Z",
+      "labels": [
+        "bug",
+        "platform:macos",
+        "area:model",
+        "memory"
+      ],
+      "comments": 6,
+      "reactions": 1,
+      "url": "https://github.com/anthropics/claude-code/issues/62343",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 62342,
+      "title": "`/terminal-setup` claims \"Switched to visual bell\" but leaves Terminal.app with no bell at all",
+      "created_at": "2026-05-26T01:07:15Z",
+      "updated_at": "2026-05-26T01:08:08Z",
+      "labels": [
+        "bug",
+        "platform:macos",
+        "area:tui"
+      ],
+      "comments": 0,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62342",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 62341,
+      "title": "[Bug] LSP tool spawns new kotlin-lsp JVM per invocation without reuse or cleanup",
+      "created_at": "2026-05-26T01:07:11Z",
+      "updated_at": "2026-05-26T01:08:27Z",
+      "labels": [
+        "bug",
+        "has repro",
+        "platform:macos",
+        "area:lsp"
+      ],
+      "comments": 0,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62341",
+      "has_repro": true,
+      "is_regression": false
+    },
+    {
+      "number": 62340,
+      "title": "[BUG] Paste (Ctrl+Shift+V) broken in GNOME Terminal on Linux/Wayland — regression in 2.1.150",
+      "created_at": "2026-05-26T00:53:32Z",
+      "updated_at": "2026-05-26T01:19:56Z",
+      "labels": [
+        "bug",
+        "has repro",
+        "platform:linux",
+        "area:tui",
+        "regression"
+      ],
+      "comments": 1,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62340",
+      "has_repro": true,
+      "is_regression": true
+    },
+    {
+      "number": 62339,
+      "title": "[bug] CC pinned tasks panel + macOS terminal scrollback → process hangs in __write_nocancel, kill -9 ineffective",
+      "created_at": "2026-05-26T00:49:29Z",
+      "updated_at": "2026-05-26T02:51:39Z",
+      "labels": [
+        "bug",
+        "platform:macos",
+        "area:tui"
+      ],
+      "comments": 1,
+      "reactions": 1,
+      "url": "https://github.com/anthropics/claude-code/issues/62339",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 62338,
+      "title": "[BUG] Claude Code silently billed $447 to API instead of Max subscription, then gave incorrect auth confirmation",
+      "created_at": "2026-05-26T00:49:07Z",
+      "updated_at": "2026-05-26T04:10:47Z",
+      "labels": [
+        "bug",
+        "platform:macos",
+        "area:cost",
+        "area:auth"
+      ],
+      "comments": 6,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62338",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 62336,
+      "title": "Auto-memory subsystem writes to MEMORY.md mid-turn, invalidating Edit-tool read snapshots",
+      "created_at": "2026-05-26T00:43:59Z",
+      "updated_at": "2026-05-26T01:20:06Z",
+      "labels": [
+        "bug",
+        "platform:macos",
+        "area:tools",
+        "memory"
+      ],
+      "comments": 2,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62336",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 62335,
+      "title": "[BUG] VS Code Chat panel Agent Handoff to Claude fails with \"Error: Error during execution\" (Windows, v2.1.145)",
+      "created_at": "2026-05-26T00:41:46Z",
+      "updated_at": "2026-05-26T00:45:52Z",
+      "labels": [
+        "bug",
+        "platform:windows",
+        "area:ide",
+        "platform:vscode",
+        "area:plugins"
+      ],
+      "comments": 1,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62335",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 62333,
+      "title": "[BUG] Desktop app appears in dock but never opens on macOS Tahoe 26.2",
+      "created_at": "2026-05-26T00:35:56Z",
+      "updated_at": "2026-05-26T01:20:01Z",
+      "labels": [
+        "bug",
+        "platform:macos",
+        "area:desktop"
+      ],
+      "comments": 1,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62333",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 62332,
+      "title": "[BUG] claude mcp add -e <KEY=VAL> <name> -- <cmd> still fails in 2.1.150 (the syntax printed by --help)",
+      "created_at": "2026-05-26T00:35:34Z",
+      "updated_at": "2026-05-26T01:19:58Z",
+      "labels": [
+        "bug",
+        "has repro",
+        "platform:macos",
+        "area:mcp",
+        "area:cli"
+      ],
+      "comments": 1,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62332",
+      "has_repro": true,
+      "is_regression": false
+    },
+    {
+      "number": 62331,
+      "title": "[BUG]",
+      "created_at": "2026-05-26T00:35:16Z",
+      "updated_at": "2026-05-26T00:36:14Z",
+      "labels": [
+        "bug",
+        "platform:macos",
+        "area:cowork",
+        "area:sandbox"
+      ],
+      "comments": 0,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62331",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 62330,
+      "title": "[BUG] Sonnet 4.6 stuck on usage limit (Opus works fine)",
+      "created_at": "2026-05-26T00:23:04Z",
+      "updated_at": "2026-05-26T00:24:12Z",
+      "labels": [
+        "bug",
+        "duplicate",
+        "platform:windows",
+        "area:cost",
+        "api:anthropic"
+      ],
+      "comments": 0,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62330",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 62329,
+      "title": "[BUG] Interrupt causes huge performance lock and break down.",
+      "created_at": "2026-05-25T23:48:38Z",
+      "updated_at": "2026-05-25T23:54:16Z",
+      "labels": [
+        "bug",
+        "platform:macos",
+        "area:core",
+        "performance"
+      ],
+      "comments": 1,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62329",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 62328,
+      "title": "[Bug] Ghost references to removed marketplaces and plugins causing errors",
+      "created_at": "2026-05-25T23:44:43Z",
+      "updated_at": "2026-05-25T23:48:36Z",
+      "labels": [
+        "bug",
+        "platform:macos",
+        "needs-info",
+        "area:plugins"
+      ],
+      "comments": 1,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62328",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 62327,
+      "title": "Intermittent `socket connection was closed unexpectedly` (ECONNRESET) on startup — ~40-70% failure rate across parallel startup fetches",
+      "created_at": "2026-05-25T23:43:34Z",
+      "updated_at": "2026-05-25T23:48:03Z",
       "labels": [
         "bug",
         "has repro",
@@ -16,846 +701,160 @@
       ],
       "comments": 1,
       "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62146",
+      "url": "https://github.com/anthropics/claude-code/issues/62327",
       "has_repro": true,
       "is_regression": false
     },
     {
-      "number": 62144,
-      "title": "Recurring output degradation across Sonnet 4.6, Opus 4.6, Opus 4.7, and Haiku 4.5 — April fix did not hold",
-      "created_at": "2026-05-25T05:09:16Z",
-      "updated_at": "2026-05-25T05:24:18Z",
+      "number": 62326,
+      "title": "[BUG] Desktop app crashes (exit code 3221225477) with Sonnet but not Opus on Windows 11",
+      "created_at": "2026-05-25T23:30:56Z",
+      "updated_at": "2026-05-26T01:19:54Z",
       "labels": [
         "bug",
+        "has repro",
+        "platform:windows",
         "area:model",
-        "model"
-      ],
-      "comments": 2,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62144",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 62143,
-      "title": "[BUG] Claude Code (non-interactive/headless, OAuth) requires usage credits enabled even when well within plan limits; usage credits toggle turns itself off spontaneously",
-      "created_at": "2026-05-25T05:01:57Z",
-      "updated_at": "2026-05-25T05:03:29Z",
-      "labels": [
-        "bug",
-        "duplicate",
-        "platform:windows",
-        "area:cost",
-        "api:anthropic"
-      ],
-      "comments": 0,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62143",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 62141,
-      "title": "Claude in Chrome: Browser extension not connected after Claude Code auto-update (Windows)",
-      "created_at": "2026-05-25T04:45:19Z",
-      "updated_at": "2026-05-25T04:46:27Z",
-      "labels": [
-        "bug",
-        "has repro",
-        "platform:windows",
-        "area:mcp",
-        "area:chrome"
-      ],
-      "comments": 0,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62141",
-      "has_repro": true,
-      "is_regression": false
-    },
-    {
-      "number": 62140,
-      "title": "[BUG] Cowork silently corrupts files in OneDrive folders with Files-On-Demand",
-      "created_at": "2026-05-25T04:42:26Z",
-      "updated_at": "2026-05-25T04:53:16Z",
-      "labels": [
-        "bug",
-        "platform:windows",
-        "area:tools",
-        "area:cowork",
-        "data-loss"
-      ],
-      "comments": 2,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62140",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 62138,
-      "title": "`/compact <custom-args>` topic-redirect silently overridden — clobbered title is re-injected to model as session-intent (forked sessions, related to #29922)",
-      "created_at": "2026-05-25T04:27:57Z",
-      "updated_at": "2026-05-25T04:28:53Z",
-      "labels": [
-        "bug",
-        "has repro",
-        "platform:macos",
-        "area:core"
-      ],
-      "comments": 0,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62138",
-      "has_repro": true,
-      "is_regression": false
-    },
-    {
-      "number": 62137,
-      "title": "[BUG] API Error: Server is temporarily limiting requests (not your usage limit) · Rate limited",
-      "created_at": "2026-05-25T04:26:33Z",
-      "updated_at": "2026-05-25T04:31:28Z",
-      "labels": [
-        "bug",
-        "platform:macos",
-        "area:api",
-        "needs-info",
-        "api:anthropic"
+        "area:desktop"
       ],
       "comments": 1,
       "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62137",
-      "has_repro": false,
+      "url": "https://github.com/anthropics/claude-code/issues/62326",
+      "has_repro": true,
       "is_regression": false
     },
     {
-      "number": 62135,
-      "title": "Bash read-only commands (curl, gh) still prompt for permission despite allow rules",
-      "created_at": "2026-05-25T04:24:02Z",
-      "updated_at": "2026-05-25T04:25:32Z",
+      "number": 62325,
+      "title": "Memory file duplication causes excessive token consumption",
+      "created_at": "2026-05-25T23:24:34Z",
+      "updated_at": "2026-05-26T01:20:04Z",
       "labels": [
         "bug",
         "platform:linux",
-        "area:bash",
-        "area:permissions"
-      ],
-      "comments": 0,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62135",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 62131,
-      "title": "Claude Code for Web: setup-script field DX makes setup failures very hard to debug",
-      "created_at": "2026-05-25T04:11:20Z",
-      "updated_at": "2026-05-25T04:16:40Z",
-      "labels": [
-        "bug",
-        "area:claude-code-web",
-        "platform:web"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62131",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 62130,
-      "title": "[BUG] \"✗ Auto-update failed\" banner fires on a native install already running the latest channel version (transient check-failure surfaced as install-failure)",
-      "created_at": "2026-05-25T04:04:11Z",
-      "updated_at": "2026-05-25T04:10:40Z",
-      "labels": [
-        "bug",
-        "platform:macos",
-        "area:installation"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62130",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 62128,
-      "title": "Claude fails to analyze user-supplied reference images before writing image-generation prompts",
-      "created_at": "2026-05-25T03:36:42Z",
-      "updated_at": "2026-05-25T03:44:04Z",
-      "labels": [
-        "bug",
-        "platform:macos",
-        "area:model"
-      ],
-      "comments": 2,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62128",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 62127,
-      "title": "argument-hint frontmatter in skills not displayed in slash command hint area",
-      "created_at": "2026-05-25T03:34:02Z",
-      "updated_at": "2026-05-25T03:38:37Z",
-      "labels": [
-        "bug",
-        "has repro",
-        "platform:macos",
-        "area:tui",
-        "area:skills"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62127",
-      "has_repro": true,
-      "is_regression": false
-    },
-    {
-      "number": 62126,
-      "title": "Content filter false positive on bulk-creating standard OSS community files",
-      "created_at": "2026-05-25T03:32:00Z",
-      "updated_at": "2026-05-25T03:36:12Z",
-      "labels": [
-        "bug",
-        "duplicate",
-        "platform:macos",
-        "external",
-        "area:api"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62126",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 62124,
-      "title": "[BUG] Claude Code doesn't allow normal Mac Terminal text selection behaviour.",
-      "created_at": "2026-05-25T03:19:47Z",
-      "updated_at": "2026-05-25T03:25:48Z",
-      "labels": [
-        "bug",
-        "platform:macos",
-        "area:tui",
-        "regression"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62124",
-      "has_repro": false,
-      "is_regression": true
-    },
-    {
-      "number": 62123,
-      "title": "[Bug] Anthropic API Error: Model's tool call could not be parsed (retry also failed)",
-      "created_at": "2026-05-25T03:06:24Z",
-      "updated_at": "2026-05-25T03:09:11Z",
-      "labels": [
-        "bug",
-        "platform:macos",
-        "area:model",
-        "platform:vscode"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62123",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 62121,
-      "title": "[BUG] Stdio MCP tool calls default to 1-second timeout in v2.1.148 — long-running tools fail before server can respond",
-      "created_at": "2026-05-25T02:42:05Z",
-      "updated_at": "2026-05-25T04:13:44Z",
-      "labels": [
-        "bug",
-        "has repro",
-        "platform:macos",
-        "area:mcp",
-        "regression"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62121",
-      "has_repro": true,
-      "is_regression": true
-    },
-    {
-      "number": 62119,
-      "title": "[BUG] Personal repository not appearing in Claude Code repo picker",
-      "created_at": "2026-05-25T02:27:11Z",
-      "updated_at": "2026-05-25T02:28:16Z",
-      "labels": [
-        "bug",
-        "area:claude-code-web",
-        "platform:web"
-      ],
-      "comments": 0,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62119",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 62118,
-      "title": "[BUG] /background mid-turn silently drops the in-flight turn in the forked bg session",
-      "created_at": "2026-05-25T02:17:12Z",
-      "updated_at": "2026-05-25T04:13:47Z",
-      "labels": [
-        "bug",
-        "has repro",
-        "platform:macos",
-        "area:agent-view"
-      ],
-      "comments": 2,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62118",
-      "has_repro": true,
-      "is_regression": false
-    },
-    {
-      "number": 62116,
-      "title": "[BUG] Claude Desktop installer fails on Windows Home — no fallback \"Install without Cowork\" option shown",
-      "created_at": "2026-05-25T02:06:15Z",
-      "updated_at": "2026-05-25T02:22:04Z",
-      "labels": [
-        "bug",
-        "has repro",
-        "platform:windows",
-        "area:cowork",
-        "area:installation",
-        "area:desktop"
-      ],
-      "comments": 2,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62116",
-      "has_repro": true,
-      "is_regression": false
-    },
-    {
-      "number": 62115,
-      "title": "[Bug] Claude hangs on certain bash commands in specific repository",
-      "created_at": "2026-05-25T02:02:21Z",
-      "updated_at": "2026-05-25T02:22:06Z",
-      "labels": [
-        "bug",
-        "platform:macos",
-        "area:bash",
-        "needs-repro"
-      ],
-      "comments": 2,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62115",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 62114,
-      "title": "Desktop app: No way to use Sonnet with standard (200k) context — 1M context is forced, blocks usage when credits unavailable",
-      "created_at": "2026-05-25T02:01:24Z",
-      "updated_at": "2026-05-25T02:22:07Z",
-      "labels": [
-        "bug",
-        "platform:macos",
-        "area:desktop"
-      ],
-      "comments": 2,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62114",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 62113,
-      "title": "[BUG] Desktop SSH (Mac → Windows): shell mis-detected as 'posix' after update, breaks 'server --install' on PowerShell default shell",
-      "created_at": "2026-05-25T01:57:57Z",
-      "updated_at": "2026-05-25T02:22:09Z",
-      "labels": [
-        "bug",
-        "has repro",
-        "platform:windows",
-        "platform:macos",
-        "regression",
-        "area:desktop"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62113",
-      "has_repro": true,
-      "is_regression": true
-    },
-    {
-      "number": 62111,
-      "title": "[BUG] Claude application (Chat/Cowork/Code) window size reducing within its app window after idle time.",
-      "created_at": "2026-05-25T01:39:19Z",
-      "updated_at": "2026-05-25T02:25:22Z",
-      "labels": [
-        "bug",
-        "platform:windows",
-        "area:ui",
-        "area:desktop"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62111",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 62109,
-      "title": "[BUG] In RC mode, plan rejection does not pause the session - Claude keeps guessing rejection reasons",
-      "created_at": "2026-05-25T00:31:32Z",
-      "updated_at": "2026-05-25T02:25:24Z",
-      "labels": [
-        "bug",
-        "platform:linux",
-        "area:ide",
-        "platform:vscode"
-      ],
-      "comments": 2,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62109",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 62107,
-      "title": "Cowork scheduled tasks on Windows leave claude.exe processes alive after completion, causing memory accumulation",
-      "created_at": "2026-05-25T00:21:35Z",
-      "updated_at": "2026-05-25T02:22:13Z",
-      "labels": [
-        "bug",
-        "has repro",
-        "platform:windows",
-        "perf:memory",
-        "area:cowork"
-      ],
-      "comments": 3,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62107",
-      "has_repro": true,
-      "is_regression": false
-    },
-    {
-      "number": 62106,
-      "title": "[MODEL]  Model behaviour issue — Claude Code acted in haste, failed to reason from source before generating documentation",
-      "created_at": "2026-05-24T23:53:39Z",
-      "updated_at": "2026-05-25T02:25:26Z",
-      "labels": [
-        "bug",
-        "model",
-        "api:anthropic"
-      ],
-      "comments": 2,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62106",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 62103,
-      "title": "[BUG] WebSearch tool fails with error 1210 (Invalid API parameter) — Brave Search API credentials issue",
-      "created_at": "2026-05-24T23:18:22Z",
-      "updated_at": "2026-05-25T02:22:15Z",
-      "labels": [
-        "bug",
-        "platform:macos",
-        "area:tools"
-      ],
-      "comments": 2,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62103",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 62100,
-      "title": "[Bug] 200K context model requires usage credits unexpectedly after recent changes",
-      "created_at": "2026-05-24T23:14:11Z",
-      "updated_at": "2026-05-24T23:19:55Z",
-      "labels": [
-        "bug",
-        "duplicate",
-        "platform:macos",
-        "area:cost",
-        "api:anthropic"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62100",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 62098,
-      "title": "[BUG] MCP stdio servers torn down during plugin autoupdate, do not auto-respawn",
-      "created_at": "2026-05-24T23:01:17Z",
-      "updated_at": "2026-05-25T01:16:54Z",
-      "labels": [
-        "bug",
-        "platform:windows",
-        "area:mcp",
-        "area:plugins"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62098",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 62097,
-      "title": "Claude Opus 4.7: repeated fabrication about ChatGPT Business export",
-      "created_at": "2026-05-24T22:54:03Z",
-      "updated_at": "2026-05-24T22:59:52Z",
-      "labels": [
-        "bug",
-        "platform:macos",
-        "area:model",
+        "area:core",
         "memory"
       ],
-      "comments": 1,
+      "comments": 2,
       "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62097",
+      "url": "https://github.com/anthropics/claude-code/issues/62325",
       "has_repro": false,
       "is_regression": false
     },
     {
-      "number": 62096,
-      "title": "[BUG] subscribe_pr_activity delivers human review events but not bot review events (from GitHub Apps like chatgpt-codex-connector[bot] and gemini-code-assist[bot])",
-      "created_at": "2026-05-24T22:52:32Z",
-      "updated_at": "2026-05-25T01:28:43Z",
+      "number": 62324,
+      "title": "[BUG] Clicking dock icon spawns new Claude desktop instance instead of focusing existing window (macOS)",
+      "created_at": "2026-05-25T23:16:21Z",
+      "updated_at": "2026-05-25T23:47:30Z",
       "labels": [
         "bug",
+        "platform:macos",
+        "area:desktop"
+      ],
+      "comments": 0,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62324",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 62322,
+      "title": "[Docs] Apple Terminal listed in \"Works without setup\" for Shift+Enter, but Shift+Enter submits instead of inserting a newline",
+      "created_at": "2026-05-25T22:34:17Z",
+      "updated_at": "2026-05-25T22:38:32Z",
+      "labels": [
+        "bug",
+        "documentation",
         "has repro",
         "platform:macos",
-        "area:mcp"
+        "area:docs"
       ],
-      "comments": 2,
-      "reactions": 1,
-      "url": "https://github.com/anthropics/claude-code/issues/62096",
+      "comments": 1,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62322",
       "has_repro": true,
       "is_regression": false
     },
     {
-      "number": 62091,
-      "title": "Agent deleted user's main project repo via gh repo fork --fork-name rename behavior",
-      "created_at": "2026-05-24T22:20:21Z",
-      "updated_at": "2026-05-25T01:53:53Z",
-      "labels": [
-        "bug",
-        "area:tools",
-        "area:permissions"
-      ],
-      "comments": 3,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62091",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 62088,
-      "title": "[BUG] Cowork and Code tabs grayed out – CoworkVMService running but VM stalls at tick 1 – Windows 11, Max plan",
-      "created_at": "2026-05-24T22:07:05Z",
-      "updated_at": "2026-05-25T01:16:58Z",
-      "labels": [
-        "bug",
-        "platform:windows",
-        "area:auth",
-        "area:cowork",
-        "area:desktop"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62088",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 62087,
-      "title": "Claude Code repeatedly ignores project-level CLAUDE.md guidelines during implementation",
-      "created_at": "2026-05-24T21:43:47Z",
-      "updated_at": "2026-05-24T22:18:00Z",
-      "labels": [
-        "bug",
-        "area:model"
-      ],
-      "comments": 2,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62087",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 62085,
-      "title": "[BUG] Files corrupted to same-size null bytes after Edit tool operations, not reproducible in isolation",
-      "created_at": "2026-05-24T21:00:01Z",
-      "updated_at": "2026-05-24T22:11:02Z",
-      "labels": [
-        "bug",
-        "platform:windows",
-        "area:tools",
-        "area:hooks",
-        "data-loss"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62085",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 62084,
-      "title": "Desktop launches CLI without --dangerously-skip-permissions despite defaultMode: bypassPermissions",
-      "created_at": "2026-05-24T20:38:32Z",
-      "updated_at": "2026-05-24T22:11:04Z",
-      "labels": [
-        "bug",
-        "has repro",
-        "platform:windows",
-        "area:permissions",
-        "area:desktop"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62084",
-      "has_repro": true,
-      "is_regression": false
-    },
-    {
-      "number": 62081,
-      "title": "Idle session still triggers iTerm2 tab activity indicator (spinner)",
-      "created_at": "2026-05-24T20:09:48Z",
-      "updated_at": "2026-05-25T04:40:24Z",
+      "number": 62320,
+      "title": "[BUG] Weird hieroglyphics showing up in terminal",
+      "created_at": "2026-05-25T22:18:59Z",
+      "updated_at": "2026-05-25T22:20:11Z",
       "labels": [
         "bug",
         "platform:macos",
         "area:tui"
       ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62081",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 62079,
-      "title": "MCP tool calls return cached error responses after server fix within same session",
-      "created_at": "2026-05-24T19:50:58Z",
-      "updated_at": "2026-05-24T22:17:56Z",
-      "labels": [
-        "bug",
-        "area:mcp"
-      ],
-      "comments": 2,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62079",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 62077,
-      "title": "[BUG] PreToolUse/PostToolUse hook error: node:internal/modules/cjs/loader:1479 on every Bash command",
-      "created_at": "2026-05-24T19:39:55Z",
-      "updated_at": "2026-05-25T01:17:05Z",
-      "labels": [
-        "bug",
-        "area:hooks",
-        "platform:wsl"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62077",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 62076,
-      "title": "Permission mode reverts from bypassPermissions to acceptEdits on first prompt (Claude Desktop 2.1.149 / Cowork, macOS)",
-      "created_at": "2026-05-24T19:37:55Z",
-      "updated_at": "2026-05-24T19:39:00Z",
-      "labels": [
-        "bug",
-        "duplicate",
-        "platform:macos",
-        "area:cowork",
-        "area:permissions",
-        "area:desktop"
-      ],
       "comments": 0,
       "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62076",
+      "url": "https://github.com/anthropics/claude-code/issues/62320",
       "has_repro": false,
       "is_regression": false
     },
     {
-      "number": 62073,
-      "title": "[MODEL]",
-      "created_at": "2026-05-24T19:23:28Z",
-      "updated_at": "2026-05-24T19:32:07Z",
-      "labels": [
-        "bug",
-        "area:model",
-        "platform:vscode",
-        "model",
-        "data-loss"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62073",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 62072,
-      "title": "[BUG] Cowork on macOS 1.8555.2 — zero MCP tools bind in any install path (.mcpb + SDK bridge + Custom Connectors + project .mcp.json); spawn pipeline missing --mcp-config since 2026-05-23 auto-update",
-      "created_at": "2026-05-24T19:22:50Z",
-      "updated_at": "2026-05-24T20:50:27Z",
-      "labels": [
-        "bug",
-        "platform:macos",
-        "area:mcp",
-        "area:cowork",
-        "regression"
-      ],
-      "comments": 2,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62072",
-      "has_repro": false,
-      "is_regression": true
-    },
-    {
-      "number": 62071,
-      "title": "[Bug] Usage Policy classifier stuck in blocked state for legitimate kernel security work",
-      "created_at": "2026-05-24T19:17:53Z",
-      "updated_at": "2026-05-24T21:59:46Z",
-      "labels": [
-        "bug",
-        "platform:linux",
-        "area:model"
-      ],
-      "comments": 5,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62071",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 62070,
-      "title": "[BUG] CLAUDE_CODE_MAX_CONTEXT_TOKENS",
-      "created_at": "2026-05-24T19:05:17Z",
-      "updated_at": "2026-05-24T19:10:05Z",
-      "labels": [
-        "bug",
-        "area:core",
-        "area:providers"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62070",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 62069,
-      "title": "`claude remote-control` daemon leaks idle `--print` child sessions (never reaped)",
-      "created_at": "2026-05-24T18:52:29Z",
-      "updated_at": "2026-05-24T18:57:39Z",
+      "number": 62319,
+      "title": "[BUG] form-mode MCP elicitation auto-declines in interactive TUI — server-initiated form is treated as \"print mode\"",
+      "created_at": "2026-05-25T22:16:19Z",
+      "updated_at": "2026-05-25T22:24:55Z",
       "labels": [
         "bug",
         "has repro",
         "platform:macos",
-        "area:core"
+        "area:mcp"
       ],
       "comments": 1,
       "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62069",
+      "url": "https://github.com/anthropics/claude-code/issues/62319",
       "has_repro": true,
       "is_regression": false
     },
     {
-      "number": 62067,
-      "title": "[BUG] \"/doctor incorrectly flags settings.json as invalid JSON when JetBrains plugin writes JSON5 format\"",
-      "created_at": "2026-05-24T18:36:58Z",
-      "updated_at": "2026-05-25T01:17:07Z",
-      "labels": [
-        "bug",
-        "platform:macos",
-        "area:ide",
-        "platform:intellij"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62067",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 62066,
-      "title": "[BUG] Claude Code requesting sudo in Mac OS terminal",
-      "created_at": "2026-05-24T18:33:39Z",
-      "updated_at": "2026-05-24T19:21:10Z",
-      "labels": [
-        "bug",
-        "platform:macos",
-        "area:security",
-        "area:bash",
-        "area:permissions"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62066",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 62065,
-      "title": "[BUG] False-positive AUP block on non-English (Russian) frustration messages directed at the tool itself",
-      "created_at": "2026-05-24T18:31:38Z",
-      "updated_at": "2026-05-24T18:36:31Z",
-      "labels": [
-        "bug",
-        "platform:macos",
-        "area:model"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62065",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 62064,
-      "title": "[BUG]  Failed to load local file",
-      "created_at": "2026-05-24T18:23:15Z",
-      "updated_at": "2026-05-24T18:24:31Z",
-      "labels": [
-        "bug",
-        "platform:windows",
-        "area:cowork"
-      ],
-      "comments": 0,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62064",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 62063,
-      "title": "[BUG] Claude Code defaults to 1M context on fresh session with no workaround on Pro plan",
-      "created_at": "2026-05-24T18:18:53Z",
-      "updated_at": "2026-05-24T18:20:02Z",
+      "number": 62316,
+      "title": "Context compaction silently destroys terminal scroll history",
+      "created_at": "2026-05-25T21:56:30Z",
+      "updated_at": "2026-05-26T01:12:44Z",
       "labels": [
         "bug",
         "duplicate",
-        "platform:macos",
-        "area:cost",
+        "area:tui"
+      ],
+      "comments": 3,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62316",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 62314,
+      "title": "Sonnet 4.6 routes every request to long-context tier on Claude Desktop 2.1.149 (429 'Usage credits required')",
+      "created_at": "2026-05-25T21:49:49Z",
+      "updated_at": "2026-05-25T22:25:32Z",
+      "labels": [
+        "bug",
+        "platform:windows",
         "area:model",
-        "api:anthropic",
         "area:desktop"
       ],
-      "comments": 0,
+      "comments": 3,
       "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/62063",
+      "url": "https://github.com/anthropics/claude-code/issues/62314",
       "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 62313,
+      "title": "[BUG] Bus error (SIGBUS) on AlmaLinux 9 / RHEL 9 with kernel 5.14 — ARCH_SET_XCOMP_PERM syscall not supported",
+      "created_at": "2026-05-25T21:38:53Z",
+      "updated_at": "2026-05-25T22:15:27Z",
+      "labels": [
+        "bug",
+        "has repro",
+        "platform:linux",
+        "area:packaging"
+      ],
+      "comments": 1,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/62313",
+      "has_repro": true,
       "is_regression": false
     }
   ]
