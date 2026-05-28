@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Code 6月15日 4経路の判定の道具 | yurukusa</title>
+    <meta name="description" content="2026年6月15日のAnthropicの課金分離で、 4つの対応の経路 (対話への畳み込み / claude -p の最適化 / API への移行 / 混在) のうちあなたに適した1経路を5問で判定する無料の道具。 登録不要、 ブラウザだけで動く。">
+    <link rel="canonical" href="https://yurukusa.github.io/june-15-path-picker/">
+
+    <meta property="og:title" content="Claude Code 6月15日 4経路の判定の道具">
+    <meta property="og:description" content="4つの対応の経路のうち、 5問の入力からあなたに適した1経路を推奨する道具。 6月15日まで残り18日の段の判定の入力。">
+    <meta property="og:url" content="https://yurukusa.github.io/june-15-path-picker/">
+    <meta property="og:type" content="website">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@yurukusa_dev">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Claude Code June 15 path picker (JP)",
+      "description": "2026年6月15日のAnthropicの課金分離の4経路の判定の道具。 5問の入力から1経路を推奨。",
+      "url": "https://yurukusa.github.io/june-15-path-picker/",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Any",
+      "browserRequirements": "Requires JavaScript",
+      "isAccessibleForFree": true,
+      "inLanguage": "ja",
+      "creator": { "@type": "Person", "name": "yurukusa", "url": "https://yurukusa.github.io/" },
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+    }
+    </script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #080810;
+            --surface: #10101c;
+            --surface2: #16162a;
+            --border: #1e1e38;
+            --text: #ddddf0;
+            --text-dim: #9090b0;
+            --accent: #f0883e;
+            --accent-soft: rgba(240, 136, 62, 0.15);
+            --green: #56d364;
+            --red: #f85149;
+            --yellow: #d29922;
+            --blue: #58a6ff;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Yu Gothic", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            padding: 24px 16px;
+            min-height: 100vh;
+        }
+        .wrap { max-width: 760px; margin: 0 auto; }
+        header { margin-bottom: 32px; }
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        h1 .accent { color: var(--accent); }
+        .lead {
+            color: var(--text-dim);
+            font-size: 0.92rem;
+            margin-bottom: 16px;
+        }
+        .lang-switch {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+        .lang-switch a {
+            color: var(--accent);
+            text-decoration: none;
+            margin-right: 8px;
+        }
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+        h2 {
+            font-size: 1.05rem;
+            margin-bottom: 12px;
+            color: var(--accent);
+            font-weight: 600;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .question:last-child {
+            margin-bottom: 0;
+        }
+        .q-label {
+            display: block;
+            font-size: 0.95rem;
+            color: var(--text);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        .q-hint {
+            font-size: 0.82rem;
+            color: var(--text-dim);
+            margin-top: 4px;
+        }
+        select, input[type="number"] {
+            width: 100%;
+            background: var(--surface2);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            padding: 8px 10px;
+            font-size: 0.92rem;
+            font-family: inherit;
+        }
+        .calc-btn {
+            background: var(--accent);
+            color: #080810;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            margin-top: 8px;
+            font-family: inherit;
+            width: 100%;
+        }
+        .calc-btn:hover { opacity: 0.9; }
+        .verdict {
+            margin-top: 16px;
+            padding: 16px;
+            border-radius: 6px;
+            font-size: 0.92rem;
+            border-left: 3px solid var(--accent);
+            background: var(--accent-soft);
+        }
+        .verdict.green { border-color: var(--green); background: rgba(86, 211, 100, 0.1); }
+        .verdict.yellow { border-color: var(--yellow); background: rgba(210, 153, 34, 0.1); }
+        .verdict.red { border-color: var(--red); background: rgba(248, 81, 73, 0.1); }
+        .verdict.blue { border-color: var(--blue); background: rgba(88, 166, 255, 0.1); }
+        .verdict h3 {
+            font-size: 1.05rem;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+        .verdict p { margin-bottom: 8px; }
+        .verdict p:last-child { margin-bottom: 0; }
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+        }
+        .stat-row:last-of-type { border-bottom: none; }
+        .stat-row .label { color: var(--text-dim); }
+        .stat-row .value { font-weight: 600; font-family: ui-monospace, monospace; }
+        .hidden { display: none; }
+        .reasoning {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px dashed var(--border);
+            font-size: 0.88rem;
+            color: var(--text-dim);
+        }
+        .cta-box {
+            margin-top: 16px;
+            padding: 14px 16px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--surface2);
+        }
+        .cta-box .cta-title {
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 0.92rem;
+            margin-bottom: 6px;
+        }
+        .cta-box .cta-body {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        .cta-box .cta-button {
+            display: inline-block;
+            padding: 8px 14px;
+            background: var(--accent);
+            color: #080810;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            font-size: 0.86rem;
+        }
+        .cta-box .cta-disclaimer {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            margin-top: 8px;
+        }
+        footer {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            font-size: 0.82rem;
+            color: var(--text-dim);
+        }
+        footer p { margin-bottom: 8px; }
+        footer a { color: var(--accent); text-decoration: none; }
+        code {
+            background: var(--surface2);
+            padding: 1px 6px;
+            border-radius: 3px;
+            font-size: 0.85em;
+            font-family: ui-monospace, monospace;
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <header>
+        <h1>Claude Code <span class="accent">6月15日</span> 4経路の判定の道具</h1>
+        <p class="lead">5問の入力から、 6月15日のAnthropicの課金分離の4つの対応の経路 (対話への畳み込み / <code>claude -p</code> の最適化 / API への移行 / 混在) のうち、 あなたに適した1経路を推奨する。 残り18日の段の判定の入力。</p>
+        <p class="lang-switch"><a href="https://yurukusa.github.io/claude-code-credit-cliff-calculator-ja/">費用の計算機</a> · <a href="https://yurukusa.github.io/">他の道具の一覧</a></p>
+    </header>
+
+    <div class="card">
+        <h2>背景: 何が変わるか</h2>
+        <p style="font-size:0.92rem;color:var(--text-dim);margin-bottom:8px;">2026年6月15日に <code>claude -p</code> と Claude Agent SDK と GitHub Actions の3経路は、 対話の Claude Code と別の月の信用の枠 (Pool 2) に分離。 月の枠を超えた呼び出しは、 追加の利用が有効の場合は標準の API 料金で課金、 無効の場合は停止。</p>
+        <ul style="font-size:0.9rem;color:var(--text-dim);padding-left:20px;">
+            <li>Pro / Team Standard: 月$20の枠</li>
+            <li>Max 5x / Team Premium: 月$100の枠</li>
+            <li>Max 20x / Enterprise Premium: 月$200の枠</li>
+        </ul>
+        <p style="font-size:0.85rem;color:var(--text-dim);margin-top:8px;">出典: <a href="https://support.claude.com/en/articles/15036540" target="_blank" rel="noopener" style="color:var(--accent);">Anthropic の support article 15036540</a> (2026年5月13日付)</p>
+    </div>
+
+    <div class="card">
+        <h2>入力</h2>
+
+        <div class="question">
+            <label class="q-label" for="plan">あなたの plan の枠</label>
+            <select id="plan">
+                <option value="20">Pro / Team Standard (月$20)</option>
+                <option value="100" selected>Max 5x / Team Premium (月$100)</option>
+                <option value="200">Max 20x / Enterprise Premium (月$200)</option>
+            </select>
+        </div>
+
+        <div class="question">
+            <label class="q-label" for="m-value">月の SDK の費用の見積もり (米ドル、 M の値)</label>
+            <input type="number" id="m-value" value="150" min="0" step="1">
+            <p class="q-hint">Anthropic Console の Usage の頁から、 過去30日の <code>claude -p</code> と Agent SDK の費用を取得。 取得方法が不明なら <a href="https://yurukusa.github.io/claude-code-credit-cliff-calculator-ja/" target="_blank" rel="noopener" style="color:var(--accent);">費用の計算機</a> で先に推定。</p>
+        </div>
+
+        <div class="question">
+            <label class="q-label" for="automation">自動化の頻度</label>
+            <select id="automation">
+                <option value="manual">手動 (週1から日1以下)</option>
+                <option value="daily" selected>日次 (cron や Actions の少数)</option>
+                <option value="hourly">時次以上 (継続的な自動化)</option>
+                <option value="parallel">並列の自動化 (10件以上の同時の agent)</option>
+            </select>
+            <p class="q-hint">経路1 (対話への畳み込み) は手動の頻度の利用者のみ適用可能。</p>
+        </div>
+
+        <div class="question">
+            <label class="q-label" for="budget">標準のAPI料金の予算の余地</label>
+            <select id="budget">
+                <option value="comfortable" selected>余地あり (月の費用の3倍まで耐えられる)</option>
+                <option value="tight">予算は厳しい (現状の費用が上限)</option>
+                <option value="predictable">予算より予測可能性が最優先</option>
+            </select>
+            <p class="q-hint">経路3 (API への移行) は標準のAPI料金 (plan の月の枠の単価の10-25倍) の予算の余地が前提。</p>
+        </div>
+
+        <div class="question">
+            <label class="q-label" for="technical">技術の整備の余地</label>
+            <select id="technical">
+                <option value="high">高 (cache_control の整備や wrapper の起稿が可能)</option>
+                <option value="medium" selected>中 (既存の hook や script の改修が可能)</option>
+                <option value="low">低 (設定の変更のみ可能)</option>
+            </select>
+            <p class="q-hint">経路2 (cache の最適化) と経路4 (混在) は技術の整備の余地が前提。</p>
+        </div>
+
+        <button class="calc-btn" onclick="recommend()">推奨の経路を判定</button>
+    </div>
+
+    <div id="results" class="card hidden">
+        <h2>判定の結果</h2>
+        <div class="stat-row"><span class="label">M / plan の枠の比率</span><span class="value" id="r-ratio">—</span></div>
+        <div class="stat-row"><span class="label">月の超過の段の見積もり</span><span class="value" id="r-excess">—</span></div>
+        <div class="stat-row"><span class="label">14日後の段の整備の目標</span><span class="value" id="r-target">—</span></div>
+
+        <div id="r-verdict" class="verdict"></div>
+
+        <div class="cta-box">
+            <p class="cta-title">深掘りの本 (¥2,500)</p>
+            <p class="cta-body">上の推奨の経路の段の整備の手順を「実機の事故の事例」 で深く理解したい方は、 <a href="https://zenn.dev/yurukusa/books/token-savings-guide" style="color:var(--accent);">Claude Code のトークン消費を半分にする</a> (Zenn、 全14章、 第1章は無料)。 第13章 (2026-05-28 追加) で本道具の推奨の経路の段の対応を、 9件の起票の実例と「3つの損失の様式」 (Mode A の session が終了する5経路、 Mode B の guardrail の誤動作の2経路、 Mode C の操作者の対応の表面がほぼ0の2経路) で articulate。 月次$20-$140の損失の見積もりと Stop hook の sketch を含む。</p>
+            <a href="https://zenn.dev/yurukusa/books/token-savings-guide?utm_source=path-picker&utm_medium=results&utm_campaign=jun15-path" target="_blank" rel="noopener" class="cta-button">第13章を含む全14章を読む →</a>
+            <p class="cta-disclaimer">本道具は無料で、 本書は深掘りの選択肢。 必要なければ無視してよい。</p>
+        </div>
+
+        <div class="cta-box" id="cta-migration" style="display:none;">
+            <p class="cta-title">経路3または経路4の選択の判定 ($19、 英語)</p>
+            <p class="cta-body">経路3 (API への移行) または経路4 (混在) の判定の入力には、 <a href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook?utm_source=path-picker&utm_medium=migration&utm_campaign=jun15-path" style="color:var(--accent);">Migration Playbook 第2版</a> (Gumroad、 $19、 241頁) が「留まる / 切り替える / 混在」 の3経路の判定の構造的な枠組み。 130件の事例と14件の触媒の articulate。</p>
+            <a href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook?utm_source=path-picker&utm_medium=migration&utm_campaign=jun15-path" target="_blank" rel="noopener" class="cta-button">Migration Playbook を読む →</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>本道具は非公式の見積もりで、 Anthropic とは直接の関係なし。 実際の経路の選択は、 利用者の本物の workload と運用の制限と組織の段の整備の余地で変動する。 4つの経路は独立で、 複数の経路の併用も可能。</p>
+        <p>関連の道具: <a href="https://yurukusa.github.io/claude-code-credit-cliff-calculator-ja/" target="_blank" rel="noopener">credit cliff 計算機</a> (Pool 2 の費用の見積もり) · <a href="https://yurukusa.github.io/claude-code-cost-calculator-ja/" target="_blank" rel="noopener">月の費用の計算機</a> · <a href="https://github.com/yurukusa/cc-safe-setup" target="_blank" rel="noopener">cc-safe-setup</a> (Pool 2 の集積の hook の trilogy + spawn-shape の合図)</p>
+        <p>関連の本: <a href="https://zenn.dev/yurukusa/books/token-savings-guide?utm_source=path-picker&utm_medium=footer&utm_campaign=jun15-path" target="_blank" rel="noopener">Claude Code のトークン消費を半分にする</a> (Zenn、 ¥2,500、 第13章で経路2の整備の articulate) · <a href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook?utm_source=path-picker&utm_medium=footer&utm_campaign=jun15-path" target="_blank" rel="noopener">Migration Playbook 第2版</a> (Gumroad、 $19、 経路3/4の判定の枠組み)</p>
+        <p>作者は <a href="https://yurukusa.github.io/" target="_blank" rel="noopener">yurukusa</a>。 MIT 同等のライセンスで、 自由に使い、 写し、 改変してよい。</p>
+    </footer>
+</div>
+
+<script>
+function recommend() {
+    const plan = parseInt(document.getElementById('plan').value, 10);
+    const m = parseFloat(document.getElementById('m-value').value) || 0;
+    const automation = document.getElementById('automation').value;
+    const budget = document.getElementById('budget').value;
+    const technical = document.getElementById('technical').value;
+
+    const ratio = m / plan;
+    const excess = Math.max(0, m - plan);
+
+    document.getElementById('r-ratio').textContent = (ratio * 100).toFixed(0) + '%';
+    document.getElementById('r-excess').textContent = '$' + excess.toFixed(0) + '/月';
+
+    // Recommend path based on ratio and constraints
+    let cls, title, body, target, showMigration = false;
+
+    if (ratio <= 0.5) {
+        cls = 'green';
+        title = '経路の変更は不要';
+        body = 'M の値は plan の枠の半分以下で、 6月15日の課金分離の影響は無視可能。 ただし、 並列の agent の追加や cron の追加で M が増える場合、 月次の再判定の経路を整備。';
+        target = '月次の M の取得の継続';
+    } else if (ratio <= 1.0) {
+        cls = 'yellow';
+        if (technical === 'high' || technical === 'medium') {
+            title = '推奨: 経路2 (claude -p の最適化)';
+            body = 'M の値は plan の枠の半分から100%で、 経路2 (cache_control の整備で1呼び出しの費用を構造的に削減) の整備で M を50-100%減らす経路。 cache の hit 率の90%への上げの整備で、 prefix の費用は10分の1に。';
+            target = 'cache の hit 率を90%以上 / M を50%減';
+        } else {
+            title = '推奨: 経路1 (対話への畳み込み)';
+            body = '技術の整備の余地が低い段で、 経路2の整備の前に経路1 (自動化の経路を対話の Claude Code に手動の起動で畳む) の段の整備。 対話の Claude Code は6月15日の変更の対象外で、 5時間と週次の窓の利用枠で引き続き利用可能。';
+            target = '主要な自動化の対話への畳み込み';
+        }
+    } else if (ratio <= 1.5) {
+        cls = 'yellow';
+        if (automation === 'manual') {
+            title = '推奨: 経路1 (対話への畳み込み)';
+            body = '自動化の頻度が手動で、 月の枠を100-150%超過の段で、 経路1 (対話への畳み込み) で完全に M を0にする経路。 手動の起動の手間が許容範囲なら、 最も低摩擦の経路。';
+            target = 'M を 0 (枠の中で完結)';
+        } else {
+            title = '推奨: 経路2 (claude -p の最適化) + 経路1の検討';
+            body = '月の枠を100-150%超過の段で、 経路2の cache_control の整備を中心。 cache の hit 率の90%の到達で M を50-60%減らす経路。 経路2の整備が不十分の場合、 経路1の対話への畳み込みの併用の判定。';
+            target = 'cache の hit 率を90%以上 / M を plan の枠の中に';
+        }
+    } else if (ratio <= 3.0) {
+        cls = 'red';
+        if (budget === 'comfortable') {
+            title = '推奨: 経路3 (API への移行) または 経路2 + 経路4の混在';
+            body = '月の枠を150-300%超過の段で、 経路3 (API への移行で月の崖を消す) または 経路2 と経路4の併用 (cache の整備と Claude 以外への振り分け) の判定。 標準のAPI料金は plan の単価の10-25倍で予算の余地が前提。';
+            target = '月の費用の予測可能性 / 単価の整備';
+            showMigration = true;
+        } else if (budget === 'predictable') {
+            title = '推奨: 経路3 (API への移行)';
+            body = '月の枠を150-300%超過で予算より予測可能性が最優先の段で、 経路3 (API への移行で月の崖を消す) の段の整備。 1晩の作業で完了の経路。';
+            target = '月の費用の予測可能性の達成';
+            showMigration = true;
+        } else {
+            title = '推奨: 経路2 (claude -p の最適化) + 経路4 (混在) の併用';
+            body = '月の枠を150-300%超過で予算が厳しい段で、 経路2 (cache の整備) と経路4 (一部の作業を Claude 以外に振る混在) の併用で M を50-80%減らす経路。 経路4は60-90日の段の品質の劣化の追跡の整備が前提。';
+            target = 'M を50-80%減 / 品質の追跡の整備';
+            showMigration = true;
+        }
+    } else {
+        cls = 'red';
+        title = '推奨: 経路4 (混在) または Claude 以外への移行';
+        body = '月の枠を300%以上超過の段で、 経路4 (一部の作業を Claude 以外に振る混在) または Claude Code 以外への移行 (Codex GPT-5.5、 中国の重みの公開のモデル、 ローカルの Qwen 3.6 27B 等) の判定の段。 単一の道具の依存の段の解消の整備の経路。';
+        target = '混在の整備 / 別の道具の評価';
+        showMigration = true;
+    }
+
+    document.getElementById('r-target').textContent = target;
+
+    const verdict = document.getElementById('r-verdict');
+    verdict.classList.remove('green', 'yellow', 'red', 'blue');
+    verdict.classList.add(cls);
+
+    let reasoning = '<div class="reasoning"><strong>判定の根拠:</strong> 比率 ' + (ratio * 100).toFixed(0) + '% (M $' + m + ' / plan $' + plan + ')';
+    if (automation === 'manual') reasoning += '、 自動化の頻度は手動';
+    else if (automation === 'parallel') reasoning += '、 並列の agent の段';
+    reasoning += '、 予算の余地は' + (budget === 'comfortable' ? '十分' : budget === 'predictable' ? '予測可能性が最優先' : '厳しい');
+    reasoning += '、 技術の整備の余地は' + (technical === 'high' ? '高' : technical === 'medium' ? '中' : '低') + '。</div>';
+
+    verdict.innerHTML = '<h3>' + title + '</h3><p>' + body + '</p>' + reasoning;
+
+    document.getElementById('cta-migration').style.display = showMigration ? 'block' : 'none';
+
+    document.getElementById('results').classList.remove('hidden');
+    document.getElementById('results').scrollIntoView({behavior: 'smooth', block: 'nearest'});
+}
+</script>
+</body></html>
