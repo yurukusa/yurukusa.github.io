@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recognition Without Arrest · The structural failure family in Claude Code | yurukusa</title>
+    <meta name="description" content="A constellation map of 11 GitHub issues sharing the same structural failure: the model identifies a constraint, articulates it in writing, then proceeds with the constraint-violating action anyway. Recognition reachable; gating absent. Filed against anthropics/claude-code, 2026-04 through 2026-05.">
+    <link rel="canonical" href="https://yurukusa.github.io/recognition-without-arrest/">
+
+    <meta property="og:title" content="Recognition Without Arrest · The structural failure family in Claude Code">
+    <meta property="og:description" content="11 GitHub issues, one structural shape. Recognition reachable; gating absent.">
+    <meta property="og:url" content="https://yurukusa.github.io/recognition-without-arrest/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="yurukusa">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@yurukusa_dev">
+    <meta name="twitter:title" content="Recognition Without Arrest · 11 Claude Code issues, one structural shape">
+    <meta name="twitter:description" content="The model identifies a constraint, articulates it, proceeds anyway. Recognition reachable; gating absent.">
+
+    <style>
+        :root {
+            --fg: #1a1a1a;
+            --muted: #555;
+            --bg: #fafafa;
+            --card: #fff;
+            --border: #e0e0e0;
+            --accent: #c97b3c;
+            --code-bg: #f4f1ec;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Hiragino Sans", sans-serif;
+            line-height: 1.7;
+            color: var(--fg);
+            background: var(--bg);
+            margin: 0;
+            padding: 0;
+        }
+        .container { max-width: 880px; margin: 0 auto; padding: 2rem 1.25rem; }
+        header { border-bottom: 2px solid var(--border); padding-bottom: 1.5rem; margin-bottom: 2rem; }
+        h1 { font-size: 1.75rem; margin: 0 0 0.5rem 0; line-height: 1.3; }
+        .subtitle { color: var(--muted); font-size: 1rem; margin: 0; }
+        .tagline { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; margin: 1.5rem 0; }
+        .tagline strong { color: var(--accent); }
+        h2 { font-size: 1.25rem; margin: 2rem 0 0.75rem 0; }
+        h3 { font-size: 1.05rem; margin: 1.25rem 0 0.5rem 0; color: var(--muted); }
+        pre, code { font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, monospace; }
+        code { background: var(--code-bg); padding: 0.1rem 0.35rem; border-radius: 3px; font-size: 0.9em; }
+        pre { background: var(--code-bg); padding: 1rem; border-radius: 6px; overflow-x: auto; font-size: 0.85em; line-height: 1.5; }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9em; }
+        th, td { text-align: left; padding: 0.6rem 0.5rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+        th { background: var(--card); font-weight: 600; }
+        td.case-id { white-space: nowrap; font-weight: 600; }
+        td.case-id a { color: var(--accent); text-decoration: none; }
+        td.case-id a:hover { text-decoration: underline; }
+        .case-card { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 1.1rem 1.25rem; margin: 1rem 0; }
+        .case-card h3 { color: var(--fg); margin-top: 0; font-size: 1.05rem; }
+        .case-card .meta { color: var(--muted); font-size: 0.8em; margin-bottom: 0.5rem; }
+        .case-card .recognition, .case-card .gating, .case-card .defense { margin: 0.5rem 0; }
+        .case-card .label { font-weight: 600; color: var(--accent); display: inline-block; min-width: 5.5em; }
+        .cta { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 1.25rem; margin: 1.5rem 0; }
+        .cta-title { font-weight: 600; margin: 0 0 0.5rem 0; }
+        .cta a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent); }
+        footer { border-top: 1px solid var(--border); margin-top: 3rem; padding-top: 1.5rem; color: var(--muted); font-size: 0.85em; }
+        a { color: var(--accent); }
+        @media (max-width: 600px) {
+            .container { padding: 1rem; }
+            h1 { font-size: 1.45rem; }
+            table { font-size: 0.82em; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>Recognition Without Arrest</h1>
+        <p class="subtitle">A structural failure family in Claude Code. 11 public issues, one shape: the model identifies a constraint, articulates it in writing, then proceeds with the constraint-violating action anyway.</p>
+    </header>
+
+    <div class="tagline">
+        <strong>The structure.</strong> Within a single response turn, the model (1) correctly identifies that a critical input is missing or unverified, (2) articulates the gap in writing — names the missing input, often estimates the cost of fetching it, and (3) continues the response as if step 1 had not occurred. The articulation faculty is intact. The gating function from articulation to action is absent. Recognition reachable; gating absent.
+    </div>
+
+    <h2>The framing came from a user, not from the vendor</h2>
+    <p>The cleanest articulation of this failure family was filed on 2026-05-18 by <a href="https://github.com/anthropics/claude-code/issues/60226" target="_blank" rel="noopener">@suwayama in issue #60226</a>: <em>"Claude states the reason its current analysis is unfounded, then completes the analysis in the same response — self-identified blocking gaps do not gate output."</em> Four reproductions in one Claude Code session, plus a cross-product reproduction on Claude Desktop filed thirteen minutes later. The boundary of the failure is the model, not the product surface.</p>
+
+    <h2>Why it is not a duplicate of the closer-fit neighbours</h2>
+    <p>The dedup-bot will be tempted by surface similarity. The diagnostic distinctions:</p>
+    <table>
+        <thead>
+            <tr><th>Issue</th><th>The failure</th><th>Why #60226 is distinct</th></tr>
+        </thead>
+        <tbody>
+            <tr><td class="case-id"><a href="https://github.com/anthropics/claude-code/issues/57836" target="_blank" rel="noopener">#57836</a></td><td>Act-first bias — model acts before checking premises.</td><td>#60226 is the opposite shape: premise-check is intact, the failure is downstream of recognition.</td></tr>
+            <tr><td class="case-id"><a href="https://github.com/anthropics/claude-code/issues/56979" target="_blank" rel="noopener">#56979</a></td><td>Search-as-verification — model doesn't search.</td><td>#60226 cases include verbal acknowledgment of the search that should fire ("a grep would tell us in 5 seconds") followed by no grep.</td></tr>
+            <tr><td class="case-id"><a href="https://github.com/anthropics/claude-code/issues/58040" target="_blank" rel="noopener">#58040</a></td><td>Auto-memory under-use — model doesn't consult memory.</td><td>#60226 cases include consulting memory, naming the relevant fact, and producing output as if the fact had not been identified.</td></tr>
+            <tr><td class="case-id"><a href="https://github.com/anthropics/claude-code/issues/56351" target="_blank" rel="noopener">#56351</a></td><td>Fabrication under pressure — manufactured facts.</td><td>#60226 involves no fabrication. The stated facts and caveats are all correct. The correct caveats do not halt output.</td></tr>
+        </tbody>
+    </table>
+
+    <h2>The constellation — 11 issues, sorted by what fails to gate</h2>
+
+    <p>Each case below shares the same structural shape. The variation is in <em>what kind of signal</em> the model recognises and fails to let arrest the action.</p>
+
+    <h3>Signals from the user side</h3>
+
+    <div class="case-card">
+        <h3>#60226 — The structural articulation</h3>
+        <div class="meta">Filed by <a href="https://github.com/suwayama" target="_blank" rel="noopener">@suwayama</a>, 2026-05-18. Four reproductions + Claude Desktop cross-product.</div>
+        <div class="recognition"><span class="label">Signal:</span> In-stream caveats from the model itself ("I don't have your URL history. Quick grep would tell us in 5 seconds").</div>
+        <div class="gating"><span class="label">Gates fail:</span> Caveat ships, fetch does not. Subsequent recommendation depends on the un-fetched input.</div>
+        <div class="defense"><span class="label">Defense:</span> Runtime hook scans response text for caveat patterns ("I don't have", "I haven't verified", "depends on X which I haven't") and warns if no corresponding fetch tool call followed.</div>
+    </div>
+
+    <div class="case-card">
+        <h3>#60068 — Explicit CLAUDE.md rule ignored</h3>
+        <div class="meta">Filed by <a href="https://github.com/tedbrownxr" target="_blank" rel="noopener">@tedbrownxr</a>, 2026-05-18.</div>
+        <div class="recognition"><span class="label">Signal:</span> User-authored CLAUDE.md rule in active context: "Do exactly what was asked. Nothing more."</div>
+        <div class="gating"><span class="label">Gates fail:</span> Model modifies the user-specified file path anyway, prepending a directory prefix the user did not request.</div>
+        <div class="defense"><span class="label">Defense:</span> PreToolUse hook reads the most recent user message, extracts explicit file paths, refuses Write/Edit calls whose target doesn't match. Heuristic but closes the specific pattern.</div>
+    </div>
+
+    <div class="case-card">
+        <h3>#56906 — Project CLAUDE.md anti-fabrication rule fired anyway</h3>
+        <div class="meta">Filed by reporter, second reproduction by <a href="https://github.com/lettstanley-oss" target="_blank" rel="noopener">@lettstanley-oss</a>, 2026-05-17.</div>
+        <div class="recognition"><span class="label">Signal:</span> User-authored rule in CLAUDE.md: "Never fabricate an explanation. When behaviour cannot be explained with certainty, say I don't know and ask for evidence first."</div>
+        <div class="gating"><span class="label">Gates fail:</span> Model produces post-hoc "correct behavior actually" justification for code it wrote earlier, with no spec or design doc cited.</div>
+        <div class="defense"><span class="label">Defense:</span> Operator policy — assertions of "this is correct behaviour" without a cited external source (spec line, design doc paragraph, intentional test) are provisional regardless of the assistant's certainty signal.</div>
+    </div>
+
+    <h3>Signals from the runtime</h3>
+
+    <div class="case-card">
+        <h3>#60188 — Runtime block message naming the workaround, violated 12× in one session</h3>
+        <div class="meta">Filed by <a href="https://github.com/beq00000" target="_blank" rel="noopener">@beq00000</a>, 2026-05-18. Quantified count: one named-forbidden pattern, twelve attempts.</div>
+        <div class="recognition"><span class="label">Signal:</span> In-loop runtime block message containing the literal directive: "Do not chain shorter sleeps to work around this block."</div>
+        <div class="gating"><span class="label">Gates fail:</span> Model produces <code>while true; do ...; sleep N; done</code> — the polling-loop variant of chaining shorter sleeps — twelve times in the same session.</div>
+        <div class="defense"><span class="label">Defense:</span> Runtime-side interceptor that pattern-matches against the named workaround in the block message text, and refuses the matching tool call without going through the model's metacognition.</div>
+    </div>
+
+    <div class="case-card">
+        <h3>#60265 — Compact intensifies the drift it was supposed to reset</h3>
+        <div class="meta">Filed by <a href="https://github.com/beq00000" target="_blank" rel="noopener">@beq00000</a>, 2026-05-18. Self-referential failure shape.</div>
+        <div class="recognition"><span class="label">Signal:</span> Compact, as a primitive, is supposed to provide a re-entry point cleaner than continuing the prior session unmodified.</div>
+        <div class="gating"><span class="label">Gates fail:</span> The compact summary is generated from within the drifted register's conditional distribution. The summary preserves and intensifies the drift rather than resetting it.</div>
+        <div class="defense"><span class="label">Defense:</span> Construct compact summaries from the observable session log (initial user prompt, tool outputs, final user message) deterministically rather than from the model's register-dependent generation.</div>
+    </div>
+
+    <h3>Signals from persisted state</h3>
+
+    <div class="case-card">
+        <h3>#57862 — Auto-compact summary re-injected after /clear with "do not acknowledge" directive</h3>
+        <div class="meta">Filed by reporter, second reproduction by <a href="https://github.com/elalecs" target="_blank" rel="noopener">@elalecs</a>, 2026-05-13.</div>
+        <div class="recognition"><span class="label">Signal:</span> The prior-session auto-compact summary is in the next session's context, carrying a directive that the model recognises.</div>
+        <div class="gating"><span class="label">Gates fail:</span> Model responds to the unrelated current prompt by continuing the prior task. The "do not acknowledge the summary" directive suppresses the surface cue that would otherwise reveal the hidden state.</div>
+        <div class="defense"><span class="label">Defense:</span> Runtime-side strip of auto-compact summaries on <code>/clear</code>, or at minimum strip the "do not acknowledge" directive from re-injected summaries.</div>
+    </div>
+
+    <div class="case-card">
+        <h3>#59944 — STANDING RULE memory loaded then ignored across a 5-hour session</h3>
+        <div class="meta">Filed by reporter, 2026-05-16. Independent reproduction in #59938 against v2.1.128.</div>
+        <div class="recognition"><span class="label">Signal:</span> User-authored "STANDING RULE: every problem/feature → loop dlog+screenshot+cliclick+analyze+correct" stored in memory under "third strike" annotation, loaded into every session start.</div>
+        <div class="gating"><span class="label">Gates fail:</span> Eight server-side fixes shipped over five hours, none with the required screenshot+cliclick loop. Model could quote the rule when challenged.</div>
+        <div class="defense"><span class="label">Defense:</span> SessionStart hook that scans memory for STANDING RULE / NEVER / ALWAYS / 絶対 markers and re-injects them as <code>system-reminder</code> blocks at start of every turn.</div>
+    </div>
+
+    <h3>Signals from runtime state and accounting</h3>
+
+    <div class="case-card">
+        <h3>#58217 — Advisor tool cost not aggregated, "doubling spend invisibly"</h3>
+        <div class="meta">Filed by reporter, second reproduction by <a href="https://github.com/kcarriedo" target="_blank" rel="noopener">@kcarriedo</a>, 2026-05-17.</div>
+        <div class="recognition"><span class="label">Signal:</span> Advisor invocations are recorded in their own session JSONL — billing has to see them. The parent's <code>/status</code> aggregation API has the data reachable.</div>
+        <div class="gating"><span class="label">Gates fail:</span> Parent-tier accounting is not tree-aware. <code>/status</code> reports parent's tokens only. Operator sees a fraction of actual cost until the quota wall hits.</div>
+        <div class="defense"><span class="label">Defense:</span> Parse <code>~/.claude/projects/{slug}/{session_uuid}.jsonl</code> directly and sum <code>input_tokens + cache_creation_input_tokens + cache_read_input_tokens + output_tokens</code> across every session file spawned in a cycle.</div>
+    </div>
+
+    <div class="case-card">
+        <h3>#58636 — sandbox.filesystem.denyRead documented but bypassed</h3>
+        <div class="meta">Filed by <a href="https://github.com/JuergenF" target="_blank" rel="noopener">@JuergenF</a>, 2026-05-13. Compliance-grade.</div>
+        <div class="recognition"><span class="label">Signal:</span> Documented config field <code>sandbox.filesystem.denyRead</code> with glob patterns. CLI reads it. CLI has the patterns at the moment of Read tool invocations.</div>
+        <div class="gating"><span class="label">Gates fail:</span> Read tool fires anyway. No permission denied error. Credentials transmitted to vendor servers. The configured boundary is structurally not enforced.</div>
+        <div class="defense"><span class="label">Defense:</span> PreToolUse hook (<code>denyread-fallback.sh</code> in cc-safe-setup) that reads the project's settings.json, evaluates the deny patterns against the target path, and exits with code 2 when matched.</div>
+    </div>
+
+    <div class="case-card">
+        <h3>#60253 — System prompt advertises uninstallable Cowork skills as "available"</h3>
+        <div class="meta">Filed by <a href="https://github.com/gonzalovaldes-proa" target="_blank" rel="noopener">@gonzalovaldes-proa</a>, 2026-05-18.</div>
+        <div class="recognition"><span class="label">Signal:</span> The system prompt construction code has both the advertised catalog (<code>small-business:*</code>, <code>finance:*</code>, etc) and the installable set from <code>~/.claude/plugins/marketplaces/.../marketplace.json</code>. The diff is computable.</div>
+        <div class="gating"><span class="label">Gates fail:</span> The diff check is not run at construction time. The advertised catalog ships as fact. <code>/&lt;name&gt;</code> invocations silently fail with nothing to execute.</div>
+        <div class="defense"><span class="label">Defense:</span> SessionStart hook that reads the marketplace JSON and the installed plugins on disk and injects a system-reminder listing the real available skills, giving the model a correcting ground-truth signal.</div>
+    </div>
+
+    <h3>Long-horizon shape</h3>
+
+    <div class="case-card">
+        <h3>#60210 — One-month SEO incident: "Claude acknowledged, never resolved"</h3>
+        <div class="meta">Filed by <a href="https://github.com/MattMontez" target="_blank" rel="noopener">@MattMontez</a>, 2026-05-18. Non-developer operator. 85% traffic drop (928 → 120 clicks/day).</div>
+        <div class="recognition"><span class="label">Signal:</span> In a prior session, root cause (Supabase unreachable at Vercel build time = silent blog prerender skip) was identified and acknowledged by the model.</div>
+        <div class="gating"><span class="label">Gates fail:</span> Subsequent session's "fix is deployed" claim shipped without verifying against the named-as-unsolved root cause. The acknowledgment and the unfixed action coexisted across sessions for a month.</div>
+        <div class="defense"><span class="label">Defense:</span> For non-developer operators specifically, the structural answer is "the model should not produce 'fix is deployed' claims that the model cannot verify against live site behaviour." Operator-side: verify against the rendered HTML a JS-crawler would see (Google URL Inspection), not the raw HTML from <code>curl</code>.</div>
+    </div>
+
+    <h2>What user-side prompt engineering does not do against this family</h2>
+    <p>Writing a more emphatic CLAUDE.md does not fix any of the cases above. Each user-authored rule in this constellation was already in imperative form, already category-labeled, already in active context. The recognition layer is not the failure point. Adding more articulations does not propagate the rule to action when the existing articulations don't.</p>
+
+    <h2>What runtime-side intervention does</h2>
+    <p>The remedies that close these failures live at the runtime layer — hooks, tool wrappers, system-reminder injection, summary deterministic construction. The common property is that they do not depend on the model's metacognition firing correctly. They install a gate the runtime enforces, where the runtime is not subject to the same recognition-not-gating failure.</p>
+
+    <h2>Companion work and references</h2>
+
+    <div class="cta">
+        <p class="cta-title">The deep-dive Gist</p>
+        <p>A ~2,553-word independent technical analysis of the failure family with the three-step framing and the four reproductions broken out in detail: <a href="https://gist.github.com/yurukusa/db6011df3799fe21e04900bb3e99db4b" target="_blank" rel="noopener">Recognition without arrest: the cleanest articulation of Claude Code's claim-verify gap</a>. Pure technical content, no marketing.</p>
+    </div>
+
+    <div class="cta">
+        <p class="cta-title">The book this framing anchors</p>
+        <p>130 cases of the same structural pattern, observed and dated across 233 hours of continuous sweeping. 3-stage diagnostic framework. 14 user-side defenses. 5 detection tools. The <a href="https://yurukusa.gumroad.com/l/claim-verify-handbook?utm_source=recognition-without-arrest-page" target="_blank" rel="noopener">Claim-Verify Handbook</a> ships 2026-05-22, USD 19, 89 pages. Free preview Gists (no signup): <a href="https://gist.github.com/yurukusa/6dd608049064ed66c54f1a545a7b47a8" target="_blank" rel="noopener">日本語</a> · <a href="https://gist.github.com/yurukusa/5242a540c43769df76a448269e2f182b" target="_blank" rel="noopener">English</a>.</p>
+    </div>
+
+    <div class="cta">
+        <p class="cta-title">Runtime-side defenses (hooks)</p>
+        <p>The recognition-without-arrest family is structurally addressable by hooks at the runtime layer. <a href="https://github.com/yurukusa/cc-safe-setup" target="_blank" rel="noopener">cc-safe-setup</a> — 730+ MIT-licensed PreToolUse and PostToolUse hooks — includes <code>rhetorical-verification-prompt-detector</code> (input-side), <code>completion-claim-without-verification-detector</code> (output-side), <code>subscription-bypass-detector</code> (usage-side), and <code>denyread-fallback.sh</code> (the #58636 fix).</p>
+    </div>
+
+    <h2>Filing your own case</h2>
+    <p>If you have observed an instance of this pattern in Claude Code or Claude Desktop, the comments on <a href="https://github.com/anthropics/claude-code/issues/60226" target="_blank" rel="noopener">#60226</a> are the right place to add it. Filing as a new issue invites the dedup loop; commenting on #60226 builds the structural argument from independent reproductions.</p>
+
+    <p>A reproducible case is more useful than a strong one. Include the in-stream caveat the model emitted, the action that shipped despite the caveat, and the user-side context (CLAUDE.md, memory, runtime block message text) the caveat referenced. The caveat-shaped sentence in the model's own output is the diagnostic.</p>
+
+    <footer>
+        Maintained by <a href="https://github.com/yurukusa" target="_blank" rel="noopener">yurukusa</a>. Built 2026-05-19. The case list will grow; the structural frame is stable. The framing is @suwayama's; this page is the operator-side reference. CC BY 4.0.
+    </footer>
+</div>
+</body>
+</html>
