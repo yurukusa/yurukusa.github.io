@@ -1,97 +1,46 @@
 {
-  "generated_at": "2026-06-26T05:37:41.201512+00:00",
+  "generated_at": "2026-06-27T05:03:31.972550+00:00",
   "count": 50,
   "source": "github.com/anthropics/claude-code (open bug issues, sorted by created)",
   "items": [
     {
-      "number": 71522,
-      "title": "[Bug] Plan overlay blocks scrolling to view full plan in flicker-free rendering mode",
-      "created_at": "2026-06-26T05:32:43Z",
-      "updated_at": "2026-06-26T05:36:37Z",
+      "number": 71754,
+      "title": "[BUG] UI freezes during \"thinking\" phase; token count shows incorrect inflated values after recent update",
+      "created_at": "2026-06-27T05:00:01Z",
+      "updated_at": "2026-06-27T05:00:57Z",
       "labels": [
         "bug",
-        "duplicate",
-        "platform:macos",
-        "area:tui"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71522",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 71519,
-      "title": "[BUG] Fucking cursor disappears in the fucking console",
-      "created_at": "2026-06-26T04:59:49Z",
-      "updated_at": "2026-06-26T05:00:57Z",
-      "labels": [
-        "bug",
-        "platform:macos",
-        "area:tui",
-        "platform:intellij"
+        "platform:windows",
+        "platform:vscode"
       ],
       "comments": 0,
       "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71519",
+      "url": "https://github.com/anthropics/claude-code/issues/71754",
       "has_repro": false,
       "is_regression": false
     },
     {
-      "number": 71516,
-      "title": "[Bug] Console window unfocused clicks trigger unintended actions",
-      "created_at": "2026-06-26T04:09:16Z",
-      "updated_at": "2026-06-26T04:15:03Z",
+      "number": 71753,
+      "title": "[BUG] Sandboxed Bash output corruption during git operations; direct git ref reads remain correct",
+      "created_at": "2026-06-27T04:43:35Z",
+      "updated_at": "2026-06-27T04:49:09Z",
       "labels": [
         "bug",
-        "platform:windows",
-        "area:tui",
-        "needs-repro"
+        "platform:macos",
+        "area:bash",
+        "area:sandbox"
       ],
       "comments": 1,
       "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71516",
+      "url": "https://github.com/anthropics/claude-code/issues/71753",
       "has_repro": false,
       "is_regression": false
     },
     {
-      "number": 71515,
-      "title": "workflows right pane silently truncates agent list when phase has more than 5 agents",
-      "created_at": "2026-06-26T04:07:05Z",
-      "updated_at": "2026-06-26T04:13:54Z",
-      "labels": [
-        "bug",
-        "platform:windows",
-        "area:agent-view"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71515",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 71513,
-      "title": "[Bug] Synthesis agent fails on structured output cap, discarding deep research results and doubling token spend",
-      "created_at": "2026-06-26T04:06:42Z",
-      "updated_at": "2026-06-26T04:10:33Z",
-      "labels": [
-        "bug",
-        "platform:linux",
-        "area:cost",
-        "area:agents"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71513",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 71511,
-      "title": "[BUG] VS Code extension: diff/compare view not shown when approving Edit tool calls",
-      "created_at": "2026-06-26T03:57:34Z",
-      "updated_at": "2026-06-26T03:58:24Z",
+      "number": 71752,
+      "title": "[BUG] Sidebar panel does not resize when dragging the sidebar edge",
+      "created_at": "2026-06-27T04:33:13Z",
+      "updated_at": "2026-06-27T05:00:47Z",
       "labels": [
         "bug",
         "platform:windows",
@@ -100,760 +49,793 @@
       ],
       "comments": 0,
       "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71511",
+      "url": "https://github.com/anthropics/claude-code/issues/71752",
       "has_repro": false,
       "is_regression": false
     },
     {
-      "number": 71510,
-      "title": "[Bug] Image references removed during JIRA description edits cause permanent screenshot loss",
-      "created_at": "2026-06-26T03:56:03Z",
-      "updated_at": "2026-06-26T03:57:05Z",
+      "number": 71751,
+      "title": "[Bug] Claude Code fails to identify and fix bugs in generated code",
+      "created_at": "2026-06-27T04:14:57Z",
+      "updated_at": "2026-06-27T04:16:14Z",
       "labels": [
         "bug",
-        "platform:macos",
-        "area:mcp",
-        "data-loss"
-      ],
-      "comments": 0,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71510",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 71509,
-      "title": "[Bug] Keyboard scroll-to-bottom blanks conversation pane on >1-page jump",
-      "created_at": "2026-06-26T03:55:41Z",
-      "updated_at": "2026-06-26T04:03:30Z",
-      "labels": [
-        "bug",
-        "has repro",
-        "platform:macos",
-        "area:tui"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71509",
-      "has_repro": true,
-      "is_regression": false
-    },
-    {
-      "number": 71508,
-      "title": "[BUG] Tool call markup leaks into visible output instead of being executed",
-      "created_at": "2026-06-26T03:50:19Z",
-      "updated_at": "2026-06-26T05:06:39Z",
-      "labels": [
-        "bug",
-        "platform:windows",
         "area:model",
-        "area:core",
-        "platform:vscode"
+        "needs-repro"
       ],
-      "comments": 2,
+      "comments": 0,
       "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71508",
+      "url": "https://github.com/anthropics/claude-code/issues/71751",
       "has_repro": false,
       "is_regression": false
     },
     {
-      "number": 71507,
-      "title": "[Bug] Simplified Chinese kanji glyphs appearing in Japanese responses",
-      "created_at": "2026-06-26T03:34:39Z",
-      "updated_at": "2026-06-26T03:35:34Z",
+      "number": 71750,
+      "title": "[BUG] Windows 11: Write tool and Bash tool cannot write files visible to the real file system",
+      "created_at": "2026-06-27T04:03:43Z",
+      "updated_at": "2026-06-27T04:04:44Z",
       "labels": [
         "bug",
+        "platform:windows",
+        "area:tools",
+        "area:sandbox"
+      ],
+      "comments": 0,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/71750",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 71749,
+      "title": "Transcript view (Ctrl+O) keyboard scroll keys dead in forced-fullscreen renderer (attached background/child sessions)",
+      "created_at": "2026-06-27T03:33:18Z",
+      "updated_at": "2026-06-27T03:39:07Z",
+      "labels": [
+        "bug",
+        "has repro",
         "platform:linux",
-        "area:model"
-      ],
-      "comments": 0,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71507",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 71506,
-      "title": "[Bug] Anthropic API Error: Server rate limiting on requests",
-      "created_at": "2026-06-26T03:33:54Z",
-      "updated_at": "2026-06-26T03:35:05Z",
-      "labels": [
-        "bug",
-        "platform:windows",
-        "external",
-        "area:api",
-        "api:anthropic"
-      ],
-      "comments": 0,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71506",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 71505,
-      "title": "[Bug] Anthropic API Error: Server rate limiting requests",
-      "created_at": "2026-06-26T03:33:49Z",
-      "updated_at": "2026-06-26T03:35:05Z",
-      "labels": [
-        "bug",
-        "platform:windows",
-        "area:api",
-        "api:anthropic"
-      ],
-      "comments": 0,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71505",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 71504,
-      "title": "[Bug] Anthropic API Error: Server rate limit exceeded",
-      "created_at": "2026-06-26T03:33:42Z",
-      "updated_at": "2026-06-26T03:38:36Z",
-      "labels": [
-        "bug",
-        "platform:windows",
-        "external",
-        "area:api",
-        "api:anthropic"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71504",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 71502,
-      "title": "[Bug] Anthropic API Error: Server Rate Limiting",
-      "created_at": "2026-06-26T03:33:32Z",
-      "updated_at": "2026-06-26T03:37:50Z",
-      "labels": [
-        "bug",
-        "duplicate",
-        "platform:windows",
-        "area:api",
-        "api:anthropic"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71502",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 71500,
-      "title": "VS Code extension: sessions sidebar omits externally-created session transcripts (regression in 2.1.187–2.1.191)",
-      "created_at": "2026-06-26T03:23:35Z",
-      "updated_at": "2026-06-26T03:28:43Z",
-      "labels": [
-        "bug",
-        "platform:windows",
-        "platform:vscode",
-        "regression"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71500",
-      "has_repro": false,
-      "is_regression": true
-    },
-    {
-      "number": 71499,
-      "title": "[BUG] Windows IME composition text deleted on Enter — regression in v2.1.193",
-      "created_at": "2026-06-26T03:23:13Z",
-      "updated_at": "2026-06-26T03:26:24Z",
-      "labels": [
-        "bug",
-        "platform:windows",
         "area:tui",
-        "regression"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71499",
-      "has_repro": false,
-      "is_regression": true
-    },
-    {
-      "number": 71498,
-      "title": "Scrollbar up/down arrow buttons no longer scroll output (regression) - Windows desktop",
-      "created_at": "2026-06-26T03:15:17Z",
-      "updated_at": "2026-06-26T03:49:17Z",
-      "labels": [
-        "bug",
-        "has repro",
-        "platform:windows",
-        "area:desktop"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71498",
-      "has_repro": true,
-      "is_regression": false
-    },
-    {
-      "number": 71496,
-      "title": "[Bug] Session transcript persistence silently disabled by server-side gate",
-      "created_at": "2026-06-26T03:01:36Z",
-      "updated_at": "2026-06-26T03:06:12Z",
-      "labels": [
-        "bug",
-        "has repro",
-        "platform:linux",
-        "area:core",
-        "data-loss"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71496",
-      "has_repro": true,
-      "is_regression": false
-    },
-    {
-      "number": 71493,
-      "title": "[BUG] Extreme latency — memory leak found via /heapdump (348,766 MB/hour growth rate)",
-      "created_at": "2026-06-26T02:28:36Z",
-      "updated_at": "2026-06-26T02:33:16Z",
-      "labels": [
-        "bug",
-        "has repro",
-        "platform:macos",
-        "perf:memory",
-        "api:anthropic",
-        "performance"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71493",
-      "has_repro": true,
-      "is_regression": false
-    },
-    {
-      "number": 71491,
-      "title": "Scrollbar not visible and copy/paste broken in interactive CLI (TERM=xterm, SSH)",
-      "created_at": "2026-06-26T02:03:00Z",
-      "updated_at": "2026-06-26T02:07:48Z",
-      "labels": [
-        "bug",
-        "platform:linux",
-        "area:tui"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71491",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 71490,
-      "title": "[Bug] Claude Desktop (Windows) OAuth token lacks user:design:read/write scopes — /design-sync (DesignSync tool) cannot be authorized; no in-app grant path",
-      "created_at": "2026-06-26T01:55:08Z",
-      "updated_at": "2026-06-26T02:03:17Z",
-      "labels": [
-        "bug",
-        "platform:windows",
-        "area:auth",
-        "area:desktop"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71490",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 71489,
-      "title": "[BUG]",
-      "created_at": "2026-06-26T01:42:59Z",
-      "updated_at": "2026-06-26T01:47:00Z",
-      "labels": [
-        "bug",
-        "platform:windows",
-        "area:cowork"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71489",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 71488,
-      "title": "[BUG]  `/login` unavailable in agent view",
-      "created_at": "2026-06-26T01:38:27Z",
-      "updated_at": "2026-06-26T01:39:25Z",
-      "labels": [
-        "bug",
-        "platform:macos",
-        "area:auth",
         "area:agent-view"
       ],
-      "comments": 0,
+      "comments": 1,
       "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71488",
-      "has_repro": false,
+      "url": "https://github.com/anthropics/claude-code/issues/71749",
+      "has_repro": true,
       "is_regression": false
     },
     {
-      "number": 71487,
-      "title": "# Bug: tool calls intermittently emitted as literal text (stray `court` + raw `<invoke>` XML), not executed",
-      "created_at": "2026-06-26T01:24:13Z",
-      "updated_at": "2026-06-26T03:56:14Z",
+      "number": 71740,
+      "title": "[Bug] Anthropic API Error: Server rate limiting during normal usage",
+      "created_at": "2026-06-27T03:12:55Z",
+      "updated_at": "2026-06-27T03:13:50Z",
       "labels": [
         "bug",
         "platform:macos",
-        "area:tools"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71487",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 71485,
-      "title": "https://github.com/anthropics/claude-code/issues/new/choose",
-      "created_at": "2026-06-26T01:19:39Z",
-      "updated_at": "2026-06-26T01:24:07Z",
-      "labels": [
-        "bug",
-        "platform:windows",
-        "area:networking",
-        "api:anthropic"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71485",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 71484,
-      "title": "[BUG] Vim mode: Ctrl+[ does not exit insert mode (should be equivalent to Escape)",
-      "created_at": "2026-06-26T01:15:42Z",
-      "updated_at": "2026-06-26T01:16:49Z",
-      "labels": [
-        "bug",
-        "platform:macos",
-        "area:tui"
+        "external",
+        "area:api"
       ],
       "comments": 0,
       "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71484",
+      "url": "https://github.com/anthropics/claude-code/issues/71740",
       "has_repro": false,
       "is_regression": false
     },
     {
-      "number": 71482,
-      "title": "[Bug][harness] Safety block halts authorized mesh-agent enrollment by misreading temporary loopback-only admin",
-      "created_at": "2026-06-26T01:11:04Z",
-      "updated_at": "2026-06-26T05:21:56Z",
+      "number": 71739,
+      "title": "[BUG] First-time Dispatch never connects on Windows 11 — messages send but no response renders, mobile \"failed to load sessions",
+      "created_at": "2026-06-27T03:08:54Z",
+      "updated_at": "2026-06-27T03:10:29Z",
       "labels": [
         "bug",
-        "duplicate",
-        "platform:linux",
-        "area:permissions"
-      ],
-      "comments": 3,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71482",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 71481,
-      "title": "[BUG] Silent default model upgrade to Opus 4.7 caused $506 in unexpected charges over 6 days",
-      "created_at": "2026-06-26T01:00:31Z",
-      "updated_at": "2026-06-26T02:38:18Z",
-      "labels": [
-        "bug",
-        "platform:macos",
-        "area:cost",
-        "area:model"
-      ],
-      "comments": 2,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71481",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 71478,
-      "title": "[BUG] VS Code extension resumes huge sessions without warning and rapidly exhausts Max usage",
-      "created_at": "2026-06-25T23:46:14Z",
-      "updated_at": "2026-06-26T02:45:17Z",
-      "labels": [
-        "bug",
-        "platform:linux",
-        "area:cost",
-        "platform:vscode"
-      ],
-      "comments": 5,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71478",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 71477,
-      "title": "[Bug] Anthropic API Error: Server rate limiting during request handling",
-      "created_at": "2026-06-25T23:43:53Z",
-      "updated_at": "2026-06-25T23:44:55Z",
-      "labels": [
-        "bug",
-        "platform:windows",
-        "area:api",
-        "api:anthropic"
-      ],
-      "comments": 0,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71477",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 71476,
-      "title": "[Bug] Team subscription Claude Code billing to API credits instead of Team plan after forced re-login",
-      "created_at": "2026-06-25T23:37:23Z",
-      "updated_at": "2026-06-25T23:40:41Z",
-      "labels": [
-        "bug",
-        "area:cost",
-        "area:auth"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71476",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 71475,
-      "title": "Windows MSIX (ARM64): \"Relaunch to update\" never applies — bundled CoworkVMService keeps the package in-use; update only lands at logon/reboot",
-      "created_at": "2026-06-25T23:24:38Z",
-      "updated_at": "2026-06-25T23:25:44Z",
-      "labels": [
-        "bug",
-        "has repro",
         "platform:windows",
         "area:cowork",
         "area:desktop"
       ],
       "comments": 0,
       "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71475",
-      "has_repro": true,
-      "is_regression": false
-    },
-    {
-      "number": 71474,
-      "title": "[Bug] Inconsistent token usage reporting with similar workloads",
-      "created_at": "2026-06-25T23:18:11Z",
-      "updated_at": "2026-06-25T23:19:11Z",
-      "labels": [
-        "bug",
-        "platform:macos",
-        "area:cost",
-        "platform:vscode",
-        "needs-repro"
-      ],
-      "comments": 0,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71474",
+      "url": "https://github.com/anthropics/claude-code/issues/71739",
       "has_repro": false,
       "is_regression": false
     },
     {
-      "number": 71473,
-      "title": "[BUG] Code/SSH: all session history blank when ~/.claude/projects is a symlink (transcript locator runs `find` without -L)",
-      "created_at": "2026-06-25T23:15:53Z",
-      "updated_at": "2026-06-26T03:00:19Z",
+      "number": 71738,
+      "title": "[BUG] /design-sync slash command not available in Claude Code v2.1.195",
+      "created_at": "2026-06-27T02:56:00Z",
+      "updated_at": "2026-06-27T02:56:57Z",
+      "labels": [
+        "bug",
+        "platform:linux",
+        "area:skills"
+      ],
+      "comments": 0,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/71738",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 71736,
+      "title": "VSCode extension does not surface claude.ai account connectors (MCP) that the CLI exposes — same version 2.1.156",
+      "created_at": "2026-06-27T02:36:09Z",
+      "updated_at": "2026-06-27T03:02:46Z",
+      "labels": [
+        "bug",
+        "platform:windows",
+        "area:mcp",
+        "platform:vscode"
+      ],
+      "comments": 2,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/71736",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 71734,
+      "title": "[Bug] Claude Code prioritizes built-in code-review skill over repository-specific reviews skill",
+      "created_at": "2026-06-27T02:07:50Z",
+      "updated_at": "2026-06-27T02:26:27Z",
+      "labels": [
+        "bug",
+        "platform:macos",
+        "area:skills"
+      ],
+      "comments": 2,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/71734",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 71733,
+      "title": "[BUG] Option to log issue in GitHub from Claude Code can fail silently",
+      "created_at": "2026-06-27T02:03:17Z",
+      "updated_at": "2026-06-27T02:34:34Z",
+      "labels": [
+        "bug",
+        "platform:windows",
+        "area:cli"
+      ],
+      "comments": 3,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/71733",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 71732,
+      "title": "[BUG] 動かない",
+      "created_at": "2026-06-27T01:42:30Z",
+      "updated_at": "2026-06-27T02:37:50Z",
+      "labels": [
+        "bug"
+      ],
+      "comments": 3,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/71732",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 71730,
+      "title": "[Bug] Orphaned subagent processes not reaped on connection drop; memory leaks to ~8 GB per resume cycle",
+      "created_at": "2026-06-27T01:12:32Z",
+      "updated_at": "2026-06-27T01:13:58Z",
+      "labels": [
+        "bug",
+        "platform:macos",
+        "perf:memory",
+        "area:agents",
+        "needs-repro"
+      ],
+      "comments": 0,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/71730",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 71729,
+      "title": "Claude Desktop (Windows): `</> Code` conversation history silently lost on restart — and Claude doesn't detect the gap",
+      "created_at": "2026-06-27T01:07:00Z",
+      "updated_at": "2026-06-27T03:22:33Z",
+      "labels": [
+        "bug",
+        "platform:windows",
+        "area:desktop"
+      ],
+      "comments": 7,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/71729",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 71727,
+      "title": "[BUG] 2.1.19x native CLI: OAuth login fails CERT_HAS_EXPIRED on claude.com / platform.claude.com (no proxy) — bundled Bun 1.4.0 regression vs 1.3.14",
+      "created_at": "2026-06-27T00:54:48Z",
+      "updated_at": "2026-06-27T00:56:06Z",
       "labels": [
         "bug",
         "has repro",
-        "platform:wsl",
-        "area:desktop"
+        "platform:linux",
+        "area:auth",
+        "regression"
+      ],
+      "comments": 0,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/71727",
+      "has_repro": true,
+      "is_regression": true
+    },
+    {
+      "number": 71725,
+      "title": "[Bug] GitHub MCP Server Connection Failed",
+      "created_at": "2026-06-27T00:45:34Z",
+      "updated_at": "2026-06-27T00:46:35Z",
+      "labels": [
+        "bug",
+        "platform:linux",
+        "area:mcp",
+        "needs-repro"
+      ],
+      "comments": 0,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/71725",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 71723,
+      "title": "Agent tool `name` parameter silently switches to teammate protocol, losing background agent results",
+      "created_at": "2026-06-27T00:31:42Z",
+      "updated_at": "2026-06-27T01:56:41Z",
+      "labels": [
+        "bug",
+        "has repro",
+        "platform:macos",
+        "area:agents"
       ],
       "comments": 1,
       "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71473",
+      "url": "https://github.com/anthropics/claude-code/issues/71723",
       "has_repro": true,
       "is_regression": false
     },
     {
-      "number": 71468,
-      "title": "[Bug] Accidental mouse clicks on selection prompts misfire; mitigation breaks fullscreen scrollback",
-      "created_at": "2026-06-25T23:09:49Z",
-      "updated_at": "2026-06-25T23:10:54Z",
+      "number": 71722,
+      "title": "[BUG] \"Open in desktop app\" (code-session teleport) opens a blank window and hangs the whole app",
+      "created_at": "2026-06-27T00:17:04Z",
+      "updated_at": "2026-06-27T00:18:13Z",
+      "labels": [
+        "bug",
+        "has repro",
+        "platform:macos",
+        "area:claude-code-web",
+        "area:desktop"
+      ],
+      "comments": 0,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/71722",
+      "has_repro": true,
+      "is_regression": false
+    },
+    {
+      "number": 71719,
+      "title": "[BUG] SPB_DATA installation failure due to Cadence HOME environment variable",
+      "created_at": "2026-06-27T00:08:28Z",
+      "updated_at": "2026-06-27T00:09:41Z",
+      "labels": [
+        "bug",
+        "has repro",
+        "platform:windows",
+        "area:installation"
+      ],
+      "comments": 0,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/71719",
+      "has_repro": true,
+      "is_regression": false
+    },
+    {
+      "number": 71718,
+      "title": "[BUG] Cannot copy text correctly from Code tab (Remote Control session) on mobile app",
+      "created_at": "2026-06-26T23:50:41Z",
+      "updated_at": "2026-06-26T23:51:45Z",
+      "labels": [
+        "bug",
+        "platform:ios",
+        "area:ui"
+      ],
+      "comments": 0,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/71718",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 71717,
+      "title": "[BUG] [BUG] OAuth login succeeds but .credentials.json never written on Windows, causing permanent 401 loop",
+      "created_at": "2026-06-26T23:46:55Z",
+      "updated_at": "2026-06-27T00:02:26Z",
+      "labels": [
+        "bug",
+        "has repro",
+        "platform:windows",
+        "area:auth"
+      ],
+      "comments": 2,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/71717",
+      "has_repro": true,
+      "is_regression": false
+    },
+    {
+      "number": 71716,
+      "title": "[Bug] Claude ignoring user instructions in favor of default behavior",
+      "created_at": "2026-06-26T23:25:01Z",
+      "updated_at": "2026-06-26T23:29:11Z",
+      "labels": [
+        "bug",
+        "area:model",
+        "needs-repro"
+      ],
+      "comments": 1,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/71716",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 71715,
+      "title": "`/context` command injects output into conversation history, burning the context it measures",
+      "created_at": "2026-06-26T23:24:41Z",
+      "updated_at": "2026-06-26T23:26:18Z",
+      "labels": [
+        "bug",
+        "platform:macos",
+        "area:cli"
+      ],
+      "comments": 1,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/71715",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 71714,
+      "title": "[Bug] Claude ignores user instructions and over-complicates responses",
+      "created_at": "2026-06-26T23:20:57Z",
+      "updated_at": "2026-06-26T23:21:58Z",
+      "labels": [
+        "bug",
+        "area:model",
+        "needs-repro"
+      ],
+      "comments": 0,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/71714",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 71713,
+      "title": "[Bug] Full Screen Mode: Auto-scroll behavior prevents manual scrolling",
+      "created_at": "2026-06-26T23:17:31Z",
+      "updated_at": "2026-06-26T23:18:32Z",
+      "labels": [
+        "bug",
+        "area:tui",
+        "platform:wsl"
+      ],
+      "comments": 0,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/71713",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 71712,
+      "title": "Pasting Thai/multibyte UTF-8 into prompt input strips bytes 0x80–0x9F (mojibake, unrecoverable)",
+      "created_at": "2026-06-26T23:06:11Z",
+      "updated_at": "2026-06-26T23:44:57Z",
       "labels": [
         "bug",
         "has repro",
         "platform:macos",
         "area:tui"
       ],
-      "comments": 0,
+      "comments": 2,
       "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71468",
+      "url": "https://github.com/anthropics/claude-code/issues/71712",
       "has_repro": true,
       "is_regression": false
     },
     {
-      "number": 71465,
-      "title": "[Bug] Mouse clicks not responding in TUI on Terminal.app v2.1.193",
-      "created_at": "2026-06-25T22:57:00Z",
-      "updated_at": "2026-06-25T23:04:13Z",
+      "number": 71711,
+      "title": "Gmail claude.ai connector won't surface in CLI while Calendar/Drive (same account) work",
+      "created_at": "2026-06-26T23:05:12Z",
+      "updated_at": "2026-06-27T00:11:34Z",
       "labels": [
         "bug",
         "platform:macos",
-        "area:tui",
-        "regression"
+        "area:mcp"
       ],
       "comments": 2,
       "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71465",
+      "url": "https://github.com/anthropics/claude-code/issues/71711",
       "has_repro": false,
-      "is_regression": true
+      "is_regression": false
     },
     {
-      "number": 71464,
-      "title": "Slash command/skill with `context: fork` returns result as `<local-command-stdout>` instead of a visible assistant message (output never renders)",
-      "created_at": "2026-06-25T22:54:34Z",
-      "updated_at": "2026-06-25T23:01:38Z",
+      "number": 71708,
+      "title": "CERT_HAS_EXPIRED on Windows native install during OAuth login, no proxy/VPN/AV — curl succeeds on same host",
+      "created_at": "2026-06-26T22:45:21Z",
+      "updated_at": "2026-06-26T22:52:20Z",
       "labels": [
         "bug",
         "has repro",
         "platform:windows",
-        "area:skills"
+        "area:auth",
+        "regression"
       ],
-      "comments": 1,
+      "comments": 2,
       "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71464",
+      "url": "https://github.com/anthropics/claude-code/issues/71708",
+      "has_repro": true,
+      "is_regression": true
+    },
+    {
+      "number": 71704,
+      "title": "[Bug] Anthropic API Error: Server Rate Limiting on Valid Requests",
+      "created_at": "2026-06-26T22:31:03Z",
+      "updated_at": "2026-06-26T22:32:06Z",
+      "labels": [
+        "bug",
+        "platform:macos",
+        "external",
+        "area:api"
+      ],
+      "comments": 0,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/71704",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 71700,
+      "title": "[BUG] Kitty keyboard protocol gated on terminal-name allow-list instead of CSI ? u capability — capable terminals (Alacritty) denied",
+      "created_at": "2026-06-26T22:00:07Z",
+      "updated_at": "2026-06-26T22:07:09Z",
+      "labels": [
+        "bug",
+        "has repro",
+        "platform:linux",
+        "area:tui"
+      ],
+      "comments": 2,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/71700",
       "has_repro": true,
       "is_regression": false
     },
     {
-      "number": 71463,
-      "title": "[Bug][harness] Safety block halts read-only firewall/bind-config audit, misreading nft install and listen-addr",
-      "created_at": "2026-06-25T22:43:08Z",
-      "updated_at": "2026-06-25T22:48:33Z",
+      "number": 71699,
+      "title": "claude update fails with \"getaddrinfo EREFUSED\" on split-DNS VPN — updater resolves via c-ares, not the system resolver",
+      "created_at": "2026-06-26T21:58:35Z",
+      "updated_at": "2026-06-26T22:12:35Z",
       "labels": [
         "bug",
-        "duplicate",
         "platform:linux",
-        "area:permissions"
-      ],
-      "comments": 2,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71463",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 71462,
-      "title": "Bash tool sets redacted/direnv-managed env vars to the literal string `\"null\"` instead of unsetting them",
-      "created_at": "2026-06-25T22:42:48Z",
-      "updated_at": "2026-06-25T22:44:03Z",
-      "labels": [
-        "bug",
-        "platform:macos",
-        "area:bash"
-      ],
-      "comments": 0,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71462",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 71461,
-      "title": "[Bug] Fleet mode excessive token consumption on simple type-checking task",
-      "created_at": "2026-06-25T22:42:40Z",
-      "updated_at": "2026-06-25T22:46:43Z",
-      "labels": [
-        "bug",
-        "platform:macos",
-        "area:cost",
-        "area:agent-view"
+        "area:networking"
       ],
       "comments": 1,
       "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71461",
+      "url": "https://github.com/anthropics/claude-code/issues/71699",
       "has_repro": false,
       "is_regression": false
     },
     {
-      "number": 71455,
-      "title": "[BUG] [platform::intellij] Regression of #10813: 'Slow operations are prohibited on EDT' in DiagnosticTools.openVirtualFileFromPath (macOS, plugin 0.1.14-beta)",
-      "created_at": "2026-06-25T22:32:44Z",
-      "updated_at": "2026-06-25T22:39:31Z",
+      "number": 71698,
+      "title": "[BUG] /usage text unselectable after Edit tool diff block; prior diff component breaks mouse selection",
+      "created_at": "2026-06-26T21:52:06Z",
+      "updated_at": "2026-06-26T21:53:11Z",
+      "labels": [
+        "bug",
+        "platform:windows",
+        "area:tui"
+      ],
+      "comments": 0,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/71698",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 71697,
+      "title": "[BUG] Auto session recap no longer fires on idle return (macOS Apple Terminal CLI, 2.1.193)",
+      "created_at": "2026-06-26T21:45:37Z",
+      "updated_at": "2026-06-26T21:51:04Z",
+      "labels": [
+        "bug",
+        "has repro",
+        "platform:macos",
+        "area:tui"
+      ],
+      "comments": 1,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/71697",
+      "has_repro": true,
+      "is_regression": false
+    },
+    {
+      "number": 71686,
+      "title": "Path-scoped rules (.claude/rules/*.md) silently dropped when matching set exceeds an undocumented size budget",
+      "created_at": "2026-06-26T21:33:38Z",
+      "updated_at": "2026-06-26T21:40:17Z",
+      "labels": [
+        "bug",
+        "area:core"
+      ],
+      "comments": 1,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/71686",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 71685,
+      "title": "Remote Control (iOS): closing a fullscreen code block exits the whole conversation instead of just the code view",
+      "created_at": "2026-06-26T21:33:12Z",
+      "updated_at": "2026-06-26T21:34:22Z",
+      "labels": [
+        "bug",
+        "platform:ios",
+        "area:ui"
+      ],
+      "comments": 0,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/71685",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 71683,
+      "title": "[BUG] VS Code integrated terminal: every request fails with 503 'pre-upstream queue is saturated'; native Terminal.app works (macOS)",
+      "created_at": "2026-06-26T21:22:14Z",
+      "updated_at": "2026-06-27T01:12:10Z",
       "labels": [
         "bug",
         "has repro",
         "platform:macos",
         "area:ide",
-        "platform:intellij",
-        "regression"
+        "platform:vscode"
       ],
-      "comments": 1,
+      "comments": 3,
       "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71455",
+      "url": "https://github.com/anthropics/claude-code/issues/71683",
       "has_repro": true,
-      "is_regression": true
+      "is_regression": false
     },
     {
-      "number": 71454,
-      "title": "Claude Code edited a locked/protected file without permission and churned speculative fixes instead of verifying against the running app",
-      "created_at": "2026-06-25T22:32:12Z",
-      "updated_at": "2026-06-25T22:33:27Z",
+      "number": 71682,
+      "title": "/insights output leaks literal <message> tags into rendered response",
+      "created_at": "2026-06-26T21:15:27Z",
+      "updated_at": "2026-06-26T21:16:23Z",
       "labels": [
         "bug",
-        "area:model",
-        "area:permissions"
+        "has repro",
+        "platform:linux",
+        "area:tui",
+        "area:skills"
       ],
       "comments": 0,
       "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71454",
-      "has_repro": false,
+      "url": "https://github.com/anthropics/claude-code/issues/71682",
+      "has_repro": true,
       "is_regression": false
     },
     {
-      "number": 71453,
-      "title": "[Bug][harness] Skill-based file transfer and service restart deployment to a fleet container wrongly blocked a",
-      "created_at": "2026-06-25T22:29:45Z",
-      "updated_at": "2026-06-25T22:34:10Z",
+      "number": 71681,
+      "title": "[BUG] [BUG] Long-session context bleed: assistant fabricated a user-reported bug that was never reported",
+      "created_at": "2026-06-26T20:59:10Z",
+      "updated_at": "2026-06-26T21:05:12Z",
       "labels": [
         "bug",
-        "platform:linux",
-        "area:permissions"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71453",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 71452,
-      "title": "[Bug][harness] Safety block halts user-approved SSH service-status check via fleet skill, blocking authorized ",
-      "created_at": "2026-06-25T22:27:56Z",
-      "updated_at": "2026-06-25T22:32:58Z",
-      "labels": [
-        "bug",
-        "duplicate",
-        "platform:linux",
-        "area:model",
-        "area:security"
+        "platform:windows",
+        "area:core"
       ],
       "comments": 2,
       "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71452",
+      "url": "https://github.com/anthropics/claude-code/issues/71681",
       "has_repro": false,
       "is_regression": false
     },
     {
-      "number": 71449,
-      "title": "[BUG] Windows: /login authorization-code prompt accepts no input (type or paste) while the main REPL composer works — interactive login impossible",
-      "created_at": "2026-06-25T21:46:57Z",
-      "updated_at": "2026-06-25T21:51:19Z",
+      "number": 71678,
+      "title": "Claude Code binary silently disables transparent huge pages (THP)",
+      "created_at": "2026-06-26T20:39:26Z",
+      "updated_at": "2026-06-26T21:17:52Z",
       "labels": [
         "bug",
-        "has repro",
-        "platform:windows",
-        "area:tui",
-        "area:auth"
+        "platform:linux",
+        "area:sandbox"
       ],
       "comments": 1,
       "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71449",
-      "has_repro": true,
+      "url": "https://github.com/anthropics/claude-code/issues/71678",
+      "has_repro": false,
       "is_regression": false
     },
     {
-      "number": 71447,
-      "title": "[BUG] OTLP metric export silently stops when OTEL_RESOURCE_ATTRIBUTES has >12 entries (regression in 2.1.161)",
-      "created_at": "2026-06-25T21:41:26Z",
-      "updated_at": "2026-06-25T21:42:31Z",
-      "labels": [
-        "bug",
-        "has repro",
-        "api:bedrock",
-        "platform:linux",
-        "regression"
-      ],
-      "comments": 0,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71447",
-      "has_repro": true,
-      "is_regression": true
-    },
-    {
-      "number": 71446,
-      "title": "[BUG] Recently Opus feels like old sonnet, Sonnet is even worse",
-      "created_at": "2026-06-25T21:37:07Z",
-      "updated_at": "2026-06-26T01:57:50Z",
+      "number": 71677,
+      "title": "[BUG] Desktop SSH remote: CLI provisioning transfers far slower than the link allows, times out at 180s \"Configuring machine\"",
+      "created_at": "2026-06-26T20:26:14Z",
+      "updated_at": "2026-06-26T20:27:10Z",
       "labels": [
         "bug",
         "platform:macos",
-        "area:model"
-      ],
-      "comments": 1,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71446",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 71445,
-      "title": "[Bug][harness] Adding a GPP printer mapping with SID-targeting to a GPO blocked as production-wide push",
-      "created_at": "2026-06-25T21:33:25Z",
-      "updated_at": "2026-06-25T21:39:25Z",
-      "labels": [
-        "bug",
-        "duplicate",
-        "platform:linux",
-        "area:permissions"
-      ],
-      "comments": 2,
-      "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71445",
-      "has_repro": false,
-      "is_regression": false
-    },
-    {
-      "number": 71443,
-      "title": "[BUG] Usage ring has disappeared on Claude Desktop in Windows",
-      "created_at": "2026-06-25T21:14:56Z",
-      "updated_at": "2026-06-25T21:21:00Z",
-      "labels": [
-        "bug",
-        "platform:windows",
-        "regression",
+        "performance",
         "area:desktop"
       ],
-      "comments": 1,
+      "comments": 0,
       "reactions": 0,
-      "url": "https://github.com/anthropics/claude-code/issues/71443",
+      "url": "https://github.com/anthropics/claude-code/issues/71677",
       "has_repro": false,
-      "is_regression": true
+      "is_regression": false
     },
     {
-      "number": 71442,
-      "title": "[Bug] Anthropic API Error: Excessive false positive blocks on document reading requests",
-      "created_at": "2026-06-25T21:05:24Z",
-      "updated_at": "2026-06-25T21:10:52Z",
+      "number": 71676,
+      "title": "[Bug] False positive detection occurring repeatedly",
+      "created_at": "2026-06-26T20:14:57Z",
+      "updated_at": "2026-06-26T20:16:13Z",
       "labels": [
         "bug",
-        "duplicate",
-        "platform:macos",
+        "platform:linux",
         "area:model",
-        "api:anthropic"
+        "needs-repro"
+      ],
+      "comments": 0,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/71676",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 71675,
+      "title": "[BUG] Asked to authenticate gmail server by /mcp but that option is not listed",
+      "created_at": "2026-06-26T20:11:30Z",
+      "updated_at": "2026-06-27T01:36:19Z",
+      "labels": [
+        "bug",
+        "platform:linux",
+        "area:auth",
+        "area:mcp"
       ],
       "comments": 2,
-      "reactions": 2,
-      "url": "https://github.com/anthropics/claude-code/issues/71442",
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/71675",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 71674,
+      "title": "I don't have enough information to generate a GitHub issue title from \"Ignorance.\" \n\nCould you please provide the actual bug report or feature request details? I need information such as:\n- What problem occurred or what feature is being requested?\n- What e",
+      "created_at": "2026-06-26T20:06:52Z",
+      "updated_at": "2026-06-26T20:11:13Z",
+      "labels": [
+        "bug",
+        "platform:macos",
+        "needs-info",
+        "area:networking"
+      ],
+      "comments": 1,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/71674",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 71673,
+      "title": "[Bug] Anthropic API Error: Server Rate Limiting on Valid Requests",
+      "created_at": "2026-06-26T20:04:38Z",
+      "updated_at": "2026-06-26T20:08:52Z",
+      "labels": [
+        "bug",
+        "platform:windows",
+        "area:api",
+        "api:anthropic"
+      ],
+      "comments": 1,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/71673",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 71672,
+      "title": "[Bug] Anthropic API Error: Server Rate Limiting During Normal Usage",
+      "created_at": "2026-06-26T20:04:36Z",
+      "updated_at": "2026-06-26T20:05:31Z",
+      "labels": [
+        "bug",
+        "platform:windows",
+        "area:api",
+        "api:anthropic"
+      ],
+      "comments": 0,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/71672",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 71671,
+      "title": "I repeatedly ignore my own memory, saved scripts, and user instructions — causing production data loss 5 times in a row",
+      "created_at": "2026-06-26T20:03:52Z",
+      "updated_at": "2026-06-27T00:31:14Z",
+      "labels": [
+        "bug",
+        "area:model",
+        "memory",
+        "model"
+      ],
+      "comments": 2,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/71671",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 71670,
+      "title": "[Bug] Anthropic API Error: Server Rate Limiting on Valid Requests",
+      "created_at": "2026-06-26T20:01:43Z",
+      "updated_at": "2026-06-26T20:02:44Z",
+      "labels": [
+        "bug",
+        "platform:windows",
+        "external",
+        "area:api",
+        "api:anthropic"
+      ],
+      "comments": 0,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/71670",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 71669,
+      "title": "[Bug] Anthropic API Error: Server rate limiting requests",
+      "created_at": "2026-06-26T20:01:30Z",
+      "updated_at": "2026-06-26T20:04:37Z",
+      "labels": [
+        "bug",
+        "platform:windows",
+        "area:api",
+        "api:anthropic"
+      ],
+      "comments": 0,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/71669",
+      "has_repro": false,
+      "is_regression": false
+    },
+    {
+      "number": 71668,
+      "title": "[Bug] Anthropic API Error: Server temporarily limiting requests (rate limit)",
+      "created_at": "2026-06-26T20:01:15Z",
+      "updated_at": "2026-06-26T20:02:22Z",
+      "labels": [
+        "bug",
+        "platform:windows",
+        "area:api",
+        "api:anthropic"
+      ],
+      "comments": 0,
+      "reactions": 0,
+      "url": "https://github.com/anthropics/claude-code/issues/71668",
       "has_repro": false,
       "is_regression": false
     }
