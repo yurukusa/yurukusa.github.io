@@ -333,7 +333,7 @@
 </div>
 
 <div class="disclaimer">
-    These numbers are projections, not measurements. Actual costs depend on your specific token mix, cache hit ratio, model routing, and how much each session burns in cache_creation. The Token Book chapter 1 explains how to measure your real spend; the projections here use averages from 800+ verified hours of autonomous Claude Code operation. Hybrid savings assume the cheap side worker is well configured (deny-list CLAUDE.md rule, supervised output review). Do not run unsupervised side-worker output in production.
+    These numbers are projections, not measurements. Actual costs depend on your specific token mix, cache hit ratio, model routing, and how much each session burns in cache_creation. The projections here use averages from 800+ verified hours of autonomous Claude Code operation. Hybrid savings assume the cheap side worker is well configured (deny-list CLAUDE.md rule, supervised output review). Do not run unsupervised side-worker output in production.
 </div>
 
 <footer>
@@ -449,16 +449,14 @@ function updateRecommendation(current, hybrid, savings) {
 
     let body = '';
     if (mechShare >= 0.4 && monthlySave >= 30) {
-        body = `<strong>Recommended path: hybrid.</strong> Your mechanical work share (${Math.round(mechShare * 100)}%) makes Path B (Migration Playbook) the highest-leverage move. Projected monthly savings of about ${fmt(monthlySave)} should pay back the setup time inside one month. Start with the <a href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook?utm_source=cost-calc&utm_medium=recommendation&utm_campaign=migration-playbook">Migration Playbook</a> Path B chapter for the side-worker selection and routing rules. Then verify your real numbers with the <a href="https://yurukusa.gumroad.com/l/azrdt?utm_source=cost-calc&utm_medium=recommendation&utm_campaign=token-book-en">Token Book</a> measurement chapter.`;
+        body = `<strong>Recommended path: hybrid.</strong> Your mechanical work share (${Math.round(mechShare * 100)}%) makes Path B the highest-leverage move. Projected monthly savings of about ${fmt(monthlySave)} should pay back the setup time inside one month. Move the mechanical work to a cheap side worker, keep judgment work on Claude, then verify your real numbers by measuring your actual token spend.`;
     } else if (current >= 150) {
-        body = `<strong>Recommended path: measure first, then decide.</strong> Your projected monthly bill is high, but your mechanical share is low enough that hybrid may not move the needle as much as cache and prompt optimization would. Start with the <a href="https://yurukusa.gumroad.com/l/azrdt?utm_source=cost-calc&utm_medium=recommendation&utm_campaign=token-book-en">Token Book</a> to find where the real spend is going. If the measurement reveals more mechanical work than this projection assumes, the <a href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook?utm_source=cost-calc&utm_medium=recommendation&utm_campaign=migration-playbook">Migration Playbook</a> is the next step.`;
+        body = `<strong>Recommended path: measure first, then decide.</strong> Your projected monthly bill is high, but your mechanical share is low enough that hybrid may not move the needle as much as cache and prompt optimization would. Measure where the real spend is going first. If the measurement reveals more mechanical work than this projection assumes, hybrid delegation is the next step.`;
     } else if (mechShare < 0.2) {
-        body = `<strong>Recommended path: stay and optimize.</strong> Your mechanical work share is small, so hybrid will not unlock big savings. Focus on cache hit ratio and prompt density. The <a href="https://yurukusa.gumroad.com/l/azrdt?utm_source=cost-calc&utm_medium=recommendation&utm_campaign=token-book-en">Token Book</a> covers both. If incidents become the issue rather than cost, the <a href="https://yurukusa.gumroad.com/l/rhtptb?utm_source=cost-calc&utm_medium=recommendation&utm_campaign=postmortems">Incident Postmortems</a> book has 12 production failures with prevention hooks.`;
+        body = `<strong>Recommended path: stay and optimize.</strong> Your mechanical work share is small, so hybrid will not unlock big savings. Focus on cache hit ratio and prompt density.`;
     } else {
-        body = `<strong>Recommended path: hybrid is worth a trial.</strong> Your projected savings of about ${fmt(monthlySave)} per month are real but moderate. A two-week trial of Path B (Migration Playbook chapter) on a subset of your mechanical work will tell you if the savings stick. If they do, scale up; if not, the <a href="https://yurukusa.gumroad.com/l/azrdt?utm_source=cost-calc&utm_medium=recommendation&utm_campaign=token-book-en">Token Book</a> has other optimization paths that might fit better.`;
+        body = `<strong>Recommended path: hybrid is worth a trial.</strong> Your projected savings of about ${fmt(monthlySave)} per month are real but moderate. A two-week trial of Path B on a subset of your mechanical work will tell you if the savings stick. If they do, scale up; if not, other optimization paths may fit better.`;
     }
-
-    body += `<br><br>For the full three-book curation with reading paths for three reader profiles, see the <a href="https://yurukusa.github.io/operations-suite/?utm_source=cost-calc&utm_medium=recommendation&utm_campaign=ops-suite">Operations Suite</a>.`;
 
     rec.innerHTML = body;
 }

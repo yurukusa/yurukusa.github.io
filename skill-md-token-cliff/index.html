@@ -391,7 +391,7 @@
 </div>
 
 <div class="disclaimer">
-    These numbers are projections, not measurements. Actual cost depends on your plan's caching behavior, the Sonnet/Opus model mix, and whether CLAUDE.md is loaded as a system prompt (cached) or in the conversation (less reliably cached). The Anthropic 5-minute prompt cache TTL means CLAUDE.md is re-billed at full rate after 5 minutes of inactivity. The pattern detection is heuristic and conservative; for a thorough audit see the linked book. Nothing leaves your browser.
+    These numbers are projections, not measurements. Actual cost depends on your plan's caching behavior, the Sonnet/Opus model mix, and whether CLAUDE.md is loaded as a system prompt (cached) or in the conversation (less reliably cached). The Anthropic 5-minute prompt cache TTL means CLAUDE.md is re-billed at full rate after 5 minutes of inactivity. The pattern detection is heuristic and conservative. Nothing leaves your browser.
 </div>
 
 <footer>
@@ -586,14 +586,14 @@ function updateRecommendation(monthlyCost, monthlyRecovery, detectedCount, token
         rec.style.display = 'none';
         return;
     } else if (detectedCount >= 3 && monthlyRecovery >= 5) {
-        body = `<strong>${detectedCount} of 5 patterns detected. Estimated monthly recovery: ${fmt(monthlyRecovery)}.</strong> The Skills migration approach (move procedures and examples out of CLAUDE.md, keep the index) is documented end-to-end with 10 implementation recipes in <a href="https://zenn.dev/yurukusa/books/a1b2c3d4e5f6g7?utm_source=skill-md-cliff&utm_medium=recommendation&utm_campaign=skills-cookbook">Skills 実践レシピ集</a> (¥500, chapters 1 and 2 free, 9 chapters total). The book is the companion to a Qiita article that documented one operator's 40% reduction; both are linked here. For broader token-saving paths beyond Skills (cache hit ratio, Opus 4.7 tokenizer overhead, microcompact behavior), the <a href="https://zenn.dev/yurukusa/books/token-savings-guide?utm_source=skill-md-cliff&utm_medium=recommendation&utm_campaign=token-book">Token Book</a> (¥2,500, chapter 1 free) covers the full ground.`;
+        body = `<strong>${detectedCount} of 5 patterns detected. Estimated monthly recovery: ${fmt(monthlyRecovery)}.</strong> The Skills migration approach — move procedures and examples out of CLAUDE.md, keep only the index — is the highest-leverage fix. Apply the per-pattern fixes listed above, starting with the multi-step procedures and the verbose paragraphs.`;
     } else if (detectedCount >= 1) {
-        body = `<strong>${detectedCount} of 5 patterns detected.</strong> Even one or two of these patterns are worth fixing if your daily turns are high. The fix recipes above are the operator-side first pass; for the full design framework (Progressive Disclosure, 3-layer SKILL.md split, 10 worked examples), see <a href="https://zenn.dev/yurukusa/books/a1b2c3d4e5f6g7?utm_source=skill-md-cliff&utm_medium=recommendation&utm_campaign=skills-cookbook">Skills 実践レシピ集</a> (¥500, 2 chapters free).`;
+        body = `<strong>${detectedCount} of 5 patterns detected.</strong> Even one or two of these patterns are worth fixing if your daily turns are high. The fix recipes above are the operator-side first pass: one canonical example, bullet rules instead of prose, and multi-step procedures moved into Skills so they load only when needed.`;
     } else {
-        body = `<strong>0 of 5 patterns detected. Your CLAUDE.md is already compact.</strong> If your monthly bill is still climbing, the cost is somewhere else (cache miss rate, MCP schema overhead, subagent token leak). The <a href="https://zenn.dev/yurukusa/books/token-savings-guide?utm_source=skill-md-cliff&utm_medium=recommendation&utm_campaign=token-book">Token Book</a> (¥2,500) walks through the other layers of cost. For incident-side issues that look like "tokens disappearing", the <a href="https://yurukusa.gumroad.com/l/rhtptb?utm_source=skill-md-cliff&utm_medium=recommendation&utm_campaign=postmortems">Incident Postmortems</a> book covers the silent-burn class of bugs.`;
+        body = `<strong>0 of 5 patterns detected. Your CLAUDE.md is already compact.</strong> If your monthly bill is still climbing, the cost is somewhere else (cache miss rate, MCP schema overhead, subagent token leak).`;
     }
 
-    body += `<br><br>For a complete worked example (387-line CLAUDE.md transformed to 81 lines plus 4 Skills, 72% token reduction documented end-to-end with code samples), see the <a href="https://gist.github.com/yurukusa/5050da34f0013530740b42b2e229ac0f?utm_source=skill-md-cliff&utm_medium=footer&utm_campaign=worked-example">worked example Gist</a>. For broader cost projections that account for plan rates, hybrid delegation, and migration paths, see the <a href="/claude-code-cost-calculator/?utm_source=skill-md-cliff&utm_medium=footer&utm_campaign=cost-calc">monthly cost calculator</a>. For the three-book curation, see the <a href="/operations-suite/?utm_source=skill-md-cliff&utm_medium=footer&utm_campaign=ops-suite">Operations Suite</a>.`;
+    body += `<br><br>For a complete worked example (387-line CLAUDE.md transformed to 81 lines plus 4 Skills, 72% token reduction documented end-to-end with code samples), see the <a href="https://gist.github.com/yurukusa/5050da34f0013530740b42b2e229ac0f">worked example Gist</a>. For broader cost projections that account for plan rates, see the <a href="/claude-code-cost-calculator/">monthly cost calculator</a>.`;
 
     rec.innerHTML = body;
 }
