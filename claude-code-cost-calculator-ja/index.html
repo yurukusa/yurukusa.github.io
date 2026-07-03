@@ -192,7 +192,7 @@
 </div>
 
 <div class="disclaimer">
-    この数字は見立てで、 実測ではない。 実際の費用は、 トークンの混ざり方、 cache の当たり方、 模型の振り分け、 1 セッションごとの cache_creation の量で変わる。 Token Book の第 1 章 が、 自分の実際の支出の測り方を扱う。 ここの見立ては 800 時間 を超える Claude Code の自律の運用の median の値で計算している。 併用の節約は、 副の作業者を正しく設定した場合の数字 (CLAUDE.md の deny 形のルール、 出力の人による確認) を前提にする。 確認なしで本番に流すのは危険。
+    この数字は見立てで、 実測ではない。 実際の費用は、 トークンの混ざり方、 cache の当たり方、 模型の振り分け、 1 セッションごとの cache_creation の量で変わる。 ここの見立ては 800 時間 を超える Claude Code の自律の運用の median の値で計算している。 併用の節約は、 副の作業者を正しく設定した場合の数字 (CLAUDE.md の deny 形のルール、 出力の人による確認) を前提にする。 確認なしで本番に流すのは危険。
 </div>
 
 <footer>
@@ -308,16 +308,14 @@ function updateRecommendation(current, hybrid, savings) {
 
     let body = '';
     if (mechShare >= 0.4 && monthlySave >= 30) {
-        body = `<strong>推奨の経路: 併用 (Path B)。</strong> 機械的な作業の割合 (${Math.round(mechShare * 100)} %) が大きいので、 Path B の併用が最大の効果。 月の節約の見立てが約 ${fmt(monthlySave)} で、 設定の手間は 1 ヶ月 以内 で回収できる見立て。 まず <a href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook?utm_source=cost-calc-ja&utm_medium=recommendation&utm_campaign=migration-playbook">Migration Playbook</a> の Path B の章 で、 副の作業者の選び方と振り分けの規則を読む。 次に <a href="https://yurukusa.gumroad.com/l/azrdt?utm_source=cost-calc-ja&utm_medium=recommendation&utm_campaign=token-book-en">Token Book</a> の測定の章 で実際の数字を確かめる。`;
+        body = `<strong>推奨の経路: 併用 (Path B)。</strong> 機械的な作業の割合 (${Math.round(mechShare * 100)} %) が大きいので、 Path B の併用が最大の効果。 月の節約の見立てが約 ${fmt(monthlySave)} で、 設定の手間は 1 ヶ月 以内 で回収できる見立て。 機械的な作業を安い副の作業者に流し、 判断の作業は Claude のまま残す。 次に、 実際のトークンの支出を測って本当の数字を確かめる。`;
     } else if (current >= 150) {
-        body = `<strong>推奨の経路: 先に測ってから判定する。</strong> 月の請求の見立てが大きいが、 機械的な作業の割合がそこまで高くないので、 併用より cache の最適化や指示の整え方の方が効く可能性。 まず <a href="https://yurukusa.gumroad.com/l/azrdt?utm_source=cost-calc-ja&utm_medium=recommendation&utm_campaign=token-book-en">Token Book</a> で、 実際の支出がどこに行っているかを測る。 機械的な作業の割合が見立てより多いと分かれば、 <a href="https://yurukusa.gumroad.com/l/claude-code-migration-playbook?utm_source=cost-calc-ja&utm_medium=recommendation&utm_campaign=migration-playbook">Migration Playbook</a> が次の段階。`;
+        body = `<strong>推奨の経路: 先に測ってから判定する。</strong> 月の請求の見立てが大きいが、 機械的な作業の割合がそこまで高くないので、 併用より cache の最適化や指示の整え方の方が効く可能性。 まず実際の支出がどこに行っているかを測る。 機械的な作業の割合が見立てより多いと分かれば、 併用の振り分けが次の段階。`;
     } else if (mechShare < 0.2) {
-        body = `<strong>推奨の経路: 留まって最適化する。</strong> 機械的な作業の割合が小さいので、 併用の経路は大きな節約にならない。 cache の当たり方と、 指示の密度の改善に集中する。 <a href="https://yurukusa.gumroad.com/l/azrdt?utm_source=cost-calc-ja&utm_medium=recommendation&utm_campaign=token-book-en">Token Book</a> がこの 2 つを扱う。 費用ではなく事故が問題になった場合は、 <a href="https://yurukusa.gumroad.com/l/rhtptb?utm_source=cost-calc-ja&utm_medium=recommendation&utm_campaign=postmortems">Incident Postmortems</a> が 12 件 の本番の失敗を、 防止の hook つきで扱う。`;
+        body = `<strong>推奨の経路: 留まって最適化する。</strong> 機械的な作業の割合が小さいので、 併用の経路は大きな節約にならない。 cache の当たり方と、 指示の密度の改善に集中する。`;
     } else {
-        body = `<strong>推奨の経路: 併用を試す価値あり。</strong> 月の節約の見立てが約 ${fmt(monthlySave)} で、 効果は中程度。 Path B (Migration Playbook の章) を機械的な作業の一部で 2 週間 試して、 節約が定着するかを見る。 定着するなら拡大、 しないなら <a href="https://yurukusa.gumroad.com/l/azrdt?utm_source=cost-calc-ja&utm_medium=recommendation&utm_campaign=token-book-en">Token Book</a> の他の最適化の経路を試す。`;
+        body = `<strong>推奨の経路: 併用を試す価値あり。</strong> 月の節約の見立てが約 ${fmt(monthlySave)} で、 効果は中程度。 Path B を機械的な作業の一部で 2 週間 試して、 節約が定着するかを見る。 定着するなら拡大、 しないなら他の最適化の経路を試す。`;
     }
-
-    body += `<br><br>3 冊 を一緒に見て、 3 種類 の読者の経路を確認したい場合は、 <a href="https://yurukusa.github.io/operations-suite/?utm_source=cost-calc-ja&utm_medium=recommendation&utm_campaign=ops-suite">Operations Suite の頁</a> へ。`;
 
     rec.innerHTML = body;
 }

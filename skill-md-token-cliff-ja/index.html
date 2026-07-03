@@ -396,7 +396,7 @@
 </div>
 
 <div class="disclaimer">
-    数値は見立てで、 実測ではない。 実際の費用は plan の cache の挙動、 Sonnet と Opus の使う割合、 CLAUDE.md が system prompt として読み込まれているか会話の中に入っているか (cache の当たり方が違う) で大きく変わる。 Anthropic の prompt cache の有効期間は 5 分で、 5 分以上の無作業の後は cache が外れて全額の課金となる。 型の検出は概算で、 詳細な点検は商品の本で扱う。 中身はブラウザの外には出ない。
+    数値は見立てで、 実測ではない。 実際の費用は plan の cache の挙動、 Sonnet と Opus の使う割合、 CLAUDE.md が system prompt として読み込まれているか会話の中に入っているか (cache の当たり方が違う) で大きく変わる。 Anthropic の prompt cache の有効期間は 5 分で、 5 分以上の無作業の後は cache が外れて全額の課金となる。 型の検出は概算である。 中身はブラウザの外には出ない。
 </div>
 
 <footer>
@@ -582,14 +582,14 @@ function updateRecommendation(monthlyCost, monthlyRecovery, detectedCount, token
         rec.style.display = 'none';
         return;
     } else if (detectedCount >= 3 && monthlyRecovery >= 5) {
-        body = `<strong>5 件 中 ${detectedCount} 件 の型を検出。 月の節約の見立て: ${fmt(monthlyRecovery)}。</strong> Skills への移行の手順 (手順と例を CLAUDE.md から出す、 索引だけ残す) は、 <a href="https://zenn.dev/yurukusa/books/a1b2c3d4e5f6g7?utm_source=skill-md-cliff-ja&utm_medium=recommendation&utm_campaign=skills-cookbook">Skills 実践レシピ集</a> (¥500、 第 1-2 章 無料、 全 9 章) で 10 件 の実装の型を扱う。 本書の起源は 30,000 閲覧 を超える Qiita 記事 で、 自分の設定の 40% の token の節約を記録した事例の解説である。 token の節約の他の経路 (cache の当たり率、 Opus 4.7 の token の増加、 短い圧縮の動作) は、 <a href="https://zenn.dev/yurukusa/books/token-savings-guide?utm_source=skill-md-cliff-ja&utm_medium=recommendation&utm_campaign=token-book">Token Book</a> (¥2,500、 第 1 章 無料) で全章を扱う。`;
+        body = `<strong>5 件 中 ${detectedCount} 件 の型を検出。 月の節約の見立て: ${fmt(monthlyRecovery)}。</strong> Skills への移行 (手順と例を CLAUDE.md から出して、 索引だけ残す) が最も効果の高い対処。 上に出た型ごとの直し方を、 多段の手順と冗長の段落から順に適用する。`;
     } else if (detectedCount >= 1) {
-        body = `<strong>5 件 中 ${detectedCount} 件 の型を検出。</strong> 1 件 か 2 件 でも、 1 日 の turn の数が多い場合は直す価値がある。 上の修正の手順は利用者の側の最初の対処。 全ての設計の枠組み (Progressive Disclosure、 SKILL.md の 3 層 の分割、 10 件 の作業の例) は <a href="https://zenn.dev/yurukusa/books/a1b2c3d4e5f6g7?utm_source=skill-md-cliff-ja&utm_medium=recommendation&utm_campaign=skills-cookbook">Skills 実践レシピ集</a> (¥500、 第 1-2 章 無料) で扱う。`;
+        body = `<strong>5 件 中 ${detectedCount} 件 の型を検出。</strong> 1 件 か 2 件 でも、 1 日 の turn の数が多い場合は直す価値がある。 上の修正の手順は利用者の側の最初の対処で、 代表の 1 例 に絞る、 説明を箇条書きの規則に書き直す、 多段の手順を Skill に出して必要な時だけ読み込む、 の順に進める。`;
     } else {
-        body = `<strong>5 件 中 0 件 の型。 あなたの CLAUDE.md は既に簡潔。</strong> 月の請求が増えている場合、 費用の漏れは別の場所にある (cache の当たり率の低下、 MCP の schema の負荷、 子 の作業者の token の漏洩 等)。 <a href="https://zenn.dev/yurukusa/books/token-savings-guide?utm_source=skill-md-cliff-ja&utm_medium=recommendation&utm_campaign=token-book">Token Book</a> (¥2,500) は他の層の費用の問題を扱う。 「token が消える」 ような事故の系統は、 <a href="https://yurukusa.gumroad.com/l/rhtptb?utm_source=skill-md-cliff-ja&utm_medium=recommendation&utm_campaign=postmortems">事故報告本</a> が静かな漏洩 の事例 を扱う。`;
+        body = `<strong>5 件 中 0 件 の型。 あなたの CLAUDE.md は既に簡潔。</strong> 月の請求が増えている場合、 費用の漏れは別の場所にある (cache の当たり率の低下、 MCP の schema の負荷、 子 の作業者の token の漏洩 等)。`;
     }
 
-    body += `<br><br>具体 の方法 の例 (387 行 の CLAUDE.md を 81 行 と 4 件 の Skill に変換 して 72% の token を削減 した 1 件 の作業 の事例) は <a href="https://gist.github.com/yurukusa/5050da34f0013530740b42b2e229ac0f?utm_source=skill-md-cliff-ja&utm_medium=footer&utm_campaign=worked-example">完全 な作業 の例 の Gist</a> を参照。 plan の費用 と併用 の節約 の費用 の見立ては <a href="/claude-code-cost-calculator-ja/?utm_source=skill-md-cliff-ja&utm_medium=footer&utm_campaign=cost-calc">月 の費用 の計算 の道具</a> を参照。 3 冊 の本 のまとめは <a href="/operations-suite-ja/?utm_source=skill-md-cliff-ja&utm_medium=footer&utm_campaign=ops-suite">Operations Suite</a>。`;
+    body += `<br><br>具体 の方法 の例 (387 行 の CLAUDE.md を 81 行 と 4 件 の Skill に変換 して 72% の token を削減 した 1 件 の作業 の事例) は <a href="https://gist.github.com/yurukusa/5050da34f0013530740b42b2e229ac0f">完全 な作業 の例 の Gist</a> を参照。 plan の費用 と併用 の節約 の費用 の見立ては <a href="/claude-code-cost-calculator-ja/">月 の費用 の計算 の道具</a> を参照。`;
 
     rec.innerHTML = body;
 }

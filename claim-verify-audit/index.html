@@ -124,13 +124,7 @@
     <h2>Why the checks are what they are</h2>
     <p>Each check targets a structural failure pattern that has been observed in public GitHub issues against <code>anthropics/claude-code</code>. The pattern is the unit of analysis, not the specific bug: even after Anthropic fixes a specific issue, the underlying structural pattern (silent regression, trust-boundary collapse, docs-vs-implementation mismatch) tends to recur in adjacent subsystems on the next release wave.</p>
 
-    <p>The script's coverage corresponds to the seven failure-mode layers documented in the Claim-Verify Handbook (May 22, 2026). It does not claim to detect every possible bug; it claims to detect specific configurations and state patterns that map to documented failure-mode layers.</p>
-
-    <div class="cta">
-        <p class="cta-title">Structural prevention reference</p>
-        <p>The audit script catches specific patterns. For the structural framework — why these patterns recur, how to design defenses that survive release waves, and the 14 prevention defenses mapped per case — see the <a href="https://yurukusa.gumroad.com/l/claim-verify-handbook?utm_source=audit-tool-page" target="_blank" rel="noopener">Claim-Verify Handbook</a> (ships May 22, 2026, USD 19, 125+ cases across 81 pages).</p>
-        <p>Free preview Gists (no signup): <a href="https://gist.github.com/yurukusa/6dd608049064ed66c54f1a545a7b47a8" target="_blank" rel="noopener">日本語</a> · <a href="https://gist.github.com/yurukusa/5242a540c43769df76a448269e2f182b" target="_blank" rel="noopener">English</a></p>
-    </div>
+    <p>The script's coverage corresponds to seven documented failure-mode layers. It does not claim to detect every possible bug; it claims to detect specific configurations and state patterns that map to documented failure-mode layers.</p>
 
     <h2>Runtime prevention (hooks)</h2>
     <p>The audit is a one-shot diagnostic. For runtime prevention of the same patterns (block destructive operations, detect silent regressions before they fire, catch hook contract violations at the moment they happen), see <a href="https://github.com/yurukusa/cc-safe-setup" target="_blank" rel="noopener">cc-safe-setup</a> — an MIT-licensed collection of 730+ PreToolUse and PostToolUse hooks.</p>
