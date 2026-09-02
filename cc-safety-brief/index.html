@@ -146,7 +146,7 @@ footer {
 <pre><code>npx cc-safe-setup</code></pre>
 <p>破壊的コマンドの遮断、main への push の保護、編集後の構文の検証、シークレットの漏洩の防止、コンテキストの監視などの安全フックが入ります。npm の依存はゼロです（フックの実行には <code>jq</code> が要ります。<code>apt install jq</code> か <code>brew install jq</code> で入ります）。</p>
 <p>なお、既定のフックが覆うのは、削除・push・シークレット・構文・コンテキストの主要な事故です。サブエージェントが CLAUDE.md を無視する事故（#40459）や費用の暴走の監視など、一部は追加のフックや CLAUDE.md 側の設定が要ります。</p>
-<p><a class="dl" href="https://github.com/yurukusa/cc-safe-setup">cc-safe-setup（GitHub・無料）</a><a class="dl" href="./cc-safety-checklist.pdf">この一覧のPDF版</a></p>
+<p><a class="dl" href="https://github.com/yurukusa/cc-safe-setup">cc-safe-setup（GitHub・無料）</a></p>
 
 <h2>もっと深く、体系的に</h2>
 <p>一つ一つの事故を「なぜ起きたか」から理解し、多層の防御まで体系的に押さえたい人には、事故防止の本があります。買った後の毎月の更新も、追加の費用なく読めます。この無料のチェックリストは、その本の中核を蒸留したものです。</p>
