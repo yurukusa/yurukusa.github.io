@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code 事故防止チェックリスト（無料・設定レビュー版） | yurukusa</title>
+<meta name="description" content="実際に GitHub で報告された Claude Code の事故6件をもとに、今の自分の設定で防げるかを点検する無料のチェックリスト。削除・push・シークレット・文脈・費用の5分野。登録不要でその場で読めます。">
+<link rel="canonical" href="https://yurukusa.github.io/cc-safety-brief/">
+<meta property="og:title" content="Claude Code 事故防止チェックリスト（無料）">
+<meta property="og:description" content="実際に報告された事故6件から作った点検の一覧。登録不要でその場で読めます。">
+<meta property="og:url" content="https://yurukusa.github.io/cc-safety-brief/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="yurukusa">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@yurukusa_dev">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "Claude Code 事故防止チェックリスト（設定レビュー版）",
+  "description": "実際に GitHub の Issue で報告された Claude Code の事故をもとに、自分の設定で防げるかを点検する一覧。",
+  "url": "https://yurukusa.github.io/cc-safety-brief/",
+  "inLanguage": "ja",
+  "estimatedCost": { "@type": "MonetaryAmount", "currency": "JPY", "value": "0" },
+  "author": { "@type": "Person", "name": "yurukusa", "url": "https://yurukusa.github.io/" }
+}
+</script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #080810; --surface: #10101c; --surface2: #16162a; --border: #1e1e38;
+  --text: #ddddf0; --text-dim: #9090b0; --accent: #f0883e;
+}
+body {
+  background: var(--bg); color: var(--text); line-height: 1.85;
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", "Meiryo", sans-serif;
+  padding: 0 1.2rem 5rem;
+}
+.wrap { max-width: 760px; margin: 0 auto; }
+header { padding: 3.2rem 0 1.6rem; border-bottom: 1px solid var(--border); }
+h1 { font-size: 1.75rem; line-height: 1.5; margin-bottom: 1rem; }
+.lede { color: var(--text-dim); font-size: 0.97rem; margin: 0.8rem 0; }
+h2 {
+  font-size: 1.2rem; margin: 2.8rem 0 1rem; padding-top: 1.6rem;
+  border-top: 1px solid var(--border);
+}
+p { margin: 1rem 0; }
+ul { margin: 1rem 0 1rem 1.3rem; }
+li { margin: 0.5rem 0; }
+code {
+  background: var(--surface2); padding: 0.12em 0.42em; border-radius: 4px;
+  font-size: 0.9em; color: var(--accent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+pre {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  padding: 1rem 1.1rem; overflow-x: auto; margin: 1.2rem 0;
+}
+pre code { background: none; padding: 0; color: var(--text); }
+a { color: var(--accent); }
+.checks { list-style: none; margin-left: 0; }
+.checks li {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+  padding: 0.85rem 1rem 0.85rem 2.6rem; position: relative; margin: 0.6rem 0;
+}
+.checks li::before {
+  content: ""; position: absolute; left: 0.9rem; top: 1.15rem;
+  width: 15px; height: 15px; border: 2px solid var(--text-dim); border-radius: 3px;
+}
+.note {
+  background: var(--surface2); border-left: 3px solid var(--accent);
+  padding: 0.9rem 1.1rem; margin: 1.4rem 0; border-radius: 0 6px 6px 0;
+  font-size: 0.95rem;
+}
+.incidents { list-style: none; margin-left: 0; font-size: 0.96rem; }
+.incidents li { padding: 0.4rem 0; border-bottom: 1px solid var(--border); }
+.incidents li:last-child { border-bottom: none; }
+footer {
+  margin-top: 3.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);
+  color: var(--text-dim); font-size: 0.88rem;
+}
+.dl {
+  display: inline-block; background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 8px; padding: 0.7rem 1.2rem; margin: 0.6rem 0.6rem 0.6rem 0;
+  text-decoration: none; font-size: 0.95rem;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<h1>Claude Code 事故防止チェックリスト<br>（設定レビュー版）</h1>
+<p class="lede">自律で動く Claude Code を、取り消せない事故から守るための、自分でできる点検の一覧です。実際に GitHub の Issue で報告された事故をもとに作りました。一つずつ「今の自分の設定でこれは防げるか」を確かめてください。防げないなら、その場で直せます。</p>
+<p class="lede">登録は要りません。この頁がそのまま全文です。</p>
+</header>
+
+<h2>この一覧が守るもの（すべて実際に報告された事故）</h2>
+<ul class="incidents">
+<li><code>rm -rf</code> が約50GB・1,500ファイルを永久に消した（<a href="https://github.com/anthropics/claude-code/issues/49129">Issue #49129</a>）</li>
+<li>自動承認のまま <code>~/.ssh</code> が削除され、SSH の鍵が全部消えた（<a href="https://github.com/anthropics/claude-code/issues/49554">#49554</a>）</li>
+<li><code>~/.git-credentials</code> の個人アクセストークンが確認なしで消えた（<a href="https://github.com/anthropics/claude-code/issues/49539">#49539</a>）</li>
+<li><code>rm -rf</code> がフォルダごと回復不能に消した（<a href="https://github.com/anthropics/claude-code/issues/46058">#46058</a>・7GB／3,467ファイル）</li>
+<li>本番のデータベースに破壊的な DDL が流れた（<a href="https://github.com/anthropics/claude-code/issues/46684">#46684</a>）</li>
+<li>サブエージェントが CLAUDE.md のルールを全部無視した（<a href="https://github.com/anthropics/claude-code/issues/40459">#40459</a>）</li>
+</ul>
+<p>共通点は「一度起きると取り消せない」ことです。だから、起きる前に止める仕組みが要ります。</p>
+
+<h2>1. 取り消せない削除</h2>
+<ul class="checks">
+<li><code>rm -rf</code>、<code>git reset --hard</code>、<code>git clean -fd</code> を、実行の手前で一度止めて確認する仕組みがあるか</li>
+<li><code>~/.ssh</code>、<code>~/.git-credentials</code>、<code>.env</code>、<code>~/.aws</code> などの重要ファイルへの削除・上書きを、特別に扱って止められるか</li>
+<li>「自動承認（auto-approve）」の設定が、破壊的な操作まで素通しにしていないか</li>
+<li>クラウド同期（Dropbox・OneDrive・iCloud）の下で作業していないか。同期フォルダの削除はゴミ箱を迂回して本当に消えることがある</li>
+</ul>
+<div class="note"><strong>自分でできる最小の守り</strong>：削除は「複製 → 検証 → 削除」の順にします。<code>&amp;&amp;</code> で前の成功に依存させ、沈黙の失敗が次の破壊に繋がらないようにします。</div>
+
+<h2>2. main への未検証の push と force-push</h2>
+<ul class="checks">
+<li><code>main</code> / <code>master</code> への直接の push を止める仕組みがあるか</li>
+<li><code>git push --force</code> が共有のブランチの履歴を書き換えるのを止められるか</li>
+<li>未検証のコードが確認なしに main へ入る経路を塞いでいるか</li>
+</ul>
+
+<h2>3. シークレットの漏洩</h2>
+<ul class="checks">
+<li><code>git add .</code> が、API キーや <code>.env</code> を巻き込んで公開のリポジトリに commit するのを防げるか</li>
+<li>commit の手前で、鍵らしい文字列（トークン・秘密鍵）を検知して止められるか</li>
+</ul>
+
+<h2>4. 文脈の喪失と CLAUDE.md の無視</h2>
+<ul class="checks">
+<li>コンテキストの窓が枯れそうな時に、警告が出るか（黙って全部忘れる前に気づけるか）</li>
+<li>自動の圧縮（compact）の後に、CLAUDE.md のルールが静かに無視されていないか</li>
+<li>サブエージェントが CLAUDE.md のルールを引き継いでいるか（#40459 の事故）</li>
+</ul>
+
+<h2>5. 費用の暴走</h2>
+<ul class="checks">
+<li>サブエージェントの多重の起動で、費用が跳ねていないか。使用量の内訳（skills・subagents・plugins・MCP）を見る習慣があるか</li>
+<li>使っていない MCP サーバーが、ツールの定義を毎回コンテキストに載せて費用を押し上げていないか</li>
+<li>編集後の構文エラーが多数のファイルに連鎖する前に、1ファイルずつ検証しているか</li>
+</ul>
+
+<h2>この点検を自動にする</h2>
+<p>上のチェックは、手でやると必ず抜けます。人間もAIも、疲れると確認を飛ばすからです。無料の道具 <code>cc-safe-setup</code> は、この一覧の主要な項目を「実行の手前で止める」フックとして入れます。</p>
+<pre><code>npx cc-safe-setup</code></pre>
+<p>破壊的コマンドの遮断、main への push の保護、編集後の構文の検証、シークレットの漏洩の防止、コンテキストの監視などの安全フックが入ります。npm の依存はゼロです（フックの実行には <code>jq</code> が要ります。<code>apt install jq</code> か <code>brew install jq</code> で入ります）。</p>
+<p>なお、既定のフックが覆うのは、削除・push・シークレット・構文・コンテキストの主要な事故です。サブエージェントが CLAUDE.md を無視する事故（#40459）や費用の暴走の監視など、一部は追加のフックや CLAUDE.md 側の設定が要ります。</p>
+<p><a class="dl" href="https://github.com/yurukusa/cc-safe-setup">cc-safe-setup（GitHub・無料）</a><a class="dl" href="./cc-safety-checklist.pdf">この一覧のPDF版</a></p>
+
+<h2>もっと深く、体系的に</h2>
+<p>一つ一つの事故を「なぜ起きたか」から理解し、多層の防御まで体系的に押さえたい人には、事故防止の本があります。買った後の毎月の更新も、追加の費用なく読めます。この無料のチェックリストは、その本の中核を蒸留したものです。</p>
+<p><a class="dl" href="https://zenn.dev/yurukusa/books/6076c23b1cb18b">Claude Code 事故防止の本（Zenn）</a></p>
+
+<footer>
+<p>このチェックリストは無料の配布物です。引用した Issue の番号は、いずれも実在する公開の報告です（リンクから原文が読めます）。</p>
+<p><a href="https://yurukusa.github.io/">yurukusa.github.io</a></p>
+</footer>
+</div>
+</body>
+</html>
